@@ -1,0 +1,57 @@
+#First color &&1
+#Second color &&2
+join.message: "&&1<player> join"
+left.message: "&&1<player> left"
+
+tab.header.message: "\n &&1❤ \n"
+tab.footer.message: "\n &&1FlectoneChat \n"
+
+chat.no_recipients: "#ff4e4e⁉ Nobody heard you"
+chat.click_player_name: "&&1Click to write to him"
+chat.ping.message: "&&1<prefix><player>&&2"
+
+ignore.usage: "&&1⚑ Usage: &&2/ignore (player)"
+ignore.myself: "#ff4e4e⁉ You can't ignore yourself"
+ignore.no_player: "#ff4e4e⁉ This player does not exist"
+ignore.success_ignore: "#ff4e4e☹ You ignore <player>"
+ignore.success_unignore: "#4eff52☺ You unignore <player>"
+
+ignore-list.usage: "&&1⚑ Usage: &&2/ignore-list"
+ignore-list.empty: "#ff4e4e⁉ You don't ignore anyone"
+ignore-list.name: "&&1List of ignored players "
+ignore-list.arrow: "&&1Back"
+ignore-list.spectral_arrow: "&&1Forward"
+
+msg.usage: "&&1⚑ Usage: &&2/msg (player) (message)"
+msg.no_player: "#ff4e4e⁉ This player does not exist"
+msg.success_send: "&&1✉ You → <player> » &&2"
+msg.success_get: "&&1✉ You ← <player> » &&2"
+msg.you_ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
+msg.he_ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
+msg.myself: "&&1✉ &&2"
+
+reply.no_answer: "#ff4e4e⁉ No one to answer"
+reply.no_online: "#ff4e4e⁉ This player is not online"
+
+try-cube.usage: "&&1⚑ Usage: &&2/try-cube (number)"
+try-cube.success_true: "#4eff52☺ <player> successfully rolled <cube>"
+try-cube.success_false: "#ff4e4e☹ <player> failed to roll <cube>"
+try-cube.too_much: "#ff4e4e⁉ Too many cubes"
+try-cube.only_int: "#ff4e4e⁉ You must enter a number"
+try-cube.very_lucky: "#f7c41b★ <player> rolled ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ #f7c41b★"
+
+try.usage: "&&1⚑ Usage: &&2/try (message)"
+try.success_true: "#4eff52☺ <player> <message><percent>%"
+try.success_false: "#ff4e4e☹ <player> <message><percent>%"
+
+me.usage: "&&1⚑ Usage: &&2/me (message)"
+me.message: "&&2✎ <player> <message>"
+
+server.motd.message: "&&1This server uses FlectoneChat ❤"
+
+chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"
+chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
+
+flectonechat.usage: "&&1⚑ Usage: &&2/flectonechat reload/config/locale"
+flectonechat.not_exist: "#ff4e4e⁉ Enter the correct line name"
+flectonechat.message: "&&1★ Plugin successfully reloaded!"

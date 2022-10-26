@@ -1,0 +1,36 @@
+language: en
+
+#This is &&1
+color.first: "#1abaf0"
+#This is &&2
+color.second: "#77d7f7"
+
+tab.header.enable: true
+tab.footer.enable: true
+
+color.worlds.enable: true
+color.world: "#4eff52"
+color.world_nether: "#ff4e4e"
+color.world_the_end: "#834eff"
+
+server.motd.enable: true
+server.online.enable: true
+server.online.number: 69
+
+chat.ping.prefix: "@"
+chat.no_recipients.enable: true
+
+chat.locale.range: 100
+chat.locale.message: "&&1<player>&&2: "
+
+chat.global.prefix: "!"
+chat.global.message: "&&1<player>&&2 » "
+chat.global.enable: true
+
+try-cube.max_amount: 10
+try-cube.6: "⚅"
+try-cube.5: "⚄"
+try-cube.4: "⚃"
+try-cube.3: "⚂"
+try-cube.2: "⚁"
+try-cube.1: "⚀"

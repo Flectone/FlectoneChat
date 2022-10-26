@@ -1,0 +1,57 @@
+#First color &&1
+#Second color &&2
+join.message: "&&1<player> присоединился к серверу"
+left.message: "&&1<player> вышел с сервера"
+
+tab.header.message: "\n &&1❤ \n"
+tab.footer.message: "\n &&1FlectoneChat \n"
+
+chat.no_recipients: "#ff4e4e⁉ Тебя никто не услышал"
+chat.click_player_name: "&&1Нажми, чтобы ему написать"
+chat.ping.message: "&&1<prefix><player>&&2"
+
+ignore.usage: "&&1⚑ Использование: &&2/ignore (игрок)"
+ignore.myself: "#ff4e4e⁉ Ты не можешь игнорировать себя"
+ignore.no_player: "#ff4e4e⁉ Этот игрок не существует"
+ignore.success_ignore: "#ff4e4e☹ Ты игнорируешь <player>"
+ignore.success_unignore: "#4eff52☺ Ты перестал игнорировать <player>"
+
+ignore-list.usage: "&&1⚑ Использование: &&2/ignore-list"
+ignore-list.empty: "#ff4e4e⁉ Ты никого не игнорируешь"
+ignore-list.name: "&&1Список игнорируемых "
+ignore-list.arrow: "&&1Назад"
+ignore-list.spectral_arrow: "&&1Вперёд"
+
+msg.usage: "&&1⚑ Использование: &&2/msg (игрок) (сообщение)"
+msg.no_player: "#ff4e4e⁉ Этот игрок не существует"
+msg.success_send: "&&1✉ Ты → <player> » &&2"
+msg.success_get: "&&1✉ Ты ← <player> » &&2"
+msg.you_ignore: "#ff4e4e⁉ Ты не можешь ему написать, потому что ты его игнорируешь"
+msg.he_ignore: "#ff4e4e⁉ Ты не можешь ему написать, потому что он тебя игнорирует"
+msg.myself: "&&1✉ &&2"
+
+reply.no_answer: "#ff4e4e⁉ Некому отвечать"
+reply.no_online: "#ff4e4e⁉ Этот игрок не на сервере"
+
+try-cube.usage: "&&1⚑ Использование: &&2/try-cube (число)"
+try-cube.success_true: "#4eff52☺ <player> успешно кинул кубики <cube>"
+try-cube.success_false: "#ff4e4e☹ <player> плохо кинул кубики <cube>"
+try-cube.too_much: "#ff4e4e⁉ Слишком большое число кубиков"
+try-cube.only_int: "#ff4e4e⁉ Ты должен ввести число"
+try-cube.very_lucky: "#f7c41b★ <player> кинул кубики ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ #f7c41b★"
+
+try.usage: "&&1⚑ Использование: &&2/try (сообщение)"
+try.success_true: "#4eff52☺ <player> <message><percent>%"
+try.success_false: "#ff4e4e☹ <player> <message><percent>%"
+
+me.usage: "&&1⚑ Использование: &&2/me (сообщение)"
+me.message: "&&2✎ <player> <message>"
+
+server.motd.message: "&&1Этот сервер использует FlectoneChat ❤"
+
+chatcolor.usage: "&&1⚑ Использование: &&2/try (первый цвет) (второй цвет)"
+chatcolor.message: "#4eff52★ Ты поставил &&1первый цвет &&2второй цвет"
+
+flectonechat.usage: "&&1⚑ Использование: &&2/flectonechat reload/config/locale"
+flectonechat.not_exist: "#ff4e4e⁉ Введи правильно название строки из файла"
+flectonechat.message: "&&1★ Плагин успешно перезагружен!"

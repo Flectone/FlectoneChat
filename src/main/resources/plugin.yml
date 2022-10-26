@@ -1,0 +1,49 @@
+name: FlectoneChat
+version: '${project.version}'
+main: ru.flectone.Main
+api-version: 1.16
+authors: [ TheFaser ]
+softdepend: [ Vault ]
+commands:
+  ignore:
+    usage: /ignore <player>
+    permission: flectonechat.ignore
+
+  ignore-list:
+    usage: /ignore-list
+    permission: flectonechat.ignore-list
+
+  msg:
+    usage: /msg <player> <message>
+    aliases: [ w, tell, message, send ]
+    permission: flectonechat.msg
+
+  try-cube:
+    usage: /try-cube <number>
+    permission: flectonechat.try-cube
+
+  try:
+    usage: /try <message>
+    permission: flectonechat.try
+
+  reply:
+    usage: /r <message>
+    aliases: [ r ]
+    permission: flectonechat.reply
+
+  me:
+    usage: /me <message>
+    permission: flectonechat.me
+
+  chatcolor:
+    usage: /chatcolor <first color> <second color>
+    permission: flectonechat.chatcolor
+
+  flectonechat:
+    usage: /flectonechat reload/config/locale
+    aliases: [ fc ]
+    permission: flectonechat.reload
+
+permissions:
+  flectonechat.reload:
+    default: op
