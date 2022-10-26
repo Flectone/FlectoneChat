@@ -47,3 +47,19 @@ commands:
 permissions:
   flectonechat.reload:
     default: op
+  flectonechat.ignore:
+    default: true
+  flectonechat.ignore-list:
+    default: true
+  flectonechat.msg:
+    default: true
+  flectonechat.try:
+    default: true
+  flectonechat.try-cube:
+    default: true
+  flectonechat.reply:
+    default: true
+  flectonechat.me:
+    default: true
+  flectonechat.chatcolor:
+    default: true
