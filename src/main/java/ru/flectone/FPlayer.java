@@ -126,6 +126,11 @@ public class FPlayer {
     private List<String> colors = new ArrayList<>();
 
     public void setColors(String firstColor, String secondColor) {
+        //200IQ
+        if(colors.isEmpty()){
+            colors.add("0");
+            colors.add("1");
+        }
         colors.set(0, firstColor);
         colors.set(1, secondColor);
 

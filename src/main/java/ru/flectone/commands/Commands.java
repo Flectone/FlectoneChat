@@ -229,7 +229,7 @@ public class Commands implements CommandExecutor {
                 break;
             }
             case "chatcolor":{
-                if(args.length == 0 || args.length != 2 && !args[0].equalsIgnoreCase("default")) {
+                if(args.length == 0 || (args.length != 2 && !args[0].equalsIgnoreCase("default"))) {
                     sendUsageMessage(eventPlayer, command.getName());
                     break;
                 }
@@ -241,6 +241,7 @@ public class Commands implements CommandExecutor {
                 } else feventPlayer.setColors(args[0], args[1]);
 
                 eventPlayer.sendMessage(locale.getFormatString("chatcolor.message", eventPlayer));
+                break;
             }
             case "flectonechat":{
                 if(args.length < 1 || !args[0].equals("reload") && args.length < 5){
@@ -347,7 +348,7 @@ public class Commands implements CommandExecutor {
 
                     playerOnline.spigot().sendMessage(streamAnnounce.create());
                 }
-
+                break;
             }
 
         }
