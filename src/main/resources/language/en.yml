@@ -53,6 +53,18 @@ server.motd.message: "&&1This server uses FlectoneChat ❤"
 chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"
 chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
 
+stream.usage: "&&1⚑ Usage: &&2/stream start/end"
+stream.need_url: "#ff4e4e⁉ You must enter a url(s)"
+stream.not: "#ff4e4e⁉ You don't stream"
+stream.already: "#ff4e4e⁉ You are already streaming"
+stream.end: "&&1★ Thanks for streaming on our server!"
+stream.start:
+  - "#ff4e4e🔔 &&1Announcement #ff4e4e🔔"
+  - "&&2• • • • • • • • •"
+  - "&&2Player <player> started stream"
+  - "&&2• • • • • • • • •"
+  - "&&1Url(s): <links>"
+
 flectonechat.usage: "&&1⚑ Usage: &&2/flectonechat reload/config/locale"
 flectonechat.not_exist: "#ff4e4e⁉ Enter the correct line name"
 flectonechat.message: "&&1★ Plugin successfully reloaded!"

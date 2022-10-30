@@ -69,6 +69,16 @@ public class FPlayer {
         this.player.setPlayerListName(getName());
     }
 
+    public void addToName(String string) {
+        this.name = string + this.name;
+        this.player.setPlayerListName(getName());
+    }
+
+    public void removeFromName(String string){
+        this.name = this.name.replaceFirst(string, "");
+        this.player.setPlayerListName(getName());
+    }
+
     public String getName() {
 
         if(Bukkit.getPluginManager().getPlugin("Vault") != null){
@@ -134,5 +144,15 @@ public class FPlayer {
         }
 
         return colors;
+    }
+
+    private boolean streamer = false;
+
+    public boolean isStreamer() {
+        return streamer;
+    }
+
+    public void setStreamer(boolean streamer) {
+        this.streamer = streamer;
     }
 }

@@ -44,6 +44,10 @@ commands:
     aliases: [ fc ]
     permission: flectonechat.reload
 
+  stream:
+    usage: /stream start/end
+    permission: flectonechat.stream
+
 permissions:
   flectonechat.reload:
     default: op
@@ -63,3 +67,5 @@ permissions:
     default: true
   flectonechat.chatcolor:
     default: true
+  flectonechat.stream:
+    default: false

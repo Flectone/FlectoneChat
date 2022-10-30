@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import ru.flectone.FPlayer;
 import ru.flectone.Main;
 
 import java.util.regex.Matcher;
@@ -69,5 +70,22 @@ public class Utils {
             matcher = pattern.matcher(string);
         }
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public static String translateColor(String string, Player player){
+
+        if(player != null){
+            FPlayer fPlayer = PlayerUtils.getPlayer(player);
+
+            string = string
+                    .replace("&&1", fPlayer.getColors().get(0))
+                    .replace("&&2", fPlayer.getColors().get(1));
+        } else {
+            string = string
+                    .replace("&&1", Main.getInstance().config.getString("color.first"))
+                    .replace("&&2", Main.getInstance().config.getString("color.second"));
+        }
+
+        return Utils.translateColor(string);
     }
 }

@@ -81,22 +81,8 @@ public class FileResource extends FileConfiguration {
     }
 
     public String getFormatString(String string, Player player){
-
         string = fileConfiguration.getString(string);
-
-        if(player != null){
-            FPlayer fPlayer = PlayerUtils.getPlayer(player);
-
-            string = string
-                    .replace("&&1", fPlayer.getColors().get(0))
-                    .replace("&&2", fPlayer.getColors().get(1));
-        } else {
-            string = string
-                    .replace("&&1", Main.getInstance().config.getString("color.first"))
-                    .replace("&&2", Main.getInstance().config.getString("color.second"));
-        }
-
-        return Utils.translateColor(string);
+        return Utils.translateColor(string, player);
     }
 
     @Override

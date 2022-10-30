@@ -298,6 +298,57 @@ public class Commands implements CommandExecutor {
                 sendMessage(eventPlayer, "flectonechat.message");
                 break;
             }
+            case "stream":{
+                if(args.length < 1 || !args[0].equalsIgnoreCase("start") && !args[0].equalsIgnoreCase("end")){
+                    sendUsageMessage(eventPlayer, command.getName());
+                    break;
+                }
+
+                if(!feventPlayer.isStreamer() && args[0].equalsIgnoreCase("end")){
+                    sendMessage(eventPlayer, "stream.not");
+                    break;
+                }
+
+                if(feventPlayer.isStreamer() && args[0].equalsIgnoreCase("start")){
+                    sendMessage(eventPlayer, "stream.already");
+                    break;
+                }
+
+                if(args[0].equalsIgnoreCase("end")){
+                    feventPlayer.setStreamer(false);
+                    feventPlayer.removeFromName(config.getFormatString("stream.prefix", eventPlayer));
+                    sendMessage(eventPlayer, "stream.end");
+                    break;
+                }
+
+                if(args.length < 2){
+                    sendMessage(eventPlayer, "stream.need_url");
+                    break;
+                }
+
+                feventPlayer.setStreamer(true);
+                feventPlayer.addToName(config.getFormatString("stream.prefix", eventPlayer));
+
+                for(Player playerOnline : Bukkit.getOnlinePlayers()){
+
+                    ComponentBuilder streamAnnounce = new ComponentBuilder();
+
+                    for(String string : locale.getStringList("stream.start")){
+
+                        string = string
+                                .replace("<links>", createMessageFromArgs(args, 1))
+                                .replace("<player>", eventPlayer.getName());
+
+                        string = Utils.translateColor(string, playerOnline);
+
+                        Utils.buildMessage(string, streamAnnounce,  org.bukkit.ChatColor.getLastColors(string), playerOnline);
+                        streamAnnounce.append("\n");
+                    }
+
+                    playerOnline.spigot().sendMessage(streamAnnounce.create());
+                }
+
+            }
 
         }
         return true;
