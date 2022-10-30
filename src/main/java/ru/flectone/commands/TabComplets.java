@@ -22,13 +22,13 @@ public class TabComplets implements TabCompleter {
         switch(command.getName().replace(" ", "")){
             case "chatcolor":{
                 if(args.length == 1){
-                    wordsList.add("default");
-                    wordsList.add("#1abaf0");
-                    wordsList.add("&b");
+                    isStartsWith(args[0], "default", wordsList);
+                    isStartsWith(args[0], "#1abaf0", wordsList);
+                    isStartsWith(args[0], "&b", wordsList);
                 }
                 if(args.length == 2) {
-                    wordsList.add("##77d7f7");
-                    wordsList.add("&f");
+                    isStartsWith(args[0], "#77d7f7", wordsList);
+                    isStartsWith(args[0], "&f", wordsList);
                 }
                 break;
             }
