@@ -8,6 +8,7 @@ tab.footer.message: "\n &&1FlectoneChat \n"
 
 chat.no_recipients: "#ff4e4e⁉ Nobody heard you"
 chat.click_player_name: "&&1Click to write to him"
+chat.click_url: "&&1Click to open url"
 chat.ping.message: "&&1<prefix><player>&&2"
 
 ignore.usage: "&&1⚑ Usage: &&2/ignore (player)"

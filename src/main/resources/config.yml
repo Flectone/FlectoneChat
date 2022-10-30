@@ -19,6 +19,7 @@ server.online.number: 69
 
 chat.ping.prefix: "@"
 chat.no_recipients.enable: true
+chat.color.url: "&&1"
 
 chat.locale.range: 100
 chat.locale.message: "&&1<player>&&2: "

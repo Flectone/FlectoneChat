@@ -24,6 +24,10 @@ public class Utils {
     public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, Player player){
         //Ping player in message
         String pingPrefix = Main.config.getString("chat.ping.prefix");
+
+        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+
         for(String word : message.split(" ")){
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
             for(Player playerOnline : Bukkit.getOnlinePlayers()){
@@ -35,6 +39,15 @@ public class Utils {
 
                 wordComponent = getNameComponent(pingMessage, playerOnline.getName(), player);
             }
+            
+            Matcher urlMatcher = pattern.matcher(word);
+            if(urlMatcher.find()){
+                wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.config.getFormatString("chat.color.url", player) + word));
+                wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, word.substring(urlMatcher.start(0), urlMatcher.end(0))));
+                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.click_url", player))));
+            }
+
+
             componentBuilder.append(wordComponent, ComponentBuilder.FormatRetention.NONE).append(" ");
         }
     }
