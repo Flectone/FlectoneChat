@@ -280,8 +280,6 @@ public class Commands implements CommandExecutor {
 
                             locale.setFileConfiguration(new FileResource("language/" + config.getString("language") + ".yml"));
 
-                            Main.getInstance().reloadConfig();
-
                             break;
                         case "locale":
                             locale.setObject(args[1], object);
