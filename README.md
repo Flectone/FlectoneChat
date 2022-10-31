@@ -1,7 +1,11 @@
 # FlectoneChat - best minecraft plugin for chat!
 
-Support all colors: Hex `#1abaf0` and Default `&b`
 ![img](https://media.discordapp.net/attachments/861174260432371752/1036321223069679616/features.png)
+
+
+Support all colors: Hex `#1abaf0` and Default `&b`
+
+![img](https://media.discordapp.net/attachments/861174260432371752/1036330932212342834/unknown.png)
 
 
 #### Custom colors for each player
