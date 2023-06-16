@@ -413,7 +413,9 @@ public class Commands implements CommandExecutor {
                     break;
                 }
 
-                Entity entity = getEntityInLineOfSightVectorMath(eventPlayer, 20);
+                int range = config.getInt("mark.range");
+
+                Entity entity = getEntityInLineOfSightVectorMath(eventPlayer, range);
 
                 if(entity != null && !entity.isGlowing()){
                     entity.setGlowing(true);
@@ -430,7 +432,7 @@ public class Commands implements CommandExecutor {
                     break;
                 }
 
-                Location targetBlock = eventPlayer.getTargetBlock(null, 20).getLocation();
+                Location targetBlock = eventPlayer.getTargetBlock(null, range).getLocation();
                 if (!targetBlock.getBlock().getType().equals(Material.AIR)) {
                     spawnMarkEntity(targetBlock, color);
                 }

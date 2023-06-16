@@ -37,6 +37,7 @@ ping.medium.count: 100
 ping.good.color: "#4eff52"
 
 mark.enable: true
+mark.range: 20
 
 try-cube.max_amount: 10
 try-cube.6: "⚅"
