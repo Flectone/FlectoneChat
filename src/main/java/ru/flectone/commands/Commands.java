@@ -463,7 +463,7 @@ public class Commands implements CommandExecutor {
     private void spawnMarkEntity(Location location, String color) {
         location.setX(Math.floor(location.getX()) + 0.5);
 
-        location.setY(Math.floor(location.getY()) + 500);
+        location.setY(Math.floor(location.getY()) + 0.25);
         location.setZ(Math.floor(location.getZ()) + 0.5);
 
 
@@ -479,7 +479,6 @@ public class Commands implements CommandExecutor {
 
         FEntity.addEntityToENT(entity, color);
 
-        location.setY(location.getY() - 500 + 0.25);
         entity.teleport(location);
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
