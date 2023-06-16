@@ -52,6 +52,10 @@ me.message: "&&2✎ <player> <message>"
 ping.myself.message: "&&1🌍 Your ping is <ping>"
 ping.player.message: "&&1🌍 <player> ping is <ping> "
 
+mark.usage: "&&1⚑ Usage: &&2/mark (color)"
+mark.error_color: "#ff4e4e⁉ You entered wrong color"
+mark.enable.false: "#ff4e4e⁉ This command disabled on server"
+
 server.motd.message: "&&1This server uses FlectoneChat ❤"
 
 chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"

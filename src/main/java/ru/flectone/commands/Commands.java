@@ -2,14 +2,21 @@ package ru.flectone.commands;
 
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BlockIterator;
+import org.bukkit.util.RayTraceResult;
+import org.bukkit.util.Vector;
+import ru.flectone.FEntity;
 import ru.flectone.FPlayer;
 import ru.flectone.Main;
 import ru.flectone.utils.FileResource;
@@ -17,6 +24,7 @@ import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -385,12 +393,100 @@ public class Commands implements CommandExecutor {
                 String[] replaceTos = {player.getName(), pingColor};
 
                 sendMessage(eventPlayer, "ping.player.message", replaceStrings, replaceTos);
+                break;
+            }
+            case "mark": {
+                if(!config.getBoolean("mark.enable")) {
+                    sendMessage(eventPlayer, "mark.enable.false");
+                    break;
+                }
+
+                String color;
+
+                if(args.length == 0){
+                    color = "WHITE";
+                } else color = args[0].toUpperCase();
+
+
+                if(!Arrays.asList(TabComplets.chatColorValues).contains(color)){
+                    sendMessage(eventPlayer, "mark.error_color");
+                    break;
+                }
+
+                Entity entity = getEntityInLineOfSightVectorMath(eventPlayer, 20);
+
+                if(entity != null && !entity.isGlowing()){
+                    entity.setGlowing(true);
+
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+
+
+                        entity.setGlowing(false);
+                        FEntity.leaveEntityTeam(entity, color);
+                    }, 40);
+
+                    FEntity.addEntityToENT(entity, color);
+
+                    break;
+                }
+
+                Location targetBlock = eventPlayer.getTargetBlock(null, 20).getLocation();
+                if (!targetBlock.getBlock().getType().equals(Material.AIR)) {
+                    spawnMarkEntity(targetBlock, color);
+                }
 
                 break;
             }
 
         }
         return true;
+    }
+
+    public Entity getEntityInLineOfSightVectorMath(Player player, int range) {
+
+
+        RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getLocation().getDirection(), range, entity -> {
+            boolean isCorrect = player.hasLineOfSight(entity);
+
+            if(entity instanceof Player){
+                isCorrect = !player.equals(entity);
+            }
+
+            return isCorrect;
+        });
+        if(rayTraceResult == null) return null;
+
+        return rayTraceResult.getHitEntity();
+    }
+
+
+    private void spawnMarkEntity(Location location, String color) {
+        location.setX(Math.floor(location.getX()) + 0.5);
+
+        location.setY(Math.floor(location.getY()) + 500);
+        location.setZ(Math.floor(location.getZ()) + 0.5);
+
+
+        ShulkerBullet entity = (ShulkerBullet) location.getWorld().spawnEntity(location, EntityType.SHULKER_BULLET);
+
+        entity.setGravity(false);
+        entity.setSilent(true);
+        entity.setInvulnerable(true);
+
+        entity.setGlowing(true);
+
+        entity.setVisualFire(false);
+
+        FEntity.addEntityToENT(entity, color);
+
+        location.setY(location.getY() - 500 + 0.25);
+        entity.teleport(location);
+
+        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            entity.remove();
+            FEntity.leaveEntityTeam(entity, color);
+        }, 40);
+
     }
 
     //create message from args and add color for word

@@ -51,7 +51,9 @@ commands:
   ping:
     usage: /ping <player>
     aliases: [ p ]
-
+  mark:
+    usage: /mark
+    aliases: [ f, m ]
 permissions:
   flectonechat.reload:
     default: op

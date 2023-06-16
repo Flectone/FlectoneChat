@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,10 +15,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import ru.flectone.commands.TabComplets;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class FActions implements Listener {
@@ -29,6 +33,9 @@ public class FActions implements Listener {
     @EventHandler
     public void joinPlayer(PlayerJoinEvent event){
         Player player = event.getPlayer();
+
+        removeBugEntities(player);
+
         new FPlayer(player);
 
         event.setJoinMessage(null);
@@ -39,10 +46,21 @@ public class FActions implements Listener {
     public void leftPlayer(PlayerQuitEvent event){
         Player player = event.getPlayer();
 
+        removeBugEntities(player);
+
         event.setQuitMessage(null);
         setActionMessage("left", player.getName());
 
         PlayerUtils.removePlayer(player);
+    }
+
+    private void removeBugEntities(Player player){
+        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, entity -> entity.isGlowing()).forEach(entity -> {
+
+            if(entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
+
+            entity.setGlowing(false);
+        });
     }
 
     private void setActionMessage(String eventType, String playerName){
@@ -195,6 +213,34 @@ public class FActions implements Listener {
     @EventHandler
     public void changeWorldEvent(PlayerChangedWorldEvent event){
         PlayerUtils.getPlayer(event.getPlayer()).setName(event.getPlayer().getWorld());
+    }
+
+    @EventHandler
+    public void playerItemClick(PlayerInteractEvent event){
+        if(!config.getBoolean("mark.enable")) return;
+
+        if(event.getItem() == null) return;
+
+        if(event.getItem().getType().equals(Material.BLAZE_ROD)){
+            String itemName = event.getItem().getItemMeta().getDisplayName();
+            if(!itemName.isEmpty() && event.getItem().getItemMeta().getDisplayName().equals("flectone")){
+                Bukkit.dispatchCommand(event.getPlayer(), "mark " + TabComplets.chatColorValues[((int) (Math.random()*TabComplets.chatColorValues.length))]);
+                return;
+            }
+        }
+
+        if(!event.getItem().getType().equals(Material.STICK)) return;
+
+        String itemName = event.getItem().getItemMeta().getDisplayName().toUpperCase();
+
+        String command = "mark";
+
+        if(!itemName.isEmpty() && Arrays.asList(TabComplets.chatColorValues).contains(itemName)){
+            command += " " + itemName;
+        }
+
+        Bukkit.dispatchCommand(event.getPlayer(), command);
+
     }
 
 }

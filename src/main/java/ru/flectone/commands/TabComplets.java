@@ -1,6 +1,7 @@
 package ru.flectone.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 public class TabComplets implements TabCompleter {
+
+    public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
@@ -63,6 +67,19 @@ public class TabComplets implements TabCompleter {
                 for(int x = 1; x <= Main.getInstance().getConfig().getInt("try-cube.max_amount"); x++){
                     isStartsWith(args[0], String.valueOf(x), wordsList);
                 }
+                break;
+            }
+
+            case "mark":{
+
+                if(args.length == 1){
+
+                    for(String color : chatColorValues){
+
+                        isStartsWith(args[0], color, wordsList);
+                    }
+                }
+
                 break;
             }
 
