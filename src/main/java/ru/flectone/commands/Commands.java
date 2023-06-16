@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -74,17 +75,16 @@ public class Commands implements CommandExecutor {
                     break;
                 }
 
-                OfflinePlayer secondPlayer = Bukkit.getOfflinePlayer(args[0]);
-                if(!secondPlayer.isOnline()){
+                Player secondPlayer = Bukkit.getPlayer(args[0]);
+                if(secondPlayer == null){
                     sendMessage(eventPlayer, "msg.no_player");
                     break;
                 }
 
-
                 String message = argsToString(args, 0);
 
                 if(eventPlayer.getName().equalsIgnoreCase(args[0])){
-                    sendMessage(eventPlayer, "msg.myself");
+                    eventPlayer.sendMessage(locale.getFormatString("msg.myself", eventPlayer) + message);
                     break;
                 }
 
@@ -172,7 +172,7 @@ public class Commands implements CommandExecutor {
                     break;
                 }
 
-                sendGlobalMessage(eventPlayer, locale.getFormatString("try-cube.success_" + (values >= Integer.parseInt(args[0])*3), eventPlayer)
+                sendGlobalMessage(eventPlayer, locale.getFormatString("try-cube.success_" + (values >= Integer.parseInt(args[0])*3.5), eventPlayer)
                         .replace("<cube>", stringBuilder.toString())
                         .replace("<player>", eventPlayer.getName()));
 
@@ -350,6 +350,44 @@ public class Commands implements CommandExecutor {
                 }
                 break;
             }
+            case "ping":{
+
+                Player player = eventPlayer;
+
+                if(args.length > 0){
+                    player = Bukkit.getPlayer(args[0]);
+                }
+
+                if(player == null){
+                    sendMessage(eventPlayer, "reply.no_online");
+                    break;
+                }
+
+                int currentPing = player.getPing();
+                int badPing = config.getInt("ping.bad.count");
+                int mediumPing = config.getInt("ping.medium.count");
+                String pingColor = "";
+
+
+                if(currentPing > badPing) pingColor = config.getFormatString("ping.bad.color", eventPlayer);
+                else if (currentPing > mediumPing) pingColor = config.getFormatString("ping.medium.color", eventPlayer);
+                else pingColor = config.getFormatString("ping.good.color", eventPlayer);
+
+                pingColor += currentPing;
+
+                if(args.length == 0 || eventPlayer == player){
+
+                    sendMessage(eventPlayer, "ping.myself.message", "<ping>", pingColor);
+                    break;
+                }
+
+                String[] replaceStrings = {"<player>", "<ping>"};
+                String[] replaceTos = {player.getName(), pingColor};
+
+                sendMessage(eventPlayer, "ping.player.message", replaceStrings, replaceTos);
+
+                break;
+            }
 
         }
         return true;
@@ -412,6 +450,16 @@ public class Commands implements CommandExecutor {
 
     private void sendMessage(Player player, String localeString, String replaceString, String replaceTo){
         player.sendMessage(locale.getFormatString(localeString, player).replace(replaceString, replaceTo));
+    }
+
+    private void sendMessage(Player player, String localeString, String[] replaceStrings, String[] replaceTos){
+        String formatString = locale.getFormatString(localeString, player);
+
+        for(int x = 0; x < replaceStrings.length; x++){
+            formatString = formatString.replace(replaceStrings[x], replaceTos[x]);
+        }
+
+        player.sendMessage(formatString);
     }
 
     private void sendUsageMessage(Player player, String command){

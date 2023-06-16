@@ -46,6 +46,15 @@ public class TabComplets implements TabCompleter {
                 break;
             }
 
+            case "ping": {
+                if(args.length == 1){
+                    for(Player player : Bukkit.getOnlinePlayers()){
+                        isStartsWith(args[0], player.getName(), wordsList);
+                    }
+                }
+                break;
+            }
+
             case "reply":
             case "me":
             case "try": isStartsWith(args[0], "(message)", wordsList); break;

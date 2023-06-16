@@ -55,6 +55,7 @@ public final class Main extends JavaPlugin {
         setExecutor("chatcolor");
         setExecutor("flectonechat");
         setExecutor("stream");
+        setExecutor("ping");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);

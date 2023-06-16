@@ -48,6 +48,10 @@ commands:
     usage: /stream start/end
     permission: flectonechat.stream
 
+  ping:
+    usage: /ping <player>
+    aliases: [ p ]
+
 permissions:
   flectonechat.reload:
     default: op
@@ -68,4 +72,4 @@ permissions:
   flectonechat.chatcolor:
     default: true
   flectonechat.stream:
-    default: false
+    default: op

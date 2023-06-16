@@ -33,6 +33,7 @@ msg.myself: "&&1✉ &&2"
 
 reply.no_answer: "#ff4e4e⁉ Некому отвечать"
 reply.no_online: "#ff4e4e⁉ Этот игрок не на сервере"
+reply.usage: "&&1⚑ Использование: &&2/reply (сообщение)"
 
 try-cube.usage: "&&1⚑ Использование: &&2/try-cube (число)"
 try-cube.success_true: "#4eff52☺ <player> успешно кинул кубики <cube>"
@@ -47,6 +48,9 @@ try.success_false: "#ff4e4e☹ <player> <message><percent>%"
 
 me.usage: "&&1⚑ Использование: &&2/me (сообщение)"
 me.message: "&&2✎ <player> <message>"
+
+ping.myself.message: "&&1🌍 Твой пинг - "
+ping.player.message: "&&1🌍 Пинг <player> - "
 
 server.motd.message: "&&1Этот сервер использует FlectoneChat ❤"
 

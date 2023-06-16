@@ -33,6 +33,7 @@ msg.myself: "&&1✉ &&2"
 
 reply.no_answer: "#ff4e4e⁉ No one to answer"
 reply.no_online: "#ff4e4e⁉ This player is not online"
+reply.usage: "&&1⚑ Usage: &&2/reply (message)"
 
 try-cube.usage: "&&1⚑ Usage: &&2/try-cube (number)"
 try-cube.success_true: "#4eff52☺ <player> successfully rolled <cube>"
@@ -47,6 +48,9 @@ try.success_false: "#ff4e4e☹ <player> <message><percent>%"
 
 me.usage: "&&1⚑ Usage: &&2/me (message)"
 me.message: "&&2✎ <player> <message>"
+
+ping.myself.message: "&&1🌍 Your ping is <ping>"
+ping.player.message: "&&1🌍 <player> ping is <ping> "
 
 server.motd.message: "&&1This server uses FlectoneChat ❤"
 
