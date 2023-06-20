@@ -1,13 +1,10 @@
 package ru.flectone;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -15,13 +12,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.Vector;
 import ru.flectone.commands.TabComplets;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class FActions implements Listener {
@@ -221,15 +218,25 @@ public class FActions implements Listener {
 
         if(event.getItem() == null) return;
 
-        if(event.getItem().getType().equals(Material.BLAZE_ROD)){
+        if(event.getItem().getType().equals(Material.NETHER_STAR)){
             String itemName = event.getItem().getItemMeta().getDisplayName();
-            if(!itemName.isEmpty() && event.getItem().getItemMeta().getDisplayName().equals("flectone")){
+            if(!itemName.isEmpty() && itemName.toLowerCase().equals("flectone")){
                 Bukkit.dispatchCommand(event.getPlayer(), "mark " + TabComplets.chatColorValues[((int) (Math.random()*TabComplets.chatColorValues.length))]);
                 return;
             }
         }
 
-        if(!event.getItem().getType().equals(Material.STICK)) return;
+        Material markItem;
+
+        try {
+            markItem = Material.valueOf(Main.config.getString("mark.item").toUpperCase());
+
+        } catch (IllegalArgumentException | NullPointerException exception ){
+            Main.getInstance().getLogger().warning("Item for mark was not found");
+            markItem = Material.WOODEN_SWORD;
+        }
+
+        if(!event.getItem().getType().equals(markItem)) return;
 
         String itemName = event.getItem().getItemMeta().getDisplayName().toUpperCase();
 
@@ -243,4 +250,25 @@ public class FActions implements Listener {
 
     }
 
+    @EventHandler
+    public void checkCustomEntitySpawn(EntitySpawnEvent event){
+        if(!(event.getEntity() instanceof MagmaCube)) return;
+
+        Location location = event.getEntity().getLocation();
+
+        if(location.getDirection().equals(new Vector(0, 1, 0))){
+
+            MagmaCube entity = (MagmaCube) event.getEntity();
+
+            entity.setGravity(false);
+            entity.setSilent(true);
+            entity.setInvulnerable(true);
+            entity.setGlowing(true);
+            entity.setVisualFire(false);
+            entity.setAI(false);
+            entity.setSize(1);
+            entity.setInvisible(true);
+            entity.setGlowing(true);
+        }
+    }
 }

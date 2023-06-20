@@ -1,19 +1,17 @@
 package ru.flectone.utils;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import ru.flectone.FPlayer;
 import ru.flectone.Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class FileResource extends FileConfiguration {
 
@@ -29,6 +27,22 @@ public class FileResource extends FileConfiguration {
         } else checkExists(path);
 
         this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
+
+        InputStreamReader defConfigStream = new InputStreamReader(Main.getInstance().getResource(path), StandardCharsets.UTF_8);
+
+        YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+
+        for (String string : internalLangConfig.getKeys(true)) {
+            if (!fileConfiguration.contains(string)) {
+                fileConfiguration.set(string, internalLangConfig.get(string));
+            }
+        }
+        try {
+            fileConfiguration.save(file);
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
     }
 
     private void checkExists(String path){

@@ -1,7 +1,7 @@
 #First color &&1
 #Second color &&2
-join.message: "&&1<player> join"
-left.message: "&&1<player> left"
+join.message: "&&1<player> join the server"
+left.message: "&&1<player> left the server"
 
 tab.header.message: "\n &&1❤ \n"
 tab.footer.message: "\n &&1FlectoneChat \n"

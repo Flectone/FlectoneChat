@@ -1,12 +1,10 @@
 package ru.flectone.utils;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import ru.flectone.FPlayer;
 import ru.flectone.Main;
 
@@ -23,16 +21,23 @@ public class Utils {
     }
 
     public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, Player player){
-        //Ping player in message
-        String pingPrefix = Main.config.getString("chat.ping.prefix");
+        buildMessage(message, componentBuilder, chatColor, player, null);
+    }
 
+    public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, Player player, ItemStack itemStack) {
+        // Ping player in message
+        String pingPrefix = Main.config.getString("chat.ping.prefix");
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
 
-        for(String word : message.split(" ")){
+        for(String word : message.split(" ")) {
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
+
             for(Player playerOnline : Bukkit.getOnlinePlayers()){
-                if(!word.equalsIgnoreCase(pingPrefix + playerOnline.getName())) continue;
+                if (!word.equalsIgnoreCase(pingPrefix + playerOnline.getName())) {
+                    continue;
+                }
 
                 String pingMessage = Main.locale.getFormatString("chat.ping.message", player)
                         .replace("<player>", playerOnline.getName())
@@ -40,52 +45,78 @@ public class Utils {
 
                 wordComponent = getNameComponent(pingMessage, playerOnline.getName(), player);
             }
-            
+
             Matcher urlMatcher = pattern.matcher(word);
-            if(urlMatcher.find()){
+            if (urlMatcher.find()) {
                 wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.config.getFormatString("chat.color.url", player) + word));
                 wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, word.substring(urlMatcher.start(0), urlMatcher.end(0))));
                 wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.click_url", player))));
             }
 
+            if (itemStack != null && word.contains("%item%")) {
+                String[] words;
+                TranslatableComponent item = null;
+
+                words = word.split("%item%");
+                if (words.length < 2) {
+                    words = new String[]{words.length > 0 ? words[0] : "", ""};
+                }
+
+                String[] formattedItemArray = ReflectionUtil.getFormattedStringItem(itemStack);
+                item = new TranslatableComponent(formattedItemArray[0]);
+                item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
+
+                String[] componentsStrings = Main.config.getFormatString("chat.color.tooltip", player).split("<tooltip>");
+
+                componentBuilder
+                        .append(colorComponent)
+                        .append(words[0])
+                        .append(TextComponent.fromLegacyText(componentsStrings[0]))
+                        .append(item)
+                        .append(TextComponent.fromLegacyText(componentsStrings[1]))
+                        .append(colorComponent)
+                        .append(words[1])
+                        .append(" ");
+
+                continue;
+            }
 
             componentBuilder.append(wordComponent, ComponentBuilder.FormatRetention.NONE).append(" ");
         }
     }
 
-    public static String translateColor(String string){
+
+    public static String translateColor(String string) {
         Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
         Matcher matcher = pattern.matcher(string);
+        StringBuffer sb = new StringBuffer();
 
         while (matcher.find()) {
-            String hexCode = string.substring(matcher.start(), matcher.end());
+            String hexCode = matcher.group();
             String replaceSharp = hexCode.replace('#', 'x');
 
-            char[] ch = replaceSharp.toCharArray();
             StringBuilder builder = new StringBuilder();
-            for (char c : ch) {
-                builder.append("&" + c);
+            for (char c : replaceSharp.toCharArray()) {
+                builder.append("&").append(c);
             }
-            string = string.replace(hexCode, builder.toString());
-            matcher = pattern.matcher(string);
+            matcher.appendReplacement(sb, builder.toString());
         }
-        return ChatColor.translateAlternateColorCodes('&', string);
+        matcher.appendTail(sb);
+
+        return ChatColor.translateAlternateColorCodes('&', sb.toString());
     }
 
     public static String translateColor(String string, Player player){
 
-        if(player != null){
+        if (player != null) {
             FPlayer fPlayer = PlayerUtils.getPlayer(player);
-
-            string = string
+            return Utils.translateColor(string
                     .replace("&&1", fPlayer.getColors().get(0))
-                    .replace("&&2", fPlayer.getColors().get(1));
+                    .replace("&&2", fPlayer.getColors().get(1)));
         } else {
-            string = string
+            return Utils.translateColor(string
                     .replace("&&1", Main.getInstance().config.getString("color.first"))
-                    .replace("&&2", Main.getInstance().config.getString("color.second"));
+                    .replace("&&2", Main.getInstance().config.getString("color.second")));
         }
-
-        return Utils.translateColor(string);
     }
 }

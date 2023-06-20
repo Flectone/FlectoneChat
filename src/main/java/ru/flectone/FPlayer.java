@@ -36,7 +36,6 @@ public class FPlayer {
         }
     }
 
-
     private Player lastWritePlayer;
 
     public void setLastWritePlayer(Player lastWritePlayer) {

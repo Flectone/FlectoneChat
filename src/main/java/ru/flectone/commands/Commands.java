@@ -1,19 +1,15 @@
 package ru.flectone.commands;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandException;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.BlockIterator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import ru.flectone.FEntity;
@@ -462,30 +458,21 @@ public class Commands implements CommandExecutor {
     }
 
 
+
     private void spawnMarkEntity(Location location, String color) {
         location.setX(Math.floor(location.getX()) + 0.5);
 
         location.setY(Math.floor(location.getY()) + 0.25);
         location.setZ(Math.floor(location.getZ()) + 0.5);
+        location.setDirection(new Vector(0, 1, 0));
 
+        MagmaCube markBlockEntity = (MagmaCube) location.getWorld().spawnEntity(location, EntityType.MAGMA_CUBE);
 
-        ShulkerBullet entity = (ShulkerBullet) location.getWorld().spawnEntity(location, EntityType.SHULKER_BULLET);
-
-        entity.setGravity(false);
-        entity.setSilent(true);
-        entity.setInvulnerable(true);
-
-        entity.setGlowing(true);
-
-        entity.setVisualFire(false);
-
-        FEntity.addEntityToENT(entity, color);
-
-        entity.teleport(location);
+        FEntity.addEntityToENT(markBlockEntity, color);
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-            entity.remove();
-            FEntity.leaveEntityTeam(entity, color);
+            markBlockEntity.remove();
+            FEntity.leaveEntityTeam(markBlockEntity, color);
         }, 40);
 
     }
@@ -510,6 +497,21 @@ public class Commands implements CommandExecutor {
     }
 
     private void usingTellUtils(Player firstPlayer, Player secondPlayer, String typeMessage, String message){
+
+        ItemStack itemStack = null;
+
+        if(message.contains("%item%")){
+            switch (typeMessage){
+                case "send":
+                    itemStack = firstPlayer.getItemInHand();
+                    break;
+                case "get":
+                    itemStack = secondPlayer.getItemInHand();
+                    break;
+            }
+        }
+
+
         ComponentBuilder getBuilder = new ComponentBuilder();
 
         String[] getFormatString = locale.getFormatString("msg.success_" + typeMessage, firstPlayer).split("<player>");
@@ -517,18 +519,34 @@ public class Commands implements CommandExecutor {
         //Add getter name for builder
         getBuilder.append(Utils.getNameComponent(secondPlayer.getName(), secondPlayer.getName(), firstPlayer));
         getBuilder.append(TextComponent.fromLegacyText(org.bukkit.ChatColor.getLastColors(getFormatString[1]) + getFormatString[1]), ComponentBuilder.FormatRetention.NONE);
-        Utils.buildMessage(message, getBuilder, org.bukkit.ChatColor.getLastColors(getFormatString[1]), firstPlayer);
+        Utils.buildMessage(message, getBuilder, org.bukkit.ChatColor.getLastColors(getFormatString[1]), firstPlayer, itemStack);
 
         firstPlayer.spigot().sendMessage(getBuilder.create());
         PlayerUtils.getPlayer(firstPlayer.getUniqueId()).setLastWritePlayer(secondPlayer.getPlayer());
     }
 
     private void sendGlobalMessage(Player player, String message){
-        TextComponent textComponent = Utils.getNameComponent(message, player.getName(), player);
+
+        ComponentBuilder componentBuilder = new ComponentBuilder();
+
+        ItemStack itemStack = message.contains("%item%") ? player.getItemInHand() : null;
+
+        Utils.buildMessage(message, componentBuilder, ChatColor.getLastColors(message), player, itemStack);
+        List<BaseComponent> list = componentBuilder.getParts();
+
+        ComponentBuilder finalBuilder = new ComponentBuilder();
+
+        list.forEach(baseComponent -> {
+            if(baseComponent.getHoverEvent() == null)
+                baseComponent = Utils.getNameComponent(baseComponent.toLegacyText(), player.getName(), player);
+
+            finalBuilder.append(baseComponent);
+        });
+
 
         for(Player recipient : Bukkit.getOnlinePlayers()){
             if(PlayerUtils.getPlayer(recipient.getUniqueId()).getIgnoreList().contains(player.getUniqueId().toString())) continue;
-            recipient.spigot().sendMessage(textComponent);
+            recipient.spigot().sendMessage(finalBuilder.create());
         }
     }
 
