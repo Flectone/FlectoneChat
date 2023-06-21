@@ -56,6 +56,17 @@ mark.usage: "&&1⚑ Использование: &&2/mark (цвет)"
 mark.error_color: "#ff4e4e⁉ Ты указал неправильный цвет"
 mark.enable.false: "#ff4e4e⁉ Данная команда отключена на сервере"
 
+online.format.day: "д"
+online.format.hour: "ч"
+online.format.minute: "м"
+online.format.second: "с"
+online.no_player: "#ff4e4e⁉ Этот игрок никогда не играл на сервере"
+firstonline.usage: "&&1⚑ Использование: &&2/firstonline (игрок)"
+firstonline.message: "&&1⌛ <player> впервые зашёл на сервер <time> назад"
+lastonline.usage: "&&1⚑ Использование: &&2/lastonline (игрок)"
+lastonline.message: "&&1⌛ <player> последний раз был на сервере <time> назад"
+lastonline.message_now: "&&1⌛ <player> сейчас на сервере"
+
 server.motd.message: "&&1Этот сервер использует FlectoneChat ❤"
 
 chatcolor.usage: "&&1⚑ Использование: &&2/try (первый цвет) (второй цвет)"

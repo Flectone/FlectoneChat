@@ -436,8 +436,64 @@ public class Commands implements CommandExecutor {
                 break;
             }
 
+            case "firstonline":
+            case "lastonline":{
+
+                if(args.length == 0){
+                    sendUsageMessage(eventPlayer, command.getName());
+                    break;
+                }
+
+                if(command.getName().equalsIgnoreCase("lastonline")){
+                    Player player = Bukkit.getPlayer(args[0]);
+
+                    if(player != null){
+                        sendMessage(eventPlayer, "lastonline.message_now", "<player>", player.getName());
+                        break;
+                    }
+                }
+
+                boolean isRealPlayer = Arrays.stream(Bukkit.getOfflinePlayers())
+                        .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(args[0]));
+
+                if(!isRealPlayer){
+                    sendMessage(eventPlayer, "online.no_player");
+                    break;
+                }
+
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+
+                long playedTime;
+                if(command.getName().equalsIgnoreCase("lastonline")) playedTime = offlinePlayer.getLastPlayed();
+                else playedTime = offlinePlayer.getFirstPlayed();
+
+                String[] replacedStrings = {"<player>", "<time>"};
+                String[] replacedToStrings = {offlinePlayer.getName(), convertTimeToString(playedTime)};
+
+                sendMessage(eventPlayer, command.getName() + ".message", replacedStrings, replacedToStrings);
+
+                break;
+            }
+
         }
         return true;
+    }
+
+    private String convertTimeToString(long time){
+        String timeoutSecondsString = String.valueOf((time - System.currentTimeMillis()) / 1000).substring(1);
+        int timeoutSeconds = Integer.parseInt(timeoutSecondsString);
+
+        int days = (int) (timeoutSeconds / 86400);
+        int hours = (int) (timeoutSeconds / 3600) % 24;
+        int minutes = (int) (timeoutSeconds / 60) % 60;
+        int seconds = timeoutSeconds % 60;
+
+        String finalString = (days > 0 ? " " + days + locale.getString("online.format.day") : "")
+                + (hours > 0 ? " " + hours + locale.getString("online.format.hour") : "")
+                + (minutes > 0 ? " " + minutes + locale.getString("online.format.minute") : "")
+                + (seconds > 0 ? " " + seconds + locale.getString("online.format.second") : "");
+
+        return finalString.substring(1);
     }
 
     public Entity getEntityInLineOfSightVectorMath(Player player, int range) {

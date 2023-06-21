@@ -57,6 +57,8 @@ public final class Main extends JavaPlugin {
         setExecutor("stream");
         setExecutor("ping");
         setExecutor("mark");
+        setExecutor("lastonline");
+        setExecutor("firstonline");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);

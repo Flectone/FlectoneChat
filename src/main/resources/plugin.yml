@@ -54,6 +54,13 @@ commands:
   mark:
     usage: /mark
     aliases: [ f, m ]
+  firstonline:
+    usage: /firstonline <player>
+    aliases: [ fonline ]
+  lastonline:
+    usage: /lastonline <player>
+    aliases: [ lonline ]
+
 permissions:
   flectonechat.reload:
     default: op

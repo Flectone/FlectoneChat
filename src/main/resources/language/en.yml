@@ -56,6 +56,17 @@ mark.usage: "&&1⚑ Usage: &&2/mark (color)"
 mark.error_color: "#ff4e4e⁉ You entered wrong color"
 mark.enable.false: "#ff4e4e⁉ This command disabled on server"
 
+online.format.day: "d"
+online.format.hour: "h"
+online.format.minute: "m"
+online.format.second: "s"
+online.no_player: "#ff4e4e⁉ This player has never played on server"
+firstonline.usage: "&&1⚑ Usage: &&2/firstonline (player)"
+firstonline.message: "&&1⌛ <player> was first on server <time> ago"
+lastonline.usage: "&&1⚑ Usage: &&2/lastonline (player)"
+lastonline.message: "&&1⌛ <player> was last on server <time> ago"
+lastonline.message_now: "&&1⌛ <player> currently on server"
+
 server.motd.message: "&&1This server uses FlectoneChat ❤"
 
 chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"

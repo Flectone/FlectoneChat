@@ -2,6 +2,7 @@ package ru.flectone.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -33,6 +34,16 @@ public class TabComplets implements TabCompleter {
                 if(args.length == 2) {
                     isStartsWith(args[0], "#77d7f7", wordsList);
                     isStartsWith(args[0], "&f", wordsList);
+                }
+                break;
+            }
+
+            case "firstonline":
+            case "lastonline":{
+                if(args.length == 1){
+                    for(OfflinePlayer player : Bukkit.getOfflinePlayers()){
+                        isStartsWith(args[0], player.getName(), wordsList);
+                    }
                 }
                 break;
             }
@@ -113,6 +124,8 @@ public class TabComplets implements TabCompleter {
         Collections.sort(wordsList);
         return wordsList;
     }
+
+
 
     private void isStartsWith(String arg, String string, List<String> wordsList){
         if(string.toLowerCase().startsWith(arg.toLowerCase()) || arg.replace(" ", "").isEmpty()){
