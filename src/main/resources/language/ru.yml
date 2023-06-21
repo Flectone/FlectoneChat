@@ -49,8 +49,8 @@ try.success_false: "#ff4e4e☹ <player> <message><percent>%"
 me.usage: "&&1⚑ Использование: &&2/me (сообщение)"
 me.message: "&&2✎ <player> <message>"
 
-ping.myself.message: "&&1🌍 Твой пинг - "
-ping.player.message: "&&1🌍 Пинг <player> - "
+ping.myself.message: "&&1🌍 Твой пинг - <ping>"
+ping.player.message: "&&1🌍 Пинг <player> - <ping>"
 
 mark.usage: "&&1⚑ Использование: &&2/mark (цвет)"
 mark.error_color: "#ff4e4e⁉ Ты указал неправильный цвет"
