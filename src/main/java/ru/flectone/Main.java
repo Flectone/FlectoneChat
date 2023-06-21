@@ -14,7 +14,6 @@ import ru.flectone.utils.PlayerUtils;
 import java.util.HashMap;
 
 public final class Main extends JavaPlugin {
-
     private static Main instance;
 
     public static FileResource config;
