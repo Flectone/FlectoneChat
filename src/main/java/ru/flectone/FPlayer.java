@@ -62,7 +62,7 @@ public class FPlayer {
 
     public void setName(World world) {
         if(Main.getInstance().getConfig().getBoolean("color.worlds.enable")){
-            this.name = Main.config.getFormatString("color." + world.getName(), player) + player.getName();
+            this.name = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player) + player.getName();
         }
 
         this.player.setPlayerListName(getName());

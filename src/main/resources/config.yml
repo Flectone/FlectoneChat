@@ -9,9 +9,10 @@ tab.header.enable: true
 tab.footer.enable: true
 
 color.worlds.enable: true
-color.world: "#4eff52"
-color.world_nether: "#ff4e4e"
-color.world_the_end: "#834eff"
+color.normal: "#4eff52"
+color.nether: "#ff4e4e"
+color.the_end: "#834eff"
+color.custom: "#1abaf0"
 
 server.motd.enable: true
 server.online.enable: true
