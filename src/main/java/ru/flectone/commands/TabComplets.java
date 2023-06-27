@@ -31,13 +31,14 @@ public class TabComplets implements TabCompleter {
                     isStartsWith(args[0], "#1abaf0", wordsList);
                     isStartsWith(args[0], "&b", wordsList);
                 }
-                if(args.length == 2) {
-                    isStartsWith(args[0], "#77d7f7", wordsList);
-                    isStartsWith(args[0], "&f", wordsList);
+                if(args.length == 2){
+                    isStartsWith(args[1], "#77d7f7", wordsList);
+                    isStartsWith(args[1], "&f", wordsList);
                 }
                 break;
             }
 
+            case "ignore":
             case "firstonline":
             case "lastonline":{
                 if(args.length == 1){
@@ -48,17 +49,10 @@ public class TabComplets implements TabCompleter {
                 break;
             }
 
-            case "msg":
-            case "ignore": {
-                if(args.length == 1){
-                    for(Player player : Bukkit.getOnlinePlayers()){
-                        isStartsWith(args[0], player.getName(), wordsList);
-                    }
-                }
+            case "msg":{
                 if(args.length == 2) {
                     isStartsWith(args[1], "(message)", wordsList);
                 }
-                break;
             }
 
             case "ping": {
@@ -72,9 +66,15 @@ public class TabComplets implements TabCompleter {
 
             case "reply":
             case "me":
-            case "try": isStartsWith(args[0], "(message)", wordsList); break;
+            case "try": {
+
+                if(args.length == 1){
+                    isStartsWith(args[0], "(message)", wordsList);
+                }
+
+                break;
+            }
             case "try-cube":{
-                if(args.length != 1) break;
                 for(int x = 1; x <= Main.getInstance().getConfig().getInt("try-cube.max_amount"); x++){
                     isStartsWith(args[0], String.valueOf(x), wordsList);
                 }
