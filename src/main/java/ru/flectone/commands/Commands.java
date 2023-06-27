@@ -45,17 +45,18 @@ public class Commands implements CommandExecutor {
                     sendUsageMessage(eventPlayer, command.getName());
                     break;
                 }
+
                 if(args[0].equalsIgnoreCase(sender.getName())){
                     sendMessage(eventPlayer, "ignore.myself");
                     break;
                 }
 
-                OfflinePlayer ignoredPlayer = Bukkit.getOfflinePlayer(args[0]);
-
-                if(!ignoredPlayer.hasPlayedBefore() && !Bukkit.getOnlinePlayers().contains(ignoredPlayer)){
+                if(!isRealOfflinePlayer(args[0])){
                     sendMessage(eventPlayer, "ignore.no_player");
                     break;
                 }
+
+                OfflinePlayer ignoredPlayer = Bukkit.getOfflinePlayer(args[0]);
 
                 List<String> ignoreList = feventPlayer.getIgnoreList();
 
@@ -69,7 +70,6 @@ public class Commands implements CommandExecutor {
                     ignoreList.add(ignoredPlayerUUID);
                 }
                 feventPlayer.saveIgnoreList(ignoreList);
-
                 break;
             }
             case "msg":{
@@ -237,7 +237,6 @@ public class Commands implements CommandExecutor {
                     sendUsageMessage(eventPlayer, command.getName());
                     break;
                 }
-
 
                 if(args[0].equalsIgnoreCase("default")){
                     feventPlayer.setColors(config.getString("color.first"), config.getString("color.second"));
@@ -453,10 +452,7 @@ public class Commands implements CommandExecutor {
                     }
                 }
 
-                boolean isRealPlayer = Arrays.stream(Bukkit.getOfflinePlayers())
-                        .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(args[0]));
-
-                if(!isRealPlayer){
+                if(!isRealOfflinePlayer(args[0])){
                     sendMessage(eventPlayer, "online.no_player");
                     break;
                 }
@@ -477,6 +473,11 @@ public class Commands implements CommandExecutor {
 
         }
         return true;
+    }
+
+    private boolean isRealOfflinePlayer(String playerName){
+        return Arrays.stream(Bukkit.getOfflinePlayers())
+                .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(playerName));
     }
 
     private String convertTimeToString(long time){
