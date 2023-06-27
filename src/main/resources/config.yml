@@ -1,8 +1,10 @@
+#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
+#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
 language: en
 
-#This is &&1
+# This is &&1
 color.first: "#1abaf0"
-#This is &&2
+# This is &&2
 color.second: "#77d7f7"
 
 tab.header.enable: true
@@ -23,10 +25,13 @@ chat.no_recipients.enable: true
 chat.color.url: "&&1"
 chat.color.tooltip: "&&2[<tooltip>]"
 
-#only works if you have installed vault.jar
-#https://www.spigotmc.org/resources/vault.34315/
+## █ █ ▄▀▄ █ █ █   ▀█▀   ▄▀▄ █▀▄ █
+## ▀▄▀ █▀█ ▀▄█ █▄▄  █    █▀█ █▀  █
 vault.prefix: "<vault_prefix>"
 vault.suffix: "<vault_suffix>"
+
+#is specified in seconds
+tab.update.rate: 2
 
 chat.locale.range: 100
 chat.locale.message: "&&1<player>&&2: "

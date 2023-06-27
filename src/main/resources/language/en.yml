@@ -1,28 +1,60 @@
-#First color &&1
-#Second color &&2
+#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
+#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+# This file is the english localization of plugin
+# Here you can change any lines
+# FlectoneChat has its own placeholders described like this <example>, you can delete or move them
+
+# Following plugins/api are currently supported (must be installed for them to work)
+#---------------------------------
+## █ █ ▄▀▄ █ █ █   ▀█▀   ▄▀▄ █▀▄ █
+## ▀▄▀ █▀█ ▀▄█ █▄▄  █    █▀█ █▀  █
+## Custom prefixes and suffixes in players
+#-------------------------------------------------------
+## █▀▄ █   ▄▀▄ ▄▀▀ ██▀ █▄█ ▄▀▄ █   █▀▄ ██▀ █▀▄ ▄▀▄ █▀▄ █
+## █▀  █▄▄ █▀█ ▀▄▄ █▄▄ █ █ ▀▄▀ █▄▄ █▄▀ █▄▄ █▀▄ █▀█ █▀  █
+## Any placeholders that PlaceholderAPI supports
+## Example: %server_tps% on this server
+
+# First color &&1
+# Second color &&2
+
+server.motd.message: "&&1This server uses FlectoneChat ❤"
+
 join.message: "&&1<player> join the server"
 left.message: "&&1<player> left the server"
 
 tab.header.message: "\n &&1❤ \n"
 tab.footer.message: "\n &&1FlectoneChat \n"
 
+# Messages for chat
 chat.no_recipients: "#ff4e4e⁉ Nobody heard you"
 chat.click_player_name: "&&1Click to write to him"
 chat.click_url: "&&1Click to open url"
 chat.ping.message: "&&1<prefix><player>&&2"
 
+# /chatcolor
+chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"
+chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
+
+# /ping
+ping.myself.message: "&&1🌍 Your ping is <ping>"
+ping.player.message: "&&1🌍 <player> ping is <ping> "
+
+# /ignore
 ignore.usage: "&&1⚑ Usage: &&2/ignore (player)"
 ignore.myself: "#ff4e4e⁉ You can't ignore yourself"
 ignore.no_player: "#ff4e4e⁉ This player does not exist"
 ignore.success_ignore: "#ff4e4e☹ You ignore <player>"
 ignore.success_unignore: "#4eff52☺ You unignore <player>"
 
+# /ignore-list
 ignore-list.usage: "&&1⚑ Usage: &&2/ignore-list"
 ignore-list.empty: "#ff4e4e⁉ You don't ignore anyone"
 ignore-list.name: "&&1List of ignored players "
 ignore-list.arrow: "&&1Back"
 ignore-list.spectral_arrow: "&&1Forward"
 
+# /msg, /w, /tell, /message, /send
 msg.usage: "&&1⚑ Usage: &&2/msg (player) (message)"
 msg.no_player: "#ff4e4e⁉ This player does not exist"
 msg.success_send: "&&1✉ You → <player> » &&2"
@@ -31,10 +63,21 @@ msg.you_ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
 msg.he_ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
 msg.myself: "&&1✉ &&2"
 
+# /me
+me.usage: "&&1⚑ Usage: &&2/me (message)"
+me.message: "&&2✎ <player> <message>"
+
+# /reply, /r
 reply.no_answer: "#ff4e4e⁉ No one to answer"
 reply.no_online: "#ff4e4e⁉ This player is not online"
 reply.usage: "&&1⚑ Usage: &&2/reply (message)"
 
+# /try
+try.usage: "&&1⚑ Usage: &&2/try (message)"
+try.success_true: "#4eff52☺ <player> <message><percent>%"
+try.success_false: "#ff4e4e☹ <player> <message><percent>%"
+
+# /try-cube
 try-cube.usage: "&&1⚑ Usage: &&2/try-cube (number)"
 try-cube.success_true: "#4eff52☺ <player> successfully rolled <cube>"
 try-cube.success_false: "#ff4e4e☹ <player> failed to roll <cube>"
@@ -42,20 +85,12 @@ try-cube.too_much: "#ff4e4e⁉ Too many cubes"
 try-cube.only_int: "#ff4e4e⁉ You must enter a number"
 try-cube.very_lucky: "#f7c41b★ <player> rolled ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ #f7c41b★"
 
-try.usage: "&&1⚑ Usage: &&2/try (message)"
-try.success_true: "#4eff52☺ <player> <message><percent>%"
-try.success_false: "#ff4e4e☹ <player> <message><percent>%"
-
-me.usage: "&&1⚑ Usage: &&2/me (message)"
-me.message: "&&2✎ <player> <message>"
-
-ping.myself.message: "&&1🌍 Your ping is <ping>"
-ping.player.message: "&&1🌍 <player> ping is <ping> "
-
+# /mark, /m, /f
 mark.usage: "&&1⚑ Usage: &&2/mark (color)"
 mark.error_color: "#ff4e4e⁉ You entered wrong color"
 mark.enable.false: "#ff4e4e⁉ This command disabled on server"
 
+# /firstonline, /fonline, /lastonline, /lonline
 online.format.day: "d"
 online.format.hour: "h"
 online.format.minute: "m"
@@ -67,11 +102,7 @@ lastonline.usage: "&&1⚑ Usage: &&2/lastonline (player)"
 lastonline.message: "&&1⌛ <player> was last on server <time> ago"
 lastonline.message_now: "&&1⌛ <player> currently on server"
 
-server.motd.message: "&&1This server uses FlectoneChat ❤"
-
-chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"
-chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
-
+# /stream
 stream.usage: "&&1⚑ Usage: &&2/stream start/end"
 stream.need_url: "#ff4e4e⁉ You must enter a url(s)"
 stream.not: "#ff4e4e⁉ You don't stream"
@@ -84,6 +115,7 @@ stream.start:
   - "&&2• • • • • • • • •"
   - "&&1Url(s): <links>"
 
+# /flectonechat, /fc
 flectonechat.usage: "&&1⚑ Usage: &&2/flectonechat reload/config/locale"
 flectonechat.not_exist: "#ff4e4e⁉ Enter the correct line name"
 flectonechat.message: "&&1★ Plugin successfully reloaded!"
