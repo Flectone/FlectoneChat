@@ -10,6 +10,7 @@ import ru.flectone.commands.TabComplets;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.Metrics;
 import ru.flectone.utils.PlayerUtils;
+import ru.flectone.utils.Utils;
 
 import java.util.HashMap;
 
@@ -61,6 +62,10 @@ public final class Main extends JavaPlugin {
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            Utils.isHavePAPI = true;
         }
 
         getLogger().info("Enabled");

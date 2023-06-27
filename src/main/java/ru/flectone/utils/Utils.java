@@ -1,5 +1,6 @@
 package ru.flectone.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
@@ -12,6 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
+
+    public static boolean isHavePAPI = false;
 
     public static TextComponent getNameComponent(String text, String playerName, Player player){
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
@@ -107,6 +110,7 @@ public class Utils {
     }
 
     public static String translateColor(String string, Player player){
+        if(Utils.isHavePAPI && string != null) string = PlaceholderAPI.setPlaceholders(player, string);
 
         if (player != null) {
             FPlayer fPlayer = PlayerUtils.getPlayer(player);
