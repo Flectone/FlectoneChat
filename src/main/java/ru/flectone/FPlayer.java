@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
@@ -24,7 +25,13 @@ public class FPlayer {
 
         setName(player.getWorld());
 
-        setPlayerListHeaderFooter();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                setPlayerListHeaderFooter();
+            }
+        }.runTaskTimer(Main.getInstance(), 0L, 20L * Main.config.getInt("tab.update.rate"));
     }
 
     private void setPlayerListHeaderFooter(){
