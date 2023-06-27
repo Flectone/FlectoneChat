@@ -25,6 +25,9 @@ public class FPlayer {
 
         setName(player.getWorld());
 
+        setPlayerListHeaderFooter();
+
+        if(!Main.config.getBoolean("tab.update")) return;
 
         new BukkitRunnable() {
             @Override
