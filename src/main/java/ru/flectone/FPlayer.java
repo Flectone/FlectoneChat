@@ -27,7 +27,7 @@ public class FPlayer {
 
         setPlayerListHeaderFooter();
 
-        if(!Main.config.getBoolean("tab.update")) return;
+        if(!Main.config.getBoolean("tab.update.enable")) return;
 
         new BukkitRunnable() {
             @Override

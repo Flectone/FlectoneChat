@@ -30,7 +30,7 @@ chat.color.tooltip: "&&2[<tooltip>]"
 vault.prefix: "<vault_prefix>"
 vault.suffix: "<vault_suffix>"
 
-tab.update: true
+tab.update.enable: true
 # is specified in seconds
 tab.update.rate: 2
 
