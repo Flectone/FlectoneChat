@@ -81,10 +81,13 @@ public class FPlayer {
     public String getName() {
 
         if(Bukkit.getPluginManager().getPlugin("Vault") != null){
-            String prefix = Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class).getProvider().getPlayerPrefix(player);
-            String suffix = Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class).getProvider().getPlayerSuffix(player);
+            String vaultPrefix = Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class).getProvider().getPlayerPrefix(player);
+            String vaultSuffix = Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class).getProvider().getPlayerSuffix(player);
 
-            return Utils.translateColor(prefix + this.name + suffix);
+            String finalName = Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix");
+            finalName = finalName.replace("<vault_prefix>", vaultPrefix).replace("<vault_suffix>", vaultSuffix);
+
+            return Utils.translateColor(finalName);
         }
         return name;
     }
