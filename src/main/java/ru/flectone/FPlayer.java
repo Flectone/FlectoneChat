@@ -26,18 +26,11 @@ public class FPlayer {
         setName(player.getWorld());
 
         setPlayerListHeaderFooter();
-
-        if(!Main.config.getBoolean("tab.update.enable")) return;
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                setPlayerListHeaderFooter();
-            }
-        }.runTaskTimer(Main.getInstance(), 0L, 20L * Main.config.getInt("tab.update.rate"));
     }
 
-    private void setPlayerListHeaderFooter(){
+    public void setPlayerListHeaderFooter(){
+        if(!player.isOnline()) return;
+
         if(Main.config.getBoolean("tab.header.enable")){
             player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
         }

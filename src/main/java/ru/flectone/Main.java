@@ -68,6 +68,15 @@ public final class Main extends JavaPlugin {
             Utils.isHavePAPI = true;
         }
 
+        if(Main.config.getBoolean("tab.update.enable")) {
+
+            Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> Bukkit.getOnlinePlayers().forEach(player -> {
+                FPlayer fPlayer = PlayerUtils.getPlayer(player);
+                fPlayer.setPlayerListHeaderFooter();
+            }), 0L, 20L * Main.config.getInt("tab.update.rate"));
+
+        }
+
         getLogger().info("Enabled");
 
     }
