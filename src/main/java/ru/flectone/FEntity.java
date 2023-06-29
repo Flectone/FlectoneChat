@@ -2,13 +2,9 @@ package ru.flectone;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
-import ru.flectone.utils.Utils;
 
 import java.util.HashMap;
 
@@ -22,7 +18,6 @@ public class FEntity {
             entityNoCollisionTeamHashMap.put(color, Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color));
 
         Team team = entityNoCollisionTeamHashMap.get(color);
-
 
         if(team == null){
 

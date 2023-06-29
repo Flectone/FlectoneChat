@@ -100,7 +100,4 @@ public class FChat implements Listener {
 
         createMessage(recipients, player, "%item%", "locale", event.getCursor());
     }
-
-
-
 }
