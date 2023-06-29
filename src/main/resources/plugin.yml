@@ -60,6 +60,10 @@ commands:
   lastonline:
     usage: /lastonline <player>
     aliases: [ lonline ]
+  mail:
+    usage: /mail <player> <message>
+  mail-clear:
+    usage: /mail-clear <player> <number>
 
 permissions:
   flectonechat.reload:

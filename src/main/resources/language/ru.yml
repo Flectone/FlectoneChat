@@ -63,6 +63,21 @@ msg.you_ignore: "#ff4e4e⁉ Ты не можешь ему написать, по
 msg.he_ignore: "#ff4e4e⁉ Ты не можешь ему написать, потому что он тебя игнорирует"
 msg.myself: "&&1✉ &&2"
 
+# /mail
+mail.usage: "&&1⚑ Использование: &&2/mail (игрок) (сообщение)"
+mail.no_player: "#ff4e4e⁉ Этот игрок не существует"
+mail.success_send: "&&1✉ [Оффлайн письмо] для <player> ⏩ &&2<message>"
+mail.success_get: "&&1✉ [Оффлайн письмо] от <player> ⏩ &&2<message>"
+mail.you_ignore: "#ff4e4e⁉ Ты не можешь ему написать, потому что ты его игнорируешь"
+mail.he_ignore: "#ff4e4e⁉ Ты не можешь ему написать, потому что он тебя игнорирует"
+
+# /mail-clear
+mail-clear.usage: "&&1⚑ Использование: &&2/mail-clear (игрок) (число)"
+mail-clear.no_player: "#ff4e4e⁉ Этот игрок не существует"
+mail-clear.empty: "#ff4e4e⁉ У тебя нет писем для этого игрока"
+mail-clear.not_number: "#ff4e4e⁉ Введено неправильное число"
+mail-clear.success: "&&1✉ [Оффлайн письмо] создано для <player> ⏩ &&2<message>"
+
 # /me
 me.usage: "&&1⚑ Использование: &&2/me (сообщение)"
 me.message: "&&2✎ <player> <message>"

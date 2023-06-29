@@ -25,6 +25,8 @@ public final class Main extends JavaPlugin {
 
     public static FileResource themes;
 
+    public static FileResource mails;
+
     public static Main getInstance(){
         return instance;
     }
@@ -39,6 +41,8 @@ public final class Main extends JavaPlugin {
         locale = new FileResource("language/" + config.getString("language") + ".yml");
         ignores = new FileResource("ignores.yml");
         themes = new FileResource("themes.yml");
+
+        mails = new FileResource("mails.yml");
 
         PlayerUtils.setOnlinePlayers(new HashMap<>());
 
@@ -59,6 +63,8 @@ public final class Main extends JavaPlugin {
         setExecutor("mark");
         setExecutor("lastonline");
         setExecutor("firstonline");
+        setExecutor("mail");
+        setExecutor("mail-clear");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);

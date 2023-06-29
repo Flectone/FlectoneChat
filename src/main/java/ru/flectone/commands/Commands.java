@@ -3,6 +3,7 @@ package ru.flectone.commands;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,10 +20,7 @@ import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Commands implements CommandExecutor {
 
@@ -70,6 +68,81 @@ public class Commands implements CommandExecutor {
                     ignoreList.add(ignoredPlayerUUID);
                 }
                 feventPlayer.saveIgnoreList(ignoreList);
+                break;
+            }
+            case "mail":{
+                if(args.length < 2){
+                    sendUsageMessage(eventPlayer, command.getName());
+                    break;
+                }
+
+                if(!isRealOfflinePlayer(args[0])){
+                    sendMessage(eventPlayer, "mail.no_player");
+                    break;
+                }
+
+                String message = argsToString(args, 0);
+
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+
+                if(offlinePlayer.isOnline()){
+                    Bukkit.dispatchCommand(eventPlayer, "tell " + args[0] + " " + message);
+                    break;
+                }
+
+                String key = offlinePlayer.getUniqueId() + "." + eventPlayer.getUniqueId();
+
+                List<String> mailsList = Main.mails.getStringList(key);
+                mailsList.add(message);
+
+                Main.mails.set(key, mailsList);
+                Main.mails.saveFile();
+
+                String[] replaceString = {"<player>", "<message>"};
+                String[] replaceTo = {offlinePlayer.getName(), message};
+
+                sendMessage(eventPlayer, "mail.success_send", replaceString, replaceTo);
+                break;
+
+            }
+            case "mail-clear":{
+                if(args.length < 2){
+                    sendUsageMessage(eventPlayer, command.getName());
+                    break;
+                }
+
+                if(!isRealOfflinePlayer(args[0])){
+                    sendMessage(eventPlayer, "mail-clear.no_player");
+                    break;
+                }
+
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[0]);
+
+                String key = offlinePlayer.getUniqueId() + "." + eventPlayer.getUniqueId();
+
+                List<String> mailsList = Main.mails.getStringList(key);
+
+                if(offlinePlayer.isOnline() || mailsList.size() == 0){
+                    sendMessage(eventPlayer, "mail-clear.empty");
+                    break;
+                }
+
+                if(!StringUtils.isNumeric(args[1]) || Integer.parseInt(args[1]) > (mailsList.size() + 1)){
+                    sendMessage(eventPlayer, "mail-clear.not_number");
+                    break;
+                }
+
+                int number = Integer.parseInt(args[1]) - 1;
+
+                String[] replaceString = {"<player>", "<message>"};
+                String[] replaceTo = {offlinePlayer.getName(), mailsList.get(number)};
+
+                mailsList.remove(number);
+                Main.mails.set(key, mailsList);
+                Main.mails.saveFile();
+
+                sendMessage(eventPlayer, "mail-clear.success", replaceString, replaceTo);
+
                 break;
             }
             case "msg":{
@@ -434,7 +507,6 @@ public class Commands implements CommandExecutor {
 
                 break;
             }
-
             case "firstonline":
             case "lastonline":{
 
@@ -470,12 +542,11 @@ public class Commands implements CommandExecutor {
 
                 break;
             }
-
         }
         return true;
     }
 
-    private boolean isRealOfflinePlayer(String playerName){
+    public static boolean isRealOfflinePlayer(String playerName){
         return Arrays.stream(Bukkit.getOfflinePlayers())
                 .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(playerName));
     }

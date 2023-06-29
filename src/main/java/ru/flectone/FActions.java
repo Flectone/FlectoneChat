@@ -17,9 +17,8 @@ import ru.flectone.commands.TabComplets;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FActions implements Listener {
 
@@ -37,6 +36,30 @@ public class FActions implements Listener {
 
         event.setJoinMessage(null);
         setActionMessage("join", player.getName());
+
+
+        Set<String> keysList = Main.mails.getKeys()
+                .stream()
+                .filter(keys -> keys.startsWith(player.getUniqueId() + "."))
+                .map(String::valueOf).collect(Collectors.toSet());
+
+        keysList.forEach(key -> {
+            List<String> mailsList = Main.mails.getStringList(key);
+
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(key.replace(player.getUniqueId() + ".", "")));
+
+            String localeString = Main.locale.getFormatString("mail.success_get", player)
+                    .replace("<player>", offlinePlayer.getName());
+
+            mailsList.forEach(message -> {
+                String newLocaleString = localeString.replace("<message>", message);
+
+                player.sendMessage(newLocaleString);
+            });
+
+            Main.mails.set(key, new ArrayList<>());
+            Main.mails.saveFile();
+        });
     }
 
     @EventHandler

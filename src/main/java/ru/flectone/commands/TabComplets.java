@@ -1,5 +1,6 @@
 package ru.flectone.commands;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -7,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.checkerframework.checker.units.qual.A;
 import ru.flectone.Main;
 
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ public class TabComplets implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+        if(!(sender instanceof Player)) return new ArrayList<>();
 
         //create new list
         List<String> wordsList = new ArrayList<>();
@@ -38,6 +42,32 @@ public class TabComplets implements TabCompleter {
                 break;
             }
 
+            case "mail-clear":{
+
+                if(args.length == 1){
+                    for(OfflinePlayer player : Bukkit.getOfflinePlayers()){
+                        isStartsWith(args[0], player.getName(), wordsList);
+                    }
+                }
+
+                if(args.length == 2 && Commands.isRealOfflinePlayer(args[0])){
+
+                    String key = Bukkit.getOfflinePlayer(args[0]).getUniqueId() + "." + ((Player) sender).getPlayer().getUniqueId();
+
+                    List<String> list = Main.mails.getStringList(key);
+                    for(int x = 0; x < list.size(); x++){
+                        isStartsWith(args[1], String.valueOf(x + 1), wordsList);
+                    }
+                }
+
+                break;
+            }
+
+            case "mail":{
+                if(args.length == 2) {
+                    isStartsWith(args[1], "(message)", wordsList);
+                }
+            }
             case "ignore":
             case "firstonline":
             case "lastonline":{
