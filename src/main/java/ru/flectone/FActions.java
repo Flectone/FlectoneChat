@@ -238,6 +238,7 @@ public class FActions implements Listener {
     @EventHandler
     public void playerItemClick(PlayerInteractEvent event){
         if(!config.getBoolean("mark.enable")) return;
+        if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
 
         if(event.getItem() == null) return;
 

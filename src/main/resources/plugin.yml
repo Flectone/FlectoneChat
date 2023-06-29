@@ -51,19 +51,30 @@ commands:
   ping:
     usage: /ping <player>
     aliases: [ p ]
+    permission: flectonechat.ping
+
   mark:
     usage: /mark
     aliases: [ f, m ]
+    permission: flectonechat.mark
+
   firstonline:
     usage: /firstonline <player>
     aliases: [ fonline ]
+    permission: flectonechat.firstonline
+
   lastonline:
     usage: /lastonline <player>
     aliases: [ lonline ]
+    permission: flectonechat.lastonline
+
   mail:
     usage: /mail <player> <message>
+    permission: flectonechat.mail
+
   mail-clear:
     usage: /mail-clear <player> <number>
+    permission: flectonechat.mail-clear
 
 permissions:
   flectonechat.reload:
@@ -86,3 +97,15 @@ permissions:
     default: true
   flectonechat.stream:
     default: op
+  flectonechat.ping:
+    default: true
+  flectonechat.mark:
+    default: true
+  flectonechat.firstonline:
+    default: true
+  flectonechat.lastonline:
+    default: true
+  flectonechat.mail:
+    default: true
+  flectonechat.mail-clear:
+    default: true
