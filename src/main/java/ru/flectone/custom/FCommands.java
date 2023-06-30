@@ -22,54 +22,63 @@ public class FCommands {
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
 
-    private FileResource locale = Main.locale;
+    private final FileResource locale = Main.locale;
 
-    private String command;
+    private final String command;
 
-    private String[] args;
+    private final String[] args;
 
-    private CommandSender sender;
+    private final CommandSender sender;
 
     private Player player = null;
 
     private String senderName;
 
-    private boolean isConsole;
+    private final boolean isConsole;
 
     private boolean isHaveCD = false;
 
-    private String alias;
+    private final String alias;
 
-    public FCommands(CommandSender sender, String command, String label, String[] args){
-        if(sender instanceof Player) {
-            this.player = ((Player) sender).getPlayer();
+    private final int currentTime = (int) (System.currentTimeMillis() / 1000);
 
-        }
-        isConsole = this.player == null;
-        this.senderName = sender.getName();
-
+    public FCommands(CommandSender sender, String command, String label, String[] args) {
         this.sender = sender;
         this.command = command;
         this.args = args;
         this.alias = label;
 
+        this.player = (sender instanceof Player) ? ((Player) sender).getPlayer() : null;
+        this.isConsole = (this.player == null);
 
         if(isConsole || !Main.config.getBoolean("cooldown.enable") || !Main.config.getBoolean(command + ".cooldown.enable")) return;
 
-        this.isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
-                && !player.isOp()
-                && !player.hasPermission(Main.config.getString(command + ".cooldown.permission"));
-
-        int cdTime = isHaveCD ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time");
-
-        if(isHaveCD){
+        if(hasCooldown()) {
             String[] replaceStrings = {"<alias>", "<time>"};
-            String[] replaceTo = {alias, String.valueOf(cdTime)};
+            String[] replaceTo = {alias, String.valueOf(getCooldownTime() - currentTime)};
             sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
             return;
         }
 
-        commandsCDMap.put(player.getUniqueId() + command, cdTime);
+        if(getCooldownTime() < currentTime) {
+            commandsCDMap.remove(player.getUniqueId() + command);
+            return;
+        }
+
+        commandsCDMap.put(player.getUniqueId() + command, getCooldownTime());
+    }
+
+    private boolean hasCooldown() {
+        isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
+                && commandsCDMap.get(player.getUniqueId() + command) > currentTime
+                && !player.isOp()
+                && !player.hasPermission(Main.config.getString(command + ".cooldown.permission"));
+
+        return isHaveCD;
+    }
+
+    private int getCooldownTime() {
+        return hasCooldown() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + currentTime;
     }
 
     public boolean isHaveCD() {

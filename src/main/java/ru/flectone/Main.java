@@ -81,7 +81,6 @@ public final class Main extends JavaPlugin {
         }
 
         startTabScheduler();
-        startCooldownScheduler();
 
         getLogger().info("Enabled");
 
@@ -104,41 +103,11 @@ public final class Main extends JavaPlugin {
                         FPlayer fPlayer = PlayerUtils.getPlayer(player);
                         fPlayer.setPlayerListHeaderFooter();
                     });
+
                 }
             };
 
             tabTimer.runTaskTimer(Main.getInstance(), 0L, 20L * Main.config.getInt("tab.update.rate"));
-        }
-    }
-
-    private static BukkitRunnable cooldownTimer;
-
-    public void startCooldownScheduler(){
-
-        if(Main.config.getBoolean("cooldown.enable") && (cooldownTimer == null || cooldownTimer.isCancelled())){
-
-            cooldownTimer = new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if(!Main.config.getBoolean("cooldown.enable")){
-                        cancel();
-                    }
-
-                    Iterator<Map.Entry<String, Integer>> iterator = FCommands.commandsCDMap.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<String, Integer> entry = iterator.next();
-                        int time = entry.getValue() - 1;
-                        if (time < 1) {
-                            iterator.remove();
-                        } else {
-                            entry.setValue(time);
-                        }
-                    }
-                }
-            };
-
-            cooldownTimer.runTaskTimer(Main.getInstance(), 0L, 20L);
-
         }
     }
 
