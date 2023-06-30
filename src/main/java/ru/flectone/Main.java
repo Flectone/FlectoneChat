@@ -1,6 +1,7 @@
 package ru.flectone;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -17,8 +18,6 @@ import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public final class Main extends JavaPlugin {
     private static Main instance;
@@ -71,6 +70,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandMail(), "mail");
         setCommandExecutor(new CommandsMailClear(), "mail-clear");
         setCommandExecutor(new CommandFlectonechat(), "flectonechat");
+        setCommandExecutor(new CommandAfk(), "afk");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);
@@ -81,6 +81,7 @@ public final class Main extends JavaPlugin {
         }
 
         startTabScheduler();
+        startPlayerMoveTimer();
 
         getLogger().info("Enabled");
 
@@ -109,6 +110,55 @@ public final class Main extends JavaPlugin {
 
             tabTimer.runTaskTimer(Main.getInstance(), 0L, 20L * Main.config.getInt("tab.update.rate"));
         }
+    }
+
+    private static BukkitRunnable playerMoveTimer;
+
+    public void checkPlayerMoveTimer(){
+        boolean isEnable = Main.config.getBoolean("afk.timeout.enable");
+
+        if(isEnable && (playerMoveTimer.isCancelled() || playerMoveTimer == null)){
+            startPlayerMoveTimer();
+        } else if (!isEnable && playerMoveTimer != null && !playerMoveTimer.isCancelled()){
+            playerMoveTimer.cancel();
+        }
+    }
+
+    public void startPlayerMoveTimer(){
+
+        if(!Main.config.getBoolean("afk.timeout.enable")) return;
+
+        playerMoveTimer = new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                PlayerUtils.onlinePlayers.values().forEach(fPlayer -> {
+                    Block block = fPlayer.getPlayer().getLocation().getBlock();
+
+                    if(!fPlayer.isMoved(block)){
+
+                        if(fPlayer.isAfk()) return;
+
+                        int diffTime = ((int) System.currentTimeMillis()/1000) - fPlayer.getLastTimeMoved();
+
+                        if(diffTime >= Main.config.getInt("afk.timeout.time")){
+                            CommandAfk.sendMessage(fPlayer, true);
+                        }
+
+                        return;
+                    }
+
+                    fPlayer.setLastBlock(block);
+
+                    if(!fPlayer.isAfk()) return;
+
+                    CommandAfk.sendMessage(fPlayer, false);
+                });
+            }
+        };
+
+        playerMoveTimer.runTaskTimer(Main.getInstance(), 0L, 20L);
+
     }
 
     @Override
