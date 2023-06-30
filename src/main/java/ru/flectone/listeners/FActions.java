@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
+import ru.flectone.commands.CommandAfk;
 import ru.flectone.custom.FPlayer;
 import ru.flectone.Main;
 import ru.flectone.commands.TabComplets;
@@ -239,6 +240,11 @@ public class FActions implements Listener {
 
     @EventHandler
     public void playerItemClick(PlayerInteractEvent event){
+
+        if(PlayerUtils.getPlayer(event.getPlayer()).isAfk()){
+            CommandAfk.setAfkFalse(event.getPlayer());
+        } else PlayerUtils.getPlayer(event.getPlayer()).setLastBlock(event.getPlayer().getLocation().getBlock());
+
         if(!config.getBoolean("mark.enable")) return;
         if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
 
@@ -296,5 +302,14 @@ public class FActions implements Listener {
             entity.setInvisible(true);
             entity.setGlowing(true);
         }
+    }
+
+    @EventHandler
+    public void checkPlayerUseCommand(PlayerCommandPreprocessEvent event){
+        FPlayer fPlayer = PlayerUtils.getPlayer(event.getPlayer());
+
+        if(!fPlayer.isAfk() || event.getMessage().startsWith("/afk")) return;
+
+        CommandAfk.setAfkFalse(event.getPlayer());
     }
 }

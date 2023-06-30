@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import ru.flectone.Main;
+import ru.flectone.commands.CommandAfk;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
@@ -44,12 +45,17 @@ public class FCommands {
 
     public FCommands(CommandSender sender, String command, String label, String[] args) {
         this.sender = sender;
+        this.senderName = sender.getName();
         this.command = command;
         this.args = args;
         this.alias = label;
 
         this.player = (sender instanceof Player) ? ((Player) sender).getPlayer() : null;
         this.isConsole = (this.player == null);
+
+        if(!isConsole && getFPlayer().isAfk() && !command.equalsIgnoreCase("afk")){
+            CommandAfk.setAfkFalse(player);
+        }
 
         if(isConsole || !Main.config.getBoolean("cooldown.enable") || !Main.config.getBoolean(command + ".cooldown.enable")) return;
 

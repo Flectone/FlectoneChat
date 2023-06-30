@@ -62,6 +62,7 @@ public class CommandFlectonechat implements CommandExecutor {
 
         Main.getInstance().reloadConfig();
         Main.getInstance().startTabScheduler();
+        Main.getInstance().checkPlayerMoveTimer();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             PlayerUtils.removePlayer(playerOnline);

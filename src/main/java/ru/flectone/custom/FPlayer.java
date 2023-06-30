@@ -3,9 +3,9 @@ package ru.flectone.custom;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
 import ru.flectone.Main;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
@@ -25,6 +25,8 @@ public class FPlayer {
         PlayerUtils.addPlayer(this);
 
         setName(player.getWorld());
+
+        setLastBlock(player.getLocation().getBlock());
 
         setPlayerListHeaderFooter();
     }
@@ -72,13 +74,18 @@ public class FPlayer {
         this.player.setPlayerListName(getName());
     }
 
-    public void addToName(String string) {
+    public void addPrefixToName(String string) {
         this.name = string + this.name;
         this.player.setPlayerListName(getName());
     }
 
     public void removeFromName(String string){
         this.name = this.name.replaceFirst(string, "");
+        this.player.setPlayerListName(getName());
+    }
+
+    public void addSuffixToName(String string){
+        this.name = this.name + string;
         this.player.setPlayerListName(getName());
     }
 
@@ -172,5 +179,35 @@ public class FPlayer {
             return false;
         }
         return ignoreList.contains(secondPlayer.getUniqueId().toString());
+    }
+
+    private boolean isAfk = false;
+
+    public boolean isAfk() {
+        return isAfk;
+    }
+
+    public void setAfk(boolean afk) {
+        isAfk = afk;
+    }
+
+
+    private int lastTimeMoved;
+
+    private Block lastBlock;
+
+    public void setLastBlock(Block lastBlock) {
+        if(!Main.config.getBoolean("afk.timeout.enable")) return;
+
+        this.lastTimeMoved = (int) System.currentTimeMillis()/1000;
+        this.lastBlock = lastBlock;
+    }
+
+    public int getLastTimeMoved() {
+        return lastTimeMoved;
+    }
+
+    public boolean isMoved(Block block){
+        return !this.lastBlock.equals(block);
     }
 }

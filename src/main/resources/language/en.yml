@@ -43,6 +43,10 @@ chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
 ping.myself.message: "&&1🌍 Your ping is <ping>"
 ping.player.message: "&&1🌍 <player> ping is <ping> "
 
+# /afk
+afk.success_true: "#f2d40f💤 Now you're afk"
+afk.success_false: "#f2d40f💤 Now you're not afk"
+
 # /ignore
 ignore.usage: "&&1⚑ Usage: &&2/<command> (player)"
 ignore.myself: "#ff4e4e⁉ You can't ignore yourself"

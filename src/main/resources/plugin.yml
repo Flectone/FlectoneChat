@@ -76,6 +76,10 @@ commands:
     usage: /mail-clear <player> <number>
     permission: flectonechat.mail-clear
 
+  afk:
+    usage: /afk
+    permission: flectonechat.afk
+
 permissions:
   flectonechat.reload:
     default: op
@@ -108,4 +112,6 @@ permissions:
   flectonechat.mail:
     default: true
   flectonechat.mail-clear:
+    default: true
+  flectonechat.afk:
     default: true
