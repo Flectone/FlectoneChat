@@ -50,7 +50,7 @@ public class CommandStream implements CommandExecutor {
             if(fCommand.isHaveCD()) return true;
 
             fCommand.getFPlayer().setStreamer(true);
-            fCommand.getFPlayer().addToName(Main.config.getFormatString("stream.prefix", commandSender));
+            fCommand.getFPlayer().addPrefixToName(Main.config.getFormatString("stream.prefix", commandSender));
         }
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
