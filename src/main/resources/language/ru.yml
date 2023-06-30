@@ -82,7 +82,7 @@ mail-clear.success: "&&1✉ [Оффлайн письмо] создано для 
 
 # /me
 me.usage: "&&1⚑ Использование: &&2/<command> (сообщение)"
-me.message: "#1abaf0✎ <player> <message>"
+me.message: "&&1✎ <player> <message>"
 
 # /reply, /r
 reply.no_answer: "#ff4e4e⁉ Некому отвечать"

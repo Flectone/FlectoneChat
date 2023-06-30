@@ -35,7 +35,7 @@ chat.click_url: "&&1Click to open url"
 chat.ping.message: "&&1<prefix><player>&&2"
 
 # /chatcolor
-chatcolor.usage: "&&1⚑ Usage: &&2/try (first color) (second color)"
+chatcolor.usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
 chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
 
 # /ping
@@ -82,7 +82,7 @@ mail-clear.success: "&&1✉ [Offline mail] cleared for <player> ⏩ &&2<message>
 
 # /me
 me.usage: "&&1⚑ Usage: &&2/<command> (message)"
-me.message: "#1abaf0✎ <player> <message>"
+me.message: "&&1✎ <player> <message>"
 
 # /reply, /r
 reply.no_answer: "#ff4e4e⁉ No one to answer"
