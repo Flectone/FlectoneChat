@@ -34,6 +34,8 @@ public class CommandOnline implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
 
         long playedTime = command.getName().equalsIgnoreCase("lastonline") ? offlinePlayer.getLastPlayed() : offlinePlayer.getFirstPlayed();

@@ -27,6 +27,8 @@ public class CommandMsg implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         String message = ObjectUtils.toString(strings, 1);
 
         if(!fCommand.isConsole()){

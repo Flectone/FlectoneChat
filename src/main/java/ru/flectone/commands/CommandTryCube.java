@@ -30,6 +30,8 @@ public class CommandTryCube implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         StringBuilder stringBuilder = new StringBuilder();
         int values = 0;
 

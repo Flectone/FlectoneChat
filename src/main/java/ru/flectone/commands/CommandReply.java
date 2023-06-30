@@ -39,6 +39,8 @@ public class CommandReply implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         String message = ObjectUtils.toString(strings);
         fCommand.usingTellUtils(commandSender, secondPlayer, "send", message);
         fCommand.usingTellUtils(secondPlayer, commandSender, "get", message);

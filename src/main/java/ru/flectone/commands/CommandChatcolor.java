@@ -20,6 +20,8 @@ public class CommandChatcolor implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         if(strings[0].equalsIgnoreCase("default")){
             strings = getDefaultColors();
         }

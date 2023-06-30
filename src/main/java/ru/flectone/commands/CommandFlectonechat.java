@@ -23,6 +23,8 @@ public class CommandFlectonechat implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         if(!strings[0].equals("reload")){
 
             if(!strings[2].equals("set") || !strings[3].equals("boolean") && !strings[3].equals("integer") && !strings[3].equals("string")){
@@ -59,6 +61,8 @@ public class CommandFlectonechat implements CommandExecutor {
         }
 
         Main.getInstance().reloadConfig();
+        Main.getInstance().startTabScheduler();
+        Main.getInstance().startCooldownScheduler();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             PlayerUtils.removePlayer(playerOnline);

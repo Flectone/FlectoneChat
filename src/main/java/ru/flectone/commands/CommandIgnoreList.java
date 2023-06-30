@@ -28,6 +28,8 @@ public class CommandIgnoreList implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         List<Inventory> inventoryList = new ArrayList<>();
 
         String inventoryTitle = Main.locale.getFormatString("ignore-list.name", commandSender);

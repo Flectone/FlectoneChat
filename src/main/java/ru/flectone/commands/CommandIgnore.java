@@ -31,6 +31,8 @@ public class CommandIgnore implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         String playerName = strings[0];
         OfflinePlayer ignoredPlayer = Bukkit.getOfflinePlayer(playerName);
 

@@ -5,7 +5,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import ru.flectone.commands.*;
+import ru.flectone.custom.FCommands;
 import ru.flectone.custom.FPlayer;
 import ru.flectone.listeners.FActions;
 import ru.flectone.listeners.FChat;
@@ -15,6 +17,8 @@ import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class Main extends JavaPlugin {
     private static Main instance;
@@ -76,17 +80,66 @@ public final class Main extends JavaPlugin {
             Utils.isHavePAPI = true;
         }
 
-        if(Main.config.getBoolean("tab.update.enable")) {
-
-            Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> Bukkit.getOnlinePlayers().forEach(player -> {
-                FPlayer fPlayer = PlayerUtils.getPlayer(player);
-                fPlayer.setPlayerListHeaderFooter();
-            }), 0L, 20L * Main.config.getInt("tab.update.rate"));
-
-        }
+        startTabScheduler();
+        startCooldownScheduler();
 
         getLogger().info("Enabled");
 
+    }
+
+    private static BukkitRunnable tabTimer;
+
+    public void startTabScheduler(){
+
+        if(Main.config.getBoolean("tab.update.enable") && (tabTimer == null || tabTimer.isCancelled())) {
+
+            tabTimer = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if(!Main.config.getBoolean("tab.update.enable")){
+                        cancel();
+                    }
+
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        FPlayer fPlayer = PlayerUtils.getPlayer(player);
+                        fPlayer.setPlayerListHeaderFooter();
+                    });
+                }
+            };
+
+            tabTimer.runTaskTimer(Main.getInstance(), 0L, 20L * Main.config.getInt("tab.update.rate"));
+        }
+    }
+
+    private static BukkitRunnable cooldownTimer;
+
+    public void startCooldownScheduler(){
+
+        if(Main.config.getBoolean("cooldown.enable") && (cooldownTimer == null || cooldownTimer.isCancelled())){
+
+            cooldownTimer = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if(!Main.config.getBoolean("cooldown.enable")){
+                        cancel();
+                    }
+
+                    Iterator<Map.Entry<String, Integer>> iterator = FCommands.commandsCDMap.entrySet().iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry<String, Integer> entry = iterator.next();
+                        int time = entry.getValue() - 1;
+                        if (time < 1) {
+                            iterator.remove();
+                        } else {
+                            entry.setValue(time);
+                        }
+                    }
+                }
+            };
+
+            cooldownTimer.runTaskTimer(Main.getInstance(), 0L, 20L);
+
+        }
     }
 
     @Override

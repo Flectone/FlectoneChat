@@ -10,6 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import ru.flectone.Main;
+import ru.flectone.custom.FCommands;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
@@ -57,6 +58,10 @@ public class FChat implements Listener {
     }
 
     public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack){
+
+        FCommands fCommands = new FCommands(player, chatType + "chat", chatType + " chat", new String[]{});
+
+        if(fCommands.isHaveCD()) return;
 
         itemStack = itemStack == null && message.contains("%item%") ? player.getItemInHand() : itemStack;
 

@@ -25,6 +25,8 @@ public class CommandPing implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         int currentPing = ((Player) player).getPing();
         int badPing = Main.config.getInt("ping.bad.count");
         int mediumPing = Main.config.getInt("ping.medium.count");

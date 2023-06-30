@@ -16,6 +16,8 @@ public class CommandMe implements CommandExecutor {
 
         if(fCommand.checkCountArgs(1)) return true;
 
+        if(fCommand.isHaveCD()) return true;
+
         String formatString = Main.locale.getString("me.message")
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<message>", ObjectUtils.toString(strings));

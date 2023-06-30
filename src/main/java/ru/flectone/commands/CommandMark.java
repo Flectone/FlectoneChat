@@ -39,6 +39,8 @@ public class CommandMark implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         int range = Main.config.getInt("mark.range");
 
         Entity entity = getEntityInLineOfSightVectorMath((Player) commandSender, range);

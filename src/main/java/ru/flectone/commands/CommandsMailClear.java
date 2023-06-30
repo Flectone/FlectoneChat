@@ -45,6 +45,8 @@ public class CommandsMailClear implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         int number = Integer.parseInt(strings[1]) - 1;
 
         String[] replaceString = {"<player>", "<message>"};

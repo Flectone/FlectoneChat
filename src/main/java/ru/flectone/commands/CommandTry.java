@@ -18,6 +18,8 @@ public class CommandTry implements CommandExecutor {
 
         if(fCommand.checkCountArgs(1)) return true;
 
+        if(fCommand.isHaveCD()) return true;
+
         Random random = new Random();
         int randomPer = random.nextInt(100);
         randomPer += 1;

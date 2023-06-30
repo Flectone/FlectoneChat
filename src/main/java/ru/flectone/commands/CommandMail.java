@@ -51,6 +51,8 @@ public class CommandMail implements CommandExecutor {
             return true;
         }
 
+        if(fCommand.isHaveCD()) return true;
+
         String key = offlinePlayer.getUniqueId() + "." + ((Player) commandSender).getUniqueId();
 
         List<String> mailsList = Main.mails.getStringList(key);

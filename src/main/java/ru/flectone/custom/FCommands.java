@@ -15,9 +15,12 @@ import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class FCommands {
+
+    public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
 
     private FileResource locale = Main.locale;
 
@@ -33,6 +36,8 @@ public class FCommands {
 
     private boolean isConsole;
 
+    private boolean isHaveCD = false;
+
     private String alias;
 
     public FCommands(CommandSender sender, String command, String label, String[] args){
@@ -47,6 +52,28 @@ public class FCommands {
         this.command = command;
         this.args = args;
         this.alias = label;
+
+
+        if(isConsole || !Main.config.getBoolean("cooldown.enable") || !Main.config.getBoolean(command + ".cooldown.enable")) return;
+
+        this.isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
+                && !player.isOp()
+                && !player.hasPermission(Main.config.getString(command + ".cooldown.permission"));
+
+        int cdTime = isHaveCD ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time");
+
+        if(isHaveCD){
+            String[] replaceStrings = {"<alias>", "<time>"};
+            String[] replaceTo = {alias, String.valueOf(cdTime)};
+            sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
+            return;
+        }
+
+        commandsCDMap.put(player.getUniqueId() + command, cdTime);
+    }
+
+    public boolean isHaveCD() {
+        return isHaveCD;
     }
 
     public String getSenderName() {
@@ -129,17 +156,17 @@ public class FCommands {
     }
 
     public void sendMeMessage(String localeString, String replaceString, String replaceTo){
-        player.sendMessage(locale.getFormatString(localeString, player).replace(replaceString, replaceTo));
+        sender.sendMessage(locale.getFormatString(localeString, sender).replace(replaceString, replaceTo));
     }
 
     public void sendMeMessage(String localeString, String[] replaceStrings, String[] replaceTos){
-        String formatString = locale.getFormatString(localeString, player);
+        String formatString = locale.getFormatString(localeString, sender);
 
         for(int x = 0; x < replaceStrings.length; x++){
             formatString = formatString.replace(replaceStrings[x], replaceTos[x]);
         }
 
-        player.sendMessage(formatString);
+        sender.sendMessage(formatString);
     }
 
     private boolean isPlayer(CommandSender sender){

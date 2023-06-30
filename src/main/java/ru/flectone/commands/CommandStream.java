@@ -47,6 +47,8 @@ public class CommandStream implements CommandExecutor {
                 return true;
             }
 
+            if(fCommand.isHaveCD()) return true;
+
             fCommand.getFPlayer().setStreamer(true);
             fCommand.getFPlayer().addToName(Main.config.getFormatString("stream.prefix", commandSender));
         }

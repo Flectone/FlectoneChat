@@ -61,3 +61,68 @@ try-cube.3: "⚂"
 try-cube.2: "⚁"
 try-cube.1: "⚀"
 
+cooldown.enable: false
+
+localechat.cooldown.enable: true
+localechat.cooldown.time: 5
+localechat.cooldown.permission: "flectonechat.localechat.cooldown.immune"
+
+globalchat.cooldown.enable: true
+globalchat.cooldown.time: 5
+globalchat.cooldown.permission: "flectonechat.globalchat.cooldown.immune"
+
+chatcolor.cooldown.enable: false
+chatcolor.cooldown.time: 5
+chatcolor.cooldown.permission: "flectonechat.chatcolor.cooldown.immune"
+
+flectonechat.cooldown.enable: false
+flectonechat.cooldown.time: 5
+flectonechat.cooldown.permission: "flectonechat.flectonechat.cooldown.immune"
+
+ignore.cooldown.enable: false
+ignore.cooldown.time: 5
+ignore.cooldown.permission: "flectonechat.ignore.cooldown.immune"
+
+ignore-list.cooldown.enable: false
+ignore-list.cooldown.time: 5
+ignore-list.cooldown.permission: "flectonechat.ignore-list.cooldown.immune"
+
+mail.cooldown.enable: true
+mail.cooldown.time: 5
+mail.cooldown.permission: "flectonechat.mail.cooldown.immune"
+
+mark.cooldown.enable: true
+mark.cooldown.time: 5
+mark.cooldown.permission: "flectonechat.mark.cooldown.immune"
+
+me.cooldown.enable: true
+me.cooldown.time: 5
+me.cooldown.permission: "flectonechat.me.cooldown.immune"
+
+msg.cooldown.enable: true
+msg.cooldown.time: 5
+msg.cooldown.permission: "flectonechat.msg.cooldown.immune"
+
+ping.cooldown.enable: false
+ping.cooldown.time: 5
+ping.cooldown.permission: "flectonechat.ping.cooldown.immune"
+
+reply.cooldown.enable: true
+reply.cooldown.time: 5
+reply.cooldown.permission: "flectonechat.reply.cooldown.immune"
+
+mail-clear.cooldown.enable: false
+mail-clear.cooldown.time: 5
+mail-clear.cooldown.permission: "flectonechat.mail-clear.cooldown.immune"
+
+stream.cooldown.enable: true
+stream.cooldown.time: 5
+stream.cooldown.permission: "flectonechat.stream.cooldown.immune"
+
+try.cooldown.enable: true
+try.cooldown.time: 5
+try.cooldown.permission: "flectonechat.try.cooldown.immune"
+
+try-cube.cooldown.enable: true
+try-cube.cooldown.time: 5
+try-cube.cooldown.permission: "flectonechat.try-cube.cooldown.immune"

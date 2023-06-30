@@ -19,6 +19,7 @@
 # Second color &&2
 
 command.not_support_console: "#ff4e4e⁉ This command is not possible in console"
+command.have_cooldown: "#ff4e4e⁉ You will be able to use <alias> in <time> s."
 
 server.motd.message: "&&1This server uses FlectoneChat ❤"
 
