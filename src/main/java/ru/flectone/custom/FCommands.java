@@ -5,6 +5,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -178,5 +179,9 @@ public class FCommands {
             PlayerUtils.getPlayer(((Player) firstPlayer).getUniqueId()).setLastWritePlayer((Player) secondPlayer);
         }
 
+    }
+
+    public boolean checkIgnoreList(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
+        return Main.ignores.getStringList(firstPlayer.getUniqueId().toString()).contains(secondPlayer.getUniqueId().toString());
     }
 }

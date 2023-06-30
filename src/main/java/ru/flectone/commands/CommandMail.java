@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import ru.flectone.Main;
 import ru.flectone.custom.FCommands;
 import ru.flectone.utils.ObjectUtils;
+import ru.flectone.utils.PlayerUtils;
 
 import java.util.List;
 
@@ -36,6 +37,17 @@ public class CommandMail implements CommandExecutor {
 
         if(offlinePlayer.isOnline()){
             Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
+            return true;
+        }
+
+
+        if(fCommand.checkIgnoreList((Player) commandSender, offlinePlayer)){
+            fCommand.sendMeMessage("mail.you_ignore");
+            return true;
+        }
+
+        if(fCommand.checkIgnoreList(offlinePlayer, (Player) commandSender)){
+            fCommand.sendMeMessage("mail.he_ignore");
             return true;
         }
 
