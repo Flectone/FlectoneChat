@@ -1,4 +1,4 @@
-package ru.flectone;
+package ru.flectone.custom;
 
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -6,6 +6,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import ru.flectone.Main;
 import ru.flectone.utils.PlayerUtils;
 import ru.flectone.utils.Utils;
 
@@ -164,5 +165,12 @@ public class FPlayer {
 
     public void setStreamer(boolean streamer) {
         this.streamer = streamer;
+    }
+
+    public boolean checkIgnoreList(Player secondPlayer){
+        if(secondPlayer == null) {
+            return false;
+        }
+        return ignoreList.contains(secondPlayer.getUniqueId().toString());
     }
 }

@@ -2,7 +2,7 @@ package ru.flectone.utils;
 
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import ru.flectone.FPlayer;
+import ru.flectone.custom.FPlayer;
 
 import java.util.HashMap;
 import java.util.UUID;

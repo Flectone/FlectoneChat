@@ -1,12 +1,14 @@
 package ru.flectone;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.flectone.chat.FChat;
-import ru.flectone.commands.Commands;
-import ru.flectone.commands.TabComplets;
+import ru.flectone.commands.*;
+import ru.flectone.custom.FPlayer;
+import ru.flectone.listeners.FActions;
+import ru.flectone.listeners.FChat;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.Metrics;
 import ru.flectone.utils.PlayerUtils;
@@ -49,22 +51,22 @@ public final class Main extends JavaPlugin {
         registerEvents(new FActions());
         registerEvents(new FChat());
 
-        setExecutor("ignore");
-        setExecutor("ignore-list");
-        setExecutor("msg");
-        setExecutor("try-cube");
-        setExecutor("try");
-        setExecutor("reply");
-        setExecutor("me");
-        setExecutor("chatcolor");
-        setExecutor("flectonechat");
-        setExecutor("stream");
-        setExecutor("ping");
-        setExecutor("mark");
-        setExecutor("lastonline");
-        setExecutor("firstonline");
-        setExecutor("mail");
-        setExecutor("mail-clear");
+        setCommandExecutor(new CommandIgnore(), "ignore");
+        setCommandExecutor(new CommandIgnoreList(), "ignore-list");
+        setCommandExecutor(new CommandTryCube(), "try-cube");
+        setCommandExecutor(new CommandTry(), "try");
+        setCommandExecutor(new CommandMe(), "me");
+        setCommandExecutor(new CommandPing(), "ping");
+        setCommandExecutor(new CommandChatcolor(), "chatcolor");
+        setCommandExecutor(new CommandOnline(), "firstonline");
+        setCommandExecutor(new CommandOnline(), "lastonline");
+        setCommandExecutor(new CommandMark(), "mark");
+        setCommandExecutor(new CommandStream(), "stream");
+        setCommandExecutor(new CommandMsg(), "msg");
+        setCommandExecutor(new CommandReply(), "reply");
+        setCommandExecutor(new CommandMail(), "mail");
+        setCommandExecutor(new CommandsMailClear(), "mail-clear");
+        setCommandExecutor(new CommandFlectonechat(), "flectonechat");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);
@@ -96,8 +98,10 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
-    private void setExecutor(String command){
-        getCommand(command).setExecutor(new Commands());
-        getCommand(command).setTabCompleter(new TabComplets());
+    private final TabComplets tabComplets = new TabComplets();
+
+    private void setCommandExecutor(CommandExecutor commandExecutor, String command){
+        getCommand(command).setExecutor(commandExecutor);
+        getCommand(command).setTabCompleter(tabComplets);
     }
 }

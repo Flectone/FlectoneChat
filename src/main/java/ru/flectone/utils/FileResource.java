@@ -1,9 +1,9 @@
 package ru.flectone.utils;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import ru.flectone.Main;
 
 import java.io.File;
@@ -94,9 +94,9 @@ public class FileResource extends FileConfiguration {
         return Boolean.parseBoolean(fileConfiguration.getString(string));
     }
 
-    public String getFormatString(String string, Player player){
+    public String getFormatString(String string, CommandSender sender){
         string = fileConfiguration.getString(string);
-        return Utils.translateColor(string, player);
+        return Utils.translateColor(string, sender);
     }
 
     @Override

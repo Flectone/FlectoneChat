@@ -5,9 +5,10 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import ru.flectone.FPlayer;
+import ru.flectone.custom.FPlayer;
 import ru.flectone.Main;
 
 import java.util.regex.Matcher;
@@ -17,7 +18,7 @@ public class Utils {
 
     public static boolean isHavePAPI = false;
 
-    public static TextComponent getNameComponent(String text, String playerName, Player player){
+    public static TextComponent getNameComponent(String text, String playerName, CommandSender player){
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + playerName + " "));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.click_player_name", player))));
@@ -28,7 +29,7 @@ public class Utils {
         buildMessage(message, componentBuilder, chatColor, player, null);
     }
 
-    public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, Player player, ItemStack itemStack) {
+    public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender player, ItemStack itemStack) {
         // Ping player in message
         String pingPrefix = Main.config.getString("chat.ping.prefix");
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
@@ -66,7 +67,7 @@ public class Utils {
                     words = new String[]{words.length > 0 ? words[0] : "", ""};
                 }
 
-                String[] formattedItemArray = ReflectionUtil.getFormattedStringItem(itemStack);
+                String[] formattedItemArray = ReflectionUtils.getFormattedStringItem(itemStack);
                 item = new TranslatableComponent(formattedItemArray[0]);
                 item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
 
@@ -110,18 +111,21 @@ public class Utils {
         return ChatColor.translateAlternateColorCodes('&', sb.toString());
     }
 
-    public static String translateColor(String string, Player player){
-        if(Utils.isHavePAPI && string != null) string = PlaceholderAPI.setPlaceholders(player, string);
+    public static String translateColor(String string, CommandSender sender){
+        if(sender instanceof Player){
+            Player player = ((Player) sender).getPlayer();
 
-        if (player != null) {
+            if(Utils.isHavePAPI && string != null) string = PlaceholderAPI.setPlaceholders(player, string);
+
             FPlayer fPlayer = PlayerUtils.getPlayer(player);
             return Utils.translateColor(string
                     .replace("&&1", fPlayer.getColors().get(0))
                     .replace("&&2", fPlayer.getColors().get(1)));
+
         } else {
             return Utils.translateColor(string
-                    .replace("&&1", Main.getInstance().config.getString("color.first"))
-                    .replace("&&2", Main.getInstance().config.getString("color.second")));
+                    .replace("&&1", Main.config.getString("color.first"))
+                    .replace("&&2", Main.config.getString("color.second")));
         }
     }
 }

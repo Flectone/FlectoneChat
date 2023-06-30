@@ -1,4 +1,4 @@
-package ru.flectone;
+package ru.flectone.listeners;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
+import ru.flectone.custom.FPlayer;
+import ru.flectone.Main;
 import ru.flectone.commands.TabComplets;
 import ru.flectone.utils.FileResource;
 import ru.flectone.utils.PlayerUtils;

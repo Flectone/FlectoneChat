@@ -1,4 +1,4 @@
-package ru.flectone;
+package ru.flectone.custom;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

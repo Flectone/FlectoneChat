@@ -1,4 +1,4 @@
-package ru.flectone.chat;
+package ru.flectone.listeners;
 
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FChat implements Listener {
-
 
     private FileResource locale = Main.locale;
 
@@ -75,7 +74,6 @@ public class FChat implements Listener {
             finalBuilder.append(TextComponent.fromLegacyText(localeMessage[1]), ComponentBuilder.FormatRetention.NONE);
 
             Utils.buildMessage(message, finalBuilder, org.bukkit.ChatColor.getLastColors(localeMessage[1]), recipient, itemStack);
-
 
             recipient.spigot().sendMessage(finalBuilder.create());
         }
