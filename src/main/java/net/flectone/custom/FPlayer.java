@@ -5,10 +5,12 @@ import net.flectone.managers.PlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +43,14 @@ public class FPlayer {
 
     private Player lastWritePlayer;
 
+    private Team team;
+
     public FPlayer(Player player) {
         this.player = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId();
         this.ignoreList = Main.ignores.getStringList(uuid.toString());
+        this.team = getPlayerTeam();
 
         PlayerManager.addPlayer(this);
 
@@ -56,6 +61,20 @@ public class FPlayer {
         setPlayerListHeaderFooter();
 
         isMuted();
+    }
+
+    private Team getPlayerTeam(){
+        Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(player.getName());
+        Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(player.getName());
+        if(!team.hasEntry(player.getName())) team.addEntry(player.getName());
+
+        team.setColor(ChatColor.WHITE);
+
+        return team;
+    }
+
+    public void setTeamColor(String teamColor){
+        this.team.setColor(ChatColor.valueOf(teamColor));
     }
 
     public Player getPlayer() {
@@ -89,10 +108,12 @@ public class FPlayer {
 
     public void setName(World world) {
         if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
-            this.name = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player) + player.getName();
+            addPrefixToName(Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player));
         }
 
         this.player.setPlayerListName(getName());
+        this.team.setPrefix(prefix);
+        this.team.setSuffix(suffix);
     }
 
     private String prefix = "";
@@ -103,17 +124,23 @@ public class FPlayer {
         this.prefix += string;
 
         this.player.setPlayerListName(getName());
+        this.team.setPrefix(prefix);
+        this.team.setSuffix(suffix);
     }
 
     public void removeFromName(String string) {
         this.prefix = this.prefix.replaceFirst(string, "");
         this.suffix = this.suffix.replaceFirst(string, "");
         this.player.setPlayerListName(getName());
+        this.team.setPrefix(prefix);
+        this.team.setSuffix(suffix);
     }
 
     public void addSuffixToName(String string) {
         this.suffix += string;
         this.player.setPlayerListName(getName());
+        this.team.setPrefix(prefix);
+        this.team.setSuffix(suffix);
     }
 
     public String getName() {

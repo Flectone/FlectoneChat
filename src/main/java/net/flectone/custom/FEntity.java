@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.managers.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -13,6 +14,13 @@ public class FEntity {
     private static final HashMap<String, Team> noCollisionTeamMap = new HashMap<>();
 
     public static void addToTeam(Entity entity, String color){
+        if(entity instanceof Player) {
+
+            Player player = (Player) entity;
+            PlayerManager.getPlayer(player).setTeamColor(color);
+            return;
+        }
+
         if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color) != null)
             noCollisionTeamMap.put(color, Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color));
 
@@ -29,17 +37,19 @@ public class FEntity {
             noCollisionTeamMap.put(color, team);
         }
 
-        if(entity instanceof Player){
-            team.addEntry(((Player) entity).getName());
-        } else team.addEntry(entity.getUniqueId().toString());
+        team.addEntry(entity.getUniqueId().toString());
     }
 
     public static void removeFromTeam(Entity entity, String color){
-        Team team = noCollisionTeamMap.get(color);
+        if(entity instanceof Player) {
+            Player player = (Player) entity;
+            Bukkit.getScoreboardManager().getMainScoreboard().getTeam(player.getName())
+                    .setColor(ChatColor.WHITE);
+            return;
+        }
 
-        if(entity instanceof Player){
-            team.removeEntry(((Player) entity).getName());
-        } else team.removeEntry(entity.getUniqueId().toString());
+        Team team = noCollisionTeamMap.get(color);
+        team.removeEntry(entity.getUniqueId().toString());
     }
 
     public static void removeBugEntities(Player player){
