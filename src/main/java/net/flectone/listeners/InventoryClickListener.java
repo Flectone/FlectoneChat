@@ -36,9 +36,7 @@ public class InventoryClickListener implements Listener {
                 String secondPlayerName = clickedItem.getItemMeta().getLocalizedName();
                 OfflinePlayer secondPlayer = Bukkit.getOfflinePlayer(secondPlayerName);
 
-                PlayerManager.getPlayer(eventPlayer).getIgnoreList().remove(secondPlayer.getUniqueId().toString());
-                eventPlayer.sendMessage(Main.locale.getFormatString("ignore.success_unignore", eventPlayer).
-                        replace( "<player>", secondPlayerName));
+                Bukkit.dispatchCommand(eventPlayer, "ignore " + secondPlayer.getName());
 
                 event.getInventory().remove(event.getCurrentItem());
 
