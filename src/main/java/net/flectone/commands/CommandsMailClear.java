@@ -55,8 +55,8 @@ public class CommandsMailClear implements CommandExecutor {
         String[] replaceTo = {offlinePlayer.getName(), mailsList.get(number)};
 
         mailsList.remove(number);
-        Main.mails.set(key, mailsList);
-        Main.mails.saveFile();
+
+        Main.mails.updateFile(key, mailsList);
 
         fCommand.sendMeMessage("mail-clear.success", replaceString, replaceTo);
 

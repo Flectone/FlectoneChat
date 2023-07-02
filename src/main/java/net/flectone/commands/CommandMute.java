@@ -48,8 +48,7 @@ public class CommandMute implements CommandExecutor {
         muteList.add(reason);
         muteList.add(String.valueOf(time + ObjectUtil.getCurrentTime()));
 
-        Main.mutes.set(mutedPlayer.getUniqueId().toString(), muteList);
-        Main.mutes.saveFile();
+        Main.mutes.updateFile(mutedPlayer.getUniqueId().toString(), muteList);
 
         String formatString = Main.locale.getString("mute.success_send")
                 .replace("<player>", mutedPlayer.getName())

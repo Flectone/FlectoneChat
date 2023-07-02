@@ -48,14 +48,11 @@ public class CommandFlectonechat implements CommandExecutor {
             //set and save file .yml
             switch(strings[0]){
                 case "config":
-                    Main.config.setObject(strings[1], object);
-                    Main.config.saveFile();
-
+                    Main.config.updateFile(strings[1], object);
                     Main.locale.setFileConfiguration(new FileManager("language/" + Main.config.getString("language") + ".yml"));
                     break;
                 case "locale":
-                    Main.locale.setObject(strings[1], object);
-                    Main.locale.saveFile();
+                    Main.locale.updateFile(strings[1], object);
                     break;
             }
         }

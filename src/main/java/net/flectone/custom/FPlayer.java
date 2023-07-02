@@ -1,6 +1,7 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
+import net.flectone.managers.PlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -8,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import net.flectone.managers.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,31 @@ import java.util.UUID;
 
 public class FPlayer {
 
-    public FPlayer(Player player){
+    private final UUID uuid;
+
+    private final Player player;
+
+    private String name;
+
+    private List<String> ignoreList;
+
+    private List<Inventory> inventoryList;
+
+    private int numberLastInventory = 0;
+
+    private List<String> colors = new ArrayList<>();
+
+    private boolean streamer = false;
+
+    private boolean isAfk = false;
+
+    private int lastTimeMoved;
+
+    private Block lastBlock;
+
+    private Player lastWritePlayer;
+
+    public FPlayer(Player player) {
         this.player = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId();
@@ -34,43 +58,35 @@ public class FPlayer {
         isMuted();
     }
 
-    public void setPlayerListHeaderFooter(){
-        if(!player.isOnline()) return;
-
-        if(Main.config.getBoolean("tab.header.enable")){
-            player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
-        }
-        if(Main.config.getBoolean("tab.footer.enable")){
-            player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
-        }
+    public Player getPlayer() {
+        return player;
     }
 
-    private Player lastWritePlayer;
+    public UUID getUUID() {
+        return uuid;
+    }
 
-    public void setLastWritePlayer(Player lastWritePlayer) {
-        this.lastWritePlayer = lastWritePlayer;
+    public void setPlayerListHeaderFooter() {
+        if (!player.isOnline()) return;
+
+        if (Main.config.getBoolean("tab.header.enable")) {
+            player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
+        }
+        if (Main.config.getBoolean("tab.footer.enable")) {
+            player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
+        }
     }
 
     public Player getLastWritePlayer() {
         return lastWritePlayer;
     }
 
-    private final UUID uuid;
-
-    public UUID getUUID() {
-        return uuid;
+    public void setLastWritePlayer(Player lastWritePlayer) {
+        this.lastWritePlayer = lastWritePlayer;
     }
-
-    private final Player player;
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    private String name;
 
     public void setName(World world) {
-        if(Main.getInstance().getConfig().getBoolean("color.worlds.enable")){
+        if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
             this.name = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player) + player.getName();
         }
 
@@ -82,34 +98,27 @@ public class FPlayer {
         this.player.setPlayerListName(getName());
     }
 
-    public void removeFromName(String string){
+    public void removeFromName(String string) {
         this.name = this.name.replaceFirst(string, "");
         this.player.setPlayerListName(getName());
     }
 
-    public void addSuffixToName(String string){
+    public void addSuffixToName(String string) {
         this.name = this.name + string;
         this.player.setPlayerListName(getName());
     }
 
     public String getName() {
-
-        if(Bukkit.getPluginManager().getPlugin("Vault") != null){
-
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
-
             String vaultPrefix = provider.getPlayerPrefix(player);
             String vaultSuffix = provider.getPlayerSuffix(player);
-
             String finalName = Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix");
             finalName = finalName.replace("<vault_prefix>", vaultPrefix).replace("<vault_suffix>", vaultSuffix);
-
             return ObjectUtil.translateHexToColor(finalName);
         }
         return name;
     }
-
-    private List<String> ignoreList;
 
     public List<String> getIgnoreList() {
         return ignoreList;
@@ -117,12 +126,8 @@ public class FPlayer {
 
     public void saveIgnoreList(List<String> ignoreList) {
         this.ignoreList = ignoreList;
-
-        Main.ignores.set(uuid.toString(), ignoreList);
-        Main.ignores.saveFile();
+        Main.ignores.updateFile(uuid.toString(), ignoreList);
     }
-
-    private List<Inventory> inventoryList;
 
     public List<Inventory> getInventoryList() {
         return inventoryList;
@@ -132,45 +137,35 @@ public class FPlayer {
         this.inventoryList = inventoryList;
     }
 
-    private int numberLastInventory = 0;
+    public int getNumberLastInventory() {
+        return numberLastInventory;
+    }
 
     public void setNumberLastInventory(int numberLastInventory) {
         this.numberLastInventory = numberLastInventory;
     }
 
-    public int getNumberLastInventory() {
-        return numberLastInventory;
-    }
-
-    private List<String> colors = new ArrayList<>();
-
     public void setColors(String firstColor, String secondColor) {
-        //200IQ
-        if(colors.isEmpty()){
+        if (colors.isEmpty()) {
             colors.add("0");
             colors.add("1");
         }
         colors.set(0, firstColor);
         colors.set(1, secondColor);
 
-        Main.themes.set(uuid.toString(), colors);
-        Main.themes.saveFile();
+        Main.themes.updateFile(uuid.toString(), colors);
     }
 
     public List<String> getColors() {
         colors = Main.themes.getStringList(uuid.toString());
-
-        if(colors.isEmpty()){
+        if (colors.isEmpty()) {
             List<String> list = new ArrayList<>();
             list.add(Main.getInstance().getConfig().getString("color.first"));
             list.add(Main.getInstance().getConfig().getString("color.second"));
             return list;
         }
-
         return colors;
     }
-
-    private boolean streamer = false;
 
     public boolean isStreamer() {
         return streamer;
@@ -180,14 +175,12 @@ public class FPlayer {
         this.streamer = streamer;
     }
 
-    public boolean checkIgnoreList(Player secondPlayer){
-        if(secondPlayer == null) {
+    public boolean checkIgnoreList(Player secondPlayer) {
+        if (secondPlayer == null) {
             return false;
         }
         return ignoreList.contains(secondPlayer.getUniqueId().toString());
     }
-
-    private boolean isAfk = false;
 
     public boolean isAfk() {
         return isAfk;
@@ -197,14 +190,8 @@ public class FPlayer {
         isAfk = afk;
     }
 
-
-    private int lastTimeMoved;
-
-    private Block lastBlock;
-
     public void setLastBlock(Block lastBlock) {
-        if(!Main.config.getBoolean("afk.timeout.enable")) return;
-
+        if (!Main.config.getBoolean("afk.timeout.enable")) return;
         this.lastTimeMoved = ObjectUtil.getCurrentTime();
         this.lastBlock = lastBlock;
     }
@@ -213,36 +200,31 @@ public class FPlayer {
         return lastTimeMoved;
     }
 
-    public boolean isMoved(Block block){
+    public boolean isMoved(Block block) {
         return !this.lastBlock.equals(block);
     }
 
-    public int getRealTimeMuted(){
+    public int getRealTimeMuted() {
         List<String> list = Main.mutes.getStringList(uuid.toString());
-        if(list.isEmpty()) return 0;
-
+        if (list.isEmpty()) return 0;
         return Integer.parseInt(list.get(1));
     }
 
-    public int getTimeMuted(){
+    public int getTimeMuted() {
         return getRealTimeMuted() - ObjectUtil.getCurrentTime();
     }
 
-    public String getReasonMute(){
+    public String getReasonMute() {
         List<String> list = Main.mutes.getStringList(uuid.toString());
-        if(list.isEmpty()) return null;
-
+        if (list.isEmpty()) return null;
         return list.get(0);
     }
 
-    public boolean isMuted(){
+    public boolean isMuted() {
         boolean isMuted = getTimeMuted() > 0;
-
-        if(!isMuted && !Main.mutes.getStringList(uuid.toString()).isEmpty()) {
-            Main.mutes.set(uuid.toString(), null);
-            Main.mutes.saveFile();
+        if (!isMuted && !Main.mutes.getStringList(uuid.toString()).isEmpty()) {
+            Main.mutes.updateFile(uuid.toString(), null);
         }
-
         return isMuted;
     }
 }

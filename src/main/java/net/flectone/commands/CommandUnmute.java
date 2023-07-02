@@ -35,8 +35,7 @@ public class CommandUnmute implements CommandExecutor {
 
         if(fCommand.isHaveCD()) return true;
 
-        Main.mutes.set(mutedPlayer.getUniqueId().toString(), null);
-        Main.mutes.saveFile();
+        Main.mutes.updateFile(mutedPlayer.getUniqueId().toString(), null);
 
         fCommand.sendMeMessage("unmute.success_send", "<player>", mutedPlayer.getName());
 

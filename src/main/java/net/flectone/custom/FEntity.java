@@ -11,13 +11,13 @@ import java.util.HashMap;
 public class FEntity {
 
 
-    private static HashMap<String, Team> entityNoCollisionTeamHashMap = new HashMap<>();
+    private static final HashMap<String, Team> noCollisionTeamMap = new HashMap<>();
 
-    public static void addEntityToENT(Entity entity, String color){
+    public static void addToTeam(Entity entity, String color){
         if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color) != null)
-            entityNoCollisionTeamHashMap.put(color, Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color));
+            noCollisionTeamMap.put(color, Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color));
 
-        Team team = entityNoCollisionTeamHashMap.get(color);
+        Team team = noCollisionTeamMap.get(color);
 
         if(team == null){
 
@@ -27,7 +27,7 @@ public class FEntity {
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
             team.setColor(ChatColor.valueOf(color));
 
-            entityNoCollisionTeamHashMap.put(color, team);
+            noCollisionTeamMap.put(color, team);
         }
 
         if(entity instanceof Player){
@@ -35,8 +35,8 @@ public class FEntity {
         } else team.addEntry(entity.getUniqueId().toString());
     }
 
-    public static void leaveEntityTeam(Entity entity, String color){
-        Team team = entityNoCollisionTeamHashMap.get(color);
+    public static void removeFromTeam(Entity entity, String color){
+        Team team = noCollisionTeamMap.get(color);
 
         if(entity instanceof Player){
             team.removeEntry(((Player) entity).getName());

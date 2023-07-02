@@ -59,8 +59,7 @@ public class CommandMail implements CommandExecutor {
         List<String> mailsList = Main.mails.getStringList(key);
         mailsList.add(message);
 
-        Main.mails.set(key, mailsList);
-        Main.mails.saveFile();
+        Main.mails.updateFile(key, mailsList);
 
         String[] replaceString = {"<player>", "<message>"};
         String[] replaceTo = {offlinePlayer.getName(), message};

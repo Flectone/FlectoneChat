@@ -60,8 +60,7 @@ public class FActions implements Listener {
                 player.sendMessage(newLocaleString);
             });
 
-            Main.mails.set(key, new ArrayList<>());
-            Main.mails.saveFile();
+            Main.mails.updateFile(key, null);
         });
     }
 

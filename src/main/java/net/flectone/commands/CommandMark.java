@@ -52,10 +52,10 @@ public class CommandMark implements CommandExecutor {
 
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 entity.setGlowing(false);
-                FEntity.leaveEntityTeam(entity, color);
+                FEntity.removeFromTeam(entity, color);
             }, 40);
 
-            FEntity.addEntityToENT(entity, color);
+            FEntity.addToTeam(entity, color);
 
             return true;
         }
@@ -87,11 +87,11 @@ public class CommandMark implements CommandExecutor {
 
         MagmaCube markBlockEntity = (MagmaCube) location.getWorld().spawnEntity(location, EntityType.MAGMA_CUBE);
 
-        FEntity.addEntityToENT(markBlockEntity, color);
+        FEntity.addToTeam(markBlockEntity, color);
 
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             markBlockEntity.remove();
-            FEntity.leaveEntityTeam(markBlockEntity, color);
+            FEntity.removeFromTeam(markBlockEntity, color);
         }, 40);
     }
 }
