@@ -11,10 +11,8 @@ import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.utils.FileResource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TabComplets implements TabCompleter {
 
@@ -52,6 +50,13 @@ public class TabComplets implements TabCompleter {
                     }
                 }
                 break;
+            case "unmute":
+                if(args.length == 1){
+                    Main.mutes.getKeys().stream().map(s -> Bukkit.getOfflinePlayer(UUID.fromString(s))).collect(Collectors.toSet()).forEach(offlinePlayer -> {
+                        isStartsWith(args[0], offlinePlayer.getName(), wordsList);
+                    });
+                }
+                break;
 
             case "mail":
                 if(args.length == 2) {
@@ -71,9 +76,10 @@ public class TabComplets implements TabCompleter {
                             }
                         }
                     }
-
+                    break;
                 } else if (args.length == 3){
                     isStartsWith(args[2], "(reason)", wordsList);
+                    break;
                 }
 
             case "ignore":
