@@ -178,7 +178,7 @@ public class FCommands {
 
             Utils.buildMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), onlinePlayer, sender, itemStack);
 
-            if(!clickable){
+            if(!clickable || isConsole){
                 onlinePlayer.spigot().sendMessage(componentBuilder.create());
                 return;
             }

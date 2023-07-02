@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import net.flectone.custom.FPlayer;
@@ -23,6 +24,9 @@ public class Utils {
         String showText = Main.locale.getFormatString("chat.click_player_name", colorPlayer, papiPlayer);
 
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
+
+        if(papiPlayer instanceof ConsoleCommandSender) return textComponent;
+
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
         return textComponent;
@@ -114,18 +118,17 @@ public class Utils {
         if(colorSender instanceof Player){
             Player player = ((Player) colorSender).getPlayer();
 
-            if(Utils.isHavePAPI && string != null) string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
+            if(Utils.isHavePAPI && string != null && papiSender instanceof Player) string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
 
             FPlayer fPlayer = PlayerUtils.getPlayer(player);
             return Utils.translateColor(string
                     .replace("&&1", fPlayer.getColors().get(0))
                     .replace("&&2", fPlayer.getColors().get(1)));
-
-        } else {
-            return Utils.translateColor(string
-                    .replace("&&1", Main.config.getString("color.first"))
-                    .replace("&&2", Main.config.getString("color.second")));
         }
+
+        return Utils.translateColor(string
+                .replace("&&1", Main.config.getString("color.first"))
+                .replace("&&2", Main.config.getString("color.second")));
     }
 
     public static String translateColor(String string, CommandSender colorSender){
