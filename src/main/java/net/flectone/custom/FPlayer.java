@@ -203,7 +203,6 @@ public class FPlayer {
     }
 
     public void setLastBlock(Block lastBlock) {
-        if (!Main.config.getBoolean("afk.timeout.enable")) return;
         this.lastTimeMoved = ObjectUtil.getCurrentTime();
         this.lastBlock = lastBlock;
     }

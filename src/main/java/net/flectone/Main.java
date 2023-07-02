@@ -129,11 +129,9 @@ public final class Main extends JavaPlugin {
     private static BukkitRunnable playerMoveTimer;
 
     public void checkPlayerMoveTimer(){
-        boolean isEnable = Main.config.getBoolean("afk.timeout.enable");
-
-        if(isEnable && (playerMoveTimer == null || playerMoveTimer.isCancelled())){
+        if(playerMoveTimer == null || playerMoveTimer.isCancelled()){
             startPlayerMoveTimer();
-        } else if (!isEnable && playerMoveTimer != null && !playerMoveTimer.isCancelled()){
+        } else if (playerMoveTimer != null && !playerMoveTimer.isCancelled()){
             playerMoveTimer.cancel();
         }
     }
@@ -148,7 +146,8 @@ public final class Main extends JavaPlugin {
 
                     if(!fPlayer.isMoved(block)){
 
-                        if(fPlayer.isAfk()) return;
+                        boolean isEnable = Main.config.getBoolean("afk.timeout.enable");
+                        if(fPlayer.isAfk() || !isEnable) return;
 
                         int diffTime = ObjectUtil.getCurrentTime() - fPlayer.getLastTimeMoved();
 
