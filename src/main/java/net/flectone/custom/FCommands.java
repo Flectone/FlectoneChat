@@ -233,7 +233,7 @@ public class FCommands {
             recipient.spigot().sendMessage(finalBuilder.create());
         });
 
-        Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(message, null));
+        Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, sender).replace("<message>", message));
     }
 
     private Set<Player> getFilteredPlayers(){
