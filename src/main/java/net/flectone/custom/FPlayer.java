@@ -69,6 +69,8 @@ public class FPlayer {
     public void setPlayerListHeaderFooter() {
         if (!player.isOnline()) return;
 
+        player.setPlayerListName(getName());
+
         if (Main.config.getBoolean("tab.header.enable")) {
             player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
         }
@@ -93,18 +95,24 @@ public class FPlayer {
         this.player.setPlayerListName(getName());
     }
 
+    private String prefix = "";
+
+    private String suffix = "";
+
     public void addPrefixToName(String string) {
-        this.name = string + this.name;
+        this.prefix += string;
+
         this.player.setPlayerListName(getName());
     }
 
     public void removeFromName(String string) {
-        this.name = this.name.replaceFirst(string, "");
+        this.prefix = this.prefix.replaceFirst(string, "");
+        this.suffix = this.suffix.replaceFirst(string, "");
         this.player.setPlayerListName(getName());
     }
 
     public void addSuffixToName(String string) {
-        this.name = this.name + string;
+        this.suffix += string;
         this.player.setPlayerListName(getName());
     }
 
@@ -113,11 +121,15 @@ public class FPlayer {
             Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
             String vaultPrefix = provider.getPlayerPrefix(player);
             String vaultSuffix = provider.getPlayerSuffix(player);
-            String finalName = Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix");
-            finalName = finalName.replace("<vault_prefix>", vaultPrefix).replace("<vault_suffix>", vaultSuffix);
+
+            String finalName = prefix + Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix") + suffix;
+
+            finalName = finalName
+                    .replace("<vault_prefix>", vaultPrefix)
+                    .replace("<vault_suffix>", vaultSuffix);
             return ObjectUtil.translateHexToColor(finalName);
         }
-        return name;
+        return prefix + name + suffix;
     }
 
     public List<String> getIgnoreList() {
