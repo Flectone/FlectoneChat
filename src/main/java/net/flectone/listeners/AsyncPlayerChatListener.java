@@ -37,10 +37,6 @@ public class AsyncPlayerChatListener implements Listener {
             int localeRange = config.getInt("chat.locale.range");
             recipients.removeIf(recipient -> player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localeRange);
-
-            if (recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")) {
-                player.sendMessage(locale.getFormatString("chat.no_recipients", player));
-            }
         } else {
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
@@ -61,6 +57,10 @@ public class AsyncPlayerChatListener implements Listener {
         if(fCommands.isHaveCD()) return;
 
         if(fCommands.isMuted()) return;
+
+        if (chatType.equals("locale") && recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")) {
+            player.sendMessage(locale.getFormatString("chat.no_recipients", player));
+        }
 
         String configMessage = config.getString("chat." + chatType + ".message")
                 .replace("<player>", PlayerManager.getPlayer(player).getName());
