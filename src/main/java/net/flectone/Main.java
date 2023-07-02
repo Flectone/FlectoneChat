@@ -2,9 +2,9 @@ package net.flectone;
 
 import net.flectone.commands.*;
 import net.flectone.listeners.FChat;
-import net.flectone.utils.FileResource;
-import net.flectone.utils.Metrics;
-import net.flectone.utils.Utils;
+import net.flectone.managers.FileManager;
+import net.flectone.utils.MetricsUtil;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -14,24 +14,27 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.flectone.custom.FPlayer;
 import net.flectone.listeners.FActions;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.PlayerManager;
 
 import java.util.HashMap;
 
 public final class Main extends JavaPlugin {
+
+    public static boolean isHavePAPI = false;
+
     private static Main instance;
 
-    public static FileResource config;
+    public static FileManager config;
 
-    public static FileResource locale;
+    public static FileManager locale;
 
-    public static FileResource ignores;
+    public static FileManager ignores;
 
-    public static FileResource themes;
+    public static FileManager themes;
 
-    public static FileResource mails;
+    public static FileManager mails;
 
-    public static FileResource mutes;
+    public static FileManager mutes;
 
     public static Main getInstance(){
         return instance;
@@ -39,19 +42,19 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new Metrics(this, 16733);
+        new MetricsUtil(this, 16733);
 
         instance = this;
 
-        config = new FileResource("config.yml");
-        locale = new FileResource("language/" + config.getString("language") + ".yml");
-        ignores = new FileResource("ignores.yml");
-        themes = new FileResource("themes.yml");
+        config = new FileManager("config.yml");
+        locale = new FileManager("language/" + config.getString("language") + ".yml");
+        ignores = new FileManager("ignores.yml");
+        themes = new FileManager("themes.yml");
 
-        mails = new FileResource("mails.yml");
-        mutes = new FileResource("mutes.yml");
+        mails = new FileManager("mails.yml");
+        mutes = new FileManager("mutes.yml");
 
-        PlayerUtils.setOnlinePlayers(new HashMap<>());
+        PlayerManager.setOnlinePlayers(new HashMap<>());
 
         registerEvents(new FActions());
         registerEvents(new FChat());
@@ -81,7 +84,7 @@ public final class Main extends JavaPlugin {
         }
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            Utils.isHavePAPI = true;
+            isHavePAPI = true;
         }
 
         startTabScheduler();
@@ -105,7 +108,7 @@ public final class Main extends JavaPlugin {
                     }
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        FPlayer fPlayer = PlayerUtils.getPlayer(player);
+                        FPlayer fPlayer = PlayerManager.getPlayer(player);
                         fPlayer.setPlayerListHeaderFooter();
                     });
 
@@ -133,14 +136,14 @@ public final class Main extends JavaPlugin {
             @Override
             public void run() {
 
-                PlayerUtils.onlinePlayers.values().forEach(fPlayer -> {
+                PlayerManager.onlinePlayers.values().forEach(fPlayer -> {
                     Block block = fPlayer.getPlayer().getLocation().getBlock();
 
                     if(!fPlayer.isMoved(block)){
 
                         if(fPlayer.isAfk()) return;
 
-                        int diffTime = Utils.getCurrentTime() - fPlayer.getLastTimeMoved();
+                        int diffTime = ObjectUtil.getCurrentTime() - fPlayer.getLastTimeMoved();
 
                         if(diffTime >= Main.config.getInt("afk.timeout.time")){
                             CommandAfk.sendMessage(fPlayer, true);

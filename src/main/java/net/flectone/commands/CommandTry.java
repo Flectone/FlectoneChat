@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class CommandTry implements CommandExecutor {
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<percent>", String.valueOf(randomPer));
 
-        fCommand.sendGlobalMessage(formatString, ObjectUtils.toString(strings));
+        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
 
         return true;
     }

@@ -1,5 +1,6 @@
-package net.flectone.utils;
+package net.flectone.managers;
 
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,12 +14,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 
-public class FileResource extends FileConfiguration {
+public class FileManager extends FileConfiguration {
 
     private FileConfiguration fileConfiguration;
     private File file;
 
-    public FileResource(String path){
+    public FileManager(String path){
         this.file = new File(Main.getInstance().getDataFolder() + File.separator + path);
 
         if(path.contains("language")){
@@ -96,12 +97,12 @@ public class FileResource extends FileConfiguration {
 
     public String getFormatString(String string, CommandSender sender, CommandSender papiPlayer){
         string = fileConfiguration.getString(string);
-        return Utils.translateColor(string, sender, papiPlayer);
+        return ObjectUtil.formatString(string, sender, papiPlayer);
     }
 
     public String getFormatString(String string, CommandSender sender){
         string = fileConfiguration.getString(string);
-        return Utils.translateColor(string, sender);
+        return ObjectUtil.formatString(string, sender);
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("ConstantConditions")
-public class ReflectionUtils {
+public class ReflectionUtil {
 
     private static Class<?> bannerClass;
     private static Method nmsStackSaveMethod = null;
@@ -21,7 +21,7 @@ public class ReflectionUtils {
             String[] spaceSplit = version.split(" "); // { "git-Paper-153", "MC:", "1.13.2" }
             String numberVersion = spaceSplit[2].replace("(", "").replace(")", ""); // "1.13.2"
             String[] dotSplit = numberVersion.split("\\."); // { "1", "13", "2" }
-            ReflectionUtils.version = Double.parseDouble(dotSplit[0] + "." + dotSplit[1]); // 1.13
+            ReflectionUtil.version = Double.parseDouble(dotSplit[0] + "." + dotSplit[1]); // 1.13
 
             bannerClass = getItemBannerClass();
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class ReflectionUtils {
 
     public static String[] getFormattedStringItem(ItemStack itemStack){
 
-        String itemName = ReflectionUtils.getMinecraftName(itemStack);
+        String itemName = ReflectionUtil.getMinecraftName(itemStack);
         itemName = itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty() ? itemName : itemStack.getItemMeta().getDisplayName();
 
         return new String[]{itemName, getItemAsJson(itemStack)};

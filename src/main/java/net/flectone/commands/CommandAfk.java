@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.PlayerManager;
 
 public class CommandAfk implements CommandExecutor {
     @Override
@@ -26,7 +26,7 @@ public class CommandAfk implements CommandExecutor {
     }
 
     public static void setAfkFalse(Player player){
-        FPlayer fPlayer = PlayerUtils.getPlayer(player);
+        FPlayer fPlayer = PlayerManager.getPlayer(player);
         fPlayer.setLastBlock(player.getLocation().getBlock());
         CommandAfk.sendMessage(fPlayer, false);
     }

@@ -9,7 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.utils.FileResource;
+import net.flectone.managers.FileManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -170,10 +170,10 @@ public class TabComplets implements TabCompleter {
         }
     }
 
-    private void addKeysFile(FileResource fileResource, List<String> wordsList, String arg){
-        for(String key : fileResource.getKeys()){
+    private void addKeysFile(FileManager fileManager, List<String> wordsList, String arg){
+        for(String key : fileManager.getKeys()){
 
-            if(fileResource.getString(key).contains("root='YamlConfiguration'")) continue;
+            if(fileManager.getString(key).contains("root='YamlConfiguration'")) continue;
 
             isStartsWith(arg, key, wordsList);
         }

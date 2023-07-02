@@ -2,8 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
-import net.flectone.utils.Utils;
+import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -41,20 +40,20 @@ public class CommandMute implements CommandExecutor {
 
         OfflinePlayer mutedPlayer = Bukkit.getOfflinePlayer(strings[0]);
 
-        String reason = strings.length > 2 ? ObjectUtils.toString(strings, 2) : Main.locale.getString("mute.reason.default");
+        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("mute.reason.default");
 
         int time = getTimeFromString(stringTime);
 
         List<String> muteList = new ArrayList<>();
         muteList.add(reason);
-        muteList.add(String.valueOf(time + Utils.getCurrentTime()));
+        muteList.add(String.valueOf(time + ObjectUtil.getCurrentTime()));
 
         Main.mutes.set(mutedPlayer.getUniqueId().toString(), muteList);
         Main.mutes.saveFile();
 
         String formatString = Main.locale.getString("mute.success_send")
                 .replace("<player>", mutedPlayer.getName())
-                .replace("<time>", ObjectUtils.convertTimeToString(time))
+                .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
         fCommand.sendGlobalMessage(formatString, false);

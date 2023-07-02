@@ -2,7 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public class CommandMe implements CommandExecutor {
         String formatString = Main.locale.getString("me.message")
                 .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(formatString, ObjectUtils.toString(strings));
+        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
 
         return true;
     }

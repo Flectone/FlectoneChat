@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
-import net.flectone.utils.FileResource;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.FileManager;
+import net.flectone.managers.PlayerManager;
 
 public class CommandFlectonechat implements CommandExecutor {
     @Override
@@ -40,7 +40,7 @@ public class CommandFlectonechat implements CommandExecutor {
 
             Object object;
             if (strings.length > 5) {
-                object = ObjectUtils.toString(strings, 4);
+                object = ObjectUtil.toString(strings, 4);
             } else {
                 object = getObject(strings[3], strings[4]);
             }
@@ -51,7 +51,7 @@ public class CommandFlectonechat implements CommandExecutor {
                     Main.config.setObject(strings[1], object);
                     Main.config.saveFile();
 
-                    Main.locale.setFileConfiguration(new FileResource("language/" + Main.config.getString("language") + ".yml"));
+                    Main.locale.setFileConfiguration(new FileManager("language/" + Main.config.getString("language") + ".yml"));
                     break;
                 case "locale":
                     Main.locale.setObject(strings[1], object);
@@ -65,7 +65,7 @@ public class CommandFlectonechat implements CommandExecutor {
         Main.getInstance().checkPlayerMoveTimer();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
-            PlayerUtils.removePlayer(playerOnline);
+            PlayerManager.removePlayer(playerOnline);
             new FPlayer(playerOnline);
         }
 

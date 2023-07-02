@@ -1,4 +1,4 @@
-package net.flectone.utils;
+package net.flectone.managers;
 
 import net.flectone.custom.FPlayer;
 import org.bukkit.entity.HumanEntity;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PlayerUtils {
+public class PlayerManager {
 
     public static HashMap<UUID, FPlayer> onlinePlayers;
 
@@ -24,7 +24,7 @@ public class PlayerUtils {
     }
 
     public static void setOnlinePlayers(HashMap<UUID, FPlayer> onlinePlayers) {
-        PlayerUtils.onlinePlayers = onlinePlayers;
+        PlayerManager.onlinePlayers = onlinePlayers;
     }
 
     public static void removePlayer(Player player){

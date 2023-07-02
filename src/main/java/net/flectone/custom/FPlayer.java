@@ -1,14 +1,14 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
-import net.flectone.utils.Utils;
+import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class FPlayer {
         this.uuid = player.getUniqueId();
         this.ignoreList = Main.ignores.getStringList(uuid.toString());
 
-        PlayerUtils.addPlayer(this);
+        PlayerManager.addPlayer(this);
 
         setName(player.getWorld());
 
@@ -104,7 +104,7 @@ public class FPlayer {
             String finalName = Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix");
             finalName = finalName.replace("<vault_prefix>", vaultPrefix).replace("<vault_suffix>", vaultSuffix);
 
-            return Utils.translateColor(finalName);
+            return ObjectUtil.translateHexToColor(finalName);
         }
         return name;
     }
@@ -205,7 +205,7 @@ public class FPlayer {
     public void setLastBlock(Block lastBlock) {
         if(!Main.config.getBoolean("afk.timeout.enable")) return;
 
-        this.lastTimeMoved = Utils.getCurrentTime();
+        this.lastTimeMoved = ObjectUtil.getCurrentTime();
         this.lastBlock = lastBlock;
     }
 
@@ -225,7 +225,7 @@ public class FPlayer {
     }
 
     public int getTimeMuted(){
-        return getRealTimeMuted() - Utils.getCurrentTime();
+        return getRealTimeMuted() - ObjectUtil.getCurrentTime();
     }
 
     public String getReasonMute(){

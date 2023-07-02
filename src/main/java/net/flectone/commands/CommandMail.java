@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class CommandMail implements CommandExecutor {
         }
 
         String playerName = strings[0];
-        String message = ObjectUtils.toString(strings, 1);
+        String message = ObjectUtil.toString(strings, 1);
 
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
 

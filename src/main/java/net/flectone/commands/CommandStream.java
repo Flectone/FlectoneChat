@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,7 +55,7 @@ public class CommandStream implements CommandExecutor {
         for(String string : Main.locale.getStringList("stream.start")){
 
             string = string
-                    .replace("<links>", ObjectUtils.toString(strings, 1))
+                    .replace("<links>", ObjectUtil.toString(strings, 1))
                     .replace("<player>", fCommand.getSenderName());
 
             stringBuilder.append(string);

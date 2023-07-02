@@ -2,14 +2,14 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.PlayerManager;
 
 public class CommandMsg implements CommandExecutor {
     @Override
@@ -31,7 +31,7 @@ public class CommandMsg implements CommandExecutor {
 
         if(fCommand.isMuted()) return true;
 
-        String message = ObjectUtils.toString(strings, 1);
+        String message = ObjectUtil.toString(strings, 1);
 
         if(!fCommand.isConsole()){
             if(fCommand.getSenderName().equalsIgnoreCase(playerName)){
@@ -43,7 +43,7 @@ public class CommandMsg implements CommandExecutor {
                 fCommand.sendMeMessage("msg.you_ignore");
                 return true;
             }
-            if(PlayerUtils.getPlayer(secondPlayer).checkIgnoreList((Player) commandSender)){
+            if(PlayerManager.getPlayer(secondPlayer).checkIgnoreList((Player) commandSender)){
                 fCommand.sendMeMessage("msg.he_ignore");
                 return true;
             }

@@ -4,7 +4,7 @@ import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.commands.TabComplets;
 import net.flectone.custom.FPlayer;
-import net.flectone.utils.FileResource;
+import net.flectone.managers.FileManager;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -18,16 +18,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
-import net.flectone.utils.PlayerUtils;
+import net.flectone.managers.PlayerManager;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class FActions implements Listener {
 
-    private FileResource locale = Main.locale;
+    private FileManager locale = Main.locale;
 
-    private FileResource config = Main.config;
+    private FileManager config = Main.config;
 
     @EventHandler
     public void joinPlayer(PlayerJoinEvent event){
@@ -74,7 +74,7 @@ public class FActions implements Listener {
         event.setQuitMessage(null);
         setActionMessage("left", player.getName());
 
-        PlayerUtils.removePlayer(player);
+        PlayerManager.removePlayer(player);
     }
 
     private void removeBugEntities(Player player){
@@ -96,8 +96,8 @@ public class FActions implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event){
 
-        if(PlayerUtils.getPlayer(event.getWhoClicked()).getInventoryList() == null
-                || !PlayerUtils.getPlayer(event.getWhoClicked()).getInventoryList().contains(event.getInventory())) return;
+        if(PlayerManager.getPlayer(event.getWhoClicked()).getInventoryList() == null
+                || !PlayerManager.getPlayer(event.getWhoClicked()).getInventoryList().contains(event.getInventory())) return;
 
 
         event.setCancelled(true);
@@ -114,7 +114,7 @@ public class FActions implements Listener {
                 String secondPlayerName = clickedItem.getItemMeta().getLocalizedName();
                 OfflinePlayer secondPlayer = Bukkit.getOfflinePlayer(secondPlayerName);
 
-                PlayerUtils.getPlayer(eventPlayer).getIgnoreList().remove(secondPlayer.getUniqueId().toString());
+                PlayerManager.getPlayer(eventPlayer).getIgnoreList().remove(secondPlayer.getUniqueId().toString());
                 eventPlayer.sendMessage(locale.getFormatString("ignore.success_unignore", eventPlayer).
                         replace( "<player>", secondPlayerName));
 
@@ -122,10 +122,10 @@ public class FActions implements Listener {
 
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerUtils.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
                 for(int x = 0; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){
-                        PlayerUtils.getPlayer(eventPlayer).setNumberLastInventory(x);
+                        PlayerManager.getPlayer(eventPlayer).setNumberLastInventory(x);
                         break;
                     }
                 }
@@ -138,7 +138,7 @@ public class FActions implements Listener {
             case SPECTRAL_ARROW: {
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerUtils.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
 
                 for(int x = 0; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){
@@ -152,7 +152,7 @@ public class FActions implements Listener {
             case ARROW:{
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerUtils.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
 
                 for(int x = 1; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){
@@ -169,12 +169,12 @@ public class FActions implements Listener {
     @EventHandler
     public void inventoryOpen(InventoryOpenEvent event){
 
-        List<Inventory> inventoryList = PlayerUtils.getPlayer(event.getPlayer()).getInventoryList();
+        List<Inventory> inventoryList = PlayerManager.getPlayer(event.getPlayer()).getInventoryList();
         if(inventoryList == null
                 || !inventoryList.contains(event.getInventory())) return;
 
 
-        List<String> ignoreList = PlayerUtils.getPlayer(event.getPlayer()).getIgnoreList();
+        List<String> ignoreList = PlayerManager.getPlayer(event.getPlayer()).getIgnoreList();
 
         int indexItem = 0;
         int numberInventory = 0;
@@ -235,15 +235,15 @@ public class FActions implements Listener {
 
     @EventHandler
     public void changeWorldEvent(PlayerChangedWorldEvent event){
-        PlayerUtils.getPlayer(event.getPlayer()).setName(event.getPlayer().getWorld());
+        PlayerManager.getPlayer(event.getPlayer()).setName(event.getPlayer().getWorld());
     }
 
     @EventHandler
     public void playerItemClick(PlayerInteractEvent event){
 
-        if(PlayerUtils.getPlayer(event.getPlayer()).isAfk()){
+        if(PlayerManager.getPlayer(event.getPlayer()).isAfk()){
             CommandAfk.setAfkFalse(event.getPlayer());
-        } else PlayerUtils.getPlayer(event.getPlayer()).setLastBlock(event.getPlayer().getLocation().getBlock());
+        } else PlayerManager.getPlayer(event.getPlayer()).setLastBlock(event.getPlayer().getLocation().getBlock());
 
         if(!config.getBoolean("mark.enable")) return;
         if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
@@ -306,7 +306,7 @@ public class FActions implements Listener {
 
     @EventHandler
     public void checkPlayerUseCommand(PlayerCommandPreprocessEvent event){
-        FPlayer fPlayer = PlayerUtils.getPlayer(event.getPlayer());
+        FPlayer fPlayer = PlayerManager.getPlayer(event.getPlayer());
 
         if(!fPlayer.isAfk() || event.getMessage().startsWith("/afk")) return;
 

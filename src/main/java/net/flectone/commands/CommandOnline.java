@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
-import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -41,7 +41,7 @@ public class CommandOnline implements CommandExecutor {
         long playedTime = command.getName().equalsIgnoreCase("lastonline") ? offlinePlayer.getLastPlayed() : offlinePlayer.getFirstPlayed();
 
         String[] replacedStrings = {"<player>", "<time>"};
-        String[] replacedToStrings = {offlinePlayer.getName(), ObjectUtils.convertTimeToString(playedTime)};
+        String[] replacedToStrings = {offlinePlayer.getName(), ObjectUtil.convertTimeToString(playedTime)};
 
         fCommand.sendMeMessage(command.getName() + ".message", replacedStrings, replacedToStrings);
 
