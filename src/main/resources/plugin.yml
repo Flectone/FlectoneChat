@@ -1,6 +1,6 @@
 name: FlectoneChat
 version: '${project.version}'
-main: ru.flectone.Main
+main: net.flectone.Main
 api-version: 1.16
 authors: [ TheFaser ]
 softdepend: [ Vault, PlaceHolderAPI]
@@ -80,6 +80,14 @@ commands:
     usage: /afk
     permission: flectonechat.afk
 
+  mute:
+    usage: /mute <player> <time> <reason>
+    permission: flectonechat.mute
+
+  unmute:
+    usage: /unmute <player>
+    permission: flectonechat.mute
+
 permissions:
   flectonechat.reload:
     default: op
@@ -115,3 +123,5 @@ permissions:
     default: true
   flectonechat.afk:
     default: true
+  flectonechat.mute:
+    default: op

@@ -134,3 +134,11 @@ try-cube.cooldown.permission: "flectonechat.try-cube.cooldown.immune"
 afk.cooldown.enable: false
 afk.cooldown.time: 5
 afk.cooldown.permission: "flectonechat.afk.cooldown.immune"
+
+mute.cooldown.enable: false
+mute.cooldown.time: 5
+mute.cooldown.permission: "flectonechat.mute.cooldown.immune"
+
+unmute.cooldown.enable: false
+unmute.cooldown.time: 5
+unmute.cooldown.permission: "flectonechat.mute.cooldown.immune"

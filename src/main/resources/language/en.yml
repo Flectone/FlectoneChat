@@ -47,6 +47,19 @@ ping.player.message: "&&1🌍 <player> ping is <ping> "
 afk.success_true: "#f2d40f💤 Now you're afk"
 afk.success_false: "#f2d40f💤 Now you're not afk"
 
+# /mute
+mute.usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+mute.no_player: "#ff4e4e⁉ This player does not exist"
+mute.reason.default: "You were muted on this server"
+mute.success_send: "#ff4e4e☠ Player <player> was muted for <time> second. Reason: <reason>"
+mute.success_get: "#ff4e4e☠ You are in mute, <time> seconds left. Reason: <reason>"
+
+# /unmute
+unmute.usage: "&&1⚑ Usage: &&2/<command> (player)"
+unmute.no_player: "#ff4e4e⁉ This player does not exist"
+unmute.no_muted: "#ff4e4e⁉ This player does not muted"
+unmute.success_send: "#ff4e4e☻ Player <player> unmuted"
+
 # /ignore
 ignore.usage: "&&1⚑ Usage: &&2/<command> (player)"
 ignore.myself: "#ff4e4e⁉ You can't ignore yourself"
