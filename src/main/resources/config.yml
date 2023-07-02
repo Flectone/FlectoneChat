@@ -11,6 +11,7 @@ tab.header.enable: true
 tab.footer.enable: true
 
 color.worlds.enable: true
+color.worlds.team.enable: true
 color.normal: "#4eff52● &f"
 color.nether: "#ff4e4e● &f"
 color.the_end: "#834eff● &f"
@@ -31,6 +32,9 @@ afk.timeout.time: 3000
 
 ## █ █ ▄▀▄ █ █ █   ▀█▀   ▄▀▄ █▀▄ █
 ## ▀▄▀ █▀█ ▀▄█ █▄▄  █    █▀█ █▀  █
+# if off, first flectonechat symbols and then vault symbols
+# if on, first vault symbols and then vault symbols
+vault.symbols_first: false
 vault.prefix: "<vault_prefix>"
 vault.suffix: "<vault_suffix>"
 

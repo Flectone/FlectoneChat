@@ -54,7 +54,7 @@ public class FPlayer {
 
         PlayerManager.addPlayer(this);
 
-        setName(player.getWorld());
+        setSymbols();
 
         setLastBlock(player.getLocation().getBlock());
 
@@ -63,10 +63,21 @@ public class FPlayer {
         isMuted();
     }
 
+    private void setSymbols(){
+        if(Main.config.getBoolean("vault.symbols_first")){
+            getVaultPrefixSuffix();
+            setName(player.getWorld());
+        } else {
+            setName(player.getWorld());
+            getVaultPrefixSuffix();
+        }
+    }
+
     private Team getPlayerTeam(){
         Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(player.getName());
         Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(player.getName());
-        if(!team.hasEntry(player.getName())) team.addEntry(player.getName());
+        if(!team.hasEntry(player.getName()) && Main.config.getBoolean("color.worlds.team.enable")) team.addEntry(player.getName());
+        if(team.hasEntry(player.getName()) && !Main.config.getBoolean("color.worlds.team.enable")) team.removeEntry(player.getName());
 
         team.setColor(ChatColor.WHITE);
 
@@ -111,9 +122,7 @@ public class FPlayer {
             addPrefixToName(Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player));
         }
 
-        this.player.setPlayerListName(getName());
-        this.team.setPrefix(prefix);
-        this.team.setSuffix(suffix);
+        setDisplayName();
     }
 
     private String prefix = "";
@@ -122,40 +131,43 @@ public class FPlayer {
 
     public void addPrefixToName(String string) {
         this.prefix += string;
-
-        this.player.setPlayerListName(getName());
-        this.team.setPrefix(prefix);
-        this.team.setSuffix(suffix);
+        setDisplayName();
     }
 
     public void removeFromName(String string) {
         this.prefix = this.prefix.replaceFirst(string, "");
         this.suffix = this.suffix.replaceFirst(string, "");
-        this.player.setPlayerListName(getName());
-        this.team.setPrefix(prefix);
-        this.team.setSuffix(suffix);
+        setDisplayName();
     }
 
     public void addSuffixToName(String string) {
         this.suffix += string;
+        setDisplayName();
+    }
+
+    public void getVaultPrefixSuffix(){
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
+
+            String vaultPrefix = provider.getPlayerPrefix(player);
+            vaultPrefix = Main.config.getString("vault.prefix").replace("<vault_prefix>", vaultPrefix);
+            removeFromName(ObjectUtil.translateHexToColor(vaultPrefix));
+            addPrefixToName(ObjectUtil.translateHexToColor(vaultPrefix));
+
+            String vaultSuffix = provider.getPlayerSuffix(player);
+            vaultSuffix = Main.config.getString("vault.suffix").replace("<vault_suffix>", vaultSuffix);
+            removeFromName(ObjectUtil.translateHexToColor(vaultSuffix));
+            addSuffixToName(ObjectUtil.translateHexToColor(vaultSuffix));
+        }
+    }
+
+    private void setDisplayName(){
         this.player.setPlayerListName(getName());
         this.team.setPrefix(prefix);
         this.team.setSuffix(suffix);
     }
 
     public String getName() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
-            String vaultPrefix = provider.getPlayerPrefix(player);
-            String vaultSuffix = provider.getPlayerSuffix(player);
-
-            String finalName = prefix + Main.config.getString("vault.prefix") + this.name + Main.config.getString("vault.suffix") + suffix;
-
-            finalName = finalName
-                    .replace("<vault_prefix>", vaultPrefix)
-                    .replace("<vault_suffix>", vaultSuffix);
-            return ObjectUtil.translateHexToColor(finalName);
-        }
         return prefix + name + suffix;
     }
 
