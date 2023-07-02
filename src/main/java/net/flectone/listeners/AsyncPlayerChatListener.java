@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FChat implements Listener {
+public class AsyncPlayerChatListener implements Listener {
 
     private FileManager locale = Main.locale;
 

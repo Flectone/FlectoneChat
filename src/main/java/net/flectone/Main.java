@@ -2,7 +2,7 @@ package net.flectone;
 
 import net.flectone.commands.*;
 import net.flectone.custom.FTabCompleter;
-import net.flectone.listeners.FChat;
+import net.flectone.listeners.*;
 import net.flectone.managers.FileManager;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
@@ -13,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.flectone.custom.FPlayer;
-import net.flectone.listeners.FActions;
 import net.flectone.managers.PlayerManager;
 
 import java.util.HashMap;
@@ -56,8 +55,16 @@ public final class Main extends JavaPlugin {
 
         PlayerManager.setOnlinePlayers(new HashMap<>());
 
-        registerEvents(new FActions());
-        registerEvents(new FChat());
+        registerEvents(new AsyncPlayerChatListener());
+        registerEvents(new EntitySpawnListener());
+        registerEvents(new InventoryClickListener());
+        registerEvents(new InventoryOpenListener());
+        registerEvents(new PlayerChangeWorldListener());
+        registerEvents(new PlayerCommandPreprocessListener());
+        registerEvents(new PlayerInteractListener());
+        registerEvents(new PlayerJoinListener());
+        registerEvents(new PlayerQuitListener());
+        registerEvents(new ServerListPingListener());
 
         setCommandExecutor(new CommandIgnore(), "ignore");
         setCommandExecutor(new CommandIgnoreList(), "ignore-list");

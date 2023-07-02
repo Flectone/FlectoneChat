@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class FEntity {
 
-
     private static final HashMap<String, Team> noCollisionTeamMap = new HashMap<>();
 
     public static void addToTeam(Entity entity, String color){
@@ -41,6 +40,15 @@ public class FEntity {
         if(entity instanceof Player){
             team.removeEntry(((Player) entity).getName());
         } else team.removeEntry(entity.getUniqueId().toString());
+    }
+
+    public static void removeBugEntities(Player player){
+        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, entity -> entity.isGlowing()).forEach(entity -> {
+
+            if(entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
+
+            entity.setGlowing(false);
+        });
     }
 
 }
