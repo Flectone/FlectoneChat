@@ -114,8 +114,10 @@ public class TabComplets implements TabCompleter {
                 break;
 
             case "try-cube":
-                for(int x = 1; x <= Main.getInstance().getConfig().getInt("try-cube.max_amount"); x++){
-                    isStartsWith(args[0], String.valueOf(x), wordsList);
+                if(args.length == 1){
+                    for(int x = 1; x <= Main.config.getInt("try-cube.max_amount"); x++){
+                        isStartsWith(args[0], String.valueOf(x), wordsList);
+                    }
                 }
                 break;
             case "mark":

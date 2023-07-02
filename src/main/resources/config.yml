@@ -57,7 +57,7 @@ mark.enable: true
 mark.item: "WOODEN_SWORD"
 mark.range: 30
 
-try-cube.max_amount: 10
+try-cube.max_amount: 9
 try-cube.6: "⚅"
 try-cube.5: "⚄"
 try-cube.4: "⚃"
