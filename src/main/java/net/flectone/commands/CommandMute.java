@@ -22,7 +22,7 @@ public class CommandMute implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(2)) return true;
+        if(fCommand.isInsufficientArgs(2)) return true;
 
         String stringTime = strings[1];
 
@@ -31,7 +31,7 @@ public class CommandMute implements CommandExecutor {
             return true;
         }
 
-        if(!FCommands.isRealOfflinePlayer(strings[0])){
+        if(!FCommands.isOfflinePlayer(strings[0])){
             fCommand.sendMeMessage("mute.no_player");
             return true;
         }

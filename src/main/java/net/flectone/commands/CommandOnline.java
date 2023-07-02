@@ -16,7 +16,7 @@ public class CommandOnline implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
         String playerName = strings[0];
 
@@ -29,7 +29,7 @@ public class CommandOnline implements CommandExecutor {
             }
         }
 
-        if(!FCommands.isRealOfflinePlayer(playerName)){
+        if(!FCommands.isOfflinePlayer(playerName)){
             fCommand.sendMeMessage("online.no_player");
             return true;
         }

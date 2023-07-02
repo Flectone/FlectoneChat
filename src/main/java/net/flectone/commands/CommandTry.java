@@ -16,7 +16,7 @@ public class CommandTry implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
         if(fCommand.isHaveCD()) return true;
 

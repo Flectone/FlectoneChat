@@ -17,9 +17,9 @@ public class CommandUnmute implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
-        if(!FCommands.isRealOfflinePlayer(strings[0])){
+        if(!FCommands.isOfflinePlayer(strings[0])){
             fCommand.sendMeMessage("unmute.no_player");
             return true;
         }

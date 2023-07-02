@@ -37,7 +37,7 @@ public class FCommands {
 
     private Player player = null;
 
-    private String senderName;
+    private final String senderName;
 
     private final boolean isConsole;
 
@@ -55,28 +55,47 @@ public class FCommands {
         this.player = (sender instanceof Player) ? ((Player) sender).getPlayer() : null;
         this.isConsole = (this.player == null);
 
-        if(!isConsole && getFPlayer().isAfk() && !command.equalsIgnoreCase("afk")){
-            CommandAfk.setAfkFalse(player);
-        }
+        checkAndResetAfk();
 
-        if(isConsole || !Main.config.getBoolean("cooldown.enable") || !Main.config.getBoolean(command + ".cooldown.enable")) return;
+        if(isConsole || !isCDEnabled()) return;
 
-        if(hasCooldown()) {
+        if(hasCD()) {
             String[] replaceStrings = {"<alias>", "<time>"};
-            String[] replaceTo = {alias, ObjectUtil.convertTimeToString(getCooldownTime() - ObjectUtil.getCurrentTime())};
+            String[] replaceTo = {alias, ObjectUtil.convertTimeToString(getCDTime() - ObjectUtil.getCurrentTime())};
             sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
             return;
         }
 
-        if(getCooldownTime() < ObjectUtil.getCurrentTime()) {
-            commandsCDMap.remove(player.getUniqueId() + command);
+        if(isCDExpired()) {
+            commandsCDMap.remove(getCommandKey());
             return;
         }
 
-        commandsCDMap.put(player.getUniqueId() + command, getCooldownTime());
+        commandsCDMap.put(getCommandKey(), getCDTime());
     }
 
-    private boolean hasCooldown() {
+    private void checkAndResetAfk() {
+        if (!isConsole && getFPlayer().isAfk() && !command.equalsIgnoreCase("afk")) {
+            CommandAfk.setAfkFalse(player);
+        }
+    }
+
+    private boolean isCDEnabled() {
+        return Main.config.getBoolean("cooldown.enable") && Main.config.getBoolean(command + ".cooldown.enable");
+    }
+
+    private boolean isCDExpired() {
+        return getCDTime() < ObjectUtil.getCurrentTime();
+    }
+
+    private String getCommandKey() {
+        if (player != null) {
+            return player.getUniqueId() + command;
+        }
+        return "";
+    }
+
+    private boolean hasCD() {
         isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
                 && commandsCDMap.get(player.getUniqueId() + command) > ObjectUtil.getCurrentTime()
                 && !player.isOp()
@@ -85,8 +104,8 @@ public class FCommands {
         return isHaveCD;
     }
 
-    private int getCooldownTime() {
-        return hasCooldown() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + ObjectUtil.getCurrentTime();
+    private int getCDTime() {
+        return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + ObjectUtil.getCurrentTime();
     }
 
     public boolean isMuted(){
@@ -126,26 +145,26 @@ public class FCommands {
         return PlayerManager.getPlayer(((Player) sender).getUniqueId());
     }
 
-    public boolean checkCountArgs(int count){
-        boolean is = args.length < count;
-        if(is){
+    public boolean isInsufficientArgs(int count){
+        boolean isInsufficientArgs = args.length < count;
+        if(isInsufficientArgs){
             sendUsageMessage();
         }
-        return is;
+        return isInsufficientArgs;
     }
 
-    public boolean isYourselfCommand(){
+    public boolean isSelfCommand(){
         if(isConsole) return false;
 
         return args[0].equalsIgnoreCase(player.getName());
     }
 
-    public static boolean isRealOfflinePlayer(String playerName){
+    public static boolean isOfflinePlayer(String playerName){
         return Arrays.stream(Bukkit.getOfflinePlayers())
                 .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(playerName));
     }
 
-    public static boolean isRealOnlinePlayer(String playerName){
+    public static boolean isOnlinePlayer(String playerName){
         return Bukkit.getOnlinePlayers().stream()
                 .anyMatch(onlinePlayer -> onlinePlayer.getName().equalsIgnoreCase(playerName));
     }
@@ -188,7 +207,7 @@ public class FCommands {
 
             ComponentBuilder componentBuilder = new ComponentBuilder();
 
-            buildMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
+            processMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
 
             if(!clickable || isConsole){
                 recipient.spigot().sendMessage(componentBuilder.create());
@@ -204,7 +223,7 @@ public class FCommands {
             for(BaseComponent baseComponent : list){
 
                 if(isFirst){
-                    baseComponent = getNameComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
+                    baseComponent = createClickableComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
                     isFirst = false;
                 } else if(baseComponent.getHoverEvent() != null) isFirst = true;
 
@@ -246,7 +265,7 @@ public class FCommands {
         return sender instanceof Player;
     }
 
-    public void usingTellUtils(CommandSender firstPlayer, CommandSender secondPlayer, String typeMessage, String message){
+    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String typeMessage, String message){
 
         ItemStack itemStack = null;
 
@@ -270,11 +289,11 @@ public class FCommands {
         getBuilder.append(TextComponent.fromLegacyText(getFormatString[0]));
 
         //Add getter name for builder
-        getBuilder.append(getNameComponent(secondPlayer.getName(), secondPlayer.getName(), firstPlayer, secondPlayer));
+        getBuilder.append(createClickableComponent(secondPlayer.getName(), secondPlayer.getName(), firstPlayer, secondPlayer));
 
         getBuilder.append(TextComponent.fromLegacyText(org.bukkit.ChatColor.getLastColors(getFormatString[1]) + getFormatString[1]), ComponentBuilder.FormatRetention.NONE);
 
-        buildMessage(message, getBuilder, org.bukkit.ChatColor.getLastColors(getFormatString[1]), firstPlayer, secondPlayer, itemStack);
+        processMessage(message, getBuilder, org.bukkit.ChatColor.getLastColors(getFormatString[1]), firstPlayer, secondPlayer, itemStack);
 
         firstPlayer.spigot().sendMessage(getBuilder.create());
 
@@ -284,11 +303,11 @@ public class FCommands {
 
     }
 
-    public boolean checkIgnoreList(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
+    public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
         return Main.ignores.getStringList(firstPlayer.getUniqueId().toString()).contains(secondPlayer.getUniqueId().toString());
     }
 
-    private void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {
+    private void processMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {
         // Ping player in message
         String pingPrefix = Main.config.getString("chat.ping.prefix");
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?\\+-=\\\\\\.&]*)";
@@ -298,7 +317,7 @@ public class FCommands {
         for(String word : message.split(" ")) {
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
 
-            if(word.startsWith(pingPrefix) && FCommands.isRealOnlinePlayer(word.substring(1))){
+            if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1))){
 
                 Player player = Bukkit.getPlayer(word.substring(1));
 
@@ -306,7 +325,7 @@ public class FCommands {
                         .replace("<player>", player.getName())
                         .replace("<prefix>", pingPrefix);
 
-                wordComponent = getNameComponent(pingMessage, player.getName(), colorPlayer, player);
+                wordComponent = createClickableComponent(pingMessage, player.getName(), colorPlayer, player);
             }
 
             Matcher urlMatcher = pattern.matcher(word);
@@ -348,7 +367,7 @@ public class FCommands {
         }
     }
 
-    private TextComponent getNameComponent(String text, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
+    private TextComponent createClickableComponent(String text, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
         String suggestCommand = "/msg " + playerName + " ";
         String showText = Main.locale.getFormatString("chat.click_player_name", colorPlayer, papiPlayer);
 

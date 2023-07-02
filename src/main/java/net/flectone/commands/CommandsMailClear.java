@@ -21,11 +21,11 @@ public class CommandsMailClear implements CommandExecutor {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.checkCountArgs(2)) return true;
+        if(fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
 
-        if(!FCommands.isRealOfflinePlayer(playerName)){
+        if(!FCommands.isOfflinePlayer(playerName)){
             fCommand.sendMeMessage("mail-clear.no_player");
             return true;
         }

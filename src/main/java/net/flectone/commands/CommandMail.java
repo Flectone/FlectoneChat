@@ -22,9 +22,9 @@ public class CommandMail implements CommandExecutor {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.checkCountArgs(2)) return true;
+        if(fCommand.isInsufficientArgs(2)) return true;
 
-        if(!FCommands.isRealOfflinePlayer(strings[0])){
+        if(!FCommands.isOfflinePlayer(strings[0])){
             fCommand.sendMeMessage("mail.no_player");
             return true;
         }
@@ -40,12 +40,12 @@ public class CommandMail implements CommandExecutor {
         }
 
 
-        if(fCommand.checkIgnoreList((Player) commandSender, offlinePlayer)){
+        if(fCommand.isIgnored((Player) commandSender, offlinePlayer)){
             fCommand.sendMeMessage("mail.you_ignore");
             return true;
         }
 
-        if(fCommand.checkIgnoreList(offlinePlayer, (Player) commandSender)){
+        if(fCommand.isIgnored(offlinePlayer, (Player) commandSender)){
             fCommand.sendMeMessage("mail.he_ignore");
             return true;
         }

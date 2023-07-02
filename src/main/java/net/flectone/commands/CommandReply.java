@@ -44,8 +44,8 @@ public class CommandReply implements CommandExecutor {
         if(fCommand.isMuted()) return true;
 
         String message = ObjectUtil.toString(strings);
-        fCommand.usingTellUtils(commandSender, secondPlayer, "send", message);
-        fCommand.usingTellUtils(secondPlayer, commandSender, "get", message);
+        fCommand.sendTellMessage(commandSender, secondPlayer, "send", message);
+        fCommand.sendTellMessage(secondPlayer, commandSender, "get", message);
 
         return true;
     }

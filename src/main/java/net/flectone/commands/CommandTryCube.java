@@ -16,7 +16,7 @@ public class CommandTryCube implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
         if(!StringUtils.isNumeric(strings[0])){
             fCommand.sendMeMessage("try-cube.only_int");

@@ -19,14 +19,14 @@ public class CommandIgnore implements CommandExecutor {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.checkCountArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
-        if(fCommand.isYourselfCommand()){
+        if(fCommand.isSelfCommand()){
             fCommand.sendMeMessage("ignore.myself");
             return true;
         }
 
-        if(!fCommand.isRealOfflinePlayer(strings[0])){
+        if(!fCommand.isOfflinePlayer(strings[0])){
             fCommand.sendMeMessage("ignore.no_player");
             return true;
         }

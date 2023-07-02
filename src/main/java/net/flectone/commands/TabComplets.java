@@ -42,7 +42,7 @@ public class TabComplets implements TabCompleter {
                     for(OfflinePlayer player : Bukkit.getOfflinePlayers()){
                         isStartsWith(args[0], player.getName(), wordsList);
                     }
-                } else if(sender instanceof Player && args.length == 2 && FCommands.isRealOfflinePlayer(args[0])){
+                } else if(sender instanceof Player && args.length == 2 && FCommands.isOfflinePlayer(args[0])){
                     String key = Bukkit.getOfflinePlayer(args[0]).getUniqueId() + "." + ((Player) sender).getPlayer().getUniqueId();
                     List<String> list = Main.mails.getStringList(key);
                     for(int x = 0; x < list.size(); x++){

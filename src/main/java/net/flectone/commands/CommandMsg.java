@@ -17,7 +17,7 @@ public class CommandMsg implements CommandExecutor {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.checkCountArgs(2)) return true;
+        if(fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
 
@@ -49,8 +49,8 @@ public class CommandMsg implements CommandExecutor {
             }
         }
 
-        fCommand.usingTellUtils(commandSender, secondPlayer.getPlayer(), "send", message);
-        fCommand.usingTellUtils(secondPlayer.getPlayer(), commandSender, "get", message);
+        fCommand.sendTellMessage(commandSender, secondPlayer.getPlayer(), "send", message);
+        fCommand.sendTellMessage(secondPlayer.getPlayer(), commandSender, "get", message);
 
         return true;
     }
