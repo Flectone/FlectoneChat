@@ -2,19 +2,21 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class CommandMute implements CommandExecutor {
+public class CommandMute extends FTabCompleter {
     public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
 
     @Override
@@ -58,6 +60,32 @@ public class CommandMute implements CommandExecutor {
         fCommand.sendGlobalMessage(formatString, false);
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 2){
+
+            for(String format : CommandMute.formatTimeList){
+                if(strings[1].length() != 0 && StringUtils.isNumeric(strings[1].substring(strings[1].length() - 1))){
+                    isStartsWith(strings[1], strings[1] + format);
+
+                } else {
+                    for(int x = 1; x < 10; x++){
+                        isStartsWith(strings[1], x + format);
+                    }
+                }
+            }
+        } else if (strings.length == 3){
+            isStartsWith(strings[2], "(reason)");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 
     private boolean isStringTime(String string){

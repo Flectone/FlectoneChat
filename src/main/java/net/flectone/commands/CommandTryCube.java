@@ -1,16 +1,17 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
+import java.util.*;
 
-public class CommandTryCube implements CommandExecutor {
+public class CommandTryCube extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -61,5 +62,21 @@ public class CommandTryCube implements CommandExecutor {
         fCommand.sendGlobalMessage(formatString);
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            for(int x = 1; x <= Main.config.getInt("try-cube.max_amount"); x++){
+                isStartsWith(strings[0], String.valueOf(x));
+            }
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }

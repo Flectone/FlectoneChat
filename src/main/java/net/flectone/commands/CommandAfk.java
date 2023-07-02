@@ -1,16 +1,19 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.PlayerManager;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandAfk implements CommandExecutor {
+import java.util.List;
+
+public class CommandAfk extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -23,6 +26,12 @@ public class CommandAfk implements CommandExecutor {
         sendMessage(fCommand, !fCommand.getFPlayer().isAfk());
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        return wordsList;
     }
 
     public static void setAfkFalse(Player player){

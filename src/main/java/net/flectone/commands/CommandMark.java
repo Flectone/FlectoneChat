@@ -1,11 +1,11 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -16,10 +16,15 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import net.flectone.custom.FEntity;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class CommandMark implements CommandExecutor {
+public class CommandMark extends FTabCompleter {
+    public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -34,7 +39,7 @@ public class CommandMark implements CommandExecutor {
 
         String color = (strings.length > 0) ? strings[0].toUpperCase() : "WHITE";
 
-        if(!Arrays.asList(TabComplets.chatColorValues).contains(color)){
+        if(!Arrays.asList(chatColorValues).contains(color)){
             fCommand.sendMeMessage("mark.error_color");
             return true;
         }
@@ -66,6 +71,22 @@ public class CommandMark implements CommandExecutor {
         }
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            for(String color : chatColorValues){
+                isStartsWith(strings[0], color);
+            }
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 
     private Entity getEntityInLineOfSightVectorMath(Player player, int range) {

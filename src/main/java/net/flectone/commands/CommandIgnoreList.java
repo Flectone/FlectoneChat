@@ -1,19 +1,20 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandIgnoreList implements CommandExecutor {
+public class CommandIgnoreList extends FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -46,5 +47,11 @@ public class CommandIgnoreList implements CommandExecutor {
         ((Player) commandSender).openInventory(inventoryList.get(fCommand.getFPlayer().getNumberLastInventory()));
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        return wordsList;
     }
 }

@@ -1,13 +1,17 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandChatcolor implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class CommandChatcolor extends FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -30,6 +34,25 @@ public class CommandChatcolor implements CommandExecutor {
 
         fCommand.sendMeMessage("chatcolor.message");
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isStartsWith(strings[0], "default");
+            isStartsWith(strings[0], "#1abaf0");
+            isStartsWith(strings[0], "&b");
+        } else if(strings.length == 2){
+            isStartsWith(strings[1], "#77d7f7");
+            isStartsWith(strings[1], "&f");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 
     private String[] getDefaultColors() {

@@ -1,10 +1,10 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +12,12 @@ import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.PlayerManager;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandFlectonechat implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class CommandFlectonechat extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
@@ -69,6 +73,37 @@ public class CommandFlectonechat implements CommandExecutor {
         fCommand.sendMeMessage("flectonechat.message");
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isStartsWith(strings[0], "reload");
+            isStartsWith(strings[0], "config");
+            isStartsWith(strings[0], "locale");
+        } else if(strings.length == 2){
+
+            if(strings[0].equalsIgnoreCase("config")){
+                addKeysFile(Main.config, strings[1]);
+            }
+            if(strings[0].equalsIgnoreCase("locale")){
+                addKeysFile(Main.locale, strings[1]);
+            }
+
+        } else if(strings.length == 3) {
+            isStartsWith(strings[2], "set");
+        } else if(strings.length == 4){
+            isStartsWith(strings[3], "string");
+            isStartsWith(strings[3], "integer");
+            isStartsWith(strings[3], "boolean");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 
     private Object getObject(String objectName, String arg){

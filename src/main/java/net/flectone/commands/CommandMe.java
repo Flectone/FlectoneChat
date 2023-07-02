@@ -2,13 +2,19 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandMe implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class CommandMe extends FTabCompleter {
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -26,5 +32,19 @@ public class CommandMe implements CommandExecutor {
         fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isStartsWith(strings[0], "(message)");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }

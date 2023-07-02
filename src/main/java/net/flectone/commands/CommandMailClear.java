@@ -1,19 +1,21 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
-public class CommandsMailClear implements CommandExecutor {
+public class CommandMailClear extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -61,5 +63,25 @@ public class CommandsMailClear implements CommandExecutor {
         fCommand.sendMeMessage("mail-clear.success", replaceString, replaceTo);
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isOfflinePlayer(strings[0]);
+        } else if(commandSender instanceof Player && strings.length == 2 && FCommands.isOfflinePlayer(strings[0])){
+            String key = Bukkit.getOfflinePlayer(strings[0]).getUniqueId() + "." + ((Player) commandSender).getPlayer().getUniqueId();
+            List<String> list = Main.mails.getStringList(key);
+            for(int x = 0; x < list.size(); x++){
+                isStartsWith(strings[1], String.valueOf(x + 1));
+            }
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }

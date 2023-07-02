@@ -1,16 +1,21 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandOnline implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class CommandOnline extends FTabCompleter {
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -46,5 +51,19 @@ public class CommandOnline implements CommandExecutor {
         fCommand.sendMeMessage(command.getName() + ".message", replacedStrings, replacedToStrings);
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isOfflinePlayer(strings[0]);
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }

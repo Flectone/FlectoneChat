@@ -1,13 +1,13 @@
 package net.flectone;
 
 import net.flectone.commands.*;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.listeners.FChat;
 import net.flectone.managers.FileManager;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,7 +73,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandMsg(), "msg");
         setCommandExecutor(new CommandReply(), "reply");
         setCommandExecutor(new CommandMail(), "mail");
-        setCommandExecutor(new CommandsMailClear(), "mail-clear");
+        setCommandExecutor(new CommandMailClear(), "mail-clear");
         setCommandExecutor(new CommandFlectonechat(), "flectonechat");
         setCommandExecutor(new CommandAfk(), "afk");
         setCommandExecutor(new CommandMute(), "mute");
@@ -174,10 +174,8 @@ public final class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
-    private final TabComplets tabComplets = new TabComplets();
-
-    private void setCommandExecutor(CommandExecutor commandExecutor, String command){
+    private void setCommandExecutor(FTabCompleter commandExecutor, String command){
         getCommand(command).setExecutor(commandExecutor);
-        getCommand(command).setTabCompleter(tabComplets);
+        getCommand(command).setTabCompleter(commandExecutor);
     }
 }

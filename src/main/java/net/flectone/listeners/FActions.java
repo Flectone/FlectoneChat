@@ -2,7 +2,7 @@ package net.flectone.listeners;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
-import net.flectone.commands.TabComplets;
+import net.flectone.commands.CommandMark;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FileManager;
 import org.bukkit.*;
@@ -252,7 +252,7 @@ public class FActions implements Listener {
         if(event.getItem().getType().equals(Material.NETHER_STAR)){
             String itemName = event.getItem().getItemMeta().getDisplayName();
             if(!itemName.isEmpty() && itemName.toLowerCase().equals("flectone")){
-                Bukkit.dispatchCommand(event.getPlayer(), "mark " + TabComplets.chatColorValues[((int) (Math.random()*TabComplets.chatColorValues.length))]);
+                Bukkit.dispatchCommand(event.getPlayer(), "mark " + CommandMark.chatColorValues[((int) (Math.random()* CommandMark.chatColorValues.length))]);
                 return;
             }
         }
@@ -273,7 +273,7 @@ public class FActions implements Listener {
 
         String command = "mark";
 
-        if(!itemName.isEmpty() && Arrays.asList(TabComplets.chatColorValues).contains(itemName)){
+        if(!itemName.isEmpty() && Arrays.asList(CommandMark.chatColorValues).contains(itemName)){
             command += " " + itemName;
         }
 

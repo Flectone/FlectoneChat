@@ -1,14 +1,18 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
+import org.jetbrains.annotations.Nullable;
 
-public class CommandStream implements CommandExecutor {
+import java.util.Collections;
+import java.util.List;
+
+public class CommandStream extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -65,5 +69,22 @@ public class CommandStream implements CommandExecutor {
         fCommand.sendGlobalMessage(stringBuilder.toString());
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isStartsWith(strings[0], "start");
+            isStartsWith(strings[0], "end");
+        } else if(strings.length == 2 && strings[0].equalsIgnoreCase("start")){
+            isStartsWith(strings[1], "https://flectone.net");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }
