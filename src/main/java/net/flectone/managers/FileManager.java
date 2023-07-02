@@ -125,9 +125,4 @@ public class FileManager extends FileConfiguration {
         this.set(string, strings);
         this.saveFile();
     }
-
-    public void updateFile(String string, Object object){
-        this.set(string, object);
-        this.saveFile();
-    }
 }
