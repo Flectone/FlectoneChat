@@ -157,13 +157,16 @@ public class FCommands {
         sendGlobalMessage(message, true);
     }
 
-    public void sendGlobalMessage(String message, boolean clickable){
-        Set<Player> newSet = Bukkit.getOnlinePlayers()
-                .stream()
-                .filter(onlinePlayer -> !PlayerUtils.getPlayer(onlinePlayer).checkIgnoreList(player))
-                .collect(Collectors.toSet());
+    public void sendGlobalMessage(String format, String message){
+        sendGlobalMessage(format, message, true);
+    }
 
-        sendGlobalMessage(newSet, message, clickable);
+    public void sendGlobalMessage(String format, String message, boolean clickable){
+        sendGlobalMessage(getFilteredPlayers(), format, message, null, clickable);
+    }
+
+    public void sendGlobalMessage(String message, boolean clickable){
+        sendGlobalMessage(getFilteredPlayers(), message, clickable);
     }
 
     public void sendGlobalMessage(Set<Player> set, String message, boolean clickable){
@@ -180,7 +183,7 @@ public class FCommands {
 
         recipientsSet.forEach(recipient -> {
 
-            String formatMessage = Utils.translateColor(format, recipient) + message;
+            String formatMessage = Utils.translateColor(format, recipient).replace("<message>", message);
 
             ComponentBuilder componentBuilder = new ComponentBuilder();
 
@@ -211,6 +214,13 @@ public class FCommands {
         });
 
         Bukkit.getConsoleSender().sendMessage(Utils.translateColor(message, null));
+    }
+
+    private Set<Player> getFilteredPlayers(){
+        return Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(onlinePlayer -> !PlayerUtils.getPlayer(onlinePlayer).checkIgnoreList(player))
+                .collect(Collectors.toSet());
     }
 
     public void sendMeMessage(String localeString){

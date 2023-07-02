@@ -28,10 +28,9 @@ public class CommandTry implements CommandExecutor {
 
         String formatString = Main.locale.getString("try.success_" + (randomPer >= 50))
                 .replace("<player>", fCommand.getSenderName())
-                .replace("<percent>", String.valueOf(randomPer))
-                .replace("<message>", ObjectUtils.toString(strings));
+                .replace("<percent>", String.valueOf(randomPer));
 
-        fCommand.sendGlobalMessage(formatString);
+        fCommand.sendGlobalMessage(formatString, ObjectUtils.toString(strings));
 
         return true;
     }

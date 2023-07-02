@@ -21,10 +21,9 @@ public class CommandMe implements CommandExecutor {
         if(fCommand.isMuted()) return true;
 
         String formatString = Main.locale.getString("me.message")
-                .replace("<player>", fCommand.getSenderName())
-                .replace("<message>", ObjectUtils.toString(strings));
+                .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(formatString);
+        fCommand.sendGlobalMessage(formatString, ObjectUtils.toString(strings));
 
         return true;
     }

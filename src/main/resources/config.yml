@@ -39,10 +39,10 @@ tab.update.enable: true
 tab.update.rate: 2
 
 chat.locale.range: 100
-chat.locale.message: "&&1<player>&&2: "
+chat.locale.message: "&&1<player>&&2: <message>"
 
 chat.global.prefix: "!"
-chat.global.message: "&&1<player>&&2 » "
+chat.global.message: "&&1<player>&&2 » <message>"
 chat.global.enable: true
 
 stream.prefix: "#ff4e4e⏻ "
