@@ -43,8 +43,6 @@ public class FCommands {
 
     private final String alias;
 
-    private final int currentTime = (int) (System.currentTimeMillis() / 1000);
-
     public FCommands(CommandSender sender, String command, String label, String[] args) {
         this.sender = sender;
         this.senderName = sender.getName();
@@ -63,12 +61,12 @@ public class FCommands {
 
         if(hasCooldown()) {
             String[] replaceStrings = {"<alias>", "<time>"};
-            String[] replaceTo = {alias, String.valueOf(getCooldownTime() - currentTime)};
+            String[] replaceTo = {alias, String.valueOf(getCooldownTime() - Utils.getCurrentTime())};
             sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
             return;
         }
 
-        if(getCooldownTime() < currentTime) {
+        if(getCooldownTime() < Utils.getCurrentTime()) {
             commandsCDMap.remove(player.getUniqueId() + command);
             return;
         }
@@ -78,7 +76,7 @@ public class FCommands {
 
     private boolean hasCooldown() {
         isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
-                && commandsCDMap.get(player.getUniqueId() + command) > currentTime
+                && commandsCDMap.get(player.getUniqueId() + command) > Utils.getCurrentTime()
                 && !player.isOp()
                 && !player.hasPermission(Main.config.getString(command + ".cooldown.permission"));
 
@@ -86,7 +84,7 @@ public class FCommands {
     }
 
     private int getCooldownTime() {
-        return hasCooldown() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + currentTime;
+        return hasCooldown() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + Utils.getCurrentTime();
     }
 
     public boolean isMuted(){
@@ -145,6 +143,11 @@ public class FCommands {
                 .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(playerName));
     }
 
+    public static boolean isRealOnlinePlayer(String playerName){
+        return Bukkit.getOnlinePlayers().stream()
+                .anyMatch(onlinePlayer -> onlinePlayer.getName().equalsIgnoreCase(playerName));
+    }
+
     public void sendUsageMessage(){
         sendMeMessage(command + ".usage", "<command>", alias);
     }
@@ -167,19 +170,23 @@ public class FCommands {
     }
 
     public void sendGlobalMessage(Set<Player> set, String message, ItemStack item, boolean clickable){
+        sendGlobalMessage(set, message, "", item, clickable);
+    }
+
+    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack item, boolean clickable){
 
         ItemStack itemStack = message.contains("%item%") ? item == null ? player.getItemInHand() : item : null;
 
-        set.forEach(onlinePlayer -> {
+        recipientsSet.forEach(recipient -> {
 
-            String formatMessage = Utils.translateColor(message, onlinePlayer);
+            String formatMessage = Utils.translateColor(format, recipient) + message;
 
             ComponentBuilder componentBuilder = new ComponentBuilder();
 
-            Utils.buildMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), onlinePlayer, sender, itemStack);
+            Utils.buildMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
 
             if(!clickable || isConsole){
-                onlinePlayer.spigot().sendMessage(componentBuilder.create());
+                recipient.spigot().sendMessage(componentBuilder.create());
                 return;
             }
 
@@ -187,14 +194,19 @@ public class FCommands {
 
             ComponentBuilder finalBuilder = new ComponentBuilder();
 
-            list.forEach(baseComponent -> {
-                if(baseComponent.getHoverEvent() == null)
-                    baseComponent = Utils.getNameComponent(baseComponent.toLegacyText(), senderName, onlinePlayer, sender);
+            boolean isFirst = true;
+
+            for(BaseComponent baseComponent : list){
+
+                if(isFirst){
+                    baseComponent = Utils.getNameComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
+                    isFirst = false;
+                } else if(baseComponent.getHoverEvent() != null) isFirst = true;
 
                 finalBuilder.append(baseComponent);
-            });
+            }
 
-            onlinePlayer.spigot().sendMessage(finalBuilder.create());
+            recipient.spigot().sendMessage(finalBuilder.create());
         });
 
         Bukkit.getConsoleSender().sendMessage(Utils.translateColor(message, null));

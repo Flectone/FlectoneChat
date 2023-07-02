@@ -205,7 +205,7 @@ public class FPlayer {
     public void setLastBlock(Block lastBlock) {
         if(!Main.config.getBoolean("afk.timeout.enable")) return;
 
-        this.lastTimeMoved = (int) (System.currentTimeMillis()/1000);
+        this.lastTimeMoved = Utils.getCurrentTime();
         this.lastBlock = lastBlock;
     }
 
@@ -225,7 +225,7 @@ public class FPlayer {
     }
 
     public int getTimeMuted(){
-        return getRealTimeMuted() - (int) (System.currentTimeMillis()/1000);
+        return getRealTimeMuted() - Utils.getCurrentTime();
     }
 
     public String getReasonMute(){

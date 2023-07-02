@@ -63,9 +63,9 @@ public class FChat implements Listener {
         if(fCommands.isMuted()) return;
 
         String configMessage = config.getString("chat." + chatType + ".message")
-                .replace("<player>", PlayerUtils.getPlayer(player).getName()) + message;
+                .replace("<player>", PlayerUtils.getPlayer(player).getName());
 
-        fCommands.sendGlobalMessage(recipients, configMessage, itemStack, true);
+        fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
 
     }
 

@@ -1,6 +1,7 @@
 package net.flectone.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.flectone.custom.FCommands;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -35,23 +36,22 @@ public class Utils {
     public static void buildMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {
         // Ping player in message
         String pingPrefix = Main.config.getString("chat.ping.prefix");
-        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
+        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
         BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
 
         for(String word : message.split(" ")) {
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
 
-            for(Player playerOnline : Bukkit.getOnlinePlayers()){
-                if (!word.equalsIgnoreCase(pingPrefix + playerOnline.getName())) {
-                    continue;
-                }
+            if(word.startsWith(pingPrefix) && FCommands.isRealOnlinePlayer(word.substring(1))){
+
+                Player player = Bukkit.getPlayer(word.substring(1));
 
                 String pingMessage = Main.locale.getFormatString("chat.ping.message", colorPlayer, papiPlayer)
-                        .replace("<player>", playerOnline.getName())
+                        .replace("<player>", player.getName())
                         .replace("<prefix>", pingPrefix);
 
-                wordComponent = getNameComponent(pingMessage, playerOnline.getName(), colorPlayer, playerOnline);
+                wordComponent = getNameComponent(pingMessage, player.getName(), colorPlayer, player);
             }
 
             Matcher urlMatcher = pattern.matcher(word);
@@ -133,5 +133,9 @@ public class Utils {
 
     public static String translateColor(String string, CommandSender colorSender){
         return translateColor(string, colorSender, colorSender);
+    }
+
+    public static int getCurrentTime(){
+        return (int) (System.currentTimeMillis()/1000);
     }
 }

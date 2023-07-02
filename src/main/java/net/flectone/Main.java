@@ -140,7 +140,7 @@ public final class Main extends JavaPlugin {
 
                         if(fPlayer.isAfk()) return;
 
-                        int diffTime = ((int) (System.currentTimeMillis()/1000)) - fPlayer.getLastTimeMoved();
+                        int diffTime = Utils.getCurrentTime() - fPlayer.getLastTimeMoved();
 
                         if(diffTime >= Main.config.getInt("afk.timeout.time")){
                             CommandAfk.sendMessage(fPlayer, true);

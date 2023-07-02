@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.utils.ObjectUtils;
+import net.flectone.utils.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -44,11 +45,10 @@ public class CommandMute implements CommandExecutor {
 
         int time = getTimeFromString(stringTime);
 
-        int currentTime = (int) (System.currentTimeMillis()/1000);
 
         List<String> muteList = new ArrayList<>();
         muteList.add(reason);
-        muteList.add(String.valueOf(time + currentTime));
+        muteList.add(String.valueOf(time + Utils.getCurrentTime()));
 
         Main.mutes.set(mutedPlayer.getUniqueId().toString(), muteList);
         Main.mutes.saveFile();
