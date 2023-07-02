@@ -71,6 +71,8 @@ public class FPlayer {
             setName(player.getWorld());
             getVaultPrefixSuffix();
         }
+
+        setDisplayName();
     }
 
     private Team getPlayerTeam(){
@@ -109,6 +111,8 @@ public class FPlayer {
         }
     }
 
+    private String colorWorldPrefix = "";
+
     public Player getLastWritePlayer() {
         return lastWritePlayer;
     }
@@ -119,7 +123,17 @@ public class FPlayer {
 
     public void setName(World world) {
         if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
-            addPrefixToName(Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player));
+
+            String worldPrefix = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player);
+
+            if(prefix.contains(colorWorldPrefix) && !colorWorldPrefix.equals("")){
+                prefix = prefix.replace(colorWorldPrefix, worldPrefix);
+                colorWorldPrefix = worldPrefix;
+            } else  {
+                colorWorldPrefix = worldPrefix;
+                addPrefixToName(colorWorldPrefix);
+            }
+
         }
 
         setDisplayName();
