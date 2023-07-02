@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.utils.ObjectUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -61,7 +62,7 @@ public class FCommands {
 
         if(hasCooldown()) {
             String[] replaceStrings = {"<alias>", "<time>"};
-            String[] replaceTo = {alias, String.valueOf(getCooldownTime() - Utils.getCurrentTime())};
+            String[] replaceTo = {alias, ObjectUtils.convertTimeToString(getCooldownTime() - Utils.getCurrentTime())};
             sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
             return;
         }
@@ -91,7 +92,7 @@ public class FCommands {
         if(isConsole || !getFPlayer().isMuted()) return false;
 
         String[] stringsReplace = {"<time>", "<reason>"};
-        String[] stringsTo = {String.valueOf(getFPlayer().getTimeMuted()), getFPlayer().getReasonMute()};
+        String[] stringsTo = {ObjectUtils.convertTimeToString(getFPlayer().getTimeMuted()), getFPlayer().getReasonMute()};
 
         sendMeMessage("mute.success_get", stringsReplace, stringsTo);
 

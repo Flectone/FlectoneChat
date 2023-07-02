@@ -45,7 +45,6 @@ public class CommandMute implements CommandExecutor {
 
         int time = getTimeFromString(stringTime);
 
-
         List<String> muteList = new ArrayList<>();
         muteList.add(reason);
         muteList.add(String.valueOf(time + Utils.getCurrentTime()));
@@ -55,7 +54,7 @@ public class CommandMute implements CommandExecutor {
 
         String formatString = Main.locale.getString("mute.success_send")
                 .replace("<player>", mutedPlayer.getName())
-                .replace("<time>", String.valueOf(time))
+                .replace("<time>", ObjectUtils.convertTimeToString(time))
                 .replace("<reason>", reason);
 
         fCommand.sendGlobalMessage(formatString, false);

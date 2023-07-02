@@ -7,14 +7,11 @@ import java.util.stream.Collectors;
 
 public class ObjectUtils {
 
-    public static String convertTimeToString(long time){
-        String timeoutSecondsString = String.valueOf((time - System.currentTimeMillis()) / 1000).substring(1);
-        int timeoutSeconds = Integer.parseInt(timeoutSecondsString);
-
-        int days = (timeoutSeconds / 86400);
-        int hours = (timeoutSeconds / 3600) % 24;
-        int minutes = (timeoutSeconds / 60) % 60;
-        int seconds = timeoutSeconds % 60;
+    public static String convertTimeToString(int timeInSeconds){
+        int days = (timeInSeconds / 86400);
+        int hours = (timeInSeconds / 3600) % 24;
+        int minutes = (timeInSeconds / 60) % 60;
+        int seconds = timeInSeconds % 60;
 
         String finalString = (days > 0 ? " " + days + Main.locale.getString("online.format.day") : "")
                 + (hours > 0 ? " " + hours + Main.locale.getString("online.format.hour") : "")
@@ -22,6 +19,12 @@ public class ObjectUtils {
                 + (seconds > 0 ? " " + seconds + Main.locale.getString("online.format.second") : "");
 
         return finalString.substring(1);
+    }
+
+    public static String convertTimeToString(long time){
+        String timeoutSecondsString = String.valueOf((time - System.currentTimeMillis()) / 1000).substring(1);
+        int timeoutSeconds = Integer.parseInt(timeoutSecondsString);
+        return convertTimeToString(timeoutSeconds);
     }
 
     public static String toString(String[] strings){
