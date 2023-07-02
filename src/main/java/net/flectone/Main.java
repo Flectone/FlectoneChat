@@ -131,8 +131,6 @@ public final class Main extends JavaPlugin {
     public void checkPlayerMoveTimer(){
         if(playerMoveTimer == null || playerMoveTimer.isCancelled()){
             startPlayerMoveTimer();
-        } else if (playerMoveTimer != null && !playerMoveTimer.isCancelled()){
-            playerMoveTimer.cancel();
         }
     }
 
