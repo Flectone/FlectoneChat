@@ -37,6 +37,9 @@ public class AsyncPlayerChatListener implements Listener {
             int localeRange = config.getInt("chat.locale.range");
             recipients.removeIf(recipient -> player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localeRange);
+
+            if(Main.config.getBoolean("chat.locale.set_cancelled")) event.setCancelled(true);
+
         } else {
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }

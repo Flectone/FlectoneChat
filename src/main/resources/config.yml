@@ -44,6 +44,8 @@ tab.update.rate: 2
 
 chat.locale.range: 100
 chat.locale.message: "&&1<player>&&2: <message>"
+# if enabled, messages from local chat will be cancelled for other plugins
+chat.locale.set_cancelled: true
 
 chat.global.prefix: "!"
 chat.global.message: "&&1<player>&&2 » <message>"
