@@ -237,6 +237,24 @@ public class FCommands {
     }
 
     private Set<Player> getFilteredPlayers(){
+        if(Main.config.contains(command + ".global")
+                && !Main.config.getBoolean(command + ".global")
+                && !isConsole){
+
+            int localRange = Main.config.getInt("chat.locale.range");
+
+            Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange)
+                    .stream()
+                    .filter(entity -> entity instanceof Player
+                            && !PlayerManager.getPlayer((Player) entity).checkIgnoreList(player))
+                    .map(entity -> (Player) entity)
+                    .collect(Collectors.toSet());
+            playerSet.add(player);
+
+            return playerSet;
+        }
+
+
         return Bukkit.getOnlinePlayers()
                 .stream()
                 .filter(onlinePlayer -> !PlayerManager.getPlayer(onlinePlayer).checkIgnoreList(player))

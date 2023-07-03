@@ -63,6 +63,11 @@ mark.enable: true
 mark.item: "WOODEN_SWORD"
 mark.range: 30
 
+stream.global: true
+me.global: true
+try.global: true
+try-cube.global: true
+
 try-cube.max_amount: 9
 try-cube.6: "⚅"
 try-cube.5: "⚄"
