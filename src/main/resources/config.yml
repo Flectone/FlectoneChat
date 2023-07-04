@@ -49,6 +49,7 @@ chat.locale.set_cancelled: true
 
 chat.global.prefix: "!"
 chat.global.message: "&&1<player>&&2 » <message>"
+chat.global.clear_prefix: true
 chat.global.enable: true
 
 stream.prefix: "#ff4e4e⏻ "

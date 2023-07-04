@@ -41,6 +41,7 @@ public class AsyncPlayerChatListener implements Listener {
             if(Main.config.getBoolean("chat.locale.set_cancelled")) event.setCancelled(true);
 
         } else {
+            if(Main.config.getBoolean("chat.global.clear_prefix")) event.setMessage(message.replaceFirst(globalPrefix, ""));
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
