@@ -42,7 +42,7 @@ public class CommandMailClear extends FTabCompleter {
             return true;
         }
 
-        if(!StringUtils.isNumeric(strings[1]) || Integer.parseInt(strings[1]) > (mailsList.size() + 1)){
+        if(!StringUtils.isNumeric(strings[1]) || Integer.parseInt(strings[1]) > (mailsList.size())){
             fCommand.sendMeMessage("mail-clear.not_number");
             return true;
         }
