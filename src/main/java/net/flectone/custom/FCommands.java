@@ -346,9 +346,9 @@ public class FCommands {
 
         for(String word : message.split(" ")) {
 
-            chatColor = ChatColor.getLastColors(word).toString().isEmpty() ? chatColor : ChatColor.getLastColors(word);
-
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
+
+            chatColor = ChatColor.getLastColors(chatColor + word);
 
             if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1))){
 

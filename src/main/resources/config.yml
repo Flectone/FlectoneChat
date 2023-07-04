@@ -24,7 +24,7 @@ server.online.number: 69
 chat.ping.prefix: "@"
 chat.no_recipients.enable: true
 chat.color.url: "&&1"
-chat.color.tooltip: "&&2[<tooltip>]"
+chat.color.tooltip: "&&1[<tooltip>]"
 
 afk.suffix: " #f2d40f💤"
 afk.timeout.enable: true
@@ -43,12 +43,12 @@ tab.update.enable: true
 tab.update.rate: 2
 
 chat.locale.range: 100
-chat.locale.message: "&&1<player>&&2: <message>"
+chat.locale.message: "<player>&&2: <message>"
 # if enabled, messages from local chat will be cancelled for other plugins
 chat.locale.set_cancelled: true
 
 chat.global.prefix: "!"
-chat.global.message: "&&1<player>&&2 » <message>"
+chat.global.message: "<player>&&2 » <message>"
 chat.global.clear_prefix: true
 chat.global.enable: true
 
