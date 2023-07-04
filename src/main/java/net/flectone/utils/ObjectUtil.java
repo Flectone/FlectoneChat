@@ -93,7 +93,7 @@ public class ObjectUtil {
     }
 
     public static void playSound(Player player, String command){
-        if(player != null && !Main.config.getBoolean(command + ".sound.enable")) return;
+        if(player == null || !Main.config.getBoolean(command + ".sound.enable")) return;
 
         String soundName = Main.config.getString(command + ".sound.type");
 
