@@ -23,6 +23,7 @@ command.have_cooldown: "#ff4e4e⁉ You will be able to use <alias> in <time>."
 
 server.motd.message: "&&1This server uses FlectoneChat ❤"
 
+join.first_time.message: "&&1<player> has logged on to the server for the first time, let's welcome!"
 join.message: "&&1<player> join the server"
 left.message: "&&1<player> left the server"
 

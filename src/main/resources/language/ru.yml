@@ -23,6 +23,7 @@ command.have_cooldown: "#ff4e4e⁉ Ты сможешь использовать 
 
 server.motd.message: "&&1Этот сервер использует FlectoneChat ❤"
 
+join.first_time.message: "&&1<player> впервые зашёл на сервер, поприветствуем его!"
 join.message: "&&1<player> присоединился к серверу"
 left.message: "&&1<player> вышел с сервера"
 

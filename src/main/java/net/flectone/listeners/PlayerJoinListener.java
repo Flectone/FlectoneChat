@@ -29,8 +29,9 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
         FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
 
-        String string = Main.locale.getString("join.message")
-                .replace("<player>", player.getName());
+        String string = player.hasPlayedBefore() ? Main.locale.getString("join.message") : Main.locale.getString("join.first_time.message");
+        string = string.replace("<player>", player.getName());
+
         fCommands.sendGlobalMessage(string);
 
         Set<String> keysList = Main.mails.getKeys()
