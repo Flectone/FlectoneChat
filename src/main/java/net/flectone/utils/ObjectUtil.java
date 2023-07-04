@@ -5,6 +5,7 @@ import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.PlayerManager;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -88,5 +89,13 @@ public class ObjectUtil {
 
     public static int getCurrentTime(){
         return (int) (System.currentTimeMillis()/1000);
+    }
+
+    public static void playSound(Player player, String command){
+        if(player != null && !Main.config.getBoolean(command + ".sound.enable")) return;
+
+        String soundName = Main.config.getString(command + ".sound.type");
+
+        player.playSound(player, Sound.valueOf(soundName), 1, 1);
     }
 }

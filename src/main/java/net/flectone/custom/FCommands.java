@@ -203,6 +203,8 @@ public class FCommands {
 
         recipientsSet.forEach(recipient -> {
 
+            ObjectUtil.playSound(recipient, command);
+
             String formatMessage = ObjectUtil.formatString(format, recipient).replace("<message>", message);
 
             ComponentBuilder componentBuilder = new ComponentBuilder();
@@ -262,14 +264,20 @@ public class FCommands {
     }
 
     public void sendMeMessage(String localeString){
+        ObjectUtil.playSound(player, command);
+
         sender.sendMessage(locale.getFormatString(localeString, sender));
     }
 
     public void sendMeMessage(String localeString, String replaceString, String replaceTo){
+        ObjectUtil.playSound(player, command);
+
         sender.sendMessage(locale.getFormatString(localeString, sender).replace(replaceString, replaceTo));
     }
 
     public void sendMeMessage(String localeString, String[] replaceStrings, String[] replaceTos){
+        ObjectUtil.playSound(player, command);
+
         String formatString = locale.getFormatString(localeString, sender);
 
         for(int x = 0; x < replaceStrings.length; x++){
@@ -299,6 +307,8 @@ public class FCommands {
                     break;
             }
         }
+
+        if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
         ComponentBuilder getBuilder = new ComponentBuilder();
 
@@ -342,6 +352,8 @@ public class FCommands {
                 String pingMessage = Main.locale.getFormatString("chat.ping.message", colorPlayer, papiPlayer)
                         .replace("<player>", player.getName())
                         .replace("<prefix>", pingPrefix);
+
+                if(command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
 
                 wordComponent = createClickableComponent(pingMessage, player.getName(), colorPlayer, player);
             }

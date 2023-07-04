@@ -33,7 +33,6 @@ public class PlayerJoinListener implements Listener {
                 .replace("<player>", player.getName());
         fCommands.sendGlobalMessage(string);
 
-
         Set<String> keysList = Main.mails.getKeys()
                 .stream()
                 .filter(keys -> keys.startsWith(player.getUniqueId() + "."))

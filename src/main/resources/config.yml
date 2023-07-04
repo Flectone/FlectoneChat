@@ -78,78 +78,125 @@ try-cube.1: "⚀"
 
 cooldown.enable: false
 
+chatping.sound.enable: true
+chatping.sound.type: "BLOCK_NOTE_BLOCK_HARP"
+
+join.sound.enable: false
+join.sound.type: "BLOCK_NOTE_BLOCK_BELL"
+
+quit.sound.enable: false
+quit.sound.type: "BLOCK_NOTE_BLOCK_BELL"
+
+localechat.sound.enable: false
+localechat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 localechat.cooldown.enable: true
 localechat.cooldown.time: 5
 localechat.cooldown.permission: "flectonechat.localechat.cooldown.immune"
 
+globalchat.sound.enable: false
+globalchat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 globalchat.cooldown.enable: true
 globalchat.cooldown.time: 5
 globalchat.cooldown.permission: "flectonechat.globalchat.cooldown.immune"
 
+chatcolor.sound.enable: false
+chatcolor.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 chatcolor.cooldown.enable: false
 chatcolor.cooldown.time: 5
 chatcolor.cooldown.permission: "flectonechat.chatcolor.cooldown.immune"
 
+flectonechat.sound.enable: true
+flectonechat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 flectonechat.cooldown.enable: false
 flectonechat.cooldown.time: 5
 flectonechat.cooldown.permission: "flectonechat.flectonechat.cooldown.immune"
 
+ignore.sound.enable: false
+ignore.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 ignore.cooldown.enable: false
 ignore.cooldown.time: 5
 ignore.cooldown.permission: "flectonechat.ignore.cooldown.immune"
 
+ignore-list.sound.enable: false
+ignore-list.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 ignore-list.cooldown.enable: false
 ignore-list.cooldown.time: 5
 ignore-list.cooldown.permission: "flectonechat.ignore-list.cooldown.immune"
 
+mail.sound.enable: false
+mail.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 mail.cooldown.enable: true
 mail.cooldown.time: 5
 mail.cooldown.permission: "flectonechat.mail.cooldown.immune"
 
+mark.sound.enable: false
+mark.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 mark.cooldown.enable: true
 mark.cooldown.time: 5
 mark.cooldown.permission: "flectonechat.mark.cooldown.immune"
 
+me.sound.enable: false
+me.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 me.cooldown.enable: true
 me.cooldown.time: 5
 me.cooldown.permission: "flectonechat.me.cooldown.immune"
 
-msg.cooldown.enable: true
+msg.sound.enable: false
+msg.sound.type: "BLOCK_NOTE_BLOCK_BELL"
+msg.cooldown.enable: false
 msg.cooldown.time: 5
 msg.cooldown.permission: "flectonechat.msg.cooldown.immune"
 
+ping.sound.enable: true
+ping.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 ping.cooldown.enable: false
 ping.cooldown.time: 5
 ping.cooldown.permission: "flectonechat.ping.cooldown.immune"
 
+reply.sound.enable: false
+reply.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 reply.cooldown.enable: true
 reply.cooldown.time: 5
 reply.cooldown.permission: "flectonechat.reply.cooldown.immune"
 
+mail-clear.sound.enable: false
+mail-clear.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 mail-clear.cooldown.enable: false
 mail-clear.cooldown.time: 5
 mail-clear.cooldown.permission: "flectonechat.mail-clear.cooldown.immune"
 
+stream.sound.enable: true
+stream.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 stream.cooldown.enable: true
 stream.cooldown.time: 5
 stream.cooldown.permission: "flectonechat.stream.cooldown.immune"
 
+try.sound.enable: false
+try.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 try.cooldown.enable: true
 try.cooldown.time: 5
 try.cooldown.permission: "flectonechat.try.cooldown.immune"
 
+try-cube.sound.enable: false
+try-cube.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 try-cube.cooldown.enable: true
 try-cube.cooldown.time: 5
 try-cube.cooldown.permission: "flectonechat.try-cube.cooldown.immune"
 
+afk.sound.enable: false
+afk.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 afk.cooldown.enable: false
 afk.cooldown.time: 5
 afk.cooldown.permission: "flectonechat.afk.cooldown.immune"
 
+mute.sound.enable: true
+mute.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 mute.cooldown.enable: false
 mute.cooldown.time: 5
 mute.cooldown.permission: "flectonechat.mute.cooldown.immune"
 
+unmute.sound.enable: false
+unmute.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 unmute.cooldown.enable: false
 unmute.cooldown.time: 5
 unmute.cooldown.permission: "flectonechat.mute.cooldown.immune"

@@ -17,9 +17,7 @@ public class PlayerQuitListener implements Listener {
 
         FEntity.removeBugEntities(player);
 
-        event.setQuitMessage(null);
-
-        FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
+        FCommands fCommands = new FCommands(player, "quit", "quit", new String[]{});
 
         String string = Main.locale.getString("left.message")
                 .replace("<player>", player.getName());
