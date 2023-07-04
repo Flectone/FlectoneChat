@@ -5,6 +5,7 @@ import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.PlayerManager;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -96,6 +97,11 @@ public class ObjectUtil {
 
         String soundName = Main.config.getString(command + ".sound.type");
 
-        player.playSound(player, Sound.valueOf(soundName), 1, 1);
+        try {
+            player.playSound(player, Sound.valueOf(soundName), 1, 1);
+        } catch (IllegalArgumentException exception){
+            Main.getInstance().getLogger().warning("Incorrect sound " + soundName + " for " + command + ".sound.type");
+        }
+
     }
 }
