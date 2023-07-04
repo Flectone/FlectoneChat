@@ -239,7 +239,8 @@ public class FCommands {
     }
 
     private Set<Player> getFilteredPlayers(){
-        if(Main.config.contains(command + ".global")
+
+        if(Main.config.getString(command + ".global") != null
                 && !Main.config.getBoolean(command + ".global")
                 && !isConsole){
 
