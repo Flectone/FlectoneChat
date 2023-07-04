@@ -63,6 +63,8 @@ mark.enable: true
 mark.item: "WOODEN_SWORD"
 mark.range: 30
 
+helper.see.permission: "flectonechat.helpersee"
+
 stream.global: true
 me.global: true
 try.global: true
@@ -128,6 +130,12 @@ mail.sound.type: "BLOCK_NOTE_BLOCK_BELL"
 mail.cooldown.enable: true
 mail.cooldown.time: 5
 mail.cooldown.permission: "flectonechat.mail.cooldown.immune"
+
+helper.sound.enable: true
+helper.sound.type: "BLOCK_NOTE_BLOCK_BELL"
+helper.cooldown.enable: true
+helper.cooldown.time: 5
+helper.cooldown.permission: "flectonechat.mail.cooldown.immune"
 
 mark.sound.enable: false
 mark.sound.type: "BLOCK_NOTE_BLOCK_BELL"

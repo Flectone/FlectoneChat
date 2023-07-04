@@ -85,6 +85,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandAfk(), "afk");
         setCommandExecutor(new CommandMute(), "mute");
         setCommandExecutor(new CommandUnmute(), "unmute");
+        setCommandExecutor(new CommandHelper(), "helper");
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             new FPlayer(playerOnline);

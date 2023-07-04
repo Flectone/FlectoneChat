@@ -98,6 +98,12 @@ mail-clear.empty: "#ff4e4e⁉ You have no mail for this player"
 mail-clear.not_number: "#ff4e4e⁉ Wrong number entered"
 mail-clear.success: "&&1✉ [Offline mail] cleared for <player> ⏩ &&2<message>"
 
+# /helper
+helper.usage: "&&1⚑ Usage: &&2/<command> (message)"
+helper.no_recipients: "#ff4e4e⁉ There are no people who can help you"
+helper.success_get: "&&1👤 <player> needs help ⏩ &&2<message>"
+helper.success_send: "&&1👤 Request sent, awaiting reply"
+
 # /me
 me.usage: "&&1⚑ Usage: &&2/<command> (message)"
 me.message: "&&1✎ <player> <message>"

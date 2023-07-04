@@ -88,6 +88,10 @@ commands:
     usage: /unmute <player>
     permission: flectonechat.mute
 
+  helper:
+    usage: /helper <message>
+    permission: flectonechat.helper
+
 permissions:
   flectonechat.reload:
     default: op
@@ -125,3 +129,5 @@ permissions:
     default: true
   flectonechat.mute:
     default: op
+  flectonechat.helper:
+    default: true
