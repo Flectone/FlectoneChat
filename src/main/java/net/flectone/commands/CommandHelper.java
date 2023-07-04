@@ -37,10 +37,9 @@ public class CommandHelper extends FTabCompleter implements CommandExecutor {
         }
 
         String formatMessage = Main.locale.getString("helper.success_get")
-                .replace("<player>", fCommand.getSenderName())
-                .replace("<message>", ObjectUtil.toString(strings, 0));
+                .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(playerSet, formatMessage, true);
+        fCommand.sendGlobalMessage(playerSet, formatMessage, ObjectUtil.toString(strings, 0), null, true);
 
         fCommand.sendMeMessage("helper.success_send");
 
