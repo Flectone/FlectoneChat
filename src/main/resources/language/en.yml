@@ -152,7 +152,7 @@ stream.end: "&&1★ Thanks for streaming on our server!"
 stream.start:
   - "#ff4e4e🔔 &&1Announcement #ff4e4e🔔"
   - "&&2• • • • • • • • •"
-  - "&&2Player <player>&&2 started stream"
+  - "&&2Player <player> started stream"
   - "&&2• • • • • • • • •"
   - "&&1Url(s): <links>"
 
