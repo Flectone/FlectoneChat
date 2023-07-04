@@ -205,7 +205,8 @@ public class FCommands {
 
             ObjectUtil.playSound(recipient, command);
 
-            String formatMessage = ObjectUtil.formatString(format, recipient).replace("<message>", message);
+            String formatMessage = ObjectUtil.formatString(format, recipient)
+                    .replace("<message>", message);
 
             ComponentBuilder componentBuilder = new ComponentBuilder();
 
@@ -344,6 +345,9 @@ public class FCommands {
         BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
 
         for(String word : message.split(" ")) {
+
+            chatColor = ChatColor.getLastColors(word).toString().isEmpty() ? chatColor : ChatColor.getLastColors(word);
+
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
 
             if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1))){
