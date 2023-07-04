@@ -54,13 +54,12 @@ public class CommandStream extends FTabCompleter {
             fCommand.getFPlayer().addPrefixToName(Main.config.getFormatString("stream.prefix", commandSender));
         }
 
-
         StringBuilder stringBuilder = new StringBuilder();
         for(String string : Main.locale.getStringList("stream.start")){
 
             string = string
-                    .replace("<links>", ObjectUtil.toString(strings, 1))
-                    .replace("<player>", fCommand.getSenderName());
+                    .replace("<player>", fCommand.getSenderName())
+                    .replace("<links>", ObjectUtil.toString(strings, 1, "\n") + " ");
 
             stringBuilder.append(string);
             stringBuilder.append("\n");

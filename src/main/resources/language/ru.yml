@@ -154,7 +154,7 @@ stream.start:
   - "&&2• • • • • • • • •"
   - "&&2Игрок &&1<player> начал стрим"
   - "&&2• • • • • • • • •"
-  - "&&1Ссылка(и): <links>"
+  - "&&1Ссылка(и): \n<links>"
 
 # /flectonechat, /fc
 flectonechat.usage: "&&1⚑ Использование: &&2/<command> reload/config/locale"

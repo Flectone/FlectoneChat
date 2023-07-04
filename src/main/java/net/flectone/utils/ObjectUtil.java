@@ -41,9 +41,14 @@ public class ObjectUtil {
         return toString(strings, 0);
     }
 
+
     public static String toString(String[] strings, int start){
+        return toString(strings, start, " ");
+    }
+
+    public static String toString(String[] strings, int start, String delimiter){
         return Arrays.stream(strings, start, strings.length)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(delimiter));
     }
 
     public static String translateHexToColor(String string) {
