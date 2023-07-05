@@ -4,15 +4,43 @@ import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.commands.CommandMark;
 import net.flectone.managers.PlayerManager;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class PlayerInteractListener implements Listener {
+
+    private static final Map<Material, String> COLOR_MAP = new HashMap<>();
+
+    static {
+        COLOR_MAP.put(Material.WHITE_DYE, "#FFFFFF");
+        COLOR_MAP.put(Material.GRAY_DYE, "#999999");
+        COLOR_MAP.put(Material.LIGHT_GRAY_DYE, "#CCCCCC");
+        COLOR_MAP.put(Material.BLACK_DYE, "#333333");
+        COLOR_MAP.put(Material.RED_DYE, "#FF3333");
+        COLOR_MAP.put(Material.ORANGE_DYE, "#FF9900");
+        COLOR_MAP.put(Material.YELLOW_DYE, "#FFFF00");
+        COLOR_MAP.put(Material.LIME_DYE, "#33FF33");
+        COLOR_MAP.put(Material.GREEN_DYE, "#009900");
+        COLOR_MAP.put(Material.LIGHT_BLUE_DYE, "#99CCFF");
+        COLOR_MAP.put(Material.CYAN_DYE, "#33CCCC");
+        COLOR_MAP.put(Material.BLUE_DYE, "#3366FF");
+        COLOR_MAP.put(Material.PURPLE_DYE, "#9900CC");
+        COLOR_MAP.put(Material.MAGENTA_DYE, "#FF66FF");
+        COLOR_MAP.put(Material.PINK_DYE, "#FF99CC");
+        COLOR_MAP.put(Material.BROWN_DYE, "#CC6600");
+    }
 
     @EventHandler
     public void playerItemClick(PlayerInteractEvent event){
@@ -20,6 +48,31 @@ public class PlayerInteractListener implements Listener {
         if(PlayerManager.getPlayer(event.getPlayer()).isAfk()){
             CommandAfk.setAfkFalse(event.getPlayer());
         } else PlayerManager.getPlayer(event.getPlayer()).setLastBlock(event.getPlayer().getLocation().getBlock());
+
+        if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)
+                && Main.config.getBoolean("item.sign.enable")
+                && event.getClickedBlock() != null
+                && event.getClickedBlock().getType().equals(Material.ANVIL)){
+
+            PlayerInventory playerInventory = event.getPlayer().getInventory();
+            ItemStack offHandItem = playerInventory.getItemInOffHand();
+            ItemStack mainHandItem = playerInventory.getItemInMainHand();
+
+            String color = COLOR_MAP.get(offHandItem.getType());
+
+            if (color != null && mainHandItem.getType() != Material.AIR) {
+                ItemStack finalItem = mainHandItem.clone();
+                finalItem.setAmount(1);
+
+                paintItem(finalItem, event.getPlayer().getName(), color);
+
+                decreaseItemAmount(playerInventory, mainHandItem);
+                decreaseItemAmount(playerInventory, offHandItem);
+
+                Location location = event.getClickedBlock().getLocation().add(0.5, 1, 0.5);
+                event.getClickedBlock().getWorld().dropItem(location, finalItem);
+            }
+        }
 
         if(!Main.config.getBoolean("mark.enable")) return;
         if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
@@ -50,11 +103,56 @@ public class PlayerInteractListener implements Listener {
 
         String command = "mark";
 
-        if(!itemName.isEmpty() && Arrays.asList(CommandMark.chatColorValues).contains(itemName)){
+        if(!itemName.isEmpty() && containsColor(itemName)){
             command += " " + itemName;
         }
 
         Bukkit.dispatchCommand(event.getPlayer(), command);
 
+    }
+
+    private boolean containsColor(String color){
+        return Arrays.asList(CommandMark.chatColorValues).contains(color.toUpperCase());
+    }
+
+    private void paintItem(ItemStack itemStack, String playerName, String color){
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        List<String> stringList = itemMeta.getLore();
+
+        if(stringList == null){
+            stringList = new ArrayList<>();
+        }
+
+        String formatString = Main.config.getString("item.sign.format")
+                .replace("<player>", playerName);
+
+        formatString = ObjectUtil.translateHexToColor(formatString);
+
+        int numberPaint = -1;
+        for (int x = 0; x < stringList.size(); x++) {
+            if (stringList.get(x).contains(formatString)) {
+                numberPaint = x;
+                break;
+            }
+        }
+
+        formatString = ObjectUtil.translateHexToColor(color + formatString);
+
+        if(numberPaint != -1){
+            stringList.set(numberPaint, formatString);
+        } else {
+            stringList.add(formatString);
+        }
+
+        itemMeta.setLore(stringList);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    private void decreaseItemAmount(PlayerInventory inventory, ItemStack itemStack){
+        if (itemStack.getAmount() == 1){
+            inventory.setItem(inventory.getHeldItemSlot(), new ItemStack(Material.AIR));
+        } else {
+            itemStack.setAmount(itemStack.getAmount() - 1);
+        }
     }
 }

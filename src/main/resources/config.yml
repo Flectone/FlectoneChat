@@ -60,6 +60,10 @@ ping.medium.color: "#fce303"
 ping.medium.count: 100
 ping.good.color: "#4eff52"
 
+# item is signed when player holds dye in the offhand and item in mainhand
+item.sign.enable: true
+item.sign.format: "&o#<player>"
+
 mark.enable: true
 mark.item: "WOODEN_SWORD"
 mark.range: 30
