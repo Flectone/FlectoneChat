@@ -36,8 +36,6 @@ public final class Main extends JavaPlugin {
 
     public static FileManager mutes;
 
-    public static FileManager filter;
-
     public static Main getInstance(){
         return instance;
     }
@@ -55,8 +53,6 @@ public final class Main extends JavaPlugin {
 
         mails = new FileManager("mails.yml");
         mutes = new FileManager("mutes.yml");
-
-        filter = new FileManager("filter.yml");
 
         PlayerManager.setOnlinePlayers(new HashMap<>());
 
