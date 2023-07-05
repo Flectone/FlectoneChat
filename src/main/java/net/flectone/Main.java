@@ -2,6 +2,7 @@ package net.flectone;
 
 import net.flectone.commands.*;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.expansions.FExpansion;
 import net.flectone.listeners.*;
 import net.flectone.managers.FileManager;
 import net.flectone.utils.MetricsUtil;
@@ -35,6 +36,8 @@ public final class Main extends JavaPlugin {
 
     public static FileManager mutes;
 
+    public static FileManager filter;
+
     public static Main getInstance(){
         return instance;
     }
@@ -52,6 +55,8 @@ public final class Main extends JavaPlugin {
 
         mails = new FileManager("mails.yml");
         mutes = new FileManager("mutes.yml");
+
+        filter = new FileManager("filter.yml");
 
         PlayerManager.setOnlinePlayers(new HashMap<>());
 
@@ -93,6 +98,7 @@ public final class Main extends JavaPlugin {
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;
+            new FExpansion(this).register();
         }
 
         startTabScheduler();

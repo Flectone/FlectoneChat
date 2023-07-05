@@ -19,6 +19,10 @@ import java.util.UUID;
 
 public class FPlayer {
 
+    private final String streamPrefix = Main.config.getString("stream.prefix");
+
+    private final String afkSuffix = Main.config.getString("afk.suffix");
+
     private final UUID uuid;
 
     private final Player player;
@@ -36,6 +40,7 @@ public class FPlayer {
     private boolean streamer = false;
 
     private boolean isAfk = false;
+
 
     private int lastTimeMoved;
 
@@ -61,6 +66,14 @@ public class FPlayer {
         setPlayerListHeaderFooter();
 
         isMuted();
+    }
+
+    public String getStreamPrefix() {
+        return streamer ? streamPrefix : "";
+    }
+
+    public String getAfkSuffix() {
+        return isAfk ? afkSuffix : "";
     }
 
     private void setSymbols(){
