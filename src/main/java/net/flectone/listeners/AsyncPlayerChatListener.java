@@ -2,6 +2,7 @@ package net.flectone.listeners;
 
 import net.flectone.custom.FCommands;
 import net.flectone.managers.FileManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,8 +36,21 @@ public class AsyncPlayerChatListener implements Listener {
 
         if (chatType.equals("locale")) {
             int localeRange = config.getInt("chat.locale.range");
-            recipients.removeIf(recipient -> player.getWorld() != recipient.getWorld()
-                    || player.getLocation().distance(recipient.getLocation()) > localeRange);
+
+            boolean adminSeeEnabled = Main.config.getBoolean("chat.locale.admin_see.enable");
+
+            recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
+                    || player.getLocation().distance(recipient.getLocation()) > localeRange));
+
+            if(recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")){
+                player.sendMessage(locale.getFormatString("chat.no_recipients", player));
+            }
+
+            Bukkit.getOnlinePlayers()
+                    .stream()
+                    .filter(onlinePlayer -> adminSeeEnabled
+                            && (onlinePlayer.hasPermission("flectonechat.locale.admin_see") || onlinePlayer.isOp()))
+                    .forEach(recipients::add);
 
             if(Main.config.getBoolean("chat.locale.set_cancelled")) event.setCancelled(true);
 
@@ -61,10 +75,6 @@ public class AsyncPlayerChatListener implements Listener {
         if(fCommands.isHaveCD()) return;
 
         if(fCommands.isMuted()) return;
-
-        if (chatType.equals("locale") && recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")) {
-            player.sendMessage(locale.getFormatString("chat.no_recipients", player));
-        }
 
         String configMessage = config.getString("chat." + chatType + ".message")
                 .replace("<player>", PlayerManager.getPlayer(player).getName());

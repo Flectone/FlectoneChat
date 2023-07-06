@@ -46,6 +46,9 @@ chat.locale.range: 100
 chat.locale.message: "<player>&&2: <message>"
 # if enabled, messages from local chat will be cancelled for other plugins
 chat.locale.set_cancelled: true
+# if enabled, then admins see the local chat
+chat.locale.admin_see.enable: false
+chat.locale.admin_see.permission: "flectonechat.localechat.admin_see"
 
 chat.global.prefix: "!"
 chat.global.message: "<player>&&2 » <message>"
