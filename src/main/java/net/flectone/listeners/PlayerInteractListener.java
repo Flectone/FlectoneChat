@@ -6,7 +6,6 @@ import net.flectone.commands.CommandMark;
 import net.flectone.managers.PlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -66,8 +65,8 @@ public class PlayerInteractListener implements Listener {
 
                 paintItem(finalItem, event.getPlayer().getName(), color);
 
-                decreaseItemAmount(playerInventory, mainHandItem);
-                decreaseItemAmount(playerInventory, offHandItem);
+                decreaseItemAmount(mainHandItem, () -> playerInventory.setItemInMainHand(null));
+                decreaseItemAmount(offHandItem, () -> playerInventory.setItemInOffHand(null));
 
                 Location location = event.getClickedBlock().getLocation().add(0.5, 1, 0.5);
                 event.getClickedBlock().getWorld().dropItem(location, finalItem);
@@ -148,9 +147,13 @@ public class PlayerInteractListener implements Listener {
         itemStack.setItemMeta(itemMeta);
     }
 
-    private void decreaseItemAmount(PlayerInventory inventory, ItemStack itemStack){
+    private interface ReplaceItem {
+        void setItemNull();
+    }
+
+    private void decreaseItemAmount(ItemStack itemStack, ReplaceItem replaceItem){
         if (itemStack.getAmount() == 1){
-            inventory.setItem(inventory.getHeldItemSlot(), new ItemStack(Material.AIR));
+            replaceItem.setItemNull();
         } else {
             itemStack.setAmount(itemStack.getAmount() - 1);
         }
