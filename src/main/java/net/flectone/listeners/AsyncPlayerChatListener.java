@@ -37,8 +37,6 @@ public class AsyncPlayerChatListener implements Listener {
         if (chatType.equals("locale")) {
             int localeRange = config.getInt("chat.locale.range");
 
-            boolean adminSeeEnabled = Main.config.getBoolean("chat.locale.admin_see.enable");
-
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localeRange));
 
@@ -46,11 +44,12 @@ public class AsyncPlayerChatListener implements Listener {
                 player.sendMessage(locale.getFormatString("chat.no_recipients", player));
             }
 
-            Bukkit.getOnlinePlayers()
-                    .stream()
-                    .filter(onlinePlayer -> adminSeeEnabled
-                            && (onlinePlayer.hasPermission("flectonechat.locale.admin_see") || onlinePlayer.isOp()))
-                    .forEach(recipients::add);
+            if(Main.config.getBoolean("chat.locale.admin_see.enable")){
+                Bukkit.getOnlinePlayers()
+                        .stream()
+                        .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.locale.admin_see") || onlinePlayer.isOp())
+                        .forEach(recipients::add);
+            }
 
             if(Main.config.getBoolean("chat.locale.set_cancelled")) event.setCancelled(true);
 
