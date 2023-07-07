@@ -10,6 +10,7 @@ import net.flectone.commands.CommandChatcolor;
 import net.flectone.custom.FPlayer;
 import net.flectone.custom.Mail;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 
 public abstract class Database {
@@ -100,7 +101,7 @@ public abstract class Database {
              PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET mute_time = ? , mute_reason = ? , colors = ? , ignore_list = ? , mails = ? WHERE uuid = ?")){
 
             int muteTime = fPlayer.getMuteTime();
-            if(muteTime > 0) ps1.setInt(1, muteTime);
+            if(muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
             else ps1.setObject(1, null);
 
             String muteReason = fPlayer.getMuteReason();
@@ -125,12 +126,10 @@ public abstract class Database {
                         } catch (SQLException e){
                             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), e);
                         }
-                        Main.getInstance().getLogger().warning("1");
                         return;
                     }
 
                     try {
-                        Main.getInstance().getLogger().warning("2");
                         PreparedStatement ps2 = conn.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
                         ps2.setString(1, mail.getUUID());
                         ps2.setString(2, mail.getSender());
