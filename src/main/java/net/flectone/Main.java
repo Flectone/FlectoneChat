@@ -1,10 +1,14 @@
 package net.flectone;
 
 import net.flectone.commands.*;
+import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.expansions.FExpansion;
 import net.flectone.listeners.*;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
+import net.flectone.sqlite.Database;
+import net.flectone.sqlite.SQLite;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -13,8 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.flectone.custom.FPlayer;
-import net.flectone.managers.PlayerManager;
 
 import java.util.HashMap;
 
@@ -28,16 +30,14 @@ public final class Main extends JavaPlugin {
 
     public static FileManager locale;
 
-    public static FileManager ignores;
-
-    public static FileManager themes;
-
-    public static FileManager mails;
-
-    public static FileManager mutes;
-
     public static Main getInstance(){
         return instance;
+    }
+
+    private Database database;
+
+    public static Database getDatabase() {
+        return getInstance().database;
     }
 
     @Override
@@ -46,15 +46,11 @@ public final class Main extends JavaPlugin {
 
         instance = this;
 
+        this.database = new SQLite(this);
+        this.database.load();
+
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
-        ignores = new FileManager("ignores.yml");
-        themes = new FileManager("themes.yml");
-
-        mails = new FileManager("mails.yml");
-        mutes = new FileManager("mutes.yml");
-
-        PlayerManager.setOnlinePlayers(new HashMap<>());
 
         registerEvents(new AsyncPlayerChatListener());
         registerEvents(new EntitySpawnListener());
@@ -88,9 +84,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandUnmute(), "unmute");
         setCommandExecutor(new CommandHelper(), "helper");
 
-        for(Player playerOnline : Bukkit.getOnlinePlayers()){
-            new FPlayer(playerOnline);
-        }
+        FPlayerManager.loadPlayers();
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;
@@ -118,7 +112,7 @@ public final class Main extends JavaPlugin {
                     }
 
                     Bukkit.getOnlinePlayers().forEach(player -> {
-                        FPlayer fPlayer = PlayerManager.getPlayer(player);
+                        FPlayer fPlayer = FPlayerManager.getPlayer(player);
                         fPlayer.setPlayerListHeaderFooter();
                     });
 
@@ -142,7 +136,7 @@ public final class Main extends JavaPlugin {
             @Override
             public void run() {
 
-                PlayerManager.onlinePlayers.values().forEach(fPlayer -> {
+                FPlayerManager.getPlayers().stream().filter(FPlayer::isOnline).forEach(fPlayer -> {
                     Block block = fPlayer.getPlayer().getLocation().getBlock();
 
                     if(!fPlayer.isMoved(block)){
@@ -159,7 +153,7 @@ public final class Main extends JavaPlugin {
                         return;
                     }
 
-                    fPlayer.setLastBlock(block);
+                    fPlayer.setBlock(block);
 
                     if(!fPlayer.isAfk()) return;
 
@@ -174,6 +168,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        FPlayerManager.uploadPlayers();
         getLogger().info("Disabled");
     }
 

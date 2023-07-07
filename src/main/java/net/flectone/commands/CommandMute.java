@@ -2,17 +2,16 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,29 +32,27 @@ public class CommandMute extends FTabCompleter {
             return true;
         }
 
-        if(!FCommands.isOfflinePlayer(strings[0])){
+        String playerName = strings[0];
+        FPlayer mutedFPlayer = FPlayerManager.getPlayerFromName(playerName);
+
+        if(mutedFPlayer == null){
             fCommand.sendMeMessage("mute.no_player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        OfflinePlayer mutedPlayer = Bukkit.getOfflinePlayer(strings[0]);
-
         String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("mute.reason.default");
 
         int time = getTimeFromString(stringTime);
 
-        List<String> muteList = new ArrayList<>();
-        muteList.add(reason);
-        muteList.add(String.valueOf(time + ObjectUtil.getCurrentTime()));
-
-        Main.mutes.updateFile(mutedPlayer.getUniqueId().toString(), muteList);
-
         String formatString = Main.locale.getString("mute.success_send")
-                .replace("<player>", mutedPlayer.getName())
+                .replace("<player>", mutedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
+
+        mutedFPlayer.setMuteTime(time + ObjectUtil.getCurrentTime());
+        mutedFPlayer.setMuteReason(reason);
 
         fCommand.sendGlobalMessage(formatString, false);
 

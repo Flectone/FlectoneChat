@@ -3,9 +3,8 @@ package net.flectone.utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
-import net.flectone.managers.PlayerManager;
+import net.flectone.managers.FPlayerManager;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,11 +76,11 @@ public class ObjectUtil {
 
             if(Main.isHavePAPI && string != null && papiSender instanceof Player) string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
 
-            FPlayer fPlayer = PlayerManager.getPlayer(player);
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return translateHexToColor(string
-                    .replace("&&1", fPlayer.getColors().get(0))
-                    .replace("&&2", fPlayer.getColors().get(1)));
+                    .replace("&&1", fPlayer.getColors()[0])
+                    .replace("&&2", fPlayer.getColors()[1]));
         }
 
         return translateHexToColor(string

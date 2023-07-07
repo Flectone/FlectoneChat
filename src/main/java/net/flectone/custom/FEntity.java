@@ -1,6 +1,6 @@
 package net.flectone.custom;
 
-import net.flectone.managers.PlayerManager;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -17,7 +17,7 @@ public class FEntity {
         if(entity instanceof Player) {
 
             Player player = (Player) entity;
-            PlayerManager.getPlayer(player).setTeamColor(color);
+            FPlayerManager.getPlayer(player).setTeamColor(color);
             return;
         }
 

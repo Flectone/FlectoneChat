@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.flectone.utils.ReflectionUtil;
 import net.md_5.bungee.api.chat.*;
@@ -13,9 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.managers.FileManager;
-import net.flectone.managers.PlayerManager;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -112,7 +111,7 @@ public class FCommands {
         if(isConsole || !getFPlayer().isMuted()) return false;
 
         String[] stringsReplace = {"<time>", "<reason>"};
-        String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getTimeMuted()), getFPlayer().getReasonMute()};
+        String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getMuteTime()), getFPlayer().getMuteReason()};
 
         sendMeMessage("mute.success_get", stringsReplace, stringsTo);
 
@@ -142,7 +141,11 @@ public class FCommands {
 
 
     public FPlayer getFPlayer(){
-        return PlayerManager.getPlayer(((Player) sender).getUniqueId());
+        return FPlayerManager.getPlayer(player.getUniqueId());
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public boolean isInsufficientArgs(int count){
@@ -157,11 +160,6 @@ public class FCommands {
         if(isConsole) return false;
 
         return args[0].equalsIgnoreCase(player.getName());
-    }
-
-    public static boolean isOfflinePlayer(String playerName){
-        return Arrays.stream(Bukkit.getOfflinePlayers())
-                .anyMatch(offlinePlayer -> offlinePlayer.getName().equalsIgnoreCase(playerName));
     }
 
     public static boolean isOnlinePlayer(String playerName){
@@ -240,7 +238,6 @@ public class FCommands {
     }
 
     private Set<Player> getFilteredPlayers(){
-
         if(Main.config.getString(command + ".global") != null
                 && !Main.config.getBoolean(command + ".global")
                 && !isConsole){
@@ -250,18 +247,18 @@ public class FCommands {
             Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange)
                     .stream()
                     .filter(entity -> entity instanceof Player
-                            && !PlayerManager.getPlayer((Player) entity).checkIgnoreList(player))
+                            && !FPlayerManager.getPlayer((Player) entity).isIgnored(player))
                     .map(entity -> (Player) entity)
                     .collect(Collectors.toSet());
+
             playerSet.add(player);
 
             return playerSet;
         }
 
-
         return Bukkit.getOnlinePlayers()
                 .stream()
-                .filter(onlinePlayer -> !PlayerManager.getPlayer(onlinePlayer).checkIgnoreList(player))
+                .filter(onlinePlayer -> !FPlayerManager.getPlayer(onlinePlayer).isIgnored(player))
                 .collect(Collectors.toSet());
     }
 
@@ -328,13 +325,13 @@ public class FCommands {
         firstPlayer.spigot().sendMessage(getBuilder.create());
 
         if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
-            PlayerManager.getPlayer(((Player) firstPlayer).getUniqueId()).setLastWritePlayer((Player) secondPlayer);
+            FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
         }
 
     }
 
     public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
-        return Main.ignores.getStringList(firstPlayer.getUniqueId().toString()).contains(secondPlayer.getUniqueId().toString());
+        return FPlayerManager.getPlayer(firstPlayer).isIgnored(secondPlayer);
     }
 
     private void processMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {

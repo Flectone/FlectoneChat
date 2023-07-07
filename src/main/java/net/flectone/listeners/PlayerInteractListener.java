@@ -3,7 +3,7 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.commands.CommandMark;
-import net.flectone.managers.PlayerManager;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,9 +44,9 @@ public class PlayerInteractListener implements Listener {
     @EventHandler
     public void playerItemClick(PlayerInteractEvent event){
 
-        if(PlayerManager.getPlayer(event.getPlayer()).isAfk()){
+        if(FPlayerManager.getPlayer(event.getPlayer()).isAfk()){
             CommandAfk.setAfkFalse(event.getPlayer());
-        } else PlayerManager.getPlayer(event.getPlayer()).setLastBlock(event.getPlayer().getLocation().getBlock());
+        } else FPlayerManager.getPlayer(event.getPlayer()).setBlock(event.getPlayer().getLocation().getBlock());
 
         if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                 && Main.config.getBoolean("item.sign.enable")

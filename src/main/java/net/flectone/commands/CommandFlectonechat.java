@@ -1,6 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -9,9 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
-import net.flectone.custom.FPlayer;
 import net.flectone.managers.FileManager;
-import net.flectone.managers.PlayerManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -68,8 +67,8 @@ public class CommandFlectonechat extends FTabCompleter {
         Main.getInstance().checkPlayerMoveTimer();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
-            PlayerManager.removePlayer(playerOnline);
-            new FPlayer(playerOnline);
+            FPlayerManager.removePlayer(playerOnline);
+            FPlayerManager.addPlayer(playerOnline);
         }
 
         fCommand.sendMeMessage("flectonechat.message");

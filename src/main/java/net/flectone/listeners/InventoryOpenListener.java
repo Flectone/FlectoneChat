@@ -1,7 +1,8 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.managers.PlayerManager;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -23,12 +24,13 @@ public class InventoryOpenListener implements Listener {
     @EventHandler
     public void inventoryOpen(InventoryOpenEvent event){
 
-        List<Inventory> inventoryList = PlayerManager.getPlayer(event.getPlayer()).getInventoryList();
+        FPlayer fPlayer = FPlayerManager.getPlayer((OfflinePlayer) event.getPlayer());
+
+        List<Inventory> inventoryList = fPlayer.getInventoryList();
         if(inventoryList == null
                 || !inventoryList.contains(event.getInventory())) return;
 
-
-        List<String> ignoreList = PlayerManager.getPlayer(event.getPlayer()).getIgnoreList();
+        List<String> ignoreList = fPlayer.getIgnoreList();
 
         int indexItem = 0;
         int numberInventory = 0;
@@ -45,11 +47,11 @@ public class InventoryOpenListener implements Listener {
 
             SkullMeta skullMeta = (SkullMeta) blockForHead.getItemMeta();
 
-            OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(ignoreList.get(y)));
+            String playerName = Bukkit.getOfflinePlayer(UUID.fromString(ignoreList.get(y))).getName();
 
-            skullMeta.setDisplayName("§e" + player.getName());
-            skullMeta.setLocalizedName(player.getName());
-            skullMeta.setOwner(player.getName());
+            skullMeta.setDisplayName("§e" + playerName);
+            skullMeta.setLocalizedName(playerName);
+            skullMeta.setOwner(playerName);
             blockForHead.setItemMeta(skullMeta);
             inventoryList.get(numberInventory).setItem(indexItem++, blockForHead);
 

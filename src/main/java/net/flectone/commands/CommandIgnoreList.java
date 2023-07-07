@@ -24,6 +24,7 @@ public class CommandIgnoreList extends FTabCompleter {
         if(fCommand.isConsoleMessage()) return true;
 
         List<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
+
         if(ignoreList.isEmpty()){
             fCommand.sendMeMessage("ignore-list.empty");
             return true;
@@ -44,7 +45,7 @@ public class CommandIgnoreList extends FTabCompleter {
         }
 
         fCommand.getFPlayer().setInventoryList(inventoryList);
-        ((Player) commandSender).openInventory(inventoryList.get(fCommand.getFPlayer().getNumberLastInventory()));
+        fCommand.getPlayer().openInventory(inventoryList.get(fCommand.getFPlayer().getNumberLastInventory()));
 
         return true;
     }

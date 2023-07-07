@@ -2,14 +2,14 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.managers.PlayerManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -25,9 +25,8 @@ public class CommandMsg extends FTabCompleter {
         if(fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
-
-        Player secondPlayer = Bukkit.getPlayer(playerName);
-        if(secondPlayer == null){
+        FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(playerName);
+        if(secondFPlayer == null){
             fCommand.sendMeMessage("msg.no_player");
             return true;
         }
@@ -44,18 +43,18 @@ public class CommandMsg extends FTabCompleter {
                 return true;
             }
 
-            if(fCommand.getFPlayer().checkIgnoreList(secondPlayer)){
+            if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
                 fCommand.sendMeMessage("msg.you_ignore");
                 return true;
             }
-            if(PlayerManager.getPlayer(secondPlayer).checkIgnoreList((Player) commandSender)){
+            if(secondFPlayer.isIgnored((Player) commandSender)){
                 fCommand.sendMeMessage("msg.he_ignore");
                 return true;
             }
         }
 
-        fCommand.sendTellMessage(commandSender, secondPlayer.getPlayer(), "send", message);
-        fCommand.sendTellMessage(secondPlayer.getPlayer(), commandSender, "get", message);
+        fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), "send", message);
+        fCommand.sendTellMessage(secondFPlayer.getPlayer(), commandSender, "get", message);
 
         return true;
     }

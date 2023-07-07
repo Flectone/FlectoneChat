@@ -3,7 +3,7 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FEntity;
-import net.flectone.managers.PlayerManager;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +24,6 @@ public class PlayerQuitListener implements Listener {
                 .replace("<player>", player.getName());
         fCommands.sendGlobalMessage(string);
 
-        PlayerManager.removePlayer(player);
+//        FPlayerManager.removePlayer(player);
     }
 }

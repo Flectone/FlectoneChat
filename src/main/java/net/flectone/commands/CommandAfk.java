@@ -1,14 +1,14 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
-import net.flectone.custom.FPlayer;
-import net.flectone.managers.PlayerManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,25 +35,23 @@ public class CommandAfk extends FTabCompleter {
     }
 
     public static void setAfkFalse(Player player){
-        FPlayer fPlayer = PlayerManager.getPlayer(player);
-        fPlayer.setLastBlock(player.getLocation().getBlock());
-        CommandAfk.sendMessage(fPlayer, false);
+        FPlayer afkPlayer = FPlayerManager.getPlayer(player);
+        afkPlayer.setBlock(player.getLocation().getBlock());
+        CommandAfk.sendMessage(afkPlayer, false);
     }
 
-    public static void sendMessage(FPlayer fPlayer, boolean isAfk){
-        FCommands fCommands = new FCommands(fPlayer.getPlayer(), "afk", "afk", new String[]{});
+    public static void sendMessage(FPlayer afkFPlayer, boolean isAfk){
+        FCommands fCommands = new FCommands(afkFPlayer.getPlayer(), "afk", "afk", new String[]{});
         sendMessage(fCommands, isAfk);
     }
 
     public static void sendMessage(FCommands fCommands, boolean isAfk){
-
         FPlayer fPlayer = fCommands.getFPlayer();
         fPlayer.setAfk(isAfk);
 
-        String formatString = Main.config.getFormatString("afk.suffix", fPlayer.getPlayer());
+        String formatString = isAfk ? Main.config.getFormatString("afk.suffix", fPlayer.getPlayer()) : "";
 
-        if(isAfk) fPlayer.addSuffixToName(formatString);
-        else fPlayer.removeFromName(Main.config.getFormatString("afk.suffix", fPlayer.getPlayer()));
+        fPlayer.setAfkSuffix(formatString);
 
         fCommands.sendMeMessage("afk.success_" + isAfk);
     }

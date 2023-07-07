@@ -1,12 +1,12 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import org.jetbrains.annotations.Nullable;
@@ -23,16 +23,16 @@ public class CommandPing extends FTabCompleter {
 
         if(commandSender instanceof ConsoleCommandSender && strings.length == 0) return true;
 
-        CommandSender player = strings.length > 0 ? Bukkit.getPlayer(strings[0]) : commandSender;
+        FPlayer fPlayer = strings.length > 0 ? FPlayerManager.getPlayerFromName(strings[0]) : fCommand.getFPlayer();
 
-        if(player == null){
+        if(fPlayer == null){
             fCommand.sendMeMessage("reply.no_online");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        int currentPing = ((Player) player).getPing();
+        int currentPing = fPlayer.getPlayer().getPing();
         int badPing = Main.config.getInt("ping.bad.count");
         int mediumPing = Main.config.getInt("ping.medium.count");
         String pingColor;
@@ -43,13 +43,13 @@ public class CommandPing extends FTabCompleter {
 
         pingColor += currentPing;
 
-        if(strings.length == 0 || commandSender == player){
+        if(strings.length == 0 || commandSender == fCommand.getPlayer()){
             fCommand.sendMeMessage("ping.myself.message", "<ping>", pingColor);
             return true;
         }
 
         String[] replaceStrings = {"<player>", "<ping>"};
-        String[] replaceTos = {player.getName(), pingColor};
+        String[] replaceTos = {fPlayer.getRealName(), pingColor};
 
         fCommand.sendMeMessage("ping.player.message", replaceStrings, replaceTos);
 

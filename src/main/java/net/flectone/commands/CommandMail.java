@@ -1,8 +1,10 @@
 package net.flectone.commands;
 
+import net.flectone.custom.FPlayer;
+import net.flectone.custom.Mail;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,28 +28,27 @@ public class CommandMail extends FTabCompleter {
 
         if(fCommand.isInsufficientArgs(2)) return true;
 
-        if(!FCommands.isOfflinePlayer(strings[0])){
+        String playerName = strings[0];
+        FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
+
+        if(fPlayer == null){
             fCommand.sendMeMessage("mail.no_player");
             return true;
         }
 
-        String playerName = strings[0];
         String message = ObjectUtil.toString(strings, 1);
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
-
-        if(offlinePlayer.isOnline()){
+        if(fPlayer.isOnline()){
             Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
             return true;
         }
 
-
-        if(fCommand.isIgnored((Player) commandSender, offlinePlayer)){
+        if(fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())){
             fCommand.sendMeMessage("mail.you_ignore");
             return true;
         }
 
-        if(fCommand.isIgnored(offlinePlayer, (Player) commandSender)){
+        if(fCommand.isIgnored(fPlayer.getOfflinePlayer(), (Player) commandSender)){
             fCommand.sendMeMessage("mail.he_ignore");
             return true;
         }
@@ -56,15 +57,15 @@ public class CommandMail extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        String key = offlinePlayer.getUniqueId() + "." + ((Player) commandSender).getUniqueId();
+        fPlayer.setUpdated(true);
+        fCommand.getFPlayer().setUpdated(true);
 
-        List<String> mailsList = Main.mails.getStringList(key);
-        mailsList.add(message);
-
-        Main.mails.updateFile(key, mailsList);
+        Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
+        mail.setRemoved(false);
+        fPlayer.addMail(mail.getUUID(), mail);
 
         String[] replaceString = {"<player>", "<message>"};
-        String[] replaceTo = {offlinePlayer.getName(), message};
+        String[] replaceTo = {fPlayer.getRealName(), message};
 
         fCommand.sendMeMessage("mail.success_send", replaceString, replaceTo);
 

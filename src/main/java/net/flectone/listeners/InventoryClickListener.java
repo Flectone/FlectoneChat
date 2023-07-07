@@ -1,7 +1,7 @@
 package net.flectone.listeners;
 
-import net.flectone.Main;
-import net.flectone.managers.PlayerManager;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -18,8 +18,8 @@ public class InventoryClickListener implements Listener {
     @EventHandler
     public void inventoryClick(InventoryClickEvent event){
 
-        if(PlayerManager.getPlayer(event.getWhoClicked()).getInventoryList() == null
-                || !PlayerManager.getPlayer(event.getWhoClicked()).getInventoryList().contains(event.getInventory())) return;
+        if(FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList() == null
+                || !FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList().contains(event.getInventory())) return;
 
 
         event.setCancelled(true);
@@ -28,24 +28,26 @@ public class InventoryClickListener implements Listener {
 
 
         Player eventPlayer = (Player) event.getWhoClicked();
+        FPlayer eventFPlayer = FPlayerManager.getPlayer(eventPlayer);
+
         ItemStack clickedItem = event.getCurrentItem();
 
         switch(clickedItem.getType()){
             case PLAYER_HEAD: {
 
                 String secondPlayerName = clickedItem.getItemMeta().getLocalizedName();
-                OfflinePlayer secondPlayer = Bukkit.getOfflinePlayer(secondPlayerName);
+                FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(secondPlayerName);
 
-                Bukkit.dispatchCommand(eventPlayer, "ignore " + secondPlayer.getName());
+                Bukkit.dispatchCommand(eventPlayer, "ignore " + secondFPlayer.getRealName());
 
                 event.getInventory().remove(event.getCurrentItem());
 
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
                 for(int x = 0; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){
-                        PlayerManager.getPlayer(eventPlayer).setNumberLastInventory(x);
+                        eventFPlayer.setNumberLastInventory(x);
                         break;
                     }
                 }
@@ -58,7 +60,7 @@ public class InventoryClickListener implements Listener {
             case SPECTRAL_ARROW: {
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
 
                 for(int x = 0; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){
@@ -72,7 +74,7 @@ public class InventoryClickListener implements Listener {
             case ARROW:{
                 eventPlayer.closeInventory();
 
-                List<Inventory> inventoryList = PlayerManager.getPlayer(eventPlayer).getInventoryList();
+                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
 
                 for(int x = 1; x < inventoryList.size(); x++){
                     if(inventoryList.get(x) == event.getClickedInventory()){

@@ -3,9 +3,8 @@ package net.flectone.expansions;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
-import net.flectone.managers.PlayerManager;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +43,7 @@ public class FExpansion extends PlaceholderExpansion {
 
             if(player == null || !player.isOnline()) return "";
 
-            FPlayer fPlayer = PlayerManager.getPlayer(player.getUniqueId());
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return ObjectUtil.translateHexToColor(fPlayer.getStreamPrefix());
         }
@@ -53,7 +52,7 @@ public class FExpansion extends PlaceholderExpansion {
 
             if(player == null || !player.isOnline()) return "";
 
-            FPlayer fPlayer = PlayerManager.getPlayer(player.getUniqueId());
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
         }

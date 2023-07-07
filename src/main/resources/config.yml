@@ -30,13 +30,7 @@ afk.suffix: " #f2d40f💤"
 afk.timeout.enable: true
 afk.timeout.time: 3000
 
-## █ █ ▄▀▄ █ █ █   ▀█▀   ▄▀▄ █▀▄ █
-## ▀▄▀ █▀█ ▀▄█ █▄▄  █    █▀█ █▀  █
-# if off, first flectonechat symbols and then vault symbols
-# if on, first vault symbols and then vault symbols
-vault.symbols_first: false
-vault.prefix: "<vault_prefix>"
-vault.suffix: "<vault_suffix>"
+player.name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
 
 tab.update.enable: true
 # is specified in seconds

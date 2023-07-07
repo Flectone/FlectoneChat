@@ -1,6 +1,7 @@
 package net.flectone.listeners;
 
 import net.flectone.custom.FCommands;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import net.flectone.Main;
-import net.flectone.managers.PlayerManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +30,7 @@ public class AsyncPlayerChatListener implements Listener {
         String message = event.getMessage();
         String globalPrefix = config.getString("chat.global.prefix");
 
-        recipients.removeIf(recipient -> PlayerManager.getPlayer(recipient.getUniqueId()).getIgnoreList().contains(player.getUniqueId().toString()));
+        recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
 
         String chatType = message.startsWith(globalPrefix) && !message.equals(globalPrefix) && config.getBoolean("chat.global.enable") ? "global" : "locale";
 
@@ -76,7 +76,7 @@ public class AsyncPlayerChatListener implements Listener {
         if(fCommands.isMuted()) return;
 
         String configMessage = config.getString("chat." + chatType + ".message")
-                .replace("<player>", PlayerManager.getPlayer(player).getName());
+                .replace("<player>", FPlayerManager.getPlayer(player).getName());
 
         fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
 
@@ -96,7 +96,7 @@ public class AsyncPlayerChatListener implements Listener {
                 .map(entity -> (Player) entity)
                 .collect(Collectors.toSet());
 
-        recipients.removeIf(recipient -> PlayerManager.getPlayer(recipient.getUniqueId()).getIgnoreList().contains(player.getUniqueId().toString()));
+        recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
 
         createMessage(recipients, player, "%item%", "locale", event.getCursor());
     }

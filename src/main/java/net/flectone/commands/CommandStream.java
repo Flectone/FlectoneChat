@@ -41,7 +41,7 @@ public class CommandStream extends FTabCompleter {
 
             if(strings[0].equalsIgnoreCase("end")){
                 fCommand.getFPlayer().setStreamer(false);
-                fCommand.getFPlayer().removeFromName(Main.config.getFormatString("stream.prefix", commandSender));
+                fCommand.getFPlayer().setStreamPrefix("");
                 fCommand.sendMeMessage("stream.end");
                 return true;
             }
@@ -51,7 +51,7 @@ public class CommandStream extends FTabCompleter {
             if(fCommand.isMuted()) return true;
 
             fCommand.getFPlayer().setStreamer(true);
-            fCommand.getFPlayer().addPrefixToName(Main.config.getFormatString("stream.prefix", commandSender));
+            fCommand.getFPlayer().setStreamPrefix(Main.config.getFormatString("stream.prefix", commandSender));
         }
 
         StringBuilder stringBuilder = new StringBuilder();

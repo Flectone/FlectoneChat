@@ -1,19 +1,21 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.custom.Mail;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import net.flectone.Main;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandMailClear extends FTabCompleter {
     @Override
@@ -26,23 +28,21 @@ public class CommandMailClear extends FTabCompleter {
         if(fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
+        FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(!FCommands.isOfflinePlayer(playerName)){
+        if(fPlayer == null){
             fCommand.sendMeMessage("mail-clear.no_player");
             return true;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
-        String key = offlinePlayer.getUniqueId() + "." + ((Player) commandSender).getUniqueId();
+        HashMap<String, Mail> mailsList = fPlayer.getMails();
 
-        List<String> mailsList = Main.mails.getStringList(key);
-
-        if(offlinePlayer.isOnline() || mailsList.isEmpty()){
+        if(fPlayer.isOnline() || mailsList == null || mailsList.isEmpty()){
             fCommand.sendMeMessage("mail-clear.empty");
             return true;
         }
 
-        if(!StringUtils.isNumeric(strings[1]) || Integer.parseInt(strings[1]) > (mailsList.size())){
+        if(!StringUtils.isNumeric(strings[1])){
             fCommand.sendMeMessage("mail-clear.not_number");
             return true;
         }
@@ -51,14 +51,24 @@ public class CommandMailClear extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        int number = Integer.parseInt(strings[1]) - 1;
+        int number = Integer.parseInt(strings[1]);
+
+        Map.Entry<String, Mail> entry = mailsList.entrySet().stream()
+                .filter(stringMailEntry -> !stringMailEntry.getValue().isRemoved())
+                .skip(number - 1)
+                .findFirst()
+                .orElse(null);
+
+        if (entry == null) {
+            fCommand.sendMeMessage("mail-clear.not_number");
+            return true;
+        }
 
         String[] replaceString = {"<player>", "<message>"};
-        String[] replaceTo = {offlinePlayer.getName(), mailsList.get(number)};
+        String[] replaceTo = {fPlayer.getRealName(), entry.getValue().getMessage()};
 
-        mailsList.remove(number);
-
-        Main.mails.updateFile(key, mailsList);
+        fPlayer.removeMail(entry.getKey());
+        fPlayer.setUpdated(true);
 
         fCommand.sendMeMessage("mail-clear.success", replaceString, replaceTo);
 
@@ -72,11 +82,20 @@ public class CommandMailClear extends FTabCompleter {
 
         if(strings.length == 1){
             isOfflinePlayer(strings[0]);
-        } else if(commandSender instanceof Player && strings.length == 2 && FCommands.isOfflinePlayer(strings[0])){
-            String key = Bukkit.getOfflinePlayer(strings[0]).getUniqueId() + "." + ((Player) commandSender).getPlayer().getUniqueId();
-            List<String> list = Main.mails.getStringList(key);
-            for(int x = 0; x < list.size(); x++){
-                isStartsWith(strings[1], String.valueOf(x + 1));
+        } else if(strings.length == 2){
+
+            String playerName = strings[0];
+            FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
+
+            if(fPlayer != null){
+                HashMap<String, Mail> mailsList = fPlayer.getMails();
+
+                if (mailsList != null && !mailsList.isEmpty()) {
+                    int[] counter = {1};
+                    mailsList.entrySet().stream()
+                            .filter(entry -> !entry.getValue().isRemoved()) // Фильтрация по условию
+                            .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
+                }
             }
         }
 

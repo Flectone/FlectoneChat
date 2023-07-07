@@ -1,11 +1,13 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
-import net.flectone.managers.PlayerManager;
+import net.flectone.commands.CommandChatcolor;
+import net.flectone.sqlite.Database;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -13,88 +15,205 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 public class FPlayer {
 
-    private final String streamPrefix = Main.config.getString("stream.prefix");
+    private OfflinePlayer offlinePlayer;
 
-    private final String afkSuffix = Main.config.getString("afk.suffix");
+    private Player player;
 
-    private final UUID uuid;
+    private Block block;
 
-    private final Player player;
+    private final String name;
 
-    private String name;
-
-    private List<String> ignoreList;
-
-    private List<Inventory> inventoryList;
-
-    private int numberLastInventory = 0;
-
-    private List<String> colors = new ArrayList<>();
-
-    private boolean streamer = false;
-
-    private boolean isAfk = false;
-
-
-    private int lastTimeMoved;
-
-    private Block lastBlock;
-
-    private Player lastWritePlayer;
+    private final String uuid;
 
     private Team team;
 
-    public FPlayer(Player player) {
-        this.player = player;
-        this.name = player.getName();
-        this.uuid = player.getUniqueId();
-        this.ignoreList = Main.ignores.getStringList(uuid.toString());
+    private boolean isAfk = false;
+
+    private boolean isStreamer = false;
+
+    private boolean isMuted = false;
+
+    private String[] colors = new String[]{};
+
+    private ArrayList<String> ignoreList = new ArrayList<>();
+
+    private List<Inventory> inventoryList = new ArrayList<>();
+
+    private String muteReason;
+
+    private int muteTime;
+
+    private int numberLastInventory;
+
+    private int lastTimeMoved;
+
+    private String streamPrefix = "";
+
+    private String afkSuffix = "";
+
+    private String vaultSuffix = "";
+
+    private String vaultPrefix = "";
+
+    public FPlayer(OfflinePlayer offlinePlayer){
+        this.offlinePlayer = offlinePlayer;
+        this.name = offlinePlayer.getName();
+        this.uuid = offlinePlayer.getUniqueId().toString();
         this.team = getPlayerTeam();
-
-        PlayerManager.addPlayer(this);
-
-        setSymbols();
-
-        setLastBlock(player.getLocation().getBlock());
-
-        setPlayerListHeaderFooter();
-
-        isMuted();
     }
 
-    public String getStreamPrefix() {
-        return streamer ? streamPrefix : "";
+    public void initialize(Player player){
+        setPlayer(player);
+        setBlock(this.player.getLocation().getBlock());
+        getVaultPrefixSuffix();
+        setWorldPrefix(player.getWorld());
+        setDisplayName();
+        setUpdated(true);
     }
 
-    public String getAfkSuffix() {
-        return isAfk ? afkSuffix : "";
-    }
-
-    private void setSymbols(){
-        if(Main.config.getBoolean("vault.symbols_first")){
-            getVaultPrefixSuffix();
-            setName(player.getWorld());
-        } else {
-            setName(player.getWorld());
-            getVaultPrefixSuffix();
-        }
-
+    public FPlayer(Player player){
+        this.player = player;
+        this.offlinePlayer = player;
+        this.name = player.getName();
+        this.uuid = player.getUniqueId().toString();
+        this.team = getPlayerTeam();
+        this.block = this.player.getLocation().getBlock();
+        getVaultPrefixSuffix();
+        setWorldPrefix(player.getWorld());
         setDisplayName();
     }
 
-    private Team getPlayerTeam(){
-        Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(player.getName());
-        Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(player.getName());
-        if(!team.hasEntry(player.getName()) && Main.config.getBoolean("color.worlds.team.enable")) team.addEntry(player.getName());
-        if(team.hasEntry(player.getName()) && !Main.config.getBoolean("color.worlds.team.enable")) team.removeEntry(player.getName());
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public boolean isOnline(){
+        return this.offlinePlayer.isOnline();
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public OfflinePlayer getOfflinePlayer() {
+        return this.offlinePlayer;
+    }
+
+    public String getUUID() {
+        return this.uuid;
+    }
+
+    public boolean isMoved(Block block){
+        return !block.equals(this.block);
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
+        this.lastTimeMoved = ObjectUtil.getCurrentTime();
+    }
+
+    public int getLastTimeMoved() {
+        return lastTimeMoved;
+    }
+
+    public boolean isMuted() {
+        boolean isMuted = getMuteTime() > 0;
+
+        if(!isMuted) {
+            setMuteTime(0);
+            setMuteReason("");
+        }
+
+        return getMuteTime() > 0;
+    }
+
+    public boolean isAfk() {
+        return this.isAfk;
+    }
+
+    public void setAfk(boolean afk) {
+        isAfk = afk;
+    }
+
+    public String getAfkSuffix() {
+        return isAfk ? Main.config.getString("afk.suffix") : "";
+    }
+
+    public String getStreamPrefix() {
+        return isStreamer ? Main.config.getString("stream.prefix") : "";
+    }
+
+    public void setMuteReason(String muteReason) {
+        this.muteReason = muteReason;
+    }
+
+    public String getMuteReason() {
+        return this.muteReason;
+    }
+
+    public void setMuteTime(int muteTime) {
+        this.muteTime = muteTime;
+    }
+
+    public int getMuteTime(){
+        return this.muteTime - ObjectUtil.getCurrentTime();
+    }
+
+    public void setIgnoreList(ArrayList<String> ignoreList) {
+        this.ignoreList = ignoreList;
+    }
+
+    public ArrayList<String> getIgnoreList() {
+        return ignoreList;
+    }
+
+    public boolean isIgnored(Player player){
+        if(player == null || this.player == player) return false;
+
+        return isIgnored(player.getUniqueId().toString());
+    }
+
+    public boolean isIgnored(OfflinePlayer offlinePlayer){
+        if(offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
+
+        return isIgnored(offlinePlayer.getUniqueId().toString());
+    }
+
+    public boolean isIgnored(String uuid){
+        return this.ignoreList.contains(uuid);
+    }
+
+    public void setColors(String firstColor, String secondColor) {
+        this.colors = new String[]{firstColor, secondColor};
+    }
+
+    public String[] getColors() {
+        if(this.colors.length != 0) return this.colors;
+
+        String firstColor = Main.getInstance().getConfig().getString("color.first");
+        String secondColor = Main.getInstance().getConfig().getString("color.second");
+        setColors(firstColor, secondColor);
+
+        return this.colors;
+    }
+
+    public Team getPlayerTeam(){
+        Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(this.name);
+        Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(this.name);
+
+        boolean colorWorldsEnabled = Main.config.getBoolean("color.worlds.team.enable");
+
+        if(!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
+        if(team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
 
         team.setColor(ChatColor.WHITE);
+        team.addEntry(name);
 
         return team;
     }
@@ -103,108 +222,14 @@ public class FPlayer {
         this.team.setColor(ChatColor.valueOf(teamColor));
     }
 
-    public Player getPlayer() {
-        return player;
+    private Player lastWriter;
+
+    public void setLastWriter(Player lastWriter) {
+        this.lastWriter = lastWriter;
     }
 
-    public UUID getUUID() {
-        return uuid;
-    }
-
-    public void setPlayerListHeaderFooter() {
-        if (!player.isOnline()) return;
-
-        player.setPlayerListName(getName());
-
-        if (Main.config.getBoolean("tab.header.enable")) {
-            player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
-        }
-        if (Main.config.getBoolean("tab.footer.enable")) {
-            player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
-        }
-    }
-
-    private String colorWorldPrefix = "";
-
-    public Player getLastWritePlayer() {
-        return lastWritePlayer;
-    }
-
-    public void setLastWritePlayer(Player lastWritePlayer) {
-        this.lastWritePlayer = lastWritePlayer;
-    }
-
-    public void setName(World world) {
-        if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
-
-            String worldPrefix = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player);
-
-            if(prefix.contains(colorWorldPrefix) && !colorWorldPrefix.equals("")){
-                prefix = prefix.replace(colorWorldPrefix, worldPrefix);
-                colorWorldPrefix = worldPrefix;
-            } else  {
-                colorWorldPrefix = worldPrefix;
-                addPrefixToName(colorWorldPrefix);
-            }
-
-        }
-
-        setDisplayName();
-    }
-
-    private String prefix = "";
-
-    private String suffix = "";
-
-    public void addPrefixToName(String string) {
-        this.prefix += string;
-        setDisplayName();
-    }
-
-    public void removeFromName(String string) {
-        this.prefix = this.prefix.replaceFirst(string, "");
-        this.suffix = this.suffix.replaceFirst(string, "");
-        setDisplayName();
-    }
-
-    public void addSuffixToName(String string) {
-        this.suffix += string;
-        setDisplayName();
-    }
-
-    public void getVaultPrefixSuffix(){
-        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
-
-            String vaultPrefix = provider.getPlayerPrefix(player);
-            vaultPrefix = Main.config.getString("vault.prefix").replace("<vault_prefix>", vaultPrefix);
-            removeFromName(ObjectUtil.translateHexToColor(vaultPrefix));
-            addPrefixToName(ObjectUtil.translateHexToColor(vaultPrefix));
-
-            String vaultSuffix = provider.getPlayerSuffix(player);
-            vaultSuffix = Main.config.getString("vault.suffix").replace("<vault_suffix>", vaultSuffix);
-            removeFromName(ObjectUtil.translateHexToColor(vaultSuffix));
-            addSuffixToName(ObjectUtil.translateHexToColor(vaultSuffix));
-        }
-    }
-
-    private void setDisplayName(){
-        this.player.setPlayerListName(getName());
-        this.team.setPrefix(prefix);
-        this.team.setSuffix(suffix);
-    }
-
-    public String getName() {
-        return prefix + name + suffix;
-    }
-
-    public List<String> getIgnoreList() {
-        return ignoreList;
-    }
-
-    public void saveIgnoreList(List<String> ignoreList) {
-        this.ignoreList = ignoreList;
-        Main.ignores.updateFile(uuid.toString(), ignoreList);
+    public Player getLastWriter() {
+        return this.lastWriter;
     }
 
     public List<Inventory> getInventoryList() {
@@ -223,85 +248,110 @@ public class FPlayer {
         this.numberLastInventory = numberLastInventory;
     }
 
-    public void setColors(String firstColor, String secondColor) {
-        if (colors.isEmpty()) {
-            colors.add("0");
-            colors.add("1");
-        }
-        colors.set(0, firstColor);
-        colors.set(1, secondColor);
-
-        Main.themes.updateFile(uuid.toString(), colors);
-    }
-
-    public List<String> getColors() {
-        colors = Main.themes.getStringList(uuid.toString());
-        if (colors.isEmpty()) {
-            List<String> list = new ArrayList<>();
-            list.add(Main.getInstance().getConfig().getString("color.first"));
-            list.add(Main.getInstance().getConfig().getString("color.second"));
-            return list;
-        }
-        return colors;
-    }
-
     public boolean isStreamer() {
-        return streamer;
+        return this.isStreamer;
     }
 
     public void setStreamer(boolean streamer) {
-        this.streamer = streamer;
+        this.isStreamer = streamer;
     }
 
-    public boolean checkIgnoreList(Player secondPlayer) {
-        if (secondPlayer == null) {
-            return false;
+    public void setStreamPrefix(String streamPrefix) {
+        this.streamPrefix = streamPrefix;
+    }
+
+    public void setAfkSuffix(String afkSuffix) {
+        this.afkSuffix = afkSuffix;
+    }
+
+    public void getVaultPrefixSuffix(){
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
+
+            this.vaultPrefix = provider.getPlayerPrefix(player);
+            this.vaultSuffix = provider.getPlayerSuffix(player);
         }
-        return ignoreList.contains(secondPlayer.getUniqueId().toString());
     }
 
-    public boolean isAfk() {
-        return isAfk;
+    public String getName() {
+        getVaultPrefixSuffix();
+
+        String name = Main.config.getString("player.name")
+                .replace("<vault_prefix>", this.vaultPrefix)
+                .replace("<world_prefix>", this.worldPrefix)
+                .replace("<stream_prefix>", this.streamPrefix)
+                .replace("<player>", this.name)
+                .replace("<vault_suffix>", this.vaultSuffix)
+                .replace("<afk_suffix>", this.afkSuffix);
+
+        return ObjectUtil.translateHexToColor(name);
     }
 
-    public void setAfk(boolean afk) {
-        isAfk = afk;
+    public String getRealName(){
+        return this.name;
     }
 
-    public void setLastBlock(Block lastBlock) {
-        this.lastTimeMoved = ObjectUtil.getCurrentTime();
-        this.lastBlock = lastBlock;
+    public void setDisplayName(){
+        String name = getName();
+        String[] strings = name.split(this.name);
+        String prefix = strings.length > 0 ? strings[0] : "";
+        String suffix = strings.length > 1 ? strings[1] : "";
+
+        this.player.setPlayerListName(name);
+        this.team.setPrefix(prefix);
+        this.team.setSuffix(suffix);
     }
 
-    public int getLastTimeMoved() {
-        return lastTimeMoved;
-    }
+    public void setPlayerListHeaderFooter() {
+        if (!player.isOnline()) return;
 
-    public boolean isMoved(Block block) {
-        return !this.lastBlock.equals(block);
-    }
+        setDisplayName();
 
-    public int getRealTimeMuted() {
-        List<String> list = Main.mutes.getStringList(uuid.toString());
-        if (list.isEmpty()) return 0;
-        return Integer.parseInt(list.get(1));
-    }
-
-    public int getTimeMuted() {
-        return getRealTimeMuted() - ObjectUtil.getCurrentTime();
-    }
-
-    public String getReasonMute() {
-        List<String> list = Main.mutes.getStringList(uuid.toString());
-        if (list.isEmpty()) return null;
-        return list.get(0);
-    }
-
-    public boolean isMuted() {
-        boolean isMuted = getTimeMuted() > 0;
-        if (!isMuted && !Main.mutes.getStringList(uuid.toString()).isEmpty()) {
-            Main.mutes.updateFile(uuid.toString(), null);
+        if (Main.config.getBoolean("tab.header.enable")) {
+            player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
         }
-        return isMuted;
+        if (Main.config.getBoolean("tab.footer.enable")) {
+            player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
+        }
+    }
+
+    private String worldPrefix = "";
+
+    public void setWorldPrefix(World world) {
+        if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
+            String worldPrefix = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player);
+            this.worldPrefix = worldPrefix;
+            Bukkit.broadcastMessage(worldPrefix);
+        }
+
+        setDisplayName();
+    }
+
+    private final HashMap<String, Mail> mails = new HashMap<>();
+
+    public HashMap<String, Mail> getMails() {
+        return mails;
+    }
+
+    public void addMail(String uuid, Mail mail){
+        mails.put(uuid, mail);
+    }
+
+    public Mail getMail(String uuid){
+        return mails.get(uuid);
+    }
+
+    public void removeMail(String uuid){
+        mails.get(uuid).setRemoved(true);
+    }
+
+    private boolean isUpdated;
+
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
     }
 }

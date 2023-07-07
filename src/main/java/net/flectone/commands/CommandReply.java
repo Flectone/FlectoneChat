@@ -1,13 +1,13 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.managers.PlayerManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -22,24 +22,24 @@ public class CommandReply extends FTabCompleter {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        Player secondPlayer = PlayerManager.getPlayer(((Player) commandSender).getUniqueId()).getLastWritePlayer();
+        FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
 
-        if(secondPlayer == null){
+        if(secondFPlayer == null){
             fCommand.sendMeMessage("reply.no_answer");
             return true;
         }
 
-        if(!secondPlayer.isOnline()){
+        if(!secondFPlayer.isOnline()){
             fCommand.sendMeMessage("reply.no_online");
             return true;
         }
 
-        if(fCommand.getFPlayer().checkIgnoreList(secondPlayer)){
+        if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
             fCommand.sendMeMessage("msg.you_ignore");
             return true;
         }
 
-        if(PlayerManager.getPlayer(secondPlayer).checkIgnoreList((Player) commandSender)){
+        if(secondFPlayer.isIgnored(fCommand.getPlayer())){
             fCommand.sendMeMessage("msg.he_ignore");
             return true;
         }
@@ -49,8 +49,8 @@ public class CommandReply extends FTabCompleter {
         if(fCommand.isMuted()) return true;
 
         String message = ObjectUtil.toString(strings);
-        fCommand.sendTellMessage(commandSender, secondPlayer, "send", message);
-        fCommand.sendTellMessage(secondPlayer, commandSender, "get", message);
+        fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), "send", message);
+        fCommand.sendTellMessage(secondFPlayer.getPlayer(), commandSender, "get", message);
 
         return true;
     }

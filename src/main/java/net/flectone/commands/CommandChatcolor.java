@@ -55,7 +55,7 @@ public class CommandChatcolor extends FTabCompleter {
         return wordsList;
     }
 
-    private String[] getDefaultColors() {
+    public static String[] getDefaultColors() {
         return new String[]{Main.config.getString("color.first"), Main.config.getString("color.second")};
     }
 }

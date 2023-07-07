@@ -118,11 +118,4 @@ public class FileManager extends FileConfiguration {
     public void setObject(String path, Object object) {
         fileConfiguration.set(path, object);
     }
-
-    public void updateFile(String string, List<String> strings){
-        if(strings != null && strings.isEmpty()) strings = null;
-
-        this.set(string, strings);
-        this.saveFile();
-    }
 }

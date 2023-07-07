@@ -2,16 +2,16 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CommandUnmute extends FTabCompleter {
     @Override
@@ -21,25 +21,24 @@ public class CommandUnmute extends FTabCompleter {
 
         if(fCommand.isInsufficientArgs(1)) return true;
 
-        if(!FCommands.isOfflinePlayer(strings[0])){
+        FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
+
+        if(fPlayer == null){
             fCommand.sendMeMessage("unmute.no_player");
             return true;
         }
 
-        OfflinePlayer mutedPlayer = Bukkit.getOfflinePlayer(strings[0]);
-
-        List<String> list = Main.mutes.getStringList(mutedPlayer.getUniqueId().toString());
-
-        if(list.isEmpty()){
+        if(fPlayer.getMuteTime() == 0){
             fCommand.sendMeMessage("unmute.no_muted");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        Main.mutes.updateFile(mutedPlayer.getUniqueId().toString(), null);
+        fCommand.getFPlayer().setMuteTime(0);
+        fCommand.getFPlayer().setMuteReason("");
 
-        fCommand.sendMeMessage("unmute.success_send", "<player>", mutedPlayer.getName());
+        fCommand.sendMeMessage("unmute.success_send", "<player>", fPlayer.getRealName());
 
         return true;
     }
@@ -50,9 +49,8 @@ public class CommandUnmute extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            Main.mutes.getKeys().stream().map(string -> Bukkit.getOfflinePlayer(UUID.fromString(string))).collect(Collectors.toSet()).forEach(offlinePlayer -> {
-                isStartsWith(strings[0], offlinePlayer.getName());
-            });
+            Main.getDatabase().getAllMutedPlayers().forEach(uuid ->
+                    isStartsWith(strings[0], Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()));
         }
 
         Collections.sort(wordsList);

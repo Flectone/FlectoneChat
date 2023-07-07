@@ -1,14 +1,15 @@
 package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,28 +29,28 @@ public class CommandIgnore extends FTabCompleter {
             return true;
         }
 
-        if(!fCommand.isOfflinePlayer(strings[0])){
+        String playerName = strings[0];
+        FPlayer ignoredFPlayer = FPlayerManager.getPlayerFromName(playerName);
+
+        if(ignoredFPlayer == null){
             fCommand.sendMeMessage("ignore.no_player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        String playerName = strings[0];
-        OfflinePlayer ignoredPlayer = Bukkit.getOfflinePlayer(playerName);
+        ArrayList<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
-        List<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
-        String ignoredPlayerUUID = ignoredPlayer.getUniqueId().toString();
+        if(fCommand.getFPlayer().isIgnored(ignoredFPlayer.getUUID())){
+            fCommand.sendMeMessage("ignore.success_unignore", "<player>", ignoredFPlayer.getRealName());
+            ignoreList.remove(ignoredFPlayer.getUUID());
 
-        if(ignoreList.contains(ignoredPlayerUUID)){
-            fCommand.sendMeMessage("ignore.success_unignore", "<player>", ignoredPlayer.getName());
-            ignoreList.remove(ignoredPlayerUUID);
         } else {
-            fCommand.sendMeMessage("ignore.success_ignore", "<player>", ignoredPlayer.getName());
-            ignoreList.add(ignoredPlayerUUID);
+            fCommand.sendMeMessage("ignore.success_ignore", "<player>", ignoredFPlayer.getRealName());
+            ignoreList.add(ignoredFPlayer.getUUID());
         }
 
-        fCommand.getFPlayer().saveIgnoreList(ignoreList);
+        fCommand.getFPlayer().setIgnoreList(ignoreList);
 
         return true;
     }
