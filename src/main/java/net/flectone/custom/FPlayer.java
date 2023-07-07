@@ -83,10 +83,6 @@ public class FPlayer {
         this.name = player.getName();
         this.uuid = player.getUniqueId().toString();
         this.team = getPlayerTeam();
-        this.block = this.player.getLocation().getBlock();
-        getVaultPrefixSuffix();
-        setWorldPrefix(player.getWorld());
-        setDisplayName();
     }
 
     public void setPlayer(Player player) {
