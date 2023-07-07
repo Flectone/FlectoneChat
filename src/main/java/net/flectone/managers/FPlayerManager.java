@@ -2,6 +2,7 @@ package net.flectone.managers;
 
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
+import net.flectone.custom.Mail;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -51,6 +52,8 @@ public class FPlayerManager {
 
         FPlayer fPlayer = new FPlayer(player);
         fPlayerHashMap.put(uuid, fPlayer);
+        fPlayer.initialize(player);
+        Main.getDatabase().setPlayer(fPlayer.getUUID());
         return fPlayer;
     }
 
