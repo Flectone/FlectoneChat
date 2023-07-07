@@ -155,6 +155,7 @@ public class FPlayer {
 
     public void setMuteTime(int muteTime) {
         this.muteTime = muteTime;
+        setUpdated(true);
     }
 
     public int getMuteTime(){
@@ -163,6 +164,7 @@ public class FPlayer {
 
     public void setIgnoreList(ArrayList<String> ignoreList) {
         this.ignoreList = ignoreList;
+        setUpdated(true);
     }
 
     public ArrayList<String> getIgnoreList() {
@@ -187,6 +189,7 @@ public class FPlayer {
 
     public void setColors(String firstColor, String secondColor) {
         this.colors = new String[]{firstColor, secondColor};
+        setUpdated(true);
     }
 
     public String[] getColors() {
@@ -317,7 +320,6 @@ public class FPlayer {
         if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
             String worldPrefix = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player);
             this.worldPrefix = worldPrefix;
-            Bukkit.broadcastMessage(worldPrefix);
         }
 
         setDisplayName();
@@ -331,6 +333,7 @@ public class FPlayer {
 
     public void addMail(String uuid, Mail mail){
         mails.put(uuid, mail);
+        setUpdated(true);
     }
 
     public Mail getMail(String uuid){
@@ -339,6 +342,7 @@ public class FPlayer {
 
     public void removeMail(String uuid){
         mails.get(uuid).setRemoved(true);
+        setUpdated(true);
     }
 
     private boolean isUpdated;

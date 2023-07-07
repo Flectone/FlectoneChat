@@ -57,9 +57,6 @@ public class CommandMail extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        fPlayer.setUpdated(true);
-        fCommand.getFPlayer().setUpdated(true);
-
         Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
         mail.setRemoved(false);
         fPlayer.addMail(mail.getUUID(), mail);

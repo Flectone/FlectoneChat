@@ -32,7 +32,8 @@ public abstract class Database {
             ResultSet rs = ps.executeQuery();
             close(ps,rs);
 
-            Arrays.stream(Bukkit.getOfflinePlayers()).forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId().toString()));
+            Arrays.stream(Bukkit.getOfflinePlayers())
+                    .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId().toString()));
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retreive connection", ex);
@@ -40,7 +41,6 @@ public abstract class Database {
     }
 
     public void setPlayer(String uuid){
-
         try (Connection conn = getSQLConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
 
@@ -160,99 +160,6 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
         }
-    }
-
-    public String[] getMails(String uuid){
-        Bukkit.broadcastMessage("6");
-
-
-        try (Connection conn = getSQLConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT mails FROM players WHERE uuid = ?");
-             PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM mails WHERE uuid = ?")) {
-
-            ps.setString(1, uuid);
-            String mailsStringArray = ps.executeQuery().getString("mails");
-
-            if(mailsStringArray == null || mailsStringArray.isEmpty()) return null;
-
-            String[] mailsArray = mailsStringArray.split(",");
-
-            for(int x = 0; x < mailsArray.length; x++){
-                String mailUUID = mailsArray[x];
-                ps1.setString(1, mailUUID);
-
-                mailsArray[x] = ps1.executeQuery().getString("sender") + "," + ps1.executeQuery().getString("message") + "," + mailUUID;
-            }
-
-            return mailsArray;
-
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
-        }
-
-        return null;
-    }
-
-    public void clearMails(String uuid, String neededMailUUID){
-        Bukkit.broadcastMessage("7");
-
-        try (Connection conn = getSQLConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT mails FROM players WHERE uuid = ?");
-             PreparedStatement ps1 = conn.prepareStatement("DELETE FROM mails WHERE uuid = ?");
-             PreparedStatement ps2 = conn.prepareStatement("UPDATE players SET mails = ? WHERE uuid = ?")) {
-
-            ps.setString(1, uuid);
-            String mailsStringArray = ps.executeQuery().getString("mails");
-
-            if(mailsStringArray == null || mailsStringArray.isEmpty()) return;
-
-            if(neededMailUUID == null){
-                String[] mailsArray = mailsStringArray.split(",");
-
-                for (String mailUUID : mailsArray) {
-                    ps1.setString(1, mailUUID);
-                    ps1.executeUpdate();
-                }
-
-                ps2.setString(1, null);
-            } else {
-
-                ps1.setString(1, neededMailUUID);
-                ps1.executeUpdate();
-
-                mailsStringArray = mailsStringArray.replace(neededMailUUID + ",", "");
-                mailsStringArray = mailsStringArray.length() == 0 ? null : mailsStringArray;
-                ps2.setString(1, mailsStringArray);
-
-            }
-            ps2.setString(2, uuid);
-            ps2.executeUpdate();
-
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
-        }
-    }
-
-    public ArrayList<String> getAllMutedPlayers(){
-        Bukkit.broadcastMessage("10");
-
-        ArrayList<String> arrayList = new ArrayList<>();
-
-        try (Connection conn = getSQLConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM players");
-             ResultSet rs = ps.executeQuery()) {
-
-            while(rs.next()){
-                String muteReason = rs.getString("mute_reason");
-                if(muteReason != null) arrayList.add(rs.getString("uuid"));
-            }
-
-
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
-        }
-
-        return arrayList;
     }
 
     public void close(PreparedStatement ps,ResultSet rs){

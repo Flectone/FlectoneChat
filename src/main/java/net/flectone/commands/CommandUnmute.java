@@ -49,8 +49,8 @@ public class CommandUnmute extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            Main.getDatabase().getAllMutedPlayers().forEach(uuid ->
-                    isStartsWith(strings[0], Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName()));
+            FPlayerManager.getPlayers().stream().filter(FPlayer::isMuted).forEach(fPlayer ->
+                    isStartsWith(strings[0], fPlayer.getRealName()));
         }
 
         Collections.sort(wordsList);

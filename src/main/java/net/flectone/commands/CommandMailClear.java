@@ -68,7 +68,6 @@ public class CommandMailClear extends FTabCompleter {
         String[] replaceTo = {fPlayer.getRealName(), entry.getValue().getMessage()};
 
         fPlayer.removeMail(entry.getKey());
-        fPlayer.setUpdated(true);
 
         fCommand.sendMeMessage("mail-clear.success", replaceString, replaceTo);
 
