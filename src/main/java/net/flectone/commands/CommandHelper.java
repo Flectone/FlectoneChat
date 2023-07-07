@@ -10,7 +10,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,5 +47,19 @@ public class CommandHelper extends FTabCompleter implements CommandExecutor {
         fCommand.sendMeMessage("helper.success_send");
 
         return true;
+    }
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            isStartsWith(strings[0], "(message)");
+        }
+
+        Collections.sort(wordsList);
+
+        return wordsList;
     }
 }
