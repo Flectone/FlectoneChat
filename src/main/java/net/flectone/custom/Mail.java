@@ -14,7 +14,6 @@ public class Mail {
 
     private final String message;
 
-
     public Mail(String sender, String receiver, String message){
         this.uuid = UUID.randomUUID().toString();
         this.sender = sender;

@@ -12,7 +12,6 @@ import net.flectone.custom.Mail;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 
-
 public abstract class Database {
     Main plugin;
     Connection connection;

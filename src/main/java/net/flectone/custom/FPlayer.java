@@ -1,8 +1,6 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
-import net.flectone.commands.CommandChatcolor;
-import net.flectone.sqlite.Database;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;

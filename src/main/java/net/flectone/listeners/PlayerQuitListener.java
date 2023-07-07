@@ -3,7 +3,6 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FEntity;
-import net.flectone.managers.FPlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

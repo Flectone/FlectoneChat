@@ -2,7 +2,6 @@ package net.flectone.managers;
 
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
-import net.flectone.custom.Mail;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

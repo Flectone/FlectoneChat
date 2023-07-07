@@ -9,7 +9,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.Main;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
