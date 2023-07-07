@@ -23,6 +23,8 @@ public class AsyncPlayerChatListener implements Listener {
 
     private FileManager config = Main.config;
 
+    private String noRecipientsMessage = "";
+
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -41,7 +43,7 @@ public class AsyncPlayerChatListener implements Listener {
                     || player.getLocation().distance(recipient.getLocation()) > localeRange));
 
             if(recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")){
-                player.sendMessage(locale.getFormatString("chat.no_recipients", player));
+                noRecipientsMessage = locale.getFormatString("chat.no_recipients", player);
             }
 
             if(Main.config.getBoolean("chat.locale.admin_see.enable")){
@@ -74,6 +76,8 @@ public class AsyncPlayerChatListener implements Listener {
         if(fCommands.isHaveCD()) return;
 
         if(fCommands.isMuted()) return;
+
+        if(!noRecipientsMessage.isEmpty()) player.sendMessage(noRecipientsMessage);
 
         String configMessage = config.getString("chat." + chatType + ".message")
                 .replace("<player>", FPlayerManager.getPlayer(player).getName());
