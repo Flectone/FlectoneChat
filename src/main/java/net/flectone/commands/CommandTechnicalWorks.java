@@ -39,6 +39,8 @@ public class CommandTechnicalWorks extends FTabCompleter {
 
         if(fCommand.isHaveCD()) return true;
 
+        if(fCommand.isMuted()) return true;
+
         isTechnicalWorks = strings[0].equalsIgnoreCase("on");
 
         if(isTechnicalWorks){
