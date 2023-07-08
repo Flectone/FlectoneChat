@@ -37,7 +37,7 @@ public class CommandFlectonechat extends FTabCompleter {
 
 
             if(!Main.config.getKeys().contains(strings[1]) && !Main.locale.getKeys().contains(strings[1])){
-                fCommand.sendMeMessage( "flectonechat.not_exist");
+                fCommand.sendMeMessage( "command.flectonechat.wrong-line");
                 return true;
             }
 
@@ -65,13 +65,14 @@ public class CommandFlectonechat extends FTabCompleter {
         Main.getInstance().reloadConfig();
         Main.getInstance().startTabScheduler();
         Main.getInstance().checkPlayerMoveTimer();
+        FPlayerManager.uploadPlayers();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             FPlayerManager.removePlayer(playerOnline);
             FPlayerManager.addPlayer(playerOnline);
         }
 
-        fCommand.sendMeMessage("flectonechat.message");
+        fCommand.sendMeMessage("command.flectonechat.message");
 
         return true;
     }

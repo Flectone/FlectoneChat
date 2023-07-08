@@ -61,7 +61,7 @@ public class FCommands {
         if(hasCD()) {
             String[] replaceStrings = {"<alias>", "<time>"};
             String[] replaceTo = {alias, ObjectUtil.convertTimeToString(getCDTime() - ObjectUtil.getCurrentTime())};
-            sendMeMessage("command.have_cooldown", replaceStrings, replaceTo);
+            sendMeMessage("command.cool-down", replaceStrings, replaceTo);
             return;
         }
 
@@ -80,7 +80,7 @@ public class FCommands {
     }
 
     private boolean isCDEnabled() {
-        return Main.config.getBoolean("cooldown.enable") && Main.config.getBoolean(command + ".cooldown.enable");
+        return Main.config.getBoolean("cool-down.enable") && Main.config.getBoolean("cool-down." + command + ".enable");
     }
 
     private boolean isCDExpired() {
@@ -98,13 +98,13 @@ public class FCommands {
         isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
                 && commandsCDMap.get(player.getUniqueId() + command) > ObjectUtil.getCurrentTime()
                 && !player.isOp()
-                && !player.hasPermission(Main.config.getString(command + ".cooldown.permission"));
+                && !player.hasPermission(Main.config.getString("cool-down." + command + ".permission"));
 
         return isHaveCD;
     }
 
     private int getCDTime() {
-        return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt(command + ".cooldown.time") + ObjectUtil.getCurrentTime();
+        return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt("cool-down." + command + ".time") + ObjectUtil.getCurrentTime();
     }
 
     public boolean isMuted(){
@@ -113,7 +113,7 @@ public class FCommands {
         String[] stringsReplace = {"<time>", "<reason>"};
         String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getMuteTime()), getFPlayer().getMuteReason()};
 
-        sendMeMessage("mute.success_get", stringsReplace, stringsTo);
+        sendMeMessage("command.mute.local-message", stringsReplace, stringsTo);
 
         return true;
     }
@@ -129,7 +129,7 @@ public class FCommands {
     public boolean isConsoleMessage() {
 
         if(isConsole){
-            sendMeMessage("command.not_support_console");
+            sendMeMessage("command.not-support-console");
         }
 
         return isConsole;
@@ -168,7 +168,7 @@ public class FCommands {
     }
 
     public void sendUsageMessage(){
-        sendMeMessage(command + ".usage", "<command>", alias);
+        sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
 
     public void sendGlobalMessage(String message){
@@ -238,11 +238,11 @@ public class FCommands {
     }
 
     private Set<Player> getFilteredPlayers(){
-        if(Main.config.getString(command + ".global") != null
-                && !Main.config.getBoolean(command + ".global")
+        if(Main.config.getString("command." + command + ".global") != null
+                && !Main.config.getBoolean("command." + command + ".global")
                 && !isConsole){
 
-            int localRange = Main.config.getInt("chat.locale.range");
+            int localRange = Main.config.getInt("chat.local.range");
 
             Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange)
                     .stream()
@@ -311,7 +311,7 @@ public class FCommands {
 
         ComponentBuilder getBuilder = new ComponentBuilder();
 
-        String[] getFormatString = locale.getFormatString("msg.success_" + typeMessage, firstPlayer, secondPlayer).split("<player>");
+        String[] getFormatString = locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer).split("<player>");
 
         getBuilder.append(TextComponent.fromLegacyText(getFormatString[0]));
 
@@ -336,7 +336,7 @@ public class FCommands {
 
     private void processMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {
         // Ping player in message
-        String pingPrefix = Main.config.getString("chat.ping.prefix");
+        String pingPrefix = Main.locale.getString("chat.ping.prefix");
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
         BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
@@ -362,9 +362,9 @@ public class FCommands {
 
             Matcher urlMatcher = pattern.matcher(word);
             if (urlMatcher.find()) {
-                wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.config.getFormatString("chat.color.url", colorPlayer, papiPlayer) + word));
+                wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.message", colorPlayer, papiPlayer).replace("<url>", word)));
                 wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, word.substring(urlMatcher.start(0), urlMatcher.end(0))));
-                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.click_url", colorPlayer, papiPlayer))));
+                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.hover-message", colorPlayer, papiPlayer))));
             }
 
             if (itemStack != null && word.contains("%item%")) {
@@ -380,7 +380,7 @@ public class FCommands {
                 item = new TranslatableComponent(formattedItemArray[0]);
                 item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
 
-                String[] componentsStrings = Main.config.getFormatString("chat.color.tooltip", colorPlayer, papiPlayer).split("<tooltip>");
+                String[] componentsStrings = Main.locale.getFormatString("chat.tooltip.message", colorPlayer, papiPlayer).split("<tooltip>");
 
                 componentBuilder
                         .append(colorComponent)
@@ -401,7 +401,7 @@ public class FCommands {
 
     private TextComponent createClickableComponent(String text, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
         String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("chat.click_player_name", colorPlayer, papiPlayer);
+        String showText = Main.locale.getFormatString("player.name.hover-message", colorPlayer, papiPlayer);
 
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
 

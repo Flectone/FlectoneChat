@@ -18,146 +18,189 @@
 # First color &&1
 # Second color &&2
 
-command.not_support_console: "#ff4e4e⁉ This command is not possible in console"
-command.have_cooldown: "#ff4e4e⁉ You will be able to use <alias> in <time>."
+server:
+  motd:
+    message: "&&1This server uses FlectoneChat ❤"
 
-server.motd.message: "&&1This server uses FlectoneChat ❤"
+tab:
+  header:
+    message: "\n &&1❤ \n"
+  footer:
+    message: "\n &&1FlectoneChat \n"
 
-join.first_time.message: "&&1<player> has logged on to the server for the first time, let's welcome!"
-join.message: "&&1<player> join the server"
-left.message: "&&1<player> left the server"
+player:
+  name:
+    hover-message: "&&1Click to write to him"
 
-tab.header.message: "\n &&1❤ \n"
-tab.footer.message: "\n &&1FlectoneChat \n"
+  item:
+    sign: "&o#<player>"
 
-# Messages for chat
-chat.no_recipients: "#ff4e4e⁉ Nobody heard you"
-chat.click_player_name: "&&1Click to write to him"
-chat.click_url: "&&1Click to open url"
-chat.ping.message: "&&1<prefix><player>&&2"
+  join:
+    first-time:
+      message: "&&1<player> has logged on to the server for the first time, let's welcome!"
+    message: "&&1<player> join the server"
 
-# /chatcolor
-chatcolor.usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
-chatcolor.message: "#4eff52★ You set &&1first color &&2second color"
+  quit:
+    message: "&&1<player> left the server"
 
-# /ping
-ping.myself.message: "&&1🌍 Your ping is <ping>"
-ping.player.message: "&&1🌍 <player> ping is <ping> "
+  world:
+    prefix:
+      normal: "#4eff52● &f"
+      nether: "#ff4e4e● &f"
+      the_end: "#834eff● &f"
+      custom: "#1abaf0● &f"
 
-# /afk
-afk.success_true: "#f2d40f💤 Now you're afk"
-afk.success_false: "#f2d40f💤 Now you're not afk"
+chat:
+  url:
+    message: "&&1<url>"
+    hover-message: "&&1Click to open url"
 
-# /mute
-mute.usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
-mute.no_player: "#ff4e4e⁉ This player does not exist"
-mute.reason.default: "You were muted on this server"
-mute.success_send: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>"
-mute.success_get: "#ff4e4e☠ You are in mute, <time> left. Reason: <reason>"
+  tooltip:
+    message: "&&1[<tooltip>]"
 
-# /unmute
-unmute.usage: "&&1⚑ Usage: &&2/<command> (player)"
-unmute.no_player: "#ff4e4e⁉ This player does not exist"
-unmute.no_muted: "#ff4e4e⁉ This player does not muted"
-unmute.success_send: "#ff4e4e☻ Player <player> unmuted"
+  ping:
+    prefix: "@"
+    message: "&&1<prefix><player>&&2"
 
-# /ignore
-ignore.usage: "&&1⚑ Usage: &&2/<command> (player)"
-ignore.myself: "#ff4e4e⁉ You can't ignore yourself"
-ignore.no_player: "#ff4e4e⁉ This player does not exist"
-ignore.success_ignore: "#ff4e4e☹ You ignore <player>"
-ignore.success_unignore: "#4eff52☺ You unignore <player>"
+  local:
+    no-recipients: "#ff4e4e⁉ Nobody heard you"
+    message: "<player>&&2: <message>"
 
-# /ignore-list
-ignore-list.usage: "&&1⚑ Usage: &&2/<command>"
-ignore-list.empty: "#ff4e4e⁉ You don't ignore anyone"
-ignore-list.name: "&&1List of ignored players "
-ignore-list.arrow: "&&1Back"
-ignore-list.spectral_arrow: "&&1Forward"
+  global:
+    prefix: "!"
+    message: "<player>&&2 » <message>"
 
-# /msg, /w, /tell, /message, /send
-msg.usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
-msg.no_player: "#ff4e4e⁉ This player does not exist"
-msg.success_send: "&&1✉ You → <player> » &&2"
-msg.success_get: "&&1✉ You ← <player> » &&2"
-msg.you_ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
-msg.he_ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
-msg.myself: "&&1✉ &&2"
+command:
+  null-player: "#ff4e4e⁉ This player does not exist"
+  not-support-console: "#ff4e4e⁉ This command is not possible in console"
+  cool-down: "#ff4e4e⁉ You will be able to use <alias> in <time>."
+  you-ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
+  he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
+  disabled: "#ff4e4e⁉ This command disabled on server"
 
-# /mail
-mail.usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
-mail.no_player: "#ff4e4e⁉ This player does not exist"
-mail.success_send: "&&1✉ [Offline mail] to <player> ⏩ &&2<message>"
-mail.success_get: "&&1✉ [Offline mail] from <player> ⏩ &&2<message>"
-mail.you_ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
-mail.he_ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
+  chatcolor:
+    usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
+    message: "#4eff52★ You set &&1first color &&2second color"
 
-# /mail-clear
-mail-clear.usage: "&&1⚑ Usage: &&2/<command> (player) (number)"
-mail-clear.no_player: "#ff4e4e⁉ This player does not exist"
-mail-clear.empty: "#ff4e4e⁉ You have no mail for this player"
-mail-clear.not_number: "#ff4e4e⁉ Wrong number entered"
-mail-clear.success: "&&1✉ [Offline mail] cleared for <player> ⏩ &&2<message>"
+  ping:
+    myself-message: "&&1🌍 Your ping is <ping>"
+    player-message: "&&1🌍 <player> ping is <ping>"
 
-# /helper
-helper.usage: "&&1⚑ Usage: &&2/<command> (message)"
-helper.no_recipients: "#ff4e4e⁉ There are no people who can help you"
-helper.success_get: "&&1👤 <player> needs help ⏩ &&2<message>"
-helper.success_send: "&&1👤 Request sent, awaiting reply"
+  afk:
+    suffix: " #f2d40f💤"
+    true-message: "#f2d40f💤 Now you're afk"
+    false-message: "#f2d40f💤 Now you're not afk"
 
-# /me
-me.usage: "&&1⚑ Usage: &&2/<command> (message)"
-me.message: "&&1✎ <player> <message>"
+  mute:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+    default-reason: "You were muted on this server"
+    global-message: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>"
+    local-message: "#ff4e4e☠ You are in mute, <time> left. Reason: <reason>"
 
-# /reply, /r
-reply.no_answer: "#ff4e4e⁉ No one to answer"
-reply.no_online: "#ff4e4e⁉ This player is not online"
-reply.usage: "&&1⚑ Usage: &&2/<command> (message)"
+  unmute:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    not-muted: "#ff4e4e⁉ This player does not muted"
+    message: "#ff4e4e☻ Player <player> unmuted"
 
-# /try
-try.usage: "&&1⚑ Usage: &&2/<command> (message)"
-try.success_true: "#4eff52☺ <player> <message> <percent>%"
-try.success_false: "#ff4e4e☹ <player> <message> <percent>%"
+  ignore:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    myself: "#ff4e4e⁉ You can't ignore yourself"
+    true-message: "#ff4e4e☹ You ignore <player>"
+    false-message: "#4eff52☺ You unignore <player>"
 
-# /try-cube
-try-cube.usage: "&&1⚑ Usage: &&2/<command> (number)"
-try-cube.success_true: "#4eff52☺ <player> successfully rolled <cube>"
-try-cube.success_false: "#ff4e4e☹ <player> failed to roll <cube>"
-try-cube.too_much: "#ff4e4e⁉ Too many cubes"
-try-cube.only_int: "#ff4e4e⁉ You must enter a number"
-try-cube.very_lucky: "#f7c41b★ <player> rolled ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ #f7c41b★"
+  ignore-list:
+    usage: "&&1⚑ Usage: &&2/<command>"
+    empty: "#ff4e4e⁉ You don't ignore anyone"
+    name: "&&1List of ignored players <number>"
+    arrow: "&&1Back"
+    spectral_arrow: "&&1Forward"
 
-# /mark, /m, /f
-mark.usage: "&&1⚑ Usage: &&2/<command> (color)"
-mark.error_color: "#ff4e4e⁉ You entered wrong color"
-mark.enable.false: "#ff4e4e⁉ This command disabled on server"
+  msg:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
+    send: "&&1✉ You → <player> » &&2"
+    get: "&&1✉ You ← <player> » &&2"
+    myself: "&&1✉ &&2"
 
-# /firstonline, /fonline, /lastonline, /lonline
-online.format.day: "d"
-online.format.hour: "h"
-online.format.minute: "m"
-online.format.second: "s"
-online.no_player: "#ff4e4e⁉ This player has never played on server"
-firstonline.usage: "&&1⚑ Usage: &&2/<command> (player)"
-firstonline.message: "&&1⌛ <player> was first on server <time> ago"
-lastonline.usage: "&&1⚑ Usage: &&2/<command> (player)"
-lastonline.message: "&&1⌛ <player> was last on server <time> ago"
-lastonline.message_now: "&&1⌛ <player> currently on server"
+  mail:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
+    send: "&&1✉ [Offline mail] to <player> ⏩ &&2<message>"
+    get: "&&1✉ [Offline mail] from <player> ⏩ &&2<message>"
 
-# /stream
-stream.usage: "&&1⚑ Usage: &&2/<command> start/end"
-stream.need_url: "#ff4e4e⁉ You must enter a url(s)"
-stream.not: "#ff4e4e⁉ You don't stream"
-stream.already: "#ff4e4e⁉ You are already streaming"
-stream.end: "&&1★ Thanks for streaming on our server!"
-stream.start:
-  - "#ff4e4e🔔 &&1Announcement #ff4e4e🔔"
-  - "&&2• • • • • • • • •"
-  - "&&2Player <player> started stream"
-  - "&&2• • • • • • • • •"
-  - "&&1Url(s): \n<links>"
+  mail-clear:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (number)"
+    empty: "#ff4e4e⁉ You have no mail for this player"
+    wrong-number: "#ff4e4e⁉ Wrong number entered"
+    message: "&&1✉ [Offline mail] cleared for <player> ⏩ &&2<message>"
 
-# /flectonechat, /fc
-flectonechat.usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
-flectonechat.not_exist: "#ff4e4e⁉ Enter the correct line name"
-flectonechat.message: "&&1★ Plugin successfully reloaded!"
+  helper:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    no-helpers: "#ff4e4e⁉ There are no people who can help you"
+    global-message: "&&1👤 <player> needs help ⏩ &&2<message>"
+    local-message: "&&1👤 Request sent, awaiting reply"
+
+  me:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    message: "&&1✎ <player> <message>"
+
+  reply:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    no-receiver: "#ff4e4e⁉ No one to answer"
+
+  try:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    true-message: "#4eff52☺ <player> <message> <percent>%"
+    false-message: "#ff4e4e☹ <player> <message> <percent>%"
+
+  try-cube:
+    usage: "&&1⚑ Usage: &&2/<command> (number)"
+    too-much: "#ff4e4e⁉ Too many cubes"
+    only-number: "#ff4e4e⁉ You must enter a number"
+    true-message: "#4eff52☺ <player> successfully rolled <cube>"
+    false-message: "#ff4e4e☹ <player> failed to roll <cube>"
+    lucky-message: "#f7c41b★ <player> rolled ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ #f7c41b★"
+    format:
+      1: "⚀"
+      2: "⚁"
+      3: "⚂"
+      4: "⚃"
+      5: "⚄"
+      6: "⚅"
+
+  mark:
+    usage: "&&1⚑ Usage: &&2/<command> (color)"
+    wrong-color: "#ff4e4e⁉ You entered wrong color"
+
+  online:
+    first:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      message: "&&1⌛ <player> was first on server <time> ago"
+    last:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      message: "&&1⌛ <player> was last on server <time> ago"
+      currently-message: "&&1⌛ <player> currently on server"
+    format:
+      day: "d"
+      hour: "h"
+      minute: "m"
+      second: "s"
+
+  stream:
+    usage: "&&1⚑ Usage: &&2/<command> start/end"
+    prefix: "#ff4e4e⏻ "
+    end:
+      not: "#ff4e4e⁉ You don't stream"
+      message: "&&1★ Thanks for streaming on our server!"
+    start:
+      need-url: "#ff4e4e⁉ You must enter a url(s)"
+      already: "#ff4e4e⁉ You are already streaming"
+      message:
+        - "#ff4e4e🔔 &&1Announcement #ff4e4e🔔"
+        - "&&2• • • • • • • • •"
+        - "&&2Player <player> started stream"
+        - "&&2• • • • • • • • •"
+        - "&&1Url(s): \n<links>"
+
+  flectonechat:
+    usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
+    wrong-line: "#ff4e4e⁉ Enter the correct line name"
+    message: "&&1★ Plugin successfully reloaded!"

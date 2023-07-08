@@ -27,7 +27,7 @@ public class CommandMsg extends FTabCompleter {
         String playerName = strings[0];
         FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(playerName);
         if(secondFPlayer == null){
-            fCommand.sendMeMessage("msg.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
@@ -39,16 +39,16 @@ public class CommandMsg extends FTabCompleter {
 
         if(!fCommand.isConsole()){
             if(fCommand.getSenderName().equalsIgnoreCase(playerName)){
-                commandSender.sendMessage(Main.locale.getFormatString("msg.myself", commandSender) + message);
+                commandSender.sendMessage(Main.locale.getFormatString("command.msg.myself", commandSender) + message);
                 return true;
             }
 
             if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
-                fCommand.sendMeMessage("msg.you_ignore");
+                fCommand.sendMeMessage("command.you_ignore");
                 return true;
             }
             if(secondFPlayer.isIgnored((Player) commandSender)){
-                fCommand.sendMeMessage("msg.he_ignore");
+                fCommand.sendMeMessage("command.he_ignore");
                 return true;
             }
         }

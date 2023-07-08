@@ -91,7 +91,6 @@ public class FPlayerManager {
     }
 
     public static void removePlayer(String uuid){
-//        getPlayer(uuid).uploadDatabase();
         fPlayerHashMap.remove(uuid);
     }
 

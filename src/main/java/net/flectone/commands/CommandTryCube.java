@@ -20,14 +20,14 @@ public class CommandTryCube extends FTabCompleter {
         if(fCommand.isInsufficientArgs(1)) return true;
 
         if(!StringUtils.isNumeric(strings[0])){
-            fCommand.sendMeMessage("try-cube.only_int");
+            fCommand.sendMeMessage("command.try-cube.only-number");
             return true;
         }
 
         int amount = Integer.parseInt(strings[0]);
 
-        if(amount > Main.config.getInt("try-cube.max_amount")){
-            fCommand.sendMeMessage("try-cube.too_much");
+        if(amount > Main.config.getInt("command.try-cube.max-amount")){
+            fCommand.sendMeMessage("command.try-cube.too-much");
             return true;
         }
 
@@ -43,19 +43,19 @@ public class CommandTryCube extends FTabCompleter {
         while(amount-- != 0){
             int cubeType = random.nextInt(6) + 1;
             values += cubeType;
-            stringBuilder.append(Main.config.getString("try-cube." + cubeType)).append(" ");
+            stringBuilder.append(Main.locale.getString("command.try-cube.format." + cubeType)).append(" ");
         }
 
         if(amount == 6 && values == 21 && stringBuilder.toString().equals("⚀ ⚁ ⚂ ⚃ ⚄ ⚅ ")){
 
-            String formatString = Main.locale.getString("try-cube.very_lucky")
+            String formatString = Main.locale.getString("command.try-cube.lucky-message")
                     .replace("<player>", fCommand.getSenderName());
 
             fCommand.sendGlobalMessage(formatString);
             return true;
         }
 
-        String formatString = Main.locale.getString("try-cube.success_" + (values >= Integer.parseInt(strings[0])*3.5))
+        String formatString = Main.locale.getString("command.try-cube." + (values >= Integer.parseInt(strings[0])*3.5) + "-message")
                 .replace("<cube>", stringBuilder.toString())
                 .replace("<player>", fCommand.getSenderName());
 
@@ -70,7 +70,7 @@ public class CommandTryCube extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            for(int x = 1; x <= Main.config.getInt("try-cube.max_amount"); x++){
+            for(int x = 1; x <= Main.config.getInt("command.try-cube.max-amount"); x++){
                 isStartsWith(strings[0], String.valueOf(x));
             }
         }

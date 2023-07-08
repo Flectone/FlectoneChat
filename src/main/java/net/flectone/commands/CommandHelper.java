@@ -27,7 +27,7 @@ public class CommandHelper extends FTabCompleter implements CommandExecutor {
 
         if(fCommand.isInsufficientArgs(1)) return true;
 
-        String permission = Main.config.getString("helper.see.permission");
+        String permission = Main.config.getString("command.helper.see.permission");
 
         Set<Player> playerSet = Bukkit.getOnlinePlayers()
                 .stream()
@@ -35,16 +35,16 @@ public class CommandHelper extends FTabCompleter implements CommandExecutor {
                 .collect(Collectors.toSet());
 
         if(playerSet.size() == 0){
-            fCommand.sendMeMessage("helper.no_recipients");
+            fCommand.sendMeMessage("command.helper.no-helpers");
             return true;
         }
 
-        String formatMessage = Main.locale.getString("helper.success_get")
+        String formatMessage = Main.locale.getString("command.helper.global-message")
                 .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(playerSet, formatMessage, ObjectUtil.toString(strings, 0), null, true);
 
-        fCommand.sendMeMessage("helper.success_send");
+        fCommand.sendMeMessage("command.helper.local-message");
 
         return true;
     }

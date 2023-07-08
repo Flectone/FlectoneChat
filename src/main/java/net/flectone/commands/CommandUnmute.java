@@ -4,6 +4,7 @@ import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -22,21 +23,22 @@ public class CommandUnmute extends FTabCompleter {
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
         if(fPlayer == null){
-            fCommand.sendMeMessage("unmute.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
-        if(fPlayer.getMuteTime() == 0){
-            fCommand.sendMeMessage("unmute.no_muted");
+        if(fPlayer.getMuteTime() < 0){
+            fCommand.sendMeMessage("command.unmute.not-muted");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        fCommand.getFPlayer().setMuteTime(0);
-        fCommand.getFPlayer().setMuteReason("");
+        fPlayer.setMuteTime(0);
+        fPlayer.setMuteReason("");
+        fPlayer.setUpdated(true);
 
-        fCommand.sendMeMessage("unmute.success_send", "<player>", fPlayer.getRealName());
+        fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
 
         return true;
     }

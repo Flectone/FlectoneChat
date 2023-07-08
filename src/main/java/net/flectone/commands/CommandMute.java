@@ -36,23 +36,24 @@ public class CommandMute extends FTabCompleter {
         FPlayer mutedFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if(mutedFPlayer == null){
-            fCommand.sendMeMessage("mute.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("mute.reason.default");
+        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.mute.default-reason");
 
         int time = getTimeFromString(stringTime);
 
-        String formatString = Main.locale.getString("mute.success_send")
+        String formatString = Main.locale.getString("command.mute.global-message")
                 .replace("<player>", mutedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
         mutedFPlayer.setMuteTime(time + ObjectUtil.getCurrentTime());
         mutedFPlayer.setMuteReason(reason);
+        mutedFPlayer.setUpdated(true);
 
         fCommand.sendGlobalMessage(formatString, false);
 

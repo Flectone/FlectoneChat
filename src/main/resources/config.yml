@@ -1,212 +1,248 @@
 #  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
 #  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
 language: en
+database: "database"
 
-# This is &&1
-color.first: "#1abaf0"
-# This is &&2
-color.second: "#77d7f7"
+color:
+  first: "#1abaf0"
+  second: "#77d7f7"
 
-tab.header.enable: true
-tab.footer.enable: true
+tab:
+  header-message:
+    enable: true
+  footer-message:
+    enable: true
+  update:
+    enable: true
+    rate: 2
 
-color.worlds.enable: true
-color.worlds.team.enable: true
-color.normal: "#4eff52● &f"
-color.nether: "#ff4e4e● &f"
-color.the_end: "#834eff● &f"
-color.custom: "#1abaf0● &f"
+server:
+  motd:
+    message:
+      enable: true
+  online:
+    count:
+      enable: true
+      digit: 69
 
-server.motd.enable: true
-server.online.enable: true
-server.online.number: 69
+chat:
+  local:
+    range: 100
+    set-cancelled: true
+    no-recipients:
+      enable: true
+    admin-see:
+      enable: false
+      permission: "flectonechat.localchat.admin_see"
 
-chat.ping.prefix: "@"
-chat.no_recipients.enable: true
-chat.color.url: "&&1"
-chat.color.tooltip: "&&1[<tooltip>]"
+  global:
+    enable: true
+    prefix:
+      cleared: true
 
-afk.suffix: " #f2d40f💤"
-afk.timeout.enable: true
-afk.timeout.time: 3000
+player:
+  name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
 
-player.name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
+  world:
+    prefix:
+      enable: true
 
-tab.update.enable: true
-# is specified in seconds
-tab.update.rate: 2
+  team:
+    enable: true
 
-chat.locale.range: 100
-chat.locale.message: "<player>&&2: <message>"
-# if enabled, messages from local chat will be cancelled for other plugins
-chat.locale.set_cancelled: true
-# if enabled, then admins see the local chat
-chat.locale.admin_see.enable: false
-chat.locale.admin_see.permission: "flectonechat.localechat.admin_see"
+  item:
+    sign:
+      enable: true
 
-chat.global.prefix: "!"
-chat.global.message: "<player>&&2 » <message>"
-chat.global.clear_prefix: true
-chat.global.enable: true
+command:
+  stream:
+    global: true
 
-stream.prefix: "#ff4e4e⏻ "
+  afk:
+    timeout:
+      enable: true
+      time: 3000
 
-ping.bad.color: "#ff4e4e"
-ping.bad.count: 200
-ping.medium.color: "#fce303"
-ping.medium.count: 100
-ping.good.color: "#4eff52"
+  ping:
+    bad:
+      color: "#ff4e4e"
+      count: 200
+    medium:
+      color: "#fce303"
+      count: 100
+    good:
+      color: "#4eff52"
 
-# item is signed when player holds dye in the offhand and item in mainhand
-item.sign.enable: true
-item.sign.format: "&o#<player>"
+  mark:
+    enable: true
+    item: "WOODEN_SWORD"
+    range: 30
 
-mark.enable: true
-mark.item: "WOODEN_SWORD"
-mark.range: 30
+  me:
+    global: true
 
-helper.see.permission: "flectonechat.helpersee"
+  try:
+    global: true
 
-stream.global: true
-me.global: true
-try.global: true
-try-cube.global: true
+  try-cube:
+    global: true
+    max-amount: 9
 
-try-cube.max_amount: 9
-try-cube.6: "⚅"
-try-cube.5: "⚄"
-try-cube.4: "⚃"
-try-cube.3: "⚂"
-try-cube.2: "⚁"
-try-cube.1: "⚀"
+  helper:
+    see:
+      permission: "flectonechat.helpersee"
 
-cooldown.enable: false
+cool-down:
+  enable: false
 
-chatping.sound.enable: true
-chatping.sound.type: "BLOCK_NOTE_BLOCK_HARP"
+  localchat:
+    enable: true
+    time: 5
+    permission: "flectonechat.localchat.cooldown.immune"
+  globalchat:
+    enable: true
+    time: 5
+    permission: "flectonechat.globalchat.cooldown.immune"
+  chatcolor:
+    enable: false
+    time: 5
+    permission: "flectonechat.chatcolor.cooldown.immune"
+  flectonechat:
+    enable: false
+    time: 5
+    permission: "flectonechat.flectonechat.cooldown.immune"
+  ignore:
+    enable: false
+    time: 5
+    permission: "flectonechat.ignore.cooldown.immune"
+  ignore-list:
+    enable: false
+    time: 5
+    permission: "flectonechat.ignore-list.cooldown.immune"
+  mail:
+    enable: true
+    time: 5
+    permission: "flectonechat.mail.cooldown.immune"
+  helper:
+    enable: true
+    time: 5
+    permission: "flectonechat.helper.cooldown.immune"
+  mark:
+    enable: false
+    time: 5
+    permission: "flectonechat.mark.cooldown.immune"
+  me:
+    enable: true
+    time: 5
+    permission: "flectonechat.me.cooldown.immune"
+  msg:
+    enable: false
+    time: 5
+    permission: "flectonechat.msg.cooldown.immune"
+  ping:
+    enable: false
+    time: 5
+    permission: "flectonechat.ping.cooldown.immune"
+  reply:
+    enable: false
+    time: 5
+    permission: "flectonechat.reply.cooldown.immune"
+  mail-clear:
+    enable: false
+    time: 5
+    permission: "flectonechat.mail-clear.cooldown.immune"
+  stream:
+    enable: false
+    time: 5
+    permission: "flectonechat.stream.cooldown.immune"
+  try:
+    enable: true
+    time: 5
+    permission: "flectonechat.try.cooldown.immune"
+  try-cube:
+    enable: true
+    time: 5
+    permission: "flectonechat.try-cube.cooldown.immune"
+  afk:
+    enable: false
+    time: 5
+    permission: "flectonechat.afk.cooldown.immune"
+  mute:
+    enable: false
+    time: 5
+    permission: "flectonechat.mute.cooldown.immune"
+  unmute:
+    enable: false
+    time: 5
+    permission: "flectonechat.unmute.cooldown.immune"
 
-join.sound.enable: false
-join.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-
-quit.sound.enable: false
-quit.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-
-localechat.sound.enable: false
-localechat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-localechat.cooldown.enable: true
-localechat.cooldown.time: 5
-localechat.cooldown.permission: "flectonechat.localechat.cooldown.immune"
-
-globalchat.sound.enable: false
-globalchat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-globalchat.cooldown.enable: true
-globalchat.cooldown.time: 5
-globalchat.cooldown.permission: "flectonechat.globalchat.cooldown.immune"
-
-chatcolor.sound.enable: false
-chatcolor.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-chatcolor.cooldown.enable: false
-chatcolor.cooldown.time: 5
-chatcolor.cooldown.permission: "flectonechat.chatcolor.cooldown.immune"
-
-flectonechat.sound.enable: true
-flectonechat.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-flectonechat.cooldown.enable: false
-flectonechat.cooldown.time: 5
-flectonechat.cooldown.permission: "flectonechat.flectonechat.cooldown.immune"
-
-ignore.sound.enable: false
-ignore.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-ignore.cooldown.enable: false
-ignore.cooldown.time: 5
-ignore.cooldown.permission: "flectonechat.ignore.cooldown.immune"
-
-ignore-list.sound.enable: false
-ignore-list.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-ignore-list.cooldown.enable: false
-ignore-list.cooldown.time: 5
-ignore-list.cooldown.permission: "flectonechat.ignore-list.cooldown.immune"
-
-mail.sound.enable: false
-mail.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-mail.cooldown.enable: true
-mail.cooldown.time: 5
-mail.cooldown.permission: "flectonechat.mail.cooldown.immune"
-
-helper.sound.enable: true
-helper.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-helper.cooldown.enable: true
-helper.cooldown.time: 5
-helper.cooldown.permission: "flectonechat.mail.cooldown.immune"
-
-mark.sound.enable: false
-mark.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-mark.cooldown.enable: true
-mark.cooldown.time: 5
-mark.cooldown.permission: "flectonechat.mark.cooldown.immune"
-
-me.sound.enable: false
-me.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-me.cooldown.enable: true
-me.cooldown.time: 5
-me.cooldown.permission: "flectonechat.me.cooldown.immune"
-
-msg.sound.enable: false
-msg.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-msg.cooldown.enable: false
-msg.cooldown.time: 5
-msg.cooldown.permission: "flectonechat.msg.cooldown.immune"
-
-ping.sound.enable: true
-ping.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-ping.cooldown.enable: false
-ping.cooldown.time: 5
-ping.cooldown.permission: "flectonechat.ping.cooldown.immune"
-
-reply.sound.enable: false
-reply.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-reply.cooldown.enable: true
-reply.cooldown.time: 5
-reply.cooldown.permission: "flectonechat.reply.cooldown.immune"
-
-mail-clear.sound.enable: false
-mail-clear.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-mail-clear.cooldown.enable: false
-mail-clear.cooldown.time: 5
-mail-clear.cooldown.permission: "flectonechat.mail-clear.cooldown.immune"
-
-stream.sound.enable: true
-stream.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-stream.cooldown.enable: true
-stream.cooldown.time: 5
-stream.cooldown.permission: "flectonechat.stream.cooldown.immune"
-
-try.sound.enable: false
-try.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-try.cooldown.enable: true
-try.cooldown.time: 5
-try.cooldown.permission: "flectonechat.try.cooldown.immune"
-
-try-cube.sound.enable: false
-try-cube.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-try-cube.cooldown.enable: true
-try-cube.cooldown.time: 5
-try-cube.cooldown.permission: "flectonechat.try-cube.cooldown.immune"
-
-afk.sound.enable: false
-afk.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-afk.cooldown.enable: false
-afk.cooldown.time: 5
-afk.cooldown.permission: "flectonechat.afk.cooldown.immune"
-
-mute.sound.enable: true
-mute.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-mute.cooldown.enable: false
-mute.cooldown.time: 5
-mute.cooldown.permission: "flectonechat.mute.cooldown.immune"
-
-unmute.sound.enable: false
-unmute.sound.type: "BLOCK_NOTE_BLOCK_BELL"
-unmute.cooldown.enable: false
-unmute.cooldown.time: 5
-unmute.cooldown.permission: "flectonechat.mute.cooldown.immune"
+sound:
+  localchat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  globalchat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  chat-ping:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_HARP"
+  join:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  quit:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  chatcolor:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  flectonechat:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  ignore:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  ignore-list:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  mail:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  helper:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  mark:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  me:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  msg:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  ping:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  reply:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  mail-clear:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  stream:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  try:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  try-cube:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  afk:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  mute:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  unmute:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"

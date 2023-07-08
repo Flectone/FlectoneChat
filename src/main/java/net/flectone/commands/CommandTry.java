@@ -30,7 +30,7 @@ public class CommandTry extends FTabCompleter {
         int randomPer = random.nextInt(100);
         randomPer += 1;
 
-        String formatString = Main.locale.getString("try.success_" + (randomPer >= 50))
+        String formatString = Main.locale.getString("command.try." + (randomPer >= 50) + "-message")
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<percent>", String.valueOf(randomPer));
 

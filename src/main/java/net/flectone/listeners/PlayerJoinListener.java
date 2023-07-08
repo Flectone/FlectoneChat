@@ -26,7 +26,7 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
         FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
 
-        String string = player.hasPlayedBefore() ? Main.locale.getString("join.message") : Main.locale.getString("join.first_time.message");
+        String string = player.hasPlayedBefore() ? Main.locale.getString("player.join.message") : Main.locale.getString("player.join.first-time.message");
         string = string.replace("<player>", player.getName());
 
         fCommands.sendGlobalMessage(string);
@@ -38,7 +38,7 @@ public class PlayerJoinListener implements Listener {
 
             String playerName = FPlayerManager.getPlayer(mail.getSender()).getRealName();
 
-            String localeString = Main.locale.getFormatString("mail.success_get", player)
+            String localeString = Main.locale.getFormatString("command.mail.get", player)
                     .replace("<player>", playerName);
 
             String newLocaleString = localeString.replace("<message>", mail.getMessage());

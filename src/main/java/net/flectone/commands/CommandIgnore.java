@@ -25,7 +25,7 @@ public class CommandIgnore extends FTabCompleter {
         if(fCommand.isInsufficientArgs(1)) return true;
 
         if(fCommand.isSelfCommand()){
-            fCommand.sendMeMessage("ignore.myself");
+            fCommand.sendMeMessage("command.ignore.myself");
             return true;
         }
 
@@ -33,7 +33,7 @@ public class CommandIgnore extends FTabCompleter {
         FPlayer ignoredFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if(ignoredFPlayer == null){
-            fCommand.sendMeMessage("ignore.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
@@ -41,16 +41,14 @@ public class CommandIgnore extends FTabCompleter {
 
         ArrayList<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
-        if(fCommand.getFPlayer().isIgnored(ignoredFPlayer.getUUID())){
-            fCommand.sendMeMessage("ignore.success_unignore", "<player>", ignoredFPlayer.getRealName());
-            ignoreList.remove(ignoredFPlayer.getUUID());
+        boolean isIgnored = fCommand.getFPlayer().isIgnored(ignoredFPlayer.getUUID());
+        fCommand.sendMeMessage("command.ignore." + !isIgnored + "-message", "<player>", ignoredFPlayer.getRealName());
 
-        } else {
-            fCommand.sendMeMessage("ignore.success_ignore", "<player>", ignoredFPlayer.getRealName());
-            ignoreList.add(ignoredFPlayer.getUUID());
-        }
+        if(isIgnored) ignoreList.remove(ignoredFPlayer.getUUID());
+        else ignoreList.add(ignoredFPlayer.getUUID());
 
         fCommand.getFPlayer().setIgnoreList(ignoreList);
+        fCommand.getFPlayer().setUpdated(true);
 
         return true;
     }

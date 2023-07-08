@@ -25,7 +25,7 @@ public class CommandMe extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        String formatString = Main.locale.getString("me.message")
+        String formatString = Main.locale.getString("command.me.message")
                 .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));

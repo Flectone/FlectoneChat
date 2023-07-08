@@ -24,25 +24,25 @@ public class CommandStream extends FTabCompleter {
         }
 
         if(strings.length == 1 && strings[0].equalsIgnoreCase("start")){
-            fCommand.sendMeMessage("stream.need_url");
+            fCommand.sendMeMessage("command.stream.start.need-url");
             return true;
         }
 
         if(!fCommand.isConsole()){
             if(!fCommand.getFPlayer().isStreamer() && strings[0].equalsIgnoreCase("end")){
-                fCommand.sendMeMessage("stream.not");
+                fCommand.sendMeMessage("command.stream.end.not");
                 return true;
             }
 
             if(fCommand.getFPlayer().isStreamer() && strings[0].equalsIgnoreCase("start")){
-                fCommand.sendMeMessage("stream.already");
+                fCommand.sendMeMessage("command.stream.start.already");
                 return true;
             }
 
             if(strings[0].equalsIgnoreCase("end")){
                 fCommand.getFPlayer().setStreamer(false);
                 fCommand.getFPlayer().setStreamPrefix("");
-                fCommand.sendMeMessage("stream.end");
+                fCommand.sendMeMessage("command.stream.end.message");
                 return true;
             }
 
@@ -51,11 +51,11 @@ public class CommandStream extends FTabCompleter {
             if(fCommand.isMuted()) return true;
 
             fCommand.getFPlayer().setStreamer(true);
-            fCommand.getFPlayer().setStreamPrefix(Main.config.getFormatString("stream.prefix", commandSender));
+            fCommand.getFPlayer().setStreamPrefix(Main.locale.getFormatString("command.stream.prefix", commandSender));
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        for(String string : Main.locale.getStringList("stream.start")){
+        for(String string : Main.locale.getStringList("command.stream.start.message")){
 
             string = string
                     .replace("<player>", fCommand.getSenderName())

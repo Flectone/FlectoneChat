@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class CommandAfk extends FTabCompleter {
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -49,10 +50,10 @@ public class CommandAfk extends FTabCompleter {
         FPlayer fPlayer = fCommands.getFPlayer();
         fPlayer.setAfk(isAfk);
 
-        String formatString = isAfk ? Main.config.getFormatString("afk.suffix", fPlayer.getPlayer()) : "";
+        String formatString = isAfk ? Main.locale.getFormatString("command.afk.suffix", fPlayer.getPlayer()) : "";
 
         fPlayer.setAfkSuffix(formatString);
 
-        fCommands.sendMeMessage("afk.success_" + isAfk);
+        fCommands.sendMeMessage("command.afk." + isAfk + "-message");
     }
 }

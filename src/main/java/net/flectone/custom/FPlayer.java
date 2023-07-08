@@ -136,11 +136,11 @@ public class FPlayer {
     }
 
     public String getAfkSuffix() {
-        return isAfk ? Main.config.getString("afk.suffix") : "";
+        return isAfk ? Main.locale.getString("command.afk.suffix") : "";
     }
 
     public String getStreamPrefix() {
-        return isStreamer ? Main.config.getString("stream.prefix") : "";
+        return isStreamer ? Main.locale.getString("command.stream.prefix") : "";
     }
 
     public void setMuteReason(String muteReason) {
@@ -153,7 +153,6 @@ public class FPlayer {
 
     public void setMuteTime(int muteTime) {
         this.muteTime = muteTime;
-        setUpdated(true);
     }
 
     public int getMuteTime(){
@@ -162,7 +161,6 @@ public class FPlayer {
 
     public void setIgnoreList(ArrayList<String> ignoreList) {
         this.ignoreList = ignoreList;
-        setUpdated(true);
     }
 
     public ArrayList<String> getIgnoreList() {
@@ -187,7 +185,6 @@ public class FPlayer {
 
     public void setColors(String firstColor, String secondColor) {
         this.colors = new String[]{firstColor, secondColor};
-        setUpdated(true);
     }
 
     public String[] getColors() {
@@ -204,13 +201,12 @@ public class FPlayer {
         Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(this.name);
         Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(this.name);
 
-        boolean colorWorldsEnabled = Main.config.getBoolean("color.worlds.team.enable");
+        boolean colorWorldsEnabled = Main.config.getBoolean("player.team.enable");
 
         if(!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
         if(team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
 
         team.setColor(ChatColor.WHITE);
-        team.addEntry(name);
 
         return team;
     }
@@ -304,10 +300,10 @@ public class FPlayer {
 
         setDisplayName();
 
-        if (Main.config.getBoolean("tab.header.enable")) {
+        if (Main.config.getBoolean("tab.header-message.enable")) {
             player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
         }
-        if (Main.config.getBoolean("tab.footer.enable")) {
+        if (Main.config.getBoolean("tab.footer-message.enable")) {
             player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
         }
     }
@@ -315,9 +311,8 @@ public class FPlayer {
     private String worldPrefix = "";
 
     public void setWorldPrefix(World world) {
-        if (Main.getInstance().getConfig().getBoolean("color.worlds.enable")) {
-            String worldPrefix = Main.config.getFormatString("color." + world.getEnvironment().toString().toLowerCase(), player);
-            this.worldPrefix = worldPrefix;
+        if (Main.getInstance().getConfig().getBoolean("player.world.prefix.enable")) {
+            this.worldPrefix = Main.locale.getFormatString("player.world.prefix." + world.getEnvironment().toString().toLowerCase(), player);
         }
 
         setDisplayName();
@@ -331,7 +326,6 @@ public class FPlayer {
 
     public void addMail(String uuid, Mail mail){
         mails.put(uuid, mail);
-        setUpdated(true);
     }
 
     public Mail getMail(String uuid){
@@ -340,7 +334,6 @@ public class FPlayer {
 
     public void removeMail(String uuid){
         mails.get(uuid).setRemoved(true);
-        setUpdated(true);
     }
 
     private boolean isUpdated;

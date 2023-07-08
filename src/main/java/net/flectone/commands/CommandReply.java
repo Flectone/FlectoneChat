@@ -25,22 +25,22 @@ public class CommandReply extends FTabCompleter {
         FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
 
         if(secondFPlayer == null){
-            fCommand.sendMeMessage("reply.no_answer");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(!secondFPlayer.isOnline()){
-            fCommand.sendMeMessage("reply.no_online");
+            fCommand.sendMeMessage("command.reply.no-receiver");
             return true;
         }
 
         if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
-            fCommand.sendMeMessage("msg.you_ignore");
+            fCommand.sendMeMessage("command.you_ignore");
             return true;
         }
 
         if(secondFPlayer.isIgnored(fCommand.getPlayer())){
-            fCommand.sendMeMessage("msg.he_ignore");
+            fCommand.sendMeMessage("command.he_ignore");
             return true;
         }
 

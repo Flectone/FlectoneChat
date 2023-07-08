@@ -43,11 +43,11 @@ public final class Main extends JavaPlugin {
 
         instance = this;
 
-        this.database = new SQLite(this);
-        this.database.load();
-
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
+
+        this.database = new SQLite(this);
+        this.database.load();
 
         registerEvents(new AsyncPlayerChatListener());
         registerEvents(new EntitySpawnListener());
@@ -138,12 +138,12 @@ public final class Main extends JavaPlugin {
 
                     if(!fPlayer.isMoved(block)){
 
-                        boolean isEnable = Main.config.getBoolean("afk.timeout.enable");
+                        boolean isEnable = Main.config.getBoolean("command.afk.timeout.enable");
                         if(fPlayer.isAfk() || !isEnable) return;
 
                         int diffTime = ObjectUtil.getCurrentTime() - fPlayer.getLastTimeMoved();
 
-                        if(diffTime >= Main.config.getInt("afk.timeout.time")){
+                        if(diffTime >= Main.config.getInt("command.afk.timeout.time")){
                             CommandAfk.sendMessage(fPlayer, true);
                         }
 

@@ -26,23 +26,23 @@ public class CommandOnline extends FTabCompleter {
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if(fPlayer == null){
-            fCommand.sendMeMessage("online.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(command.getName().equalsIgnoreCase("lastonline") && fPlayer.isOnline()){
-            fCommand.sendMeMessage("lastonline.message_now", "<player>", fPlayer.getRealName());
+            fCommand.sendMeMessage("command.online.last.currently-message", "<player>", fPlayer.getRealName());
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        long playedTime = command.getName().equalsIgnoreCase("lastonline") ? fPlayer.getPlayer().getLastPlayed() : fPlayer.getPlayer().getFirstPlayed();
+        long playedTime = command.getName().equalsIgnoreCase("lastonline") ? fPlayer.getOfflinePlayer().getLastPlayed() : fPlayer.getOfflinePlayer().getFirstPlayed();
 
         String[] replacedStrings = {"<player>", "<time>"};
         String[] replacedToStrings = {fPlayer.getRealName(), ObjectUtil.convertTimeToString(playedTime)};
 
-        fCommand.sendMeMessage(command.getName() + ".message", replacedStrings, replacedToStrings);
+        fCommand.sendMeMessage("command.online." + command.getName().split("online")[0] + ".message", replacedStrings, replacedToStrings);
 
         return true;
     }

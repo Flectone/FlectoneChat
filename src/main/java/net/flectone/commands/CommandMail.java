@@ -31,7 +31,7 @@ public class CommandMail extends FTabCompleter {
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if(fPlayer == null){
-            fCommand.sendMeMessage("mail.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
@@ -43,12 +43,12 @@ public class CommandMail extends FTabCompleter {
         }
 
         if(fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())){
-            fCommand.sendMeMessage("mail.you_ignore");
+            fCommand.sendMeMessage("command.you_ignore");
             return true;
         }
 
         if(fCommand.isIgnored(fPlayer.getOfflinePlayer(), (Player) commandSender)){
-            fCommand.sendMeMessage("mail.he_ignore");
+            fCommand.sendMeMessage("command.he_ignore");
             return true;
         }
 
@@ -59,11 +59,12 @@ public class CommandMail extends FTabCompleter {
         Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
         mail.setRemoved(false);
         fPlayer.addMail(mail.getUUID(), mail);
+        fPlayer.setUpdated(true);
 
         String[] replaceString = {"<player>", "<message>"};
         String[] replaceTo = {fPlayer.getRealName(), message};
 
-        fCommand.sendMeMessage("mail.success_send", replaceString, replaceTo);
+        fCommand.sendMeMessage("command.mail.send", replaceString, replaceTo);
 
         return true;
     }

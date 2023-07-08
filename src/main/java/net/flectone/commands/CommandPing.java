@@ -26,32 +26,32 @@ public class CommandPing extends FTabCompleter {
         FPlayer fPlayer = strings.length > 0 ? FPlayerManager.getPlayerFromName(strings[0]) : fCommand.getFPlayer();
 
         if(fPlayer == null){
-            fCommand.sendMeMessage("reply.no_online");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
         int currentPing = fPlayer.getPlayer().getPing();
-        int badPing = Main.config.getInt("ping.bad.count");
-        int mediumPing = Main.config.getInt("ping.medium.count");
+        int badPing = Main.config.getInt("command.ping.bad.count");
+        int mediumPing = Main.config.getInt("command.ping.medium.count");
         String pingColor;
 
-        if(currentPing > badPing) pingColor = Main.config.getFormatString("ping.bad.color", commandSender);
-        else if (currentPing > mediumPing) pingColor = Main.config.getFormatString("ping.medium.color", commandSender);
-        else pingColor = Main.config.getFormatString("ping.good.color", commandSender);
+        if(currentPing > badPing) pingColor = Main.config.getFormatString("command.ping.bad.color", commandSender);
+        else if (currentPing > mediumPing) pingColor = Main.config.getFormatString("command.ping.medium.color", commandSender);
+        else pingColor = Main.config.getFormatString("command.ping.good.color", commandSender);
 
         pingColor += currentPing;
 
-        if(strings.length == 0 || commandSender == fCommand.getPlayer()){
-            fCommand.sendMeMessage("ping.myself.message", "<ping>", pingColor);
+        if(strings.length == 0 || commandSender == fPlayer.getPlayer()){
+            fCommand.sendMeMessage("command.ping.myself-message", "<ping>", pingColor);
             return true;
         }
 
         String[] replaceStrings = {"<player>", "<ping>"};
         String[] replaceTos = {fPlayer.getRealName(), pingColor};
 
-        fCommand.sendMeMessage("ping.player.message", replaceStrings, replaceTos);
+        fCommand.sendMeMessage("command.ping.player-message", replaceStrings, replaceTos);
 
         return true;
     }

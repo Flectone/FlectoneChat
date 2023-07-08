@@ -49,7 +49,7 @@ public class PlayerInteractListener implements Listener {
         } else FPlayerManager.getPlayer(event.getPlayer()).setBlock(event.getPlayer().getLocation().getBlock());
 
         if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)
-                && Main.config.getBoolean("item.sign.enable")
+                && Main.config.getBoolean("player.item.sign.enable")
                 && event.getClickedBlock() != null
                 && event.getClickedBlock().getType().equals(Material.ANVIL)){
 
@@ -73,7 +73,7 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        if(!Main.config.getBoolean("mark.enable")) return;
+        if(!Main.config.getBoolean("command.mark.enable")) return;
         if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
 
         if(event.getItem() == null) return;
@@ -89,7 +89,7 @@ public class PlayerInteractListener implements Listener {
         Material markItem;
 
         try {
-            markItem = Material.valueOf(Main.config.getString("mark.item").toUpperCase());
+            markItem = Material.valueOf(Main.config.getString("command.mark.item").toUpperCase());
 
         } catch (IllegalArgumentException | NullPointerException exception ){
             Main.getInstance().getLogger().warning("Item for mark was not found");
@@ -122,7 +122,7 @@ public class PlayerInteractListener implements Listener {
             stringList = new ArrayList<>();
         }
 
-        String formatString = Main.config.getString("item.sign.format")
+        String formatString = Main.locale.getString("player.item.sign")
                 .replace("<player>", playerName);
 
         formatString = ObjectUtil.translateHexToColor(formatString);

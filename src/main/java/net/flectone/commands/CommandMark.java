@@ -30,15 +30,15 @@ public class CommandMark extends FTabCompleter {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        if(!Main.config.getBoolean("mark.enable")) {
-            fCommand.sendMeMessage( "mark.enable.false");
+        if(!Main.config.getBoolean("command.mark.enable")) {
+            fCommand.sendMeMessage( "command.disabled");
             return true;
         }
 
         String color = (strings.length > 0) ? strings[0].toUpperCase() : "WHITE";
 
         if(!Arrays.asList(chatColorValues).contains(color)){
-            fCommand.sendMeMessage("mark.error_color");
+            fCommand.sendMeMessage("command.mark.wrong-color");
             return true;
         }
 
@@ -46,7 +46,7 @@ public class CommandMark extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        int range = Main.config.getInt("mark.range");
+        int range = Main.config.getInt("command.mark.range");
 
         Entity entity = getEntityInLineOfSightVectorMath((Player) commandSender, range);
 

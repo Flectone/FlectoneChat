@@ -71,7 +71,7 @@ public class InventoryOpenListener implements Listener {
 
     private ItemStack createArrowItem(ItemStack arrow, String arrowName, HumanEntity player){
         ItemMeta itemMeta = arrow.getItemMeta();
-        itemMeta.setDisplayName(Main.locale.getFormatString("ignore-list." + arrowName, (Player) player));
+        itemMeta.setDisplayName(Main.locale.getFormatString("command.ignore-list." + arrowName, (Player) player));
         arrow.setItemMeta(itemMeta);
         return arrow;
     }

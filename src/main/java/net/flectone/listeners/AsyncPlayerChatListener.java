@@ -19,10 +19,6 @@ import java.util.stream.Collectors;
 
 public class AsyncPlayerChatListener implements Listener {
 
-    private FileManager locale = Main.locale;
-
-    private FileManager config = Main.config;
-
     private String noRecipientsMessage = "";
 
     @EventHandler
@@ -30,33 +26,33 @@ public class AsyncPlayerChatListener implements Listener {
         Player player = event.getPlayer();
         Set<Player> recipients = new HashSet<>(event.getRecipients());
         String message = event.getMessage();
-        String globalPrefix = config.getString("chat.global.prefix");
+        String globalPrefix = Main.locale.getString("chat.global.prefix");
 
         recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
 
-        String chatType = message.startsWith(globalPrefix) && !message.equals(globalPrefix) && config.getBoolean("chat.global.enable") ? "global" : "locale";
+        String chatType = message.startsWith(globalPrefix) && !message.equals(globalPrefix) && Main.config.getBoolean("chat.global.enable") ? "global" : "local";
 
-        if (chatType.equals("locale")) {
-            int localeRange = config.getInt("chat.locale.range");
+        if (chatType.equals("local")) {
+            int localRange = Main.config.getInt("chat.local.range");
 
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
-                    || player.getLocation().distance(recipient.getLocation()) > localeRange));
+                    || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            if(recipients.size() == 1 && config.getBoolean("chat.no_recipients.enable")){
-                noRecipientsMessage = locale.getFormatString("chat.no_recipients", player);
+            if(recipients.size() == 1 && Main.config.getBoolean("chat.local.no-recipients.enable")){
+                noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
             }
 
-            if(Main.config.getBoolean("chat.locale.admin_see.enable")){
+            if(Main.config.getBoolean("chat.local.admin-see.enable")){
                 Bukkit.getOnlinePlayers()
                         .stream()
-                        .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.locale.admin_see") || onlinePlayer.isOp())
+                        .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see") || onlinePlayer.isOp())
                         .forEach(recipients::add);
             }
 
-            if(Main.config.getBoolean("chat.locale.set_cancelled")) event.setCancelled(true);
+            if(Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
-            if(Main.config.getBoolean("chat.global.clear_prefix")) event.setMessage(message.replaceFirst(globalPrefix, ""));
+            if(Main.config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
@@ -79,7 +75,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         if(!noRecipientsMessage.isEmpty()) player.sendMessage(noRecipientsMessage);
 
-        String configMessage = config.getString("chat." + chatType + ".message")
+        String configMessage = Main.locale.getString("chat." + chatType + ".message")
                 .replace("<player>", FPlayerManager.getPlayer(player).getName());
 
         fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
@@ -102,6 +98,6 @@ public class AsyncPlayerChatListener implements Listener {
 
         recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
 
-        createMessage(recipients, player, "%item%", "locale", event.getCursor());
+        createMessage(recipients, player, "%item%", "local", event.getCursor());
     }
 }

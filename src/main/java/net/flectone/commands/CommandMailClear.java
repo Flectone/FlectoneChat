@@ -30,19 +30,19 @@ public class CommandMailClear extends FTabCompleter {
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if(fPlayer == null){
-            fCommand.sendMeMessage("mail-clear.no_player");
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         HashMap<String, Mail> mailsList = fPlayer.getMails();
 
         if(fPlayer.isOnline() || mailsList == null || mailsList.isEmpty()){
-            fCommand.sendMeMessage("mail-clear.empty");
+            fCommand.sendMeMessage("command.mail-clear.empty");
             return true;
         }
 
         if(!StringUtils.isNumeric(strings[1])){
-            fCommand.sendMeMessage("mail-clear.not_number");
+            fCommand.sendMeMessage("command.mail-clear.wrong-number");
             return true;
         }
 
@@ -59,7 +59,7 @@ public class CommandMailClear extends FTabCompleter {
                 .orElse(null);
 
         if (entry == null) {
-            fCommand.sendMeMessage("mail-clear.not_number");
+            fCommand.sendMeMessage("command.mail-clear.wrong-number");
             return true;
         }
 
@@ -67,8 +67,9 @@ public class CommandMailClear extends FTabCompleter {
         String[] replaceTo = {fPlayer.getRealName(), entry.getValue().getMessage()};
 
         fPlayer.removeMail(entry.getKey());
+        fPlayer.setUpdated(true);
 
-        fCommand.sendMeMessage("mail-clear.success", replaceString, replaceTo);
+        fCommand.sendMeMessage("command.mail-clear.message", replaceString, replaceTo);
 
         return true;
     }
@@ -91,7 +92,7 @@ public class CommandMailClear extends FTabCompleter {
                 if (mailsList != null && !mailsList.isEmpty()) {
                     int[] counter = {1};
                     mailsList.entrySet().stream()
-                            .filter(entry -> !entry.getValue().isRemoved()) // Фильтрация по условию
+                            .filter(entry -> !entry.getValue().isRemoved())
                             .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
                 }
             }

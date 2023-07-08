@@ -22,10 +22,10 @@ public class ObjectUtil {
         int minutes = (timeInSeconds / 60) % 60;
         int seconds = timeInSeconds % 60;
 
-        String finalString = (days > 0 ? " " + days + Main.locale.getString("online.format.day") : "")
-                + (hours > 0 ? " " + hours + Main.locale.getString("online.format.hour") : "")
-                + (minutes > 0 ? " " + minutes + Main.locale.getString("online.format.minute") : "")
-                + (seconds > 0 ? " " + seconds + Main.locale.getString("online.format.second") : "");
+        String finalString = (days > 0 ? " " + days + Main.locale.getString("command.online.format.day") : "")
+                + (hours > 0 ? " " + hours + Main.locale.getString("command.online.format.hour") : "")
+                + (minutes > 0 ? " " + minutes + Main.locale.getString("command.online.format.minute") : "")
+                + (seconds > 0 ? " " + seconds + Main.locale.getString("command.online.format.second") : "");
 
         return finalString.substring(1);
     }
@@ -97,9 +97,9 @@ public class ObjectUtil {
     }
 
     public static void playSound(Player player, String command){
-        if(player == null || !Main.config.getBoolean(command + ".sound.enable")) return;
+        if(player == null || !Main.config.getBoolean("sound." + command + ".enable")) return;
 
-        String soundName = Main.config.getString(command + ".sound.type");
+        String soundName = Main.config.getString("sound." + command + ".type");
 
         try {
             player.playSound(player, Sound.valueOf(soundName), 1, 1);

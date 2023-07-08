@@ -15,7 +15,7 @@ public class SQLite extends Database{
     String dbname;
     public SQLite(Main instance){
         super(instance);
-        dbname = plugin.getConfig().getString("SQLite.Filename", "example");
+        dbname = plugin.getConfig().getString("SQLite.Filename", Main.config.getString("database"));
     }
 
     public String SQLiteCreateTokensPlayers = "CREATE TABLE IF NOT EXISTS players (" +
