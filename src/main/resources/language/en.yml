@@ -78,6 +78,10 @@ command:
   he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
   disabled: "#ff4e4e⁉ This command disabled on server"
 
+  switch-chat:
+    usage: "&&1⚑ Usage: &&2/<command> local/global"
+    message: "&&1💬 You switched the chat to <chat>"
+
   chatcolor:
     usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
     message: "#4eff52★ You set &&1first color &&2second color"

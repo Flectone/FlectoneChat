@@ -96,6 +96,11 @@ commands:
     usage: /technical-works on/off
     permission: flectonechat.technical-works
 
+  switch-chat:
+    usage: /switch-chat local/global
+    aliases: [ chat ]
+    permission: flectonechat.switch-chat
+
 permissions:
   flectonechat.reload:
     default: op
@@ -137,3 +142,5 @@ permissions:
     default: true
   flectonechat.technical-works:
     default: op
+  flectonechat.switch-chat:
+    default: true

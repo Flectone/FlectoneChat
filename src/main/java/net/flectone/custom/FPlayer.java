@@ -59,6 +59,8 @@ public class FPlayer {
 
     private String vaultPrefix = "";
 
+    private String chat = "local";
+
     public FPlayer(OfflinePlayer offlinePlayer){
         this.offlinePlayer = offlinePlayer;
         this.name = offlinePlayer.getName();
@@ -344,5 +346,13 @@ public class FPlayer {
 
     public boolean isUpdated() {
         return isUpdated;
+    }
+
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
+
+    public String getChat() {
+        return chat;
     }
 }
