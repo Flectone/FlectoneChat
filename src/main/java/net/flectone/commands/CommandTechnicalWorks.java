@@ -6,6 +6,7 @@ import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,10 +45,11 @@ public class CommandTechnicalWorks extends FTabCompleter {
         isTechnicalWorks = strings[0].equalsIgnoreCase("on");
 
         if(isTechnicalWorks){
-            Bukkit.getOnlinePlayers()
-                    .stream()
-                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")))
-                    .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null)));
+            for(Player player : Bukkit.getOnlinePlayers()){
+                if(player.isOp() || player.hasPermission(Main.config.getString("command.technical-works.permission"))) continue;
+
+                player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null));
+            }
         }
 
         fCommand.sendMeMessage("command.technical-works.turned-" + strings[0].toLowerCase() + ".message");
