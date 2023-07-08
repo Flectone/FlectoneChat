@@ -22,12 +22,12 @@ public class CommandReply extends FTabCompleter {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
-
-        if(secondFPlayer == null){
+        if(fCommand.getFPlayer().getLastWriter() == null){
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
+
+        FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
 
         if(!secondFPlayer.isOnline()){
             fCommand.sendMeMessage("command.reply.no-receiver");
