@@ -20,6 +20,7 @@ commands:
 
   try-cube:
     usage: /try-cube <number>
+    aliases: [ dice ]
     permission: flectonechat.try-cube
 
   try:
