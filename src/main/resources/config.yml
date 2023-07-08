@@ -55,6 +55,10 @@ player:
       enable: true
 
 command:
+  technical-works:
+    permission: "flectonechat.technical-works"
+    enable: false
+
   stream:
     global: true
 
@@ -175,6 +179,10 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.unmute.cooldown.immune"
+  technical-works:
+    enable: false
+    time: 5
+    permission: "flectonechat.technical-works.cooldown.immune"
 
 sound:
   localchat:
@@ -245,4 +253,7 @@ sound:
     type: "BLOCK_NOTE_BLOCK_BELL"
   unmute:
     enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  technical-works:
+    enable: true
     type: "BLOCK_NOTE_BLOCK_BELL"

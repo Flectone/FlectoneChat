@@ -80,6 +80,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandMute(), "mute");
         setCommandExecutor(new CommandUnmute(), "unmute");
         setCommandExecutor(new CommandHelper(), "helper");
+        setCommandExecutor(new CommandTechnicalWorks(), "technical-works");
 
         FPlayerManager.loadPlayers();
 

@@ -6,10 +6,13 @@ import net.flectone.custom.FEntity;
 import net.flectone.custom.FPlayer;
 import net.flectone.custom.Mail;
 import net.flectone.managers.FPlayerManager;
+import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.HashMap;
 
@@ -45,5 +48,15 @@ public class PlayerJoinListener implements Listener {
             player.sendMessage(newLocaleString);
             mail.setRemoved(true);
         });
+    }
+
+    @EventHandler
+    public void onLoginPlayer(PlayerLoginEvent event){
+        if(Main.config.getBoolean("command.technical-works.enable")
+                && !event.getPlayer().isOp()
+                && !event.getPlayer().hasPermission("flectonechat.technical-works")){
+
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, Main.locale.getFormatString("command.technical-works.kicked-message", null));
+        }
     }
 }

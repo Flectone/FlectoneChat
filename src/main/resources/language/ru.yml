@@ -200,6 +200,16 @@ command:
         - "&&2• • • • • • • • •"
         - "&&1Ссылка(и): \n<links>"
 
+  technical-works:
+    usage: "&&1⚑ Использование: &&2/<command> on/off"
+    turned-on:
+      already: "#ff4e4e⁉ Вы уже включили технические работы"
+      message: "&&1★ Вы включили технические работы на сервере"
+    turned-off:
+      not: "#ff4e4e⁉ Вы не включили технические работы"
+      message: "&&1★ Вы отключили технические работы на сервере"
+    kicked-message: "&&1★ На сервере ведутся технические работы"
+
   flectonechat:
     usage: "&&1⚑ Использование: &&2/<command> reload/config/locale"
     wrong-line: "#ff4e4e⁉ Введи правильно название строки из файла"

@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 public class FCommands {
 
+    public static boolean isTechnicalWorks = false;
+
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
 
     private final FileManager locale = Main.locale;

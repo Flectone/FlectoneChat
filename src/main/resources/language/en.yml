@@ -200,6 +200,16 @@ command:
         - "&&2• • • • • • • • •"
         - "&&1Url(s): \n<links>"
 
+  technical-works:
+    usage: "&&1⚑ Usage: &&2/<command> on/off"
+    turned-on:
+      already: "#ff4e4e⁉ You have already enabled technical work"
+      message: "&&1★ You have enabled technical works on server"
+    turned-off:
+      not: "#ff4e4e⁉ You did not enabled technical works"
+      message: "&&1★ You turned off technical works on server"
+    kicked-message: "&&1★ The server is undergoing technical works"
+
   flectonechat:
     usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
     wrong-line: "#ff4e4e⁉ Enter the correct line name"
