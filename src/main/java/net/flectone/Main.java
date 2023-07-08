@@ -82,6 +82,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandHelper(), "helper");
         setCommandExecutor(new CommandTechnicalWorks(), "technical-works");
         setCommandExecutor(new CommandSwitchChat(), "switch-chat");
+        setCommandExecutor(new CommandBall(), "ball");
 
         FPlayerManager.loadPlayers();
 

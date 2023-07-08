@@ -101,6 +101,10 @@ commands:
     aliases: [ chat ]
     permission: flectonechat.switch-chat
 
+  ball:
+    usage: /ball <message>
+    permission: flectonechat.ball
+
 permissions:
   flectonechat.reload:
     default: op
@@ -143,4 +147,6 @@ permissions:
   flectonechat.technical-works:
     default: op
   flectonechat.switch-chat:
+    default: true
+  flectonechat.ball:
     default: true

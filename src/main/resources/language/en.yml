@@ -82,6 +82,27 @@ command:
     usage: "&&1⚑ Usage: &&2/<command> local/global"
     message: "&&1💬 You switched the chat to <chat>"
 
+  ball:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    message: "#bb63f2❓ <player> asked: <message> \n#9340c7🔮 Ball answered: <answer>"
+    format:
+      - "Undeniably"
+      - "No doubt about it."
+      - "Definitely yes."
+      - "You can be sure of it"
+      - "Probably most likely"
+      - "Good prospects"
+      - "Yes"
+      - "Not sure yet, try again."
+      - "Ask later."
+      - "It's better not to tell."
+      - "You can't predict now."
+      - "Concentrate and ask again"
+      - "Don't even think about it"
+      - "No"
+      - "Prospects are not good."
+      - "Very doubtful."
+
   chatcolor:
     usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
     message: "#4eff52★ You set &&1first color &&2second color"

@@ -92,6 +92,9 @@ command:
     global: true
     max-amount: 9
 
+  ball:
+    global: true
+
   helper:
     see:
       permission: "flectonechat.helpersee"
@@ -187,6 +190,10 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.technical-works.cooldown.immune"
+  ball:
+    enable: false
+    time: 5
+    permission: "flectonechat.ball.cooldown.immune"
 
 sound:
   switch-chat:
@@ -263,4 +270,7 @@ sound:
     type: "BLOCK_NOTE_BLOCK_BELL"
   technical-works:
     enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  ball:
+    enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
