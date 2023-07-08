@@ -38,6 +38,7 @@ public class CommandSwitchChat extends FTabCompleter {
         if(fCommand.isMuted()) return true;
 
         fCommand.getFPlayer().setChat(chat);
+        fCommand.getFPlayer().setUpdated(true);
 
         fCommand.sendMeMessage("command.switch-chat.message", "<chat>", chat);
 

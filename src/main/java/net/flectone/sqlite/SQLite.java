@@ -25,6 +25,7 @@ public class SQLite extends Database{
             "'colors' varchar(32)," +
             "'ignore_list' text[]," +
             "'mails' text[]," +
+            "'chat' varchar(32)," +
             "PRIMARY KEY (`uuid`)" +
             "FOREIGN KEY ('mails') REFERENCES mails (uuid)" +
             ");";

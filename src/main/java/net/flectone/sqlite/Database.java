@@ -75,6 +75,10 @@ public abstract class Database {
                 fPlayer.setMuteTime(resultSet.getInt("mute_time"));
                 fPlayer.setMuteReason(resultSet.getString("mute_reason"));
 
+                String chat = resultSet.getString("chat");
+                chat = chat == null ? "local" : chat;
+                fPlayer.setChat(chat);
+
                 String mail = resultSet.getString("mails");
                 if(mail == null) continue;
                 String[] mails = mail.split(",");
@@ -98,7 +102,7 @@ public abstract class Database {
 
     public void uploadDatabase(FPlayer fPlayer){
         try (Connection conn = getSQLConnection();
-             PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET mute_time = ? , mute_reason = ? , colors = ? , ignore_list = ? , mails = ? WHERE uuid = ?")){
+             PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET mute_time = ? , mute_reason = ? , colors = ? , ignore_list = ? , mails = ? , chat = ? WHERE uuid = ?")){
 
             int muteTime = fPlayer.getMuteTime();
             if(muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
@@ -150,10 +154,9 @@ public abstract class Database {
             mails = mails.length() == 0 ? null : mails;
 
             ps1.setString(5, mails);
-            ps1.setString(6, fPlayer.getUUID());
+            ps1.setString(6, fPlayer.getChat());
+            ps1.setString(7, fPlayer.getUUID());
             ps1.executeUpdate();
-
-
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
