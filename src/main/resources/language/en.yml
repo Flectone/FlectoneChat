@@ -51,6 +51,9 @@ player:
       custom: "#1abaf0● &f"
 
 chat:
+  hide:
+    message: "&&1█"
+
   url:
     message: "&&1<url>"
     hover-message: "&&1Click to open url"

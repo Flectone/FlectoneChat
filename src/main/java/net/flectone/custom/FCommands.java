@@ -169,6 +169,11 @@ public class FCommands {
                 .anyMatch(onlinePlayer -> onlinePlayer.getName().equalsIgnoreCase(playerName));
     }
 
+    public static boolean isContainsPlayerName(String playerName){
+        return Bukkit.getOnlinePlayers().stream()
+                .anyMatch(onlinePlayer -> playerName.contains(onlinePlayer.getName()));
+    }
+
     public void sendUsageMessage(){
         sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
@@ -212,28 +217,30 @@ public class FCommands {
 
             processMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
 
-            if(!clickable || isConsole){
-                recipient.spigot().sendMessage(componentBuilder.create());
-                return;
-            }
+            recipient.spigot().sendMessage(componentBuilder.create());
 
-            List<BaseComponent> list = componentBuilder.getParts();
+//            if(!clickable || isConsole){
+//                recipient.spigot().sendMessage(componentBuilder.create());
+//                return;
+//            }
+//
+//            List<BaseComponent> list = componentBuilder.getParts();
+//
+//            ComponentBuilder finalBuilder = new ComponentBuilder();
+//
+//            boolean isFirst = true;
+//
+//            for(BaseComponent baseComponent : list){
+//
+////                if(isFirst){
+////                    baseComponent = createClickableComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
+////                    isFirst = false;
+////                } else if(baseComponent.getHoverEvent() != null) isFirst = true;
+////
+////                finalBuilder.append(baseComponent);
+//            }
 
-            ComponentBuilder finalBuilder = new ComponentBuilder();
-
-            boolean isFirst = true;
-
-            for(BaseComponent baseComponent : list){
-
-                if(isFirst){
-                    baseComponent = createClickableComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
-                    isFirst = false;
-                } else if(baseComponent.getHoverEvent() != null) isFirst = true;
-
-                finalBuilder.append(baseComponent);
-            }
-
-            recipient.spigot().sendMessage(finalBuilder.create());
+//            recipient.spigot().sendMessage(finalBuilder.create());
         });
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
@@ -341,13 +348,18 @@ public class FCommands {
         String pingPrefix = Main.locale.getString("chat.ping.prefix");
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
+        Pattern verticalPattern = Pattern.compile("\\|\\|([^|]+)\\|\\|");
+
         BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
 
         for(String word : message.split(" ")) {
-
             TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
 
             chatColor = ChatColor.getLastColors(chatColor + word);
+
+            if(FCommands.isContainsPlayerName(word)){
+                createClickableComponent(wordComponent, player.getName(), colorPlayer, player);
+            }
 
             if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1))){
 
@@ -367,6 +379,16 @@ public class FCommands {
                 wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.message", colorPlayer, papiPlayer).replace("<url>", word)));
                 wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, word.substring(urlMatcher.start(0), urlMatcher.end(0))));
                 wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.hover-message", colorPlayer, papiPlayer))));
+            }
+
+            Matcher verticalMatcher = verticalPattern.matcher(word);
+            if(verticalMatcher.find()){
+                word = word.replace("||", "");
+                String test = Main.locale.getFormatString("chat.hide.message", colorPlayer).repeat(word.length());
+                ClickEvent clickEvent = wordComponent.getClickEvent();
+                wordComponent = new TextComponent(TextComponent.fromLegacyText(test));
+                wordComponent.setClickEvent(clickEvent);
+                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(chatColor + word)));
             }
 
             if (itemStack != null && word.contains("%item%")) {
@@ -397,7 +419,9 @@ public class FCommands {
                 continue;
             }
 
-            componentBuilder.append(wordComponent, ComponentBuilder.FormatRetention.NONE).append(" ");
+            componentBuilder
+                    .append(wordComponent, ComponentBuilder.FormatRetention.NONE)
+                    .append(" ", ComponentBuilder.FormatRetention.NONE);
         }
     }
 
@@ -406,6 +430,17 @@ public class FCommands {
         String showText = Main.locale.getFormatString("player.name.hover-message", colorPlayer, papiPlayer);
 
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
+
+        if(papiPlayer instanceof ConsoleCommandSender) return textComponent;
+
+        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
+        return textComponent;
+    }
+
+    private TextComponent createClickableComponent(TextComponent textComponent, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
+        String suggestCommand = "/msg " + playerName + " ";
+        String showText = Main.locale.getFormatString("player.name.hover-message", colorPlayer, papiPlayer);
 
         if(papiPlayer instanceof ConsoleCommandSender) return textComponent;
 
