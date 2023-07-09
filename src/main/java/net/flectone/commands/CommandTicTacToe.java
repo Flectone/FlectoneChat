@@ -38,7 +38,7 @@ public class CommandTicTacToe extends FTabCompleter {
 
         FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
-        if(secondFPlayer == null && ticTacToe == null){
+        if((secondFPlayer == null && ticTacToe == null) || fCommand.getFPlayer() == secondFPlayer){
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
