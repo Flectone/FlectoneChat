@@ -111,6 +111,10 @@ commands:
     aliases: [ ttt ]
     permission: flectonechat.tic-tac-toe
 
+  clear-chat:
+    usage: /clearchat
+    permission: flectonechat.clear-chat
+
 permissions:
   flectonechat.reload:
     default: op
@@ -157,4 +161,6 @@ permissions:
   flectonechat.ball:
     default: true
   flectonechat.tic-tac-toe:
+    default: true
+  flectonechat.clear-chat:
     default: true

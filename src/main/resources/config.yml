@@ -102,6 +102,9 @@ command:
 cool-down:
   enable: false
 
+  clear-chat:
+    enable: true
+    permission: "flectonechat.clear-chat.cooldown.immune"
   switch-chat:
     enable: true
     time: 5
@@ -200,6 +203,9 @@ cool-down:
     permission: "flectonechat.tic-tac-toe.cooldown.immune"
 
 sound:
+  clear-chat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
   switch-chat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
