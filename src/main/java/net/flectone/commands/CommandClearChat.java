@@ -16,11 +16,11 @@ public class CommandClearChat extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage() || fCommand.isHaveCD()) return true;
+        if(fCommand.isHaveCD()) return true;
 
         String string = " \n".repeat(100);
 
-        fCommand.getPlayer().sendMessage(string);
+        commandSender.sendMessage(string);
         fCommand.sendMeMessage("command.clear-chat.message");
 
         return true;
