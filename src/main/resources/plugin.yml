@@ -106,6 +106,11 @@ commands:
     usage: /ball <message>
     permission: flectonechat.ball
 
+  tic-tac-toe:
+    usage: /tic-tac-toe <player>
+    aliases: [ ttt ]
+    permission: flectonechat.tic-tac-toe
+
 permissions:
   flectonechat.reload:
     default: op
@@ -150,4 +155,6 @@ permissions:
   flectonechat.switch-chat:
     default: true
   flectonechat.ball:
+    default: true
+  flectonechat.tic-tac-toe:
     default: true

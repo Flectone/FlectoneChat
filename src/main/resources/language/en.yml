@@ -82,6 +82,23 @@ command:
     usage: "&&1⚑ Usage: &&2/<command> local/global"
     message: "&&1💬 You switched the chat to <chat>"
 
+  tic-tac-toe:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    send-message: "&&1☐ An offer to play was sent to <player>"
+    get-message: "&&1☐ Received an invite to play tic tac toe with <player>, accept? [+]"
+    hover-message: "&&1Click to accept"
+    game:
+      ended: "#ff4e4e⁉ This game is over"
+      wrong: "#ff4e4e⁉ Such a move is impossible"
+      move: "&&1<player>'s move\n-----"
+      win: "#4eff52🧍 <player> won this game\n-----"
+      draw: "#4eff52👬 The game ended in a draw\n-----"
+    format:
+      win: "#4eff52"
+      empty: "&&2☐"
+      first: "&&1☑"
+      second: "&&1☒"
+
   ball:
     usage: "&&1⚑ Usage: &&2/<command> (message)"
     message: "#bb63f2❓ <player> asked: <message> \n#9340c7🔮 Ball answered: <answer>"

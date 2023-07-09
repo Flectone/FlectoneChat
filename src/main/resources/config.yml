@@ -194,6 +194,10 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.ball.cooldown.immune"
+  tic-tac-toe:
+    enable: false
+    time: 5
+    permission: "flectonechat.tic-tac-toe.cooldown.immune"
 
 sound:
   switch-chat:
@@ -272,5 +276,8 @@ sound:
     enable: true
     type: "BLOCK_NOTE_BLOCK_BELL"
   ball:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  tic-tac-toe:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
