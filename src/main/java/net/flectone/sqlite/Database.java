@@ -62,6 +62,7 @@ public abstract class Database {
             while(resultSet.next()){
 
                 FPlayer fPlayer = FPlayerManager.getPlayer(resultSet.getString("uuid"));
+                if(fPlayer == null) continue;
 
                 String color = resultSet.getString("colors");
 
