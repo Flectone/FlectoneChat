@@ -71,22 +71,9 @@ public class CommandMute extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
-            isOfflinePlayer(strings[0]);
-
-        } else if(strings.length == 2){
-            for(String format : FCommands.formatTimeList){
-                if(strings[1].length() != 0 && StringUtils.isNumeric(strings[1].substring(strings[1].length() - 1))){
-                    isStartsWith(strings[1], strings[1] + format);
-                } else {
-                    for(int x = 1; x < 10; x++){
-                        isStartsWith(strings[1], x + format);
-                    }
-                }
-            }
-        } else if (strings.length == 3){
-            isStartsWith(strings[2], "(reason)");
-        }
+        if(strings.length == 1) isOfflinePlayer(strings[0]);
+        else if(strings.length == 2) isFormatString(strings[1]);
+        else if (strings.length == 3) isStartsWith(strings[2], "(reason)");
 
         Collections.sort(wordsList);
 

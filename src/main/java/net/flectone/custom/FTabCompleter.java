@@ -1,6 +1,7 @@
 package net.flectone.custom;
 
 import net.flectone.managers.FileManager;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,6 +43,18 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
         Bukkit.getOnlinePlayers().forEach(player -> {
             isStartsWith(arg, player.getName());
         });
+    }
+
+    protected void isFormatString(String arg){
+        for(String format : FCommands.formatTimeList){
+            if(arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))){
+                isStartsWith(arg, arg + format);
+            } else {
+                for(int x = 1; x < 10; x++){
+                    isStartsWith(arg, x + format);
+                }
+            }
+        }
     }
 
 
