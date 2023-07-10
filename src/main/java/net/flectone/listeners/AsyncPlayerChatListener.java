@@ -74,7 +74,10 @@ public class AsyncPlayerChatListener implements Listener {
 
         if(fCommands.isMuted()) return;
 
-        if(!noRecipientsMessage.isEmpty()) player.sendMessage(noRecipientsMessage);
+        if(!noRecipientsMessage.isEmpty()) {
+            player.sendMessage(noRecipientsMessage);
+            noRecipientsMessage = "";
+        }
 
         String configMessage = Main.locale.getString("chat." + chatType + ".message")
                 .replace("<player>", FPlayerManager.getPlayer(player).getName());
