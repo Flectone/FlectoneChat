@@ -45,7 +45,7 @@ public abstract class Database {
     }
 
     private void loadOldConfigs(){
-        Main.info("Migrating old configs to database");
+        Main.info("\uD83D\uDCCA Migrating old configs to database");
         ArrayList<FPlayer> fPlayers = new ArrayList<>();
 
         File themeFile = new File(plugin.getDataFolder(), "themes.yml");
@@ -107,7 +107,7 @@ public abstract class Database {
         }
 
         fPlayers.forEach(this::uploadDatabase);
-        Main.info("Migration of old configs to database is finished");
+        Main.info("\uD83D\uDCCA Migration of old configs to database is finished");
     }
 
     public void setPlayer(String uuid){
