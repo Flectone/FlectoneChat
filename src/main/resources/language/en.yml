@@ -151,6 +151,21 @@ command:
     not-muted: "#ff4e4e⁉ This player does not muted"
     message: "#ff4e4e☻ Player <player> unmuted"
 
+  tempban:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+    default-reason: "You have been banned from this server"
+    global-message: "#ff4e4e☠ Player <player> has been banned for <time>. Reason: <reason>"
+    local-message: "#ff4e4e☠ You are banned, <time> left. Reason: <reason>"
+
+  ban:
+    global-message: "#ff4e4e☠ Player <player> has been banned permanently. Reason: <reason>"
+    local-message: "#ff4e4e☠ You are banned permanently. Reason: <reason>"
+
+  unban:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    not-banned: "#ff4e4e⁉ This player is not banned"
+    message: "#ff4e4e☻ Player <player> unbanned"
+
   ignore:
     usage: "&&1⚑ Usage: &&2/<command> (player)"
     myself: "#ff4e4e⁉ You can't ignore yourself"

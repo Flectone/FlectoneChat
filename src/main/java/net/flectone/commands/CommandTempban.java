@@ -3,9 +3,8 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
-import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
@@ -16,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMute extends FTabCompleter {
+public class CommandTempban extends FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -27,39 +26,48 @@ public class CommandMute extends FTabCompleter {
 
         String stringTime = strings[1];
 
-        if(!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1))){
+        if((!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1)))
+                && !stringTime.equals("permanent")){
             fCommand.sendUsageMessage();
             return true;
         }
 
         String playerName = strings[0];
-        FPlayer mutedFPlayer = FPlayerManager.getPlayerFromName(playerName);
+        FPlayer bannedFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(mutedFPlayer == null){
+        if(bannedFPlayer == null){
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.mute.default-reason");
+        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.tempban.default-reason");
 
         int time = fCommand.getTimeFromString(stringTime);
 
-        String formatString = Main.locale.getString("command.mute.global-message")
-                .replace("<player>", mutedFPlayer.getRealName())
+        String globalStringMessage = time == -1 ? "command.ban.global-message" : "command.tempban.global-message";
+
+        String globalMessage = Main.locale.getString(globalStringMessage)
+                .replace("<player>", bannedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        fCommand.sendGlobalMessage(formatString, false);
+        fCommand.sendGlobalMessage(globalMessage, false);
 
-        if(Main.isHavePlasmoVoice) {
-            FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
-        }
+        bannedFPlayer.setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
+        bannedFPlayer.setTempBanReason(reason);
+        bannedFPlayer.setUpdated(true);
 
-        mutedFPlayer.setMuteTime(time + ObjectUtil.getCurrentTime());
-        mutedFPlayer.setMuteReason(reason);
-        mutedFPlayer.setUpdated(true);
+        if(!bannedFPlayer.isOnline()) return true;
+
+        String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
+
+        String localMessage = Main.locale.getFormatString(localStringMessage, bannedFPlayer.getPlayer())
+                .replace("<time>", ObjectUtil.convertTimeToString(time))
+                .replace("<reason>", reason);
+
+        bannedFPlayer.getPlayer().kickPlayer(localMessage);
 
         return true;
     }
@@ -82,6 +90,7 @@ public class CommandMute extends FTabCompleter {
                     }
                 }
             }
+            isStartsWith(strings[1], "permanent");
         } else if (strings.length == 3){
             isStartsWith(strings[2], "(reason)");
         }

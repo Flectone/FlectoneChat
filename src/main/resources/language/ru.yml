@@ -151,6 +151,21 @@ command:
     not-muted: "#ff4e4e⁉ Этот игрок не в муте"
     message: "#ff4e4e☻ Игрок <player> теперь не в муте"
 
+  tempban:
+    usage: "&&1⚑ Использование: &&2/<command> (игрок) (время) (причина)"
+    default-reason: "Вы были заблокированы на этом сервере"
+    global-message: "#ff4e4e☠ Игрок <player> был заблокирован на <time>. Причина: <reason>"
+    local-message: "#ff4e4e☠ Ты заблокирован, осталось <time>. Причина: <reason>"
+
+  ban:
+    global-message: "#ff4e4e☠ Игрок <player> был заблокирован навсегда. Причина: <reason>"
+    local-message: "#ff4e4e☠ Ты заблокирован навсегда. Причина: <reason>"
+
+  unban:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    not-banned: "#ff4e4e⁉ This player is not banned"
+    message: "#ff4e4e☻ Player <player> unbanned"
+
   ignore:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"
     myself: "#ff4e4e⁉ Ты не можешь игнорировать себя"

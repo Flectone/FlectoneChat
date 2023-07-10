@@ -102,6 +102,12 @@ command:
 cool-down:
   enable: false
 
+  unban:
+    enable: false
+    permission: "flectonechat.ban.cooldown.immune"
+  tempban:
+    enable: false
+    permission: "flectonechat.ban.cooldown.immune"
   clear-chat:
     enable: true
     permission: "flectonechat.clear-chat.cooldown.immune"
@@ -188,7 +194,7 @@ cool-down:
   unmute:
     enable: false
     time: 5
-    permission: "flectonechat.unmute.cooldown.immune"
+    permission: "flectonechat.mute.cooldown.immune"
   technical-works:
     enable: false
     time: 5
@@ -203,6 +209,12 @@ cool-down:
     permission: "flectonechat.tic-tac-toe.cooldown.immune"
 
 sound:
+  unban:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  tempban:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
   clear-chat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"

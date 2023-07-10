@@ -115,6 +115,16 @@ commands:
     usage: /clearchat
     permission: flectonechat.clear-chat
 
+  tempban:
+    usage: /tempban <player> <time> <reason>
+    aliases: [ ban, tban ]
+    permission: flectonechat.ban
+
+  unban:
+    usage: /unban <player>
+    aliases: [ pardon ]
+    permission: flectonechat.ban
+
 permissions:
   flectonechat.reload:
     default: op
@@ -164,3 +174,5 @@ permissions:
     default: true
   flectonechat.clear-chat:
     default: true
+  flectonechat.ban:
+    default: op

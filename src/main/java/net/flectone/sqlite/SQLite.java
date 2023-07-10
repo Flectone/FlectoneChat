@@ -22,6 +22,8 @@ public class SQLite extends Database{
             "'uuid' varchar(32) NOT NULL," +
             "'mute_time' int(11)," +
             "'mute_reason' varchar(32)," +
+            "'tempban_time' int(11)," +
+            "'tempban_reason' varchar(32)," +
             "'colors' varchar(32)," +
             "'ignore_list' text[]," +
             "'mails' text[]," +

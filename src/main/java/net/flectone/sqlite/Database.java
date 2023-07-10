@@ -144,6 +144,8 @@ public abstract class Database {
                 fPlayer.setIgnoreList(arrayList);
                 fPlayer.setMuteTime(resultSet.getInt("mute_time"));
                 fPlayer.setMuteReason(resultSet.getString("mute_reason"));
+                fPlayer.setTempBanTime(resultSet.getInt("tempban_time"));
+                fPlayer.setTempBanReason(resultSet.getString("tempban_reason"));
 
                 String chat = resultSet.getString("chat");
                 chat = chat == null ? "local" : chat;
@@ -174,7 +176,16 @@ public abstract class Database {
 
     public void uploadDatabase(FPlayer fPlayer){
         try (Connection conn = getSQLConnection();
-             PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET mute_time = ? , mute_reason = ? , colors = ? , ignore_list = ? , mails = ? , chat = ? WHERE uuid = ?")){
+             PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET " +
+                     "mute_time = ? ," +
+                     "mute_reason = ? ," +
+                     "tempban_time = ? ," +
+                     "tempban_reason = ?," +
+                     "colors = ? ," +
+                     "ignore_list = ? ," +
+                     "mails = ? ," +
+                     "chat = ?" +
+                     "WHERE uuid = ?")){
 
             int muteTime = fPlayer.getMuteTime();
             if(muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
@@ -184,13 +195,22 @@ public abstract class Database {
             muteReason = muteTime > 0 ? muteReason : null;
             ps1.setString(2, muteReason);
 
+            int tempBanTime = fPlayer.getTempBanTime();
+            if(tempBanTime > 0) ps1.setInt(3, tempBanTime + ObjectUtil.getCurrentTime());
+            else if(fPlayer.getRealBanTime() == -1) ps1.setInt(3, -1);
+            else ps1.setObject(3, null);
+
+            String tempBanReason = fPlayer.getTempBanReason();
+            tempBanReason = tempBanTime > 0 ? tempBanReason : null;
+            ps1.setString(4, tempBanReason);
+
             String[] colors = fPlayer.getColors();
-            ps1.setString(3, colors[0] + "," + colors[1]);
+            ps1.setString(5, colors[0] + "," + colors[1]);
 
             String ignoreListString = "";
             for(String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString += ignoredPlayer + ",";
             ignoreListString = ignoreListString.length() == 0 ? null : ignoreListString;
-            ps1.setString(4, ignoreListString);
+            ps1.setString(6, ignoreListString);
 
             if(!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0){
                 fPlayer.getMails().forEach((uuid, mail) -> {
@@ -225,9 +245,9 @@ public abstract class Database {
 
             mails = mails.length() == 0 ? null : mails;
 
-            ps1.setString(5, mails);
-            ps1.setString(6, fPlayer.getChat());
-            ps1.setString(7, fPlayer.getUUID());
+            ps1.setString(7, mails);
+            ps1.setString(8, fPlayer.getChat());
+            ps1.setString(9, fPlayer.getUUID());
             ps1.executeUpdate();
 
         } catch (SQLException ex) {

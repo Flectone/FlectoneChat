@@ -6,8 +6,7 @@ import net.flectone.custom.FEntity;
 import net.flectone.custom.FPlayer;
 import net.flectone.custom.Mail;
 import net.flectone.managers.FPlayerManager;
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,6 +51,19 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onLoginPlayer(PlayerLoginEvent event){
+
+        FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
+        if(fPlayer != null && (fPlayer.isPermanentlyBanned() || fPlayer.isBanned())){
+            String localString = fPlayer.isPermanentlyBanned() ? "command.ban.local-message" : "command.tempban.local-message";
+            int bannedTime = fPlayer.isPermanentlyBanned() ? -1 : fPlayer.getTempBanTime();
+
+            String formatMessage = Main.locale.getFormatString(localString, fPlayer.getPlayer())
+                    .replace("<time>", ObjectUtil.convertTimeToString(bannedTime))
+                    .replace("<reason>", fPlayer.getTempBanReason());
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
+            return;
+        }
+
         if(Main.config.getBoolean("command.technical-works.enable")
                 && !event.getPlayer().isOp()
                 && !event.getPlayer().hasPermission("flectonechat.technical-works")){

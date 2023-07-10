@@ -16,15 +16,12 @@ import net.flectone.commands.CommandAfk;
 import net.flectone.managers.FileManager;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FCommands {
-
-    public static boolean isTechnicalWorks = false;
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
 
@@ -218,29 +215,6 @@ public class FCommands {
             processMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
 
             recipient.spigot().sendMessage(componentBuilder.create());
-
-//            if(!clickable || isConsole){
-//                recipient.spigot().sendMessage(componentBuilder.create());
-//                return;
-//            }
-//
-//            List<BaseComponent> list = componentBuilder.getParts();
-//
-//            ComponentBuilder finalBuilder = new ComponentBuilder();
-//
-//            boolean isFirst = true;
-//
-//            for(BaseComponent baseComponent : list){
-//
-////                if(isFirst){
-////                    baseComponent = createClickableComponent(baseComponent.toLegacyText(), senderName, recipient, sender);
-////                    isFirst = false;
-////                } else if(baseComponent.getHoverEvent() != null) isFirst = true;
-////
-////                finalBuilder.append(baseComponent);
-//            }
-
-//            recipient.spigot().sendMessage(finalBuilder.create());
         });
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
@@ -447,5 +421,32 @@ public class FCommands {
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
         return textComponent;
+    }
+
+    public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
+
+    public boolean isStringTime(String string){
+
+        for(String format : formatTimeList){
+            if(string.contains(format)) return true;
+        }
+
+        return false;
+    }
+
+    public int getTimeFromString(String string){
+        if(string.equals("permanent")) return -1;
+        int time = Integer.parseInt(string.substring(0, string.length() - 1));
+        string = string.substring(string.length() - 1);
+
+        switch (string){
+            case "y": time *= 30 * 12;
+            case "d": time *= 24;
+            case "h": time *= 60;
+            case "m": time *= 60;
+            case "s": break;
+        }
+
+        return time;
     }
 }

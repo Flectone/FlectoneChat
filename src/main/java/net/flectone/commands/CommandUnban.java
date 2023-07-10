@@ -1,19 +1,18 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
-import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-public class CommandUnmute extends FTabCompleter {
+public class CommandUnban extends FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -29,22 +28,18 @@ public class CommandUnmute extends FTabCompleter {
             return true;
         }
 
-        if(fPlayer.getMuteTime() < 0){
-            fCommand.sendMeMessage("command.unmute.not-muted");
+        if(!fPlayer.isBanned() && !fPlayer.isPermanentlyBanned()){
+            fCommand.sendMeMessage("command.unban.not-banned");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        fPlayer.setMuteTime(0);
-        fPlayer.setMuteReason("");
+        fPlayer.setTempBanTime(0);
+        fPlayer.setTempBanReason("");
         fPlayer.setUpdated(true);
 
-        fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
-
-        if(Main.isHavePlasmoVoice) {
-            FlectonePlasmoVoice.unmute(fPlayer.getRealName());
-        }
+        fCommand.sendMeMessage("command.unban.message", "<player>", fPlayer.getRealName());
 
         return true;
     }
@@ -55,7 +50,7 @@ public class CommandUnmute extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            FPlayerManager.getPlayers().stream().filter(FPlayer::isMuted).forEach(fPlayer ->
+            FPlayerManager.getPlayers().stream().filter(fPlayer -> fPlayer.isBanned() || fPlayer.isPermanentlyBanned()).forEach(fPlayer ->
                     isStartsWith(strings[0], fPlayer.getRealName()));
         }
 

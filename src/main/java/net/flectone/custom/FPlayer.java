@@ -47,6 +47,10 @@ public class FPlayer {
 
     private int muteTime;
 
+    private String tempBanReason;
+
+    private int tempBanTime;
+
     private int numberLastInventory;
 
     private int lastTimeMoved;
@@ -126,7 +130,22 @@ public class FPlayer {
             setMuteReason("");
         }
 
-        return getMuteTime() > 0;
+        return isMuted;
+    }
+
+    public boolean isBanned() {
+        boolean isBanned = getTempBanTime() > 0;
+
+        if(!isBanned && !isPermanentlyBanned()){
+            setTempBanTime(0);
+            setTempBanReason("");
+        }
+
+        return isBanned;
+    }
+
+    public boolean isPermanentlyBanned(){
+        return getRealBanTime() == -1;
     }
 
     public boolean isAfk() {
@@ -159,6 +178,26 @@ public class FPlayer {
 
     public int getMuteTime(){
         return this.muteTime - ObjectUtil.getCurrentTime();
+    }
+
+    public int getTempBanTime() {
+        return this.tempBanTime - ObjectUtil.getCurrentTime();
+    }
+
+    public int getRealBanTime(){
+        return this.tempBanTime;
+    }
+
+    public void setTempBanTime(int tempBanTime) {
+        this.tempBanTime = tempBanTime;
+    }
+
+    public String getTempBanReason() {
+        return tempBanReason;
+    }
+
+    public void setTempBanReason(String tempBanReason) {
+        this.tempBanReason = tempBanReason;
     }
 
     public void setIgnoreList(ArrayList<String> ignoreList) {

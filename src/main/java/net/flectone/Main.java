@@ -90,6 +90,8 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandBall(), "ball");
         setCommandExecutor(new CommandTicTacToe(), "tic-tac-toe");
         setCommandExecutor(new CommandClearChat(), "clear-chat");
+        setCommandExecutor(new CommandTempban(), "tempban");
+        setCommandExecutor(new CommandUnban(), "unban");
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;

@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class ObjectUtil {
 
     public static String convertTimeToString(int timeInSeconds){
+        if(timeInSeconds == -1) return "";
+
         int days = (timeInSeconds / 86400);
         int hours = (timeInSeconds / 3600) % 24;
         int minutes = (timeInSeconds / 60) % 60;
