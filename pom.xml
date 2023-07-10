@@ -69,6 +69,11 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>reposilite-repository-releases</id>
+            <name>henkelmax.public</name>
+            <url>https://maven.maxhenkel.de/repository/public</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -88,6 +93,12 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.maxhenkel.voicechat</groupId>
+            <artifactId>voicechat-api</artifactId>
+            <version>2.4.11</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

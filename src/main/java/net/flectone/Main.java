@@ -11,6 +11,7 @@ import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
+import net.flectone.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.Listener;
@@ -49,6 +50,8 @@ public final class Main extends JavaPlugin {
         this.database = new SQLite(this);
         this.database.load();
 
+        FPlayerManager.loadPlayers();
+
         registerEvents(new AsyncPlayerChatListener());
         registerEvents(new EntitySpawnListener());
         registerEvents(new InventoryClickListener());
@@ -86,11 +89,13 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandTicTacToe(), "tic-tac-toe");
         setCommandExecutor(new CommandClearChat(), "clear-chat");
 
-        FPlayerManager.loadPlayers();
-
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;
             new FExpansion(this).register();
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("voicechat") != null) {
+            new RegisterSimpleVoiceChat();
         }
 
         startTabScheduler();
