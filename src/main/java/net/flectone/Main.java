@@ -12,6 +12,7 @@ import net.flectone.sqlite.SQLite;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
 import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
+import net.flectone.utils.WebUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.Listener;
@@ -65,10 +66,16 @@ public final class Main extends JavaPlugin {
         checkPlayerMoveTimer();
 
         info("✔ Plugin enabled");
+
+        WebUtil.checkNewerVersion();
     }
 
     public static void info(String message){
         getInstance().getLogger().info(message);
+    }
+
+    public static void warning(String message){
+        getInstance().getLogger().warning(message);
     }
 
     private void hookPlugins(){
