@@ -41,6 +41,8 @@ public class FCommands {
 
     private boolean isHaveCD = false;
 
+    private boolean clickable = false;
+
     private final String alias;
 
     public FCommands(CommandSender sender, String command, String label, String[] args) {
@@ -201,6 +203,8 @@ public class FCommands {
 
     public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack item, boolean clickable){
 
+        this.clickable = clickable;
+
         ItemStack itemStack = message.contains("%item%") ? item == null ? player.getItemInHand() : item : null;
 
         recipientsSet.forEach(recipient -> {
@@ -331,11 +335,11 @@ public class FCommands {
 
             chatColor = ChatColor.getLastColors(chatColor + word);
 
-            if(FCommands.isContainsPlayerName(word)){
-                createClickableComponent(wordComponent, player.getName(), colorPlayer, player);
+            if(FCommands.isContainsPlayerName(word) && clickable){
+                createClickableComponent(wordComponent, senderName, colorPlayer, sender);
             }
 
-            if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1))){
+            if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1)) && clickable){
 
                 Player player = Bukkit.getPlayer(word.substring(1));
 
