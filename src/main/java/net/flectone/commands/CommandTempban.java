@@ -7,13 +7,17 @@ import net.flectone.custom.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandTempban extends FTabCompleter {
 
@@ -53,7 +57,7 @@ public class CommandTempban extends FTabCompleter {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        fCommand.sendGlobalMessage(globalMessage, false);
+        fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), globalMessage, false);
 
         bannedFPlayer.setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
         bannedFPlayer.setTempBanReason(reason);

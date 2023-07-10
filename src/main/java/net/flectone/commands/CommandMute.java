@@ -8,12 +8,14 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 public class CommandMute extends FTabCompleter {
@@ -51,7 +53,7 @@ public class CommandMute extends FTabCompleter {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        fCommand.sendGlobalMessage(formatString, false);
+        fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, false);
 
         if(Main.isHavePlasmoVoice) {
             FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
