@@ -39,12 +39,15 @@ public class SQLite extends Database{
             ");";
 
 
+    public static boolean isOldVersion = false;
+
     // SQL creation stuff, You can leave the blow stuff untouched.
     public Connection getSQLConnection() {
         File dataFolder = new File(plugin.getDataFolder(), dbname+".db");
         if (!dataFolder.exists()){
             try {
                 dataFolder.createNewFile();
+                isOldVersion = true;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "File write error: "+dbname+".db");
             }

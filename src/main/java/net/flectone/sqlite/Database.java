@@ -1,5 +1,6 @@
 package net.flectone.sqlite;
 
+import java.io.File;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -12,6 +13,8 @@ import net.flectone.custom.Mail;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public abstract class Database {
     Main plugin;
@@ -38,6 +41,72 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retreive connection", ex);
         }
+    }
+
+    private void loadOldConfigs(){
+        Main.getInstance().getLogger().info("Migrating old configs to database");
+        ArrayList<FPlayer> fPlayers = new ArrayList<>();
+
+        File themeFile = new File(plugin.getDataFolder(), "themes.yml");
+        if(themeFile.exists()){
+            FileConfiguration themesConfiguration =  YamlConfiguration.loadConfiguration(themeFile);
+            for(String uuid : themesConfiguration.getKeys(true)){
+                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
+                List<String> stringList = themesConfiguration.getStringList(uuid);
+                if(fPlayer == null || stringList.size() < 2) continue;
+
+                fPlayer.setColors(stringList.get(0), stringList.get(1));
+                fPlayers.add(fPlayer);
+            }
+        }
+
+        File muteFile = new File(plugin.getDataFolder(), "mutes.yml");
+        if(muteFile.exists()){
+            FileConfiguration muteConfiguration =  YamlConfiguration.loadConfiguration(muteFile);
+            for(String uuid : muteConfiguration.getKeys(true)){
+                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
+                List<String> stringList = muteConfiguration.getStringList(uuid);
+                if(fPlayer == null || stringList.size() < 2) continue;
+
+                fPlayer.setMuteReason(stringList.get(0));
+                fPlayer.setMuteTime(Integer.parseInt(stringList.get(1)));
+                fPlayers.add(fPlayer);
+            }
+        }
+
+        File ignoreFile = new File(plugin.getDataFolder(), "ignores.yml");
+        if(ignoreFile.exists()){
+            FileConfiguration ignoreConfiguration = YamlConfiguration.loadConfiguration(ignoreFile);
+            for(String uuid : ignoreConfiguration.getKeys(true)){
+                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
+                List<String> stringList = ignoreConfiguration.getStringList(uuid);
+                if(fPlayer == null || stringList.isEmpty()) continue;
+
+                fPlayer.setIgnoreList(new ArrayList<>(stringList));
+                fPlayers.add(fPlayer);
+            }
+        }
+
+        File mailFile = new File(plugin.getDataFolder(), "mails.yml");
+        if(mailFile.exists()){
+            FileConfiguration mailConfiguration = YamlConfiguration.loadConfiguration(mailFile);
+            for(String uuid : mailConfiguration.getKeys(true)){
+                if(!uuid.contains(".")) continue;
+                String[] uuids = uuid.split("\\.");
+                FPlayer firstFPlayer = FPlayerManager.getPlayer(uuids[0]);
+                FPlayer secondFPlayer = FPlayerManager.getPlayer(uuids[1]);
+
+                List<String> stringList = mailConfiguration.getStringList(uuid);
+                for(String message : stringList){
+                    Mail mail = new Mail(secondFPlayer.getUUID(), firstFPlayer.getUUID(), message);
+                    firstFPlayer.addMail(mail.getUUID(), mail);
+                }
+                fPlayers.add(firstFPlayer);
+            }
+        }
+
+        fPlayers.forEach(this::uploadDatabase);
+        Main.getInstance().getLogger().info("Migration of old configs to database is finished");
     }
 
     public void setPlayer(String uuid){
@@ -99,6 +168,8 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
         }
+
+        if(SQLite.isOldVersion) loadOldConfigs();
     }
 
     public void uploadDatabase(FPlayer fPlayer){
