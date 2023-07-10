@@ -1,10 +1,11 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
+import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,10 @@ public class CommandUnmute extends FTabCompleter {
         fPlayer.setUpdated(true);
 
         fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
+
+        if(Main.isHavePlasmoVoice) {
+            FlectonePlasmoVoice.unmute(fPlayer.getRealName());
+        }
 
         return true;
     }

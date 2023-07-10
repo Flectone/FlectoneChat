@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
+import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -51,11 +52,15 @@ public class CommandMute extends FTabCompleter {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
+        fCommand.sendGlobalMessage(formatString, false);
+
+        if(Main.isHavePlasmoVoice) {
+            FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
+        }
+
         mutedFPlayer.setMuteTime(time + ObjectUtil.getCurrentTime());
         mutedFPlayer.setMuteReason(reason);
         mutedFPlayer.setUpdated(true);
-
-        fCommand.sendGlobalMessage(formatString, false);
 
         return true;
     }
