@@ -125,6 +125,11 @@ commands:
     aliases: [ pardon ]
     permission: flectonechat.ban
 
+  broadcast:
+    usage: /broadcast <message>
+    aliases: [ bc ]
+    permission: flectonechat.broadcast
+
 permissions:
   flectonechat.reload:
     default: op
@@ -175,4 +180,6 @@ permissions:
   flectonechat.clear-chat:
     default: true
   flectonechat.ban:
+    default: op
+  flectonechat.broadcast:
     default: op

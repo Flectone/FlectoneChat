@@ -81,6 +81,10 @@ command:
   he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
   disabled: "#ff4e4e⁉ This command disabled on server"
 
+  broadcast:
+    usage: "&&1⚑ Usage: &&2/<command> (message)"
+    message: "#fce303🕫 Message for all from <player> \n<message>"
+
   clear-chat:
     message: "&&1💬 Chat is cleared"
 

@@ -214,6 +214,7 @@ public final class Main extends JavaPlugin {
         setCommandExecutor(new CommandClearChat(), "clear-chat");
         setCommandExecutor(new CommandTempban(), "tempban");
         setCommandExecutor(new CommandUnban(), "unban");
+        setCommandExecutor(new CommandBroadcast(), "broadcast");
     }
 
     private void setCommandExecutor(FTabCompleter commandExecutor, String command){
