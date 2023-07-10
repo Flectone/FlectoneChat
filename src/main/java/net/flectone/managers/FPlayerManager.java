@@ -31,7 +31,10 @@ public class FPlayerManager {
         fPlayerHashMap.values()
                 .stream()
                 .filter(FPlayer::isUpdated)
-                .forEach(fPlayer -> Main.getDatabase().uploadDatabase(fPlayer));
+                .forEach(fPlayer -> {
+                    Main.getDatabase().uploadDatabase(fPlayer);
+                    fPlayer.setUpdated(false);
+                });
     }
 
     public static void removePlayersFromTeams(){

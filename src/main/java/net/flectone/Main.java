@@ -139,6 +139,8 @@ public final class Main extends JavaPlugin {
             @Override
             public void run() {
 
+                Main.getDatabase().delayedUpdateDatabase();
+
                 FPlayerManager.getPlayers().stream().filter(FPlayer::isOnline).forEach(fPlayer -> {
                     Block block = fPlayer.getPlayer().getLocation().getBlock();
 

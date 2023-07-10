@@ -269,4 +269,18 @@ public abstract class Database {
             Error.close(plugin, ex);
         }
     }
+
+    private int lastUpdate = 0;
+    public void delayedUpdateDatabase(){
+        if(lastUpdate == 0){
+            lastUpdate = ObjectUtil.getCurrentTime() + 5 * 3600;
+            return;
+        }
+
+        if(ObjectUtil.getCurrentTime() > lastUpdate){
+            Main.info("\uD83D\uDCCA Loaded players to database");
+            lastUpdate = ObjectUtil.getCurrentTime() + 5 * 3600;
+            FPlayerManager.uploadPlayers();
+        }
+    }
 }
