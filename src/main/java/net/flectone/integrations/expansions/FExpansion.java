@@ -1,4 +1,4 @@
-package net.flectone.expansions;
+package net.flectone.integrations.expansions;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.flectone.Main;

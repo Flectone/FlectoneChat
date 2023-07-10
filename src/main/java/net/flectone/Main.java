@@ -3,7 +3,7 @@ package net.flectone;
 import net.flectone.commands.*;
 import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
-import net.flectone.expansions.FExpansion;
+import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.listeners.*;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
@@ -11,7 +11,7 @@ import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.ObjectUtil;
-import net.flectone.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
+import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.event.Listener;
@@ -21,6 +21,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public final class Main extends JavaPlugin {
 
     public static boolean isHavePAPI = false;
+
+    public static boolean isHavePlasmoVoice = false;
 
     private static Main instance;
 
@@ -96,6 +98,10 @@ public final class Main extends JavaPlugin {
 
         if(Bukkit.getPluginManager().getPlugin("voicechat") != null) {
             new RegisterSimpleVoiceChat();
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("plasmovoice") != null){
+            isHavePlasmoVoice = true;
         }
 
         startTabScheduler();

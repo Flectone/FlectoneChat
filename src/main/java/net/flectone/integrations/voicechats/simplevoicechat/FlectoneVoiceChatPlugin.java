@@ -1,4 +1,4 @@
-package net.flectone.voicechats.simplevoicechat;
+package net.flectone.integrations.voicechats.simplevoicechat;
 
 import de.maxhenkel.voicechat.api.VoicechatApi;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
