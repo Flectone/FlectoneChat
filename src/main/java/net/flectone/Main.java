@@ -24,6 +24,8 @@ public final class Main extends JavaPlugin {
 
     public static boolean isHavePlasmoVoice = false;
 
+    public static boolean isHaveVault = false;
+
     private static Main instance;
 
     public static FileManager config;
@@ -54,63 +56,42 @@ public final class Main extends JavaPlugin {
 
         FPlayerManager.loadPlayers();
 
-        registerEvents(new AsyncPlayerChatListener());
-        registerEvents(new EntitySpawnListener());
-        registerEvents(new InventoryClickListener());
-        registerEvents(new InventoryOpenListener());
-        registerEvents(new PlayerChangeWorldListener());
-        registerEvents(new PlayerCommandPreprocessListener());
-        registerEvents(new PlayerInteractListener());
-        registerEvents(new PlayerJoinListener());
-        registerEvents(new PlayerQuitListener());
-        registerEvents(new ServerListPingListener());
+        registerEvents();
+        setCommandExecutors();
 
-        setCommandExecutor(new CommandIgnore(), "ignore");
-        setCommandExecutor(new CommandIgnoreList(), "ignore-list");
-        setCommandExecutor(new CommandTryCube(), "try-cube");
-        setCommandExecutor(new CommandTry(), "try");
-        setCommandExecutor(new CommandMe(), "me");
-        setCommandExecutor(new CommandPing(), "ping");
-        setCommandExecutor(new CommandChatcolor(), "chatcolor");
-        setCommandExecutor(new CommandOnline(), "firstonline");
-        setCommandExecutor(new CommandOnline(), "lastonline");
-        setCommandExecutor(new CommandMark(), "mark");
-        setCommandExecutor(new CommandStream(), "stream");
-        setCommandExecutor(new CommandMsg(), "msg");
-        setCommandExecutor(new CommandReply(), "reply");
-        setCommandExecutor(new CommandMail(), "mail");
-        setCommandExecutor(new CommandMailClear(), "mail-clear");
-        setCommandExecutor(new CommandFlectonechat(), "flectonechat");
-        setCommandExecutor(new CommandAfk(), "afk");
-        setCommandExecutor(new CommandMute(), "mute");
-        setCommandExecutor(new CommandUnmute(), "unmute");
-        setCommandExecutor(new CommandHelper(), "helper");
-        setCommandExecutor(new CommandTechnicalWorks(), "technical-works");
-        setCommandExecutor(new CommandSwitchChat(), "switch-chat");
-        setCommandExecutor(new CommandBall(), "ball");
-        setCommandExecutor(new CommandTicTacToe(), "tic-tac-toe");
-        setCommandExecutor(new CommandClearChat(), "clear-chat");
-        setCommandExecutor(new CommandTempban(), "tempban");
-        setCommandExecutor(new CommandUnban(), "unban");
-
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            isHavePAPI = true;
-            new FExpansion(this).register();
-        }
-
-        if(Bukkit.getPluginManager().getPlugin("voicechat") != null) {
-            new RegisterSimpleVoiceChat();
-        }
-
-        if(Bukkit.getPluginManager().getPlugin("plasmovoice") != null){
-            isHavePlasmoVoice = true;
-        }
+        hookPlugins();
 
         startTabScheduler();
         checkPlayerMoveTimer();
 
-        getLogger().info("Enabled");
+        info("✔ Plugin enabled");
+    }
 
+    public static void info(String message){
+        getInstance().getLogger().info(message);
+    }
+
+    private void hookPlugins(){
+        if(Bukkit.getPluginManager().getPlugin("Vault") != null){
+            isHaveVault = true;
+            getLogger().info("\uD83D\uDD12 Vault detected and hooked");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            isHavePAPI = true;
+            new FExpansion(this).register();
+            getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("voicechat") != null) {
+            new RegisterSimpleVoiceChat();
+            getLogger().info("\uD83D\uDD12 SimpleVoiceChat detected and hooked");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("plasmovoice") != null){
+            isHavePlasmoVoice = true;
+            getLogger().info("\uD83D\uDD12 PlasmoVoice detected and hooked");
+        }
     }
 
     private static BukkitRunnable tabTimer;
@@ -184,11 +165,55 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         FPlayerManager.uploadPlayers();
-        getLogger().info("Disabled");
+        FPlayerManager.removePlayersFromTeams();
+        info("✔ Plugin disabled");
     }
 
-    private void registerEvents(Listener listener){
+    private void registerEvents(){
+        registerEvent(new AsyncPlayerChatListener());
+        registerEvent(new EntitySpawnListener());
+        registerEvent(new InventoryClickListener());
+        registerEvent(new InventoryOpenListener());
+        registerEvent(new PlayerChangeWorldListener());
+        registerEvent(new PlayerCommandPreprocessListener());
+        registerEvent(new PlayerInteractListener());
+        registerEvent(new PlayerJoinListener());
+        registerEvent(new PlayerQuitListener());
+        registerEvent(new ServerListPingListener());
+    }
+
+    private void registerEvent(Listener listener){
         Bukkit.getPluginManager().registerEvents(listener, this);
+    }
+
+    private void setCommandExecutors(){
+        setCommandExecutor(new CommandIgnore(), "ignore");
+        setCommandExecutor(new CommandIgnoreList(), "ignore-list");
+        setCommandExecutor(new CommandTryCube(), "try-cube");
+        setCommandExecutor(new CommandTry(), "try");
+        setCommandExecutor(new CommandMe(), "me");
+        setCommandExecutor(new CommandPing(), "ping");
+        setCommandExecutor(new CommandChatcolor(), "chatcolor");
+        setCommandExecutor(new CommandOnline(), "firstonline");
+        setCommandExecutor(new CommandOnline(), "lastonline");
+        setCommandExecutor(new CommandMark(), "mark");
+        setCommandExecutor(new CommandStream(), "stream");
+        setCommandExecutor(new CommandMsg(), "msg");
+        setCommandExecutor(new CommandReply(), "reply");
+        setCommandExecutor(new CommandMail(), "mail");
+        setCommandExecutor(new CommandMailClear(), "mail-clear");
+        setCommandExecutor(new CommandFlectonechat(), "flectonechat");
+        setCommandExecutor(new CommandAfk(), "afk");
+        setCommandExecutor(new CommandMute(), "mute");
+        setCommandExecutor(new CommandUnmute(), "unmute");
+        setCommandExecutor(new CommandHelper(), "helper");
+        setCommandExecutor(new CommandTechnicalWorks(), "technical-works");
+        setCommandExecutor(new CommandSwitchChat(), "switch-chat");
+        setCommandExecutor(new CommandBall(), "ball");
+        setCommandExecutor(new CommandTicTacToe(), "tic-tac-toe");
+        setCommandExecutor(new CommandClearChat(), "clear-chat");
+        setCommandExecutor(new CommandTempban(), "tempban");
+        setCommandExecutor(new CommandUnban(), "unban");
     }
 
     private void setCommandExecutor(FTabCompleter commandExecutor, String command){

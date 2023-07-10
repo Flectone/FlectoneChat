@@ -52,6 +52,12 @@ public class FEntity {
         team.removeEntry(entity.getUniqueId().toString());
     }
 
+    public static void removePlayerFromTeam(FPlayer fPlayer){
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(fPlayer.getRealName());
+        if(team == null) return;
+        team.removeEntry(fPlayer.getRealName());
+    }
+
     public static void removeBugEntities(Player player){
         player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, entity -> entity.isGlowing()).forEach(entity -> {
 

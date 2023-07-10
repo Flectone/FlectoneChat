@@ -299,7 +299,7 @@ public class FPlayer {
     }
 
     public void getVaultPrefixSuffix(){
-        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+        if (Main.isHaveVault) {
             Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
 
             this.vaultPrefix = provider.getPlayerPrefix(player);

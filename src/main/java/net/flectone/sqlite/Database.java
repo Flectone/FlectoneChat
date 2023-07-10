@@ -29,6 +29,7 @@ public abstract class Database {
     public abstract void load();
 
     public void initialize(){
+        Main.info("\uD83D\uDCCA Database connecting");
         connection = getSQLConnection();
         try{
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
@@ -44,7 +45,7 @@ public abstract class Database {
     }
 
     private void loadOldConfigs(){
-        Main.getInstance().getLogger().info("Migrating old configs to database");
+        Main.info("Migrating old configs to database");
         ArrayList<FPlayer> fPlayers = new ArrayList<>();
 
         File themeFile = new File(plugin.getDataFolder(), "themes.yml");
@@ -106,7 +107,7 @@ public abstract class Database {
         }
 
         fPlayers.forEach(this::uploadDatabase);
-        Main.getInstance().getLogger().info("Migration of old configs to database is finished");
+        Main.info("Migration of old configs to database is finished");
     }
 
     public void setPlayer(String uuid){
@@ -123,6 +124,7 @@ public abstract class Database {
 
 
     public void loadDatabase(){
+        Main.info("\uD83D\uDCCA Start loading database");
         try (Connection conn = getSQLConnection();
              PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM players")){
 
@@ -170,6 +172,8 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
         }
+
+        Main.info("\uD83D\uDCCA Database loaded successfully");
 
         if(SQLite.isOldVersion) loadOldConfigs();
     }

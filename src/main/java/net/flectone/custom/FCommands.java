@@ -404,16 +404,8 @@ public class FCommands {
     }
 
     private TextComponent createClickableComponent(String text, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
-        String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.name.hover-message", colorPlayer, papiPlayer);
-
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
-
-        if(papiPlayer instanceof ConsoleCommandSender) return textComponent;
-
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
-        return textComponent;
+        return createClickableComponent(textComponent, playerName, colorPlayer, papiPlayer);
     }
 
     private TextComponent createClickableComponent(TextComponent textComponent, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){

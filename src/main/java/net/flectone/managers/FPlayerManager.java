@@ -1,6 +1,7 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
+import net.flectone.custom.FEntity;
 import net.flectone.custom.FPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -31,6 +32,10 @@ public class FPlayerManager {
                 .stream()
                 .filter(FPlayer::isUpdated)
                 .forEach(fPlayer -> Main.getDatabase().uploadDatabase(fPlayer));
+    }
+
+    public static void removePlayersFromTeams(){
+        fPlayerHashMap.values().forEach(FEntity::removePlayerFromTeam);
     }
 
     public static void addPlayer(@NotNull OfflinePlayer offlinePlayer){
