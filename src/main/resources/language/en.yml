@@ -125,6 +125,7 @@ command:
       - "No"
       - "Prospects are not good."
       - "Very doubtful."
+      - "Based"
 
   chatcolor:
     usage: "&&1⚑ Usage: &&2/<command> (first color) (second color)"
