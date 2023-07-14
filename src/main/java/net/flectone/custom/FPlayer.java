@@ -394,4 +394,18 @@ public class FPlayer {
     public String getChat() {
         return chat;
     }
+
+    private List<String> listChatBubbles = new ArrayList<>();
+
+    public void addChatBubble(String message){
+        listChatBubbles.add(message);
+    }
+
+    public void removeChatBubble(int number){
+        listChatBubbles.remove(number);
+    }
+
+    public List<String> getListChatBubbles() {
+        return listChatBubbles;
+    }
 }
