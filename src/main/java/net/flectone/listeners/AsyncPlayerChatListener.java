@@ -54,6 +54,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         } else {
             if(Main.config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
+            if(Main.config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
