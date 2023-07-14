@@ -68,7 +68,8 @@ public class CommandFlectonechat extends FTabCompleter {
             }
         }
 
-        Main.getInstance().reloadConfig();
+        Main.config = new FileManager("config.yml");
+        Main.locale = new FileManager("language/" + Main.config.getString("language") + ".yml");
         FPlayerManager.uploadPlayers();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
