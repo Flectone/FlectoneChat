@@ -21,6 +21,10 @@ import java.util.stream.Collectors;
 
 public class CommandTempban extends FTabCompleter {
 
+    public CommandTempban(){
+        super.commandName = "tempban";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

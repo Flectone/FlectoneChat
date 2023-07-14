@@ -17,7 +17,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommandHelper extends FTabCompleter implements CommandExecutor {
+public class CommandHelper extends FTabCompleter {
+
+    public CommandHelper(){
+        super.commandName = "helper";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

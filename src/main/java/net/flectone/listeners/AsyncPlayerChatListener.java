@@ -2,7 +2,6 @@ package net.flectone.listeners;
 
 import net.flectone.custom.FCommands;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.managers.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -85,6 +84,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
 
+        fCommands.getFPlayer().addChatBubble(message);
     }
 
     @EventHandler

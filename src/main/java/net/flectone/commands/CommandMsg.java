@@ -17,6 +17,10 @@ import java.util.List;
 
 public class CommandMsg extends FTabCompleter {
 
+    public CommandMsg(){
+        super.commandName = "msg";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

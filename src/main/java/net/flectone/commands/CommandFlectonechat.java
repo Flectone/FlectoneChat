@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.custom.FCommands;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.TickerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +18,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandFlectonechat extends FTabCompleter {
+
+    public CommandFlectonechat(){
+        super.commandName = "flectonechat";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
@@ -63,14 +69,15 @@ public class CommandFlectonechat extends FTabCompleter {
         }
 
         Main.getInstance().reloadConfig();
-        Main.getInstance().startTabScheduler();
-        Main.getInstance().checkPlayerMoveTimer();
         FPlayerManager.uploadPlayers();
 
         for(Player playerOnline : Bukkit.getOnlinePlayers()){
             FPlayerManager.removePlayer(playerOnline);
             FPlayerManager.addPlayer(playerOnline);
         }
+
+        TickerManager.clear();
+        TickerManager.start();
 
         fCommand.sendMeMessage("command.flectonechat.message");
 

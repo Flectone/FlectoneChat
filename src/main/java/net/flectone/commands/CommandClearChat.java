@@ -11,6 +11,10 @@ import java.util.List;
 
 public class CommandClearChat extends FTabCompleter {
 
+    public CommandClearChat(){
+        super.commandName = "clear-chat";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

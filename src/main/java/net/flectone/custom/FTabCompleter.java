@@ -16,6 +16,12 @@ import java.util.List;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
 
+    protected String commandName;
+
+    public String getCommandName() {
+        return commandName;
+    }
+
     protected List<String> wordsList = new ArrayList<>();
 
     protected void isStartsWith(String arg, String string){

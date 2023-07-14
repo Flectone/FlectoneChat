@@ -1,19 +1,22 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
-public class CommandSwitchChat extends FTabCompleter {
+public class CommandFirstOnline extends FTabCompleter {
 
-    public CommandSwitchChat(){
-        super.commandName = "switch-chat";
+    public CommandFirstOnline(){
+        super.commandName = "firstonline";
     }
 
     @Override
@@ -21,30 +24,24 @@ public class CommandSwitchChat extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
-
         if(fCommand.isInsufficientArgs(1)) return true;
 
-        String chat = strings[0].toLowerCase();
+        String playerName = strings[0];
+        FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(!chat.equals("local") && !chat.equals("global")){
-            fCommand.sendUsageMessage();
-            return true;
-        }
-
-        if(!Main.config.getBoolean("chat.global.enable")){
-            fCommand.sendMeMessage("command.disabled");
+        if(fPlayer == null){
+            fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        long playedTime = fPlayer.getOfflinePlayer().getFirstPlayed();
 
-        fCommand.getFPlayer().setChat(chat);
-        fCommand.getFPlayer().setUpdated(true);
+        String[] replacedStrings = {"<player>", "<time>"};
+        String[] replacedToStrings = {fPlayer.getRealName(), ObjectUtil.convertTimeToString(playedTime)};
 
-        fCommand.sendMeMessage("command.switch-chat.message", "<chat>", chat);
+        fCommand.sendMeMessage("command.online.first.message", replacedStrings, replacedToStrings);
 
         return true;
     }
@@ -55,9 +52,10 @@ public class CommandSwitchChat extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            isStartsWith(strings[0], "local");
-            isStartsWith(strings[0], "global");
+            isOfflinePlayer(strings[0]);
         }
+
+        Collections.sort(wordsList);
 
         return wordsList;
     }

@@ -1,6 +1,8 @@
 package net.flectone.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +13,7 @@ public class EntitySpawnListener implements Listener {
 
     @EventHandler
     public void checkCustomEntitySpawn(EntitySpawnEvent event){
-        if(!(event.getEntity() instanceof MagmaCube)) return;
+        if(!(event.getEntity() instanceof MagmaCube) && !(event.getEntity() instanceof AreaEffectCloud)) return;
 
         Location location = event.getEntity().getLocation();
 
@@ -28,6 +30,14 @@ public class EntitySpawnListener implements Listener {
             entity.setSize(1);
             entity.setInvisible(true);
             entity.setGlowing(true);
+            return;
         }
+
+        if(location.getDirection().equals(new Vector(0, -1, 0))){
+            AreaEffectCloud entity = (AreaEffectCloud) event.getEntity();
+            entity.setRadius(0);
+            return;
+        }
+
     }
 }

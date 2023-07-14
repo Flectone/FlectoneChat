@@ -20,6 +20,10 @@ import java.util.List;
 
 public class CommandMute extends FTabCompleter {
 
+    public CommandMute(){
+        super.commandName = "mute";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 public class CommandMailClear extends FTabCompleter {
+
+    public CommandMailClear(){
+        super.commandName = "mail-clear";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

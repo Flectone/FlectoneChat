@@ -12,6 +12,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class CommandTryCube extends FTabCompleter {
+
+    public CommandTryCube(){
+        super.commandName = "try-cube";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

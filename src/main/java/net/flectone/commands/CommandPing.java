@@ -16,6 +16,10 @@ import java.util.List;
 
 public class CommandPing extends FTabCompleter {
 
+    public CommandPing(){
+        super.commandName = "ping";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

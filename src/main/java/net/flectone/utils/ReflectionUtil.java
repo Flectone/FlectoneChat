@@ -1,9 +1,14 @@
 package net.flectone.utils;
 
+import com.google.common.reflect.ClassPath;
+import net.flectone.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
@@ -191,6 +196,21 @@ public class ReflectionUtil {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    public static void registerClasses(String packageName, RegisterInterface registerInterface){
+        try {
+            for(ClassPath.ClassInfo classInfo : ClassPath.from(Main.getInstance().getClass().getClassLoader()).getTopLevelClassesRecursive(packageName)){
+
+                Class<?> c = Class.forName(classInfo.getName());
+
+                registerInterface.register(c);
+            }
+
+        } catch (IOException | NoSuchMethodException | ClassNotFoundException | InstantiationException |
+                 IllegalAccessException | InvocationTargetException e){
+            e.printStackTrace();
         }
     }
 }

@@ -13,6 +13,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommandStream extends FTabCompleter {
+
+    public CommandStream(){
+        super.commandName = "stream";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

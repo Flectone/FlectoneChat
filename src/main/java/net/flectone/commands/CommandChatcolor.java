@@ -13,6 +13,10 @@ import java.util.List;
 
 public class CommandChatcolor extends FTabCompleter {
 
+    public CommandChatcolor(){
+        super.commandName = "chatcolor";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);

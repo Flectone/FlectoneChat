@@ -2,8 +2,8 @@ package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandOnline extends FTabCompleter {
+public class CommandLastOnline extends FTabCompleter {
+
+    public CommandLastOnline(){
+        super.commandName = "lastonline";
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -30,19 +34,19 @@ public class CommandOnline extends FTabCompleter {
             return true;
         }
 
-        if(command.getName().equalsIgnoreCase("lastonline") && fPlayer.isOnline()){
+        if(fPlayer.isOnline()){
             fCommand.sendMeMessage("command.online.last.currently-message", "<player>", fPlayer.getRealName());
             return true;
         }
 
         if(fCommand.isHaveCD()) return true;
 
-        long playedTime = command.getName().equalsIgnoreCase("lastonline") ? fPlayer.getOfflinePlayer().getLastPlayed() : fPlayer.getOfflinePlayer().getFirstPlayed();
+        long playedTime = fPlayer.getOfflinePlayer().getLastPlayed();
 
         String[] replacedStrings = {"<player>", "<time>"};
         String[] replacedToStrings = {fPlayer.getRealName(), ObjectUtil.convertTimeToString(playedTime)};
 
-        fCommand.sendMeMessage("command.online." + command.getName().split("online")[0] + ".message", replacedStrings, replacedToStrings);
+        fCommand.sendMeMessage("command.online.last.message", replacedStrings, replacedToStrings);
 
         return true;
     }

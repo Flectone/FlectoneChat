@@ -15,6 +15,10 @@ import java.util.List;
 
 public class CommandIgnore extends FTabCompleter {
 
+    public CommandIgnore(){
+        super.commandName = "ignore";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

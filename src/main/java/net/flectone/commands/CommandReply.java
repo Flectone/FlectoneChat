@@ -15,6 +15,10 @@ import java.util.List;
 
 public class CommandReply extends FTabCompleter {
 
+    public CommandReply(){
+        super.commandName = "reply";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

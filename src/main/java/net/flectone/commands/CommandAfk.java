@@ -15,6 +15,10 @@ import java.util.List;
 
 public class CommandAfk extends FTabCompleter {
 
+    public CommandAfk(){
+        super.commandName = "afk";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

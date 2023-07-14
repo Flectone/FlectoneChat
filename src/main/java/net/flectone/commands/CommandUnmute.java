@@ -15,6 +15,10 @@ import java.util.*;
 
 public class CommandUnmute extends FTabCompleter {
 
+    public CommandUnmute(){
+        super.commandName = "unmute";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 

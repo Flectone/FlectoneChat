@@ -15,6 +15,10 @@ import java.util.Random;
 
 public class CommandTry extends FTabCompleter {
 
+    public CommandTry(){
+        super.commandName = "try";
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
