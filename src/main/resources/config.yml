@@ -113,6 +113,7 @@ cool-down:
     permission: "flectonechat.ban.cooldown.immune"
   clear-chat:
     enable: true
+    time: 5
     permission: "flectonechat.clear-chat.cooldown.immune"
   switch-chat:
     enable: true
