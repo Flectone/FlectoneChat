@@ -111,12 +111,14 @@ cool-down:
 
   broadcast:
     enable: false
+    time: 5
     permission: "flectonechat.broadcast.cooldown.immune"
   unban:
     enable: false
     permission: "flectonechat.ban.cooldown.immune"
   tempban:
     enable: false
+    time: 5
     permission: "flectonechat.ban.cooldown.immune"
   clear-chat:
     enable: true
