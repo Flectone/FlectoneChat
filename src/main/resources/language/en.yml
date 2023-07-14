@@ -51,6 +51,9 @@ player:
       custom: "#1abaf0● &f"
 
 chat:
+  bubble:
+    color: "#77d7f7"
+
   hide:
     message: "&&1█"
 
@@ -238,12 +241,16 @@ command:
     usage: "&&1⚑ Usage: &&2/<command> (color)"
     wrong-color: "#ff4e4e⁉ You entered wrong color"
 
+  firstonline:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+
+  lastonline:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+
   online:
     first:
-      usage: "&&1⚑ Usage: &&2/<command> (player)"
       message: "&&1⌛ <player> was first on server <time> ago"
     last:
-      usage: "&&1⚑ Usage: &&2/<command> (player)"
       message: "&&1⌛ <player> was last on server <time> ago"
       currently-message: "&&1⌛ <player> currently on server"
     format:
