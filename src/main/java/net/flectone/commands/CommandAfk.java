@@ -25,6 +25,7 @@ public class CommandAfk extends FTabCompleter {
         if(fCommand.isHaveCD()) return true;
 
         sendMessage(fCommand, !fCommand.getFPlayer().isAfk());
+        fCommand.getFPlayer().setDisplayName();
 
         return true;
     }

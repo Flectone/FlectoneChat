@@ -66,6 +66,7 @@ public class CommandStream extends FTabCompleter {
         }
 
         fCommand.sendGlobalMessage(stringBuilder.toString());
+        fCommand.getFPlayer().setDisplayName();
 
         return true;
     }
