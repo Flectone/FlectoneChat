@@ -26,7 +26,7 @@ public class CommandTryCube extends FTabCompleter {
 
         int amount = Integer.parseInt(strings[0]);
 
-        if(amount > Main.config.getInt("command.try-cube.max-amount")){
+        if(amount > Main.config.getInt("command.try-cube.max-amount") || amount == 0){
             fCommand.sendMeMessage("command.try-cube.too-much");
             return true;
         }
