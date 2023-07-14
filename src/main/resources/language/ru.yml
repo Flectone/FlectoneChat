@@ -52,7 +52,7 @@ player:
 
 chat:
   bubble:
-    color: "#77d7f7"
+    color: "#999999"
 
   hide:
     message: "&&1█"
