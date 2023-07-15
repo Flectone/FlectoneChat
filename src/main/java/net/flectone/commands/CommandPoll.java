@@ -42,8 +42,8 @@ public class CommandPoll extends FTabCompleter {
 
         if(strings[0].equalsIgnoreCase("create")){
 
-            if(!fCommand.getPlayer().hasPermission(Main.config.getString("command.poll.permission"))
-                    && !fCommand.getPlayer().isOp()){
+            if(!commandSender.hasPermission(Main.config.getString("command.poll.permission"))
+                    && !commandSender.isOp()){
                 fCommand.sendMeMessage("command.poll.permission-message");
                 return true;
             }
