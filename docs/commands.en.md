@@ -210,5 +210,5 @@ Permission: `flectonechat.broadcast` (op)
 Create a poll
 
 Usage: `/poll create/vote <poll>`  
-Permission: `flectonechat.pollvote` (default)
+Permission: `flectonechat.pollvote` (default)  
 Creating permission: `flectonechat.pollcreate` (op)
