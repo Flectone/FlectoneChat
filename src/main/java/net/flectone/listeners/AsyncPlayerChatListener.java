@@ -29,10 +29,12 @@ public class AsyncPlayerChatListener implements Listener {
 
         recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
 
-        String chatType = (message.startsWith(globalPrefix) && !message.equals(globalPrefix) && Main.config.getBoolean("chat.global.enable"))
-                || FPlayerManager.getPlayer(player).getChat().equals("global") ? "global" : "local";
 
-        if (chatType.equals("local") && Main.config.getBoolean("chat.global.enable")) {
+        String chatType = ((message.startsWith(globalPrefix) && !message.equals(globalPrefix))
+                || FPlayerManager.getPlayer(player).getChat().equals("global")) && Main.config.getBoolean("chat.global.enable")
+                ? "global" : "local";
+
+        if (chatType.equals("local")) {
             int localRange = Main.config.getInt("chat.local.range");
 
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
