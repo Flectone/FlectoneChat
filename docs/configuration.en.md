@@ -206,7 +206,7 @@
 | name         | description                  | type   | default                   |
 | ------------ | ---------------------------- | ------ | ------------------------- |
 | `time`       | Poll duration                | number | `50`                      |
-| `permission` | Permission for poll creating | string | `flectonechat.pollcraete` |
+| `permission` | Permission for poll creating | string | `flectonechat.pollcreate` |
 
 ## Cooldown
 `cool-down.*`
