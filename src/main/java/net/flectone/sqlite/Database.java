@@ -270,17 +270,9 @@ public abstract class Database {
         }
     }
 
-    private int lastUpdate = 0;
     public void delayedUpdateDatabase(){
-        if(lastUpdate == 0){
-            lastUpdate = ObjectUtil.getCurrentTime() + 5 * 3600;
-            return;
-        }
+        Main.info("\uD83D\uDCCA Loaded players to database");
 
-        if(ObjectUtil.getCurrentTime() > lastUpdate){
-            Main.info("\uD83D\uDCCA Loaded players to database");
-            lastUpdate = ObjectUtil.getCurrentTime() + 5 * 3600;
-            FPlayerManager.uploadPlayers();
-        }
+        FPlayerManager.uploadPlayers();
     }
 }

@@ -17,8 +17,6 @@ public class AfkTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        Main.getDatabase().delayedUpdateDatabase();
-
         Bukkit.getOnlinePlayers().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
