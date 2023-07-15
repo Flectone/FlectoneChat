@@ -84,7 +84,7 @@ FlectoneChat internal command for admins
 Usages:
 
 - reload: `/flectonechat reload <config/locale>`  
-- config: `/flectonechat locale <locale param> set <type> <value>`  
+- locale: `/flectonechat locale <locale param> set <type> <value>`  
 - config: `/flectonechat config <config param> set <type> <value>`
 
 Aliases: `fc`  
@@ -177,7 +177,7 @@ Usage: `/clearchat`
 Permission: `flectonechat.clear-chat` (default)
 
 ## /tempban
-temp ban a player
+Temp ban a player
 
 ### Time format examples
 ```
@@ -193,9 +193,9 @@ Aliases: `ban`, `tban`
 Permission: `flectonechat.ban` (op)
 
 ## /unban
-unban a player
+Unban a player
 
-Usage: `unban <player> <time> <reason>`  
+Usage: `/unban <player> <time> <reason>`  
 Aliases: `pardon`  
 Permission: `flectonechat.ban` (op)
 
@@ -205,3 +205,10 @@ Broadcast a message
 Usage: `/broadcast <message>`  
 Aliases: `bc`  
 Permission: `flectonechat.broadcast` (op)
+
+## /poll
+Create a poll
+
+Usage: `/poll create/vote <poll>`  
+Permission: `flectonechat.pollvote` (default)
+Creating permission: `flectonechat.pollcreate` (op)
