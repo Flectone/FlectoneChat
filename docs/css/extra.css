@@ -1,0 +1,30 @@
+.md-typeset h3,
+.md-typeset h2 {
+  font-weight: bold;
+  color: #6c90d4;
+}
+
+.md-typeset__table {
+   min-width: 100%;
+}
+
+.md-typeset table:not([class]) {
+    display: table;
+}
+
+th:nth-child(1) {
+  width: 10%;
+}
+
+th:nth-child(2) {
+  width: 50%;
+}
+
+th:nth-child(3) {
+  width: 10%;
+}
+
+th:nth-child(4) {
+  width: 30%;
+}
+
