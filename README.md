@@ -25,10 +25,13 @@ FlectoneChat is a modern plugin for Spigot servers that is designed to improve g
 - Custom cooldown for commands and messages
 -  [**Chat bubbles**](https://chat.flectone.net/features/chatbubbles/)
 - Settings for URL links in chat
-- **clickable** player names
+- **Clickable** player names
 - **Vault and [PlaceholderAPI](https://chat.flectone.net/integrations/papi/) support**
 - Customize and disable all features at will
-- commands: `/chatcolor`, `/lastonline`, `/firstonline`, `/ignore`, `/ignore-list`, `/me`, `/try`, `/try-cube`, `/msg`, `/mark`, `/reply`, `/stream start/end`, `/flectonechat reload/config/locale`, `/helper`, `/afk`
+- SQLite database
+- Commands: `/chatcolor`, `/lastonline`, `/firstonline`, `/ignore`, `/ignore-list`, `/me`, `/try`, `/try-cube`, `/msg`, `/mark`, `/reply`, `/stream start/end`, `/flectonechat reload/config/locale`, `/helper`, `/afk`, `/mute`, `/unmute`, `/helper`, `/technical-works`, `/switch-chat`, `/ball`, `/tic-tac-toe`, `/clear-chat`, `/tempban`, `/unban`, `/broadcast`, `/poll`
+
+See the command descriptions in [**our documentation**](https://chat.flectone.net/commands/)
 
 <br/>
 
