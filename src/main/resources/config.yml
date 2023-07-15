@@ -254,7 +254,7 @@ sound:
   globalchat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
-  chat-ping:
+  chatping:
     enable: true
     type: "BLOCK_NOTE_BLOCK_HARP"
   join:
