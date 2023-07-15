@@ -182,9 +182,9 @@ command:
     local-message: "#ff4e4e☠ Ты заблокирован навсегда. Причина: <reason>"
 
   unban:
-    usage: "&&1⚑ Usage: &&2/<command> (player)"
-    not-banned: "#ff4e4e⁉ This player is not banned"
-    message: "#ff4e4e☻ Player <player> unbanned"
+    usage: "&&1⚑ Использование: &&2/<command> (игрок)"
+    not-banned: "#ff4e4e⁉ Этот игрок не заблокирован"
+    message: "#ff4e4e☻ Игрок <player> разблокирован"
 
   ignore:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"
