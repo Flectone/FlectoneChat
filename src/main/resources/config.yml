@@ -29,7 +29,7 @@ chat:
   bubble:
     enable: true
     max-per-line: 35
-    reed-speed: 800
+    read-speed: 800
 
   local:
     range: 100
