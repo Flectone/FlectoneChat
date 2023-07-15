@@ -32,7 +32,7 @@ public class AsyncPlayerChatListener implements Listener {
         String chatType = (message.startsWith(globalPrefix) && !message.equals(globalPrefix) && Main.config.getBoolean("chat.global.enable"))
                 || FPlayerManager.getPlayer(player).getChat().equals("global") ? "global" : "local";
 
-        if (chatType.equals("local")) {
+        if (chatType.equals("local") && Main.config.getBoolean("chat.global.enable")) {
             int localRange = Main.config.getInt("chat.local.range");
 
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
