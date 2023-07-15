@@ -130,6 +130,10 @@ commands:
     aliases: [ bc ]
     permission: flectonechat.broadcast
 
+  poll:
+    usage: /poll create/vote
+    permission: flectonechat.pollvote
+
 permissions:
   flectonechat.reload:
     default: op
@@ -183,3 +187,5 @@ permissions:
     default: op
   flectonechat.broadcast:
     default: op
+  flectonechat.pollvote:
+    default: true

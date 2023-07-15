@@ -84,6 +84,19 @@ command:
   he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
   disabled: "#ff4e4e⁉ This command disabled on server"
 
+  poll:
+    usage: "&&1⚑ Usage: &&2/<command> create/vote"
+    message: "#fce303🗐 There's a poll #<id> going on right now \n❓ <message>"
+    over-message: "#fce303🗐 Poll #<id> is over \n❓ <message> \nVotes: <agree>-<agree_count> <disagree>-<disagree_count>"
+    agree-message: "#4eff52👍 You voted with agree in poll #<id>. There are <count> of you"
+    disagree-message: "#ff4e4e🖓 You voted with disagree in poll #<id>. There are <count> of you"
+    permission-message: "#ff4e4e⁉ You don't have permission to create a poll"
+    already-message: "#ff4e4e⁉ You've already voted in this poll"
+    expired-message: "#ff4e4e⁉ This poll has already ended"
+    format:
+      agree: "#4eff52[✔]"
+      disagree: "#ff4e4e[❌]"
+
   broadcast:
     usage: "&&1⚑ Usage: &&2/<command> (message)"
     message: "#fce303🕫 Message for all from <player> \n<message>"
