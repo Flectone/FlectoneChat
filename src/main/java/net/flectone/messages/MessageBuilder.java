@@ -110,31 +110,36 @@ public class MessageBuilder {
     public BaseComponent[] build(String format, CommandSender recipient, CommandSender sender){
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        format = ObjectUtil.formatString(format, recipient, sender)
-                .replace("<message>", "");
+        String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
+        componentBuilder.append(createClickableComponent(formats[0], sender.getName(), recipient, sender));
 
-        componentBuilder.append(createClickableComponent(format, sender.getName(), recipient, sender));
+        String color = ChatColor.getLastColors(formats[0]);
 
-        return build(componentBuilder.create(), ChatColor.getLastColors(format), recipient, sender);
+        componentBuilder.append(buildMessage(color, recipient, sender), ComponentBuilder.FormatRetention.NONE);
+
+        if(formats.length > 1) componentBuilder.append(TextComponent.fromLegacyText(color + formats[1]), ComponentBuilder.FormatRetention.NONE);
+
+        return componentBuilder.create();
     }
 
-    public BaseComponent[] build(BaseComponent[] baseComponents, String lastColor, CommandSender recipient, CommandSender sender){
+    private BaseComponent[] buildMessage(String lastColor, CommandSender recipient, CommandSender sender){
         ComponentBuilder componentBuilder = new ComponentBuilder();
-
-        componentBuilder.append(baseComponents);
 
         for(Map.Entry<Integer, WordParams> entry : messageHashMap.entrySet()){
             String word = entry.getValue().getText();
             WordParams wordParams = entry.getValue();
 
-            if(sender.isOp() || sender.hasPermission("flectonechat.formatting")){
+            if((sender.isOp() || sender.hasPermission("flectonechat.formatting")) && !wordParams.isEdited()){
+                String color1 = ChatColor.getLastColors(word);
                 word = ObjectUtil.formatString(word, recipient, sender);
-                wordParams.setFormatted(true);
+                String color2 = ChatColor.getLastColors(word);
+
+                wordParams.setFormatted(!color1.equals(color2));
             }
 
             TextComponent wordComponent = new TextComponent(componentFromText(lastColor + word));
 
-            lastColor = ChatColor.getLastColors(lastColor + word);
+            if(!wordParams.isEdited() || wordParams.isFormatted()) lastColor = ChatColor.getLastColors(lastColor + word);
 
             if(wordParams.isItem()){
                 componentBuilder.append(createItemComponent(itemStack, lastColor, recipient, sender));
