@@ -111,6 +111,12 @@ command:
     see:
       permission: "flectonechat.helpersee"
 
+  mute:
+    announce: true
+
+  tempban:
+    announce: true
+
 cool-down:
   enable: false
 
