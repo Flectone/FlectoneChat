@@ -40,7 +40,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
             String message = fPlayer.getListChatBubbles().get(0);
             spawnMessageBubble(fPlayer.getPlayer(), message);
 
-            fPlayer.removeChatBubble(0);
+            fPlayer.removeChatBubble();
         });
     }
 

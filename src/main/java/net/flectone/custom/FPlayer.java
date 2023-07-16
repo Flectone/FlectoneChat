@@ -408,8 +408,8 @@ public class FPlayer {
         listChatBubbles.add(message);
     }
 
-    public void removeChatBubble(int number){
-        if (listChatBubbles.size() > number) listChatBubbles.remove(number);
+    public void removeChatBubble(){
+        if (!listChatBubbles.isEmpty()) listChatBubbles.remove(0);
     }
 
     public List<Entity> getChatBubbleEntities() {

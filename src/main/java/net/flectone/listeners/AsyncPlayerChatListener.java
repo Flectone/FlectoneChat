@@ -84,8 +84,6 @@ public class AsyncPlayerChatListener implements Listener {
                 .replace("<player>", FPlayerManager.getPlayer(player).getName());
 
         fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
-
-        fCommands.getFPlayer().addChatBubble(message);
     }
 
     @EventHandler
