@@ -8,6 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.AreaEffectCloud;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class FPlayer {
 
@@ -395,14 +398,23 @@ public class FPlayer {
         return chat;
     }
 
-    private List<String> listChatBubbles = new ArrayList<>();
+    private final List<String> listChatBubbles = new ArrayList<>();
 
     public void addChatBubble(String message){
         listChatBubbles.add(message);
     }
 
     public void removeChatBubble(int number){
-        listChatBubbles.remove(number);
+        if (listChatBubbles.size() > number) listChatBubbles.remove(number);
+    }
+
+    public List<Entity> getChatBubbleEntities() {
+        return player.getPassengers().stream().filter(entity -> entity instanceof AreaEffectCloud).collect(Collectors.toList());
+    }
+
+    public void clearChatBubbles() {
+        getChatBubbleEntities().forEach(Entity::remove);
+        listChatBubbles.clear();
     }
 
     public List<String> getListChatBubbles() {
