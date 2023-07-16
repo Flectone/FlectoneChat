@@ -360,7 +360,18 @@ public class FPlayer {
 
     public void setWorldPrefix(World world) {
         if (Main.getInstance().getConfig().getBoolean("player.world.prefix.enable")) {
-            this.worldPrefix = Main.locale.getFormatString("player.world.prefix." + world.getEnvironment().toString().toLowerCase(), player);
+
+            String worldType = Main.config.getString("player.world.mode").equals("type")
+                    ? world.getEnvironment().toString().toLowerCase()
+                    : world.getName().toLowerCase();
+
+            this.worldPrefix = Main.locale.getString("player.world.prefix." + worldType);
+            if(this.worldPrefix == null){
+                Main.warning("The prefix for " + worldType + " could not be determined");
+                this.worldPrefix = Main.locale.getString("player.world.prefix.normal");
+            }
+
+            this.worldPrefix = ObjectUtil.formatString(this.worldPrefix, player);
         }
 
         setDisplayName();

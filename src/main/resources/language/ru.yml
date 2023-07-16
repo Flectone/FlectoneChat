@@ -48,10 +48,17 @@ player:
 
   world:
     prefix:
+      # режим можно изменить в config.yml (по умолчанию=type)
+      # режим=type
       normal: "#4eff52● &f"
       nether: "#ff4e4e● &f"
       the_end: "#834eff● &f"
       custom: "#1abaf0● &f"
+
+      # режим=name
+      world: "#4eff52● &f"
+      world_nether: "#ff4e4e● &f"
+      world_the_end: "#834eff● &f"
 
 chat:
   bubble:
