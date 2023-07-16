@@ -57,8 +57,7 @@ public class CommandMsg extends FTabCompleter {
             }
         }
 
-        fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), "send", message);
-        fCommand.sendTellMessage(secondFPlayer.getPlayer(), commandSender, "get", message);
+        fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), message);
 
         return true;
     }

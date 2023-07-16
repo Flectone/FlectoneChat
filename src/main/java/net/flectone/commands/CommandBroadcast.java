@@ -30,8 +30,7 @@ public class CommandBroadcast extends FTabCompleter {
         if(fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         String formatString = Main.locale.getString("command.broadcast.message")
-                .replace("<player>", fCommand.getSenderName())
-                .replace("<message>", ObjectUtil.toString(strings));
+                .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString,  ObjectUtil.toString(strings), null, false);
 

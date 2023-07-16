@@ -270,37 +270,28 @@ public class FCommands {
         return sender instanceof Player;
     }
 
-    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String typeMessage, String message){
+    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String message){
 
-        ItemStack itemStack = null;
-
-        if(message.contains("%item%")){
-            switch (typeMessage){
-                case "send":
-                    if(!isPlayer(firstPlayer)) break;
-                    itemStack = ((Player) firstPlayer).getItemInHand();
-                    break;
-                case "get":
-                    if(!isPlayer(secondPlayer)) break;
-                    itemStack = ((Player) secondPlayer).getItemInHand();
-                    break;
-            }
-        }
-
-        if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
+        ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getItemInHand() : null;
 
         MessageBuilder messageBuilder = new MessageBuilder(message, itemStack, true);
 
-        String getFormatString = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
-                .replace("<player>", secondPlayer.getName());
+        if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
-        BaseComponent[] baseComponents = messageBuilder.build(getFormatString, firstPlayer, secondPlayer);
-
-        firstPlayer.spigot().sendMessage(baseComponents);
+        sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
+        sendTellUtil(messageBuilder, "send", secondPlayer, firstPlayer, firstPlayer);
 
         if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
             FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
         }
+    }
+
+    private void sendTellUtil(MessageBuilder messageBuilder, String typeMessage, CommandSender firstPlayer, CommandSender secondPlayer, CommandSender sender){
+        String getFormatString1 = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
+                .replace("<player>", secondPlayer.getName());
+
+        BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);
+        firstPlayer.spigot().sendMessage(baseComponents1);
     }
 
     public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
