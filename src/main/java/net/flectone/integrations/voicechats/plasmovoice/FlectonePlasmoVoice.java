@@ -1,6 +1,8 @@
 package net.flectone.integrations.voicechats.plasmovoice;
 
+import net.flectone.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandException;
 
 // shitcode until the plasmo devs make a usable api
 
@@ -15,10 +17,19 @@ public class FlectonePlasmoVoice {
 
     public static void mute(boolean unmute, String player, String time, String reason){
         if(unmute) unmute(player);
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "vmute " + player + " " + time + " " + reason);
+        try {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "vmute " + player + " " + time + " " + reason);
+        } catch (CommandException exception){
+            Main.warning("Failed to connect to Plasmo Voice");
+        }
     }
 
     public static void unmute(String player){
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "vunmute " + player);
+        try {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "vunmute " + player);
+        } catch (CommandException exception){
+            Main.warning("Failed to connect to Plasmo Voice");
+        }
+
     }
 }
