@@ -1,14 +1,12 @@
 package net.flectone.custom;
 
 import net.flectone.managers.FPlayerManager;
+import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
-import net.flectone.utils.ReflectionUtil;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import net.flectone.Main;
@@ -17,8 +15,6 @@ import net.flectone.managers.FileManager;
 
 import java.util.HashMap;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class FCommands {
@@ -201,25 +197,22 @@ public class FCommands {
         sendGlobalMessage(set, message, "", item, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack item, boolean clickable){
+    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack itemStack, boolean clickable){
 
         this.clickable = clickable;
 
-        ItemStack itemStack = message.contains("%item%") ? item == null ? player.getItemInHand() : item : null;
+        itemStack = message.contains("%item%") ? itemStack == null ? player.getItemInHand() : itemStack : null;
+
+        MessageBuilder messageBuilder = new MessageBuilder(message, itemStack, clickable);
 
         recipientsSet.forEach(recipient -> {
 
             ObjectUtil.playSound(recipient, command);
 
-            String formatMessage = ObjectUtil.formatString(format, recipient)
-                    .replace("<message>", message);
-
-            ComponentBuilder componentBuilder = new ComponentBuilder();
-
-            processMessage(formatMessage, componentBuilder, ChatColor.getLastColors(formatMessage), recipient, sender, itemStack);
-
-            recipient.spigot().sendMessage(componentBuilder.create());
+            recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
         });
+
+        if(command.contains("chat")) getFPlayer().addChatBubble(messageBuilder.getMessage());
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
     }
@@ -296,127 +289,22 @@ public class FCommands {
 
         if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
-        ComponentBuilder getBuilder = new ComponentBuilder();
+        MessageBuilder messageBuilder = new MessageBuilder(message, itemStack, true);
 
-        String[] getFormatString = locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer).split("<player>");
+        String getFormatString = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
+                .replace("<player>", secondPlayer.getName());
 
-        getBuilder.append(TextComponent.fromLegacyText(getFormatString[0]));
+        BaseComponent[] baseComponents = messageBuilder.build(getFormatString, firstPlayer, secondPlayer);
 
-        //Add getter name for builder
-        getBuilder.append(createClickableComponent(secondPlayer.getName(), secondPlayer.getName(), firstPlayer, secondPlayer));
-
-        getBuilder.append(TextComponent.fromLegacyText(org.bukkit.ChatColor.getLastColors(getFormatString[1]) + getFormatString[1]), ComponentBuilder.FormatRetention.NONE);
-
-        processMessage(message, getBuilder, org.bukkit.ChatColor.getLastColors(getFormatString[1]), firstPlayer, secondPlayer, itemStack);
-
-        firstPlayer.spigot().sendMessage(getBuilder.create());
+        firstPlayer.spigot().sendMessage(baseComponents);
 
         if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
             FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
         }
-
     }
 
     public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
         return FPlayerManager.getPlayer(firstPlayer).isIgnored(secondPlayer);
-    }
-
-    private void processMessage(String message, ComponentBuilder componentBuilder, String chatColor, CommandSender colorPlayer, CommandSender papiPlayer, ItemStack itemStack) {
-        // Ping player in message
-        String pingPrefix = Main.locale.getString("chat.ping.prefix");
-        String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?\\+-=\\\\\\.&]*)";
-        Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
-        Pattern verticalPattern = Pattern.compile("\\|\\|([^|]+)\\|\\|");
-
-        BaseComponent[] colorComponent = TextComponent.fromLegacyText(chatColor);
-
-        for(String word : message.split(" ")) {
-            TextComponent wordComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + word));
-
-            chatColor = ChatColor.getLastColors(chatColor + word);
-
-            if(FCommands.isContainsPlayerName(word) && clickable){
-                createClickableComponent(wordComponent, senderName, colorPlayer, sender);
-            }
-
-            if(word.startsWith(pingPrefix) && FCommands.isOnlinePlayer(word.substring(1)) && clickable){
-
-                Player player = Bukkit.getPlayer(word.substring(1));
-
-                String pingMessage = Main.locale.getFormatString("chat.ping.message", colorPlayer, papiPlayer)
-                        .replace("<player>", player.getName())
-                        .replace("<prefix>", pingPrefix);
-
-                if(command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
-
-                wordComponent = createClickableComponent(pingMessage, player.getName(), colorPlayer, player);
-            }
-
-            Matcher urlMatcher = pattern.matcher(word);
-            if (urlMatcher.find()) {
-                wordComponent = new TextComponent(TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.message", colorPlayer, papiPlayer).replace("<url>", word)));
-                wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, word.substring(urlMatcher.start(0), urlMatcher.end(0))));
-                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.hover-message", colorPlayer, papiPlayer))));
-            }
-
-            Matcher verticalMatcher = verticalPattern.matcher(word);
-            if(verticalMatcher.find()){
-                word = word.replace("||", "");
-                String test = Main.locale.getFormatString("chat.hide.message", colorPlayer).repeat(word.length());
-                ClickEvent clickEvent = wordComponent.getClickEvent();
-                wordComponent = new TextComponent(TextComponent.fromLegacyText(test));
-                wordComponent.setClickEvent(clickEvent);
-                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(chatColor + word)));
-            }
-
-            if (itemStack != null && word.contains("%item%")) {
-                String[] words;
-                TranslatableComponent item = null;
-
-                words = word.split("%item%");
-                if (words.length < 2) {
-                    words = new String[]{words.length > 0 ? words[0] : "", ""};
-                }
-
-                String[] formattedItemArray = ReflectionUtil.getFormattedStringItem(itemStack);
-                item = new TranslatableComponent(formattedItemArray[0]);
-                item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
-
-                String[] componentsStrings = Main.locale.getFormatString("chat.tooltip.message", colorPlayer, papiPlayer).split("<tooltip>");
-
-                componentBuilder
-                        .append(colorComponent)
-                        .append(words[0])
-                        .append(TextComponent.fromLegacyText(componentsStrings[0]))
-                        .append(item)
-                        .append(TextComponent.fromLegacyText(componentsStrings[1]))
-                        .append(colorComponent)
-                        .append(words[1])
-                        .append(" ");
-
-                continue;
-            }
-
-            componentBuilder
-                    .append(wordComponent, ComponentBuilder.FormatRetention.NONE)
-                    .append(" ", ComponentBuilder.FormatRetention.NONE);
-        }
-    }
-
-    private TextComponent createClickableComponent(String text, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
-        TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(text));
-        return createClickableComponent(textComponent, playerName, colorPlayer, papiPlayer);
-    }
-
-    private TextComponent createClickableComponent(TextComponent textComponent, String playerName, CommandSender colorPlayer, CommandSender papiPlayer){
-        String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.name.hover-message", colorPlayer, papiPlayer);
-
-        if(papiPlayer instanceof ConsoleCommandSender) return textComponent;
-
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
-        return textComponent;
     }
 
     public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
