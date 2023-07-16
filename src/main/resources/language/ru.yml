@@ -29,6 +29,9 @@ tab:
     message: "\n &&1FlectoneChat \n"
 
 player:
+  team:
+    right-click-message: "&&1-⏴ <player> &&1⏵-"
+
   name:
     hover-message: "&&1Нажми, чтобы ему написать"
 
