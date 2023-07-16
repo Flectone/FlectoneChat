@@ -11,12 +11,12 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandMute extends FTabCompleter {
 
@@ -57,7 +57,14 @@ public class CommandMute extends FTabCompleter {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, false);
+        boolean announceModeration = Main.config.getBoolean("command.mute.announce");
+
+        Set<Player> receivers = announceModeration
+                ? new HashSet<>(Bukkit.getOnlinePlayers())
+                : Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> player.hasPermission("flectonechat.mute")).collect(Collectors.toSet());
+
+        fCommand.sendGlobalMessage(receivers, formatString, false);
 
         if(Main.isHavePlasmoVoice) {
             FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
