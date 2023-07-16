@@ -47,6 +47,25 @@ chat:
 
     set-cancelled: false
 
+  patterns:
+    - ":) , ☺"
+    - ":D , ☻"
+    - ":( , ☹"
+    - ":ok: , 🖒"
+    - ":+1: , 🖒"
+    - ":-1: , 🖓"
+    - ":cool: , 😎"
+    - "B) , 😎"
+    - ":clown: , 🤡"
+    - "<3 , ❤"
+    - "xd , 😆"
+    - "%) , 😵"
+    - "=D , 😃"
+    - ">:( , 😡"
+    - ":idk: , ¯\\_(ツ)_/¯"
+    - ":angry: , (╯°□°)╯︵ ┻━┻"
+    - ":happy: , ＼(＾O＾)／"
+
 player:
   name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
 
