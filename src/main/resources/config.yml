@@ -56,7 +56,7 @@ player:
 
   team:
     enable: true
-    name-visible: true
+    name-visible: false
 
   item:
     sign:
