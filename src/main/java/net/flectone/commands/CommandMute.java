@@ -62,7 +62,8 @@ public class CommandMute extends FTabCompleter {
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
                 : Bukkit.getOnlinePlayers().stream()
-                    .filter(player -> player.hasPermission("flectonechat.mute")).collect(Collectors.toSet());
+                .filter(player -> player.hasPermission("flectonechat.mute") || player.equals(mutedFPlayer.getPlayer()))
+                .collect(Collectors.toSet());
 
         fCommand.sendGlobalMessage(receivers, formatString, false);
 

@@ -67,7 +67,8 @@ public class CommandTempban extends FTabCompleter {
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
                 : Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.hasPermission("flectonechat.ban")).collect(Collectors.toSet());
+                .filter(player -> player.hasPermission("flectonechat.ban") || player.equals(bannedFPlayer.getPlayer()))
+                .collect(Collectors.toSet());
 
         fCommand.sendGlobalMessage(receivers, globalMessage, false);
 
