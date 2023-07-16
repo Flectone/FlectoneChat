@@ -6,6 +6,7 @@ import net.flectone.custom.FBukkitRunnable;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -15,7 +16,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChatBubbleTicker extends FBukkitRunnable {
 
@@ -28,7 +28,12 @@ public class ChatBubbleTicker extends FBukkitRunnable {
         Bukkit.getOnlinePlayers().forEach(player -> {
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
-            List<Entity> entities = fPlayer.getPlayer().getPassengers().stream().filter(entity -> entity instanceof AreaEffectCloud).collect(Collectors.toList());
+            List<Entity> entities = fPlayer.getChatBubbleEntities();
+
+            Material currentBlock = player.getLocation().getBlock().getType();
+            if (currentBlock.equals(Material.NETHER_PORTAL) || currentBlock.equals(Material.END_PORTAL)) {
+                fPlayer.clearChatBubbles();
+            }
 
             if(fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
 
