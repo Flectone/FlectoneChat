@@ -2,7 +2,6 @@ site_name: FlectoneChat Docs
 theme:
   features:
     - content.code.annotate
-    - navigation.instant
   logo: assets/logo.png
   favicon: assets/logo.png
   name: material
@@ -13,6 +12,10 @@ theme:
 plugins:
   - i18n:
       default_language: en
+      nav_translations:
+        ru:
+          Features: Особенности
+          Integrations: Интеграции
       languages:
         en:
           name: English

@@ -47,7 +47,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
     private void spawnMessageBubble(Player player, String message){
         List<String> messageStrings = divideText(message, Main.config.getInt("chat.bubble.max-per-line"));
         String color = Main.locale.getFormatString("chat.bubble.color", null);
-        int readSpeed = Main.config.getInt("chat.bubble.reed-speed");
+        int readSpeed = Main.config.getInt("chat.bubble.read-speed");
 
         int duration = (message.length() + 8*messageStrings.size())*1200/readSpeed;
 

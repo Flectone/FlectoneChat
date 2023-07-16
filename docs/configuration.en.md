@@ -1,4 +1,4 @@
-# Configuration
+ Configuration
 
 ## General
 | name       | description              | type   | default    |
@@ -81,7 +81,7 @@
 
 | name            | description                         | type | default |
 | --------------- | ----------------------------------- | ---- | ------- |
-| `enable`        |                                     | bool | `true`  |
+| `enable`        | Enable global chat                  | bool | `true`  |
 | `set-cancelled` | Cancel chat event for other plugins | bool | `true`  |
 
 - `chat.global.prefix`
@@ -124,7 +124,7 @@
 
 | name         | description                         | type   | default                        |
 | ------------ | ----------------------------------- | ------ | ------------------------------ |
-| `enable`     | Enable item signing                 | bool   | `false`                        |
+| `enable`     | Enable technical works              | bool   | `false`                        |
 | `permission` | Technical works immunity permission | string | `flectonechat.technical-works` |
 
 ### `command.stream`
@@ -205,7 +205,7 @@
 ### `command.poll`
 | name         | description                  | type   | default                   |
 | ------------ | ---------------------------- | ------ | ------------------------- |
-| `time`       | Poll duration                | number | `50`                      |
+| `time`       | Poll duration (in seconds)   | number | `50`                      |
 | `permission` | Permission for poll creating | string | `flectonechat.pollcreate` |
 
 ## Cooldown

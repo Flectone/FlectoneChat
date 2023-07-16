@@ -12,6 +12,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -249,6 +250,9 @@ public class FPlayer {
 
         if(!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
         if(team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
+
+        team.setNameTagVisibility(Main.config.getBoolean("player.team.name-visible")
+                ? NameTagVisibility.ALWAYS : NameTagVisibility.NEVER);
 
         team.setColor(ChatColor.WHITE);
 

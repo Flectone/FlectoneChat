@@ -1,7 +1,16 @@
+body {
+  --md-default-bg-color: #171717 !important;
+  --md-default-fg-color--light: #a6adc8 !important;
+  --md-accent-fg-color: #cdd6f4 !important;
+  --md-footer-bg-color: var(--md-default-bg-color) !important;
+  --md-footer-bg-color--dark: var(--md-default-bg-color) !important;
+  --md-code-bg-color: #101010 !important;
+}
+
 .md-typeset h3,
 .md-typeset h2 {
   font-weight: bold;
-  color: #6c90d4;
+  color: #89b4fa;
 }
 
 .md-typeset__table {
@@ -27,4 +36,3 @@ th:nth-child(3) {
 th:nth-child(4) {
   width: 30%;
 }
-

@@ -8,10 +8,10 @@
    <img src="https://chat.flectone.net/assets/getonspigotmc.svg" />
  </a>
  <br/>
- Welcome to the FlectoneChat's documentation!
+ Добро пожаловать в документацию FlectoneChat!
  <br/>
  <br/>
-FlectoneChat is an excellent plugin for Spigot servers in Minecraft that aims to enhance gameplay without interfering with gameplay
+FlectoneChat - это отличный плагин для Spigot-серверов в Minecraft, который призван улучшить игровой процесс, не мешая ему!
  <br/>
  <br/>
 </p>
