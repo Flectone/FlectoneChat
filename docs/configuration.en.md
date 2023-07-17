@@ -90,6 +90,34 @@
 | --------- | ---------------------------------------------------------------- | ---- | ------- |
 | `cleared` | Remove global prefix for other plugins support (DiscordSRV etc.) | bool | `true`  |
 
+### `chat.patterns`
+Chat patterns is a system for replacing any custom words/patterns.  
+Each `chat.patterns` field is a new pattern that specifies the expression to be replaced and the expression it will be replaced with.  
+The expressions are separated by combining the characters "` , `"
+
+A few standard patterns:
+
+```yaml
+  patterns:
+    - ":) , ☺"
+    - ":D , ☻"
+    - ":( , ☹"
+    - ":ok: , 🖒"
+    - ":+1: , 🖒"
+    - ":-1: , 🖓"
+    - ":cool: , 😎"
+    - "B) , 😎"
+    - ":clown: , 🤡"
+    - "<3 , ❤"
+    - "xd , 😆"
+    - "%) , 😵"
+    - "=D , 😃"
+    - ">:( , 😡"
+    - ":idk: , ¯\\_(ツ)_/¯"
+    - ":angry: , (╯°□°)╯︵ ┻━┻"
+    - ":happy: , ＼(＾O＾)／"
+```
+
 ## Player
 `player.*`
 
@@ -98,6 +126,10 @@
 | `name` | Players' displayname format | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
 
 ### `player.world`
+| name   | description                                                                                          | type | default |
+| ------ | ---------------------------------------------------------------------------------------------------- | ---- | ------- |
+| `mode` | World detecting mode. [More info here](https://chat.flectone.net/features/worldprefixes) | bool | `true`  |
+
 - `player.world.prefix`
 
 | name     | description                             | type | default |
@@ -107,9 +139,10 @@
 
 ### `player.team`
 
-| name     | description               | type   | default |
-| -------- | ------------------------- | ------ | ------- |
-| `enable` | Enable custom displayname | `bool` | `true`  |
+| name           | description                          | type   | default |
+| -------------- | ------------------------------------ | ------ | ------- |
+| `enable`       | Enable custom displayname            | `bool` | `true`  |
+| `name-visible` | Show displayname above player's head | `bool` | `false` |
 
 ### `player.item`
 
@@ -207,6 +240,16 @@
 | ------------ | ---------------------------- | ------ | ------------------------- |
 | `time`       | Poll duration (in seconds)   | number | `50`                      |
 | `permission` | Permission for poll creating | string | `flectonechat.pollcreate` |
+
+### `command.mute`
+| name       | description                         | type | default |
+| ---------- | ----------------------------------- | ---- | ------- |
+| `announce` | Announce player mute to all players | bool | `true`  |
+
+### `command.tempban`
+| name       | description                          | type | default |
+| ---------- | ------------------------------------ | ---- | ------- |
+| `announce` | Announce a player ban to all players | bool | `true`  |
 
 ## Cooldown
 `cool-down.*`
