@@ -276,11 +276,7 @@ public class FCommands {
         if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
         sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
-        sendTellUtil(messageBuilder, "send", secondPlayer, firstPlayer, firstPlayer);
-
-        if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
-            FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
-        }
+        sendTellUtil(messageBuilder, "get", secondPlayer, firstPlayer, firstPlayer);
     }
 
     private void sendTellUtil(MessageBuilder messageBuilder, String typeMessage, CommandSender firstPlayer, CommandSender secondPlayer, CommandSender sender){
@@ -289,6 +285,10 @@ public class FCommands {
 
         BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);
         firstPlayer.spigot().sendMessage(baseComponents1);
+
+        if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
+            FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
+        }
     }
 
     public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
