@@ -73,12 +73,17 @@ public class ObjectUtil {
     }
 
     public static String formatString(String string, CommandSender colorSender, CommandSender papiSender){
+        return formatString(false, string, colorSender, papiSender);
+    }
+
+    public static String formatString(boolean neededPermission, String string, CommandSender colorSender, CommandSender papiSender){
         if(colorSender instanceof Player){
             Player player = ((Player) colorSender).getPlayer();
 
-            if(Main.isHavePAPI && string != null && papiSender instanceof Player &&
-                    (papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))) {
-                string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
+            if(Main.isHavePAPI && string != null && papiSender instanceof Player) {
+                if(!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))
+                    string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
+
             }
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);

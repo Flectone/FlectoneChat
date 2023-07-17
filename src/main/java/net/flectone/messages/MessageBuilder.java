@@ -137,10 +137,11 @@ public class MessageBuilder {
 
             if((sender.isOp() || sender.hasPermission("flectonechat.formatting")) && !wordParams.isEdited()){
                 String color1 = ChatColor.getLastColors(word);
-                word = ObjectUtil.formatString(word, recipient, sender);
+                word = ObjectUtil.formatString(true, word, recipient, sender);
                 String color2 = ChatColor.getLastColors(word);
 
                 wordParams.setFormatted(!color1.equals(color2));
+                wordParams.setText(word);
             }
 
             TextComponent wordComponent = new TextComponent(componentFromText(lastColor + word));
