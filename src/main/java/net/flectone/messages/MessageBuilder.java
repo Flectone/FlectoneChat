@@ -26,10 +26,13 @@ public class MessageBuilder {
 
     private final ComponentBuilder componentBuilder = new ComponentBuilder();
 
-    private ItemStack itemStack;
+    private final ItemStack itemStack;
 
-    public MessageBuilder(String text, ItemStack itemStack, boolean clickable) {
+    private String command;
+
+    public MessageBuilder(String command, String text, ItemStack itemStack, boolean clickable) {
         this.itemStack = itemStack;
+        this.command = command;
 
         String pingPrefix = Main.locale.getString("chat.ping.prefix");
         List<String> patternList = Main.config.getStringList("chat.patterns");
@@ -67,6 +70,9 @@ public class MessageBuilder {
 
                     wordParams.setClickable(clickable, player.getName());
                     wordParams.setPlayerPing(true);
+
+                    if(command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
+
                 }
             }
 

@@ -37,8 +37,6 @@ public class FCommands {
 
     private boolean isHaveCD = false;
 
-    private boolean clickable = false;
-
     private final String alias;
 
     public FCommands(CommandSender sender, String command, String label, String[] args) {
@@ -199,11 +197,9 @@ public class FCommands {
 
     public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack itemStack, boolean clickable){
 
-        this.clickable = clickable;
-
         itemStack = message.contains("%item%") ? itemStack == null ? player.getItemInHand() : itemStack : null;
 
-        MessageBuilder messageBuilder = new MessageBuilder(message, itemStack, clickable);
+        MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, clickable);
 
         recipientsSet.forEach(recipient -> {
 
@@ -213,6 +209,7 @@ public class FCommands {
         });
 
         if(command.contains("chat")) getFPlayer().addChatBubble(messageBuilder.getMessage());
+
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
     }
@@ -274,7 +271,7 @@ public class FCommands {
 
         ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getItemInHand() : null;
 
-        MessageBuilder messageBuilder = new MessageBuilder(message, itemStack, true);
+        MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, true);
 
         if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
