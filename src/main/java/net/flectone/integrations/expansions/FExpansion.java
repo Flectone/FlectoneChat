@@ -57,6 +57,14 @@ public class FExpansion extends PlaceholderExpansion {
             return ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
         }
 
+        if(params.equalsIgnoreCase("world_prefix")){
+            if(player == null || !player.isOnline()) return "";
+
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
+
+            return ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
+        }
+
         return null; // Placeholder is unknown by the Expansion
     }
 }

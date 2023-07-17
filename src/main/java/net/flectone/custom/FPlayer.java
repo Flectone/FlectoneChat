@@ -377,6 +377,10 @@ public class FPlayer {
         setDisplayName();
     }
 
+    public String getWorldPrefix() {
+        return worldPrefix;
+    }
+
     private final HashMap<String, Mail> mails = new HashMap<>();
 
     public HashMap<String, Mail> getMails() {
