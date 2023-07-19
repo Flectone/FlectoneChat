@@ -45,7 +45,12 @@ public class MessageBuilder {
             for (String patternString : patternList) {
                 String[] patternComponents = patternString.split(" , ");
                 if(patternComponents.length < 2) continue;
-                word = word.toLowerCase().replace(patternComponents[0].toLowerCase(), patternComponents[1]);
+
+                String wordLowerCased = word.toLowerCase();
+                if(wordLowerCased.contains(patternComponents[0])){
+                    word = wordLowerCased.replace(patternComponents[0].toLowerCase(), patternComponents[1]);
+                }
+
             }
 
             if (itemStack != null && word.equalsIgnoreCase("%item%")) {
