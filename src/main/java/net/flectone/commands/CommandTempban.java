@@ -31,9 +31,9 @@ public class CommandTempban extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(2)) return true;
+        if(fCommand.isInsufficientArgs(1)) return true;
 
-        String stringTime = strings[1];
+        String stringTime = strings.length > 1 ? strings[1] : "permanent";
 
         if((!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1)))
                 && !stringTime.equals("permanent")){
