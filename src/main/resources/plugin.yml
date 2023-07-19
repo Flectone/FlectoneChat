@@ -97,10 +97,10 @@ commands:
     usage: /technical-works on/off
     permission: flectonechat.technical-works
 
-  switch-chat:
-    usage: /switch-chat local/global
-    aliases: [ chat ]
-    permission: flectonechat.switch-chat
+  chat:
+    usage: /chat switch/hide local/global
+    aliases: [ chat, switch-chat, off-chat ]
+    permission: flectonechat.chat
 
   ball:
     usage: /ball <message>
@@ -175,7 +175,7 @@ permissions:
     default: true
   flectonechat.technical-works:
     default: op
-  flectonechat.switch-chat:
+  flectonechat.chat:
     default: true
   flectonechat.ball:
     default: true

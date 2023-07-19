@@ -115,9 +115,10 @@ command:
   clear-chat:
     message: "&&1💬 Chat is cleared"
 
-  switch-chat:
-    usage: "&&1⚑ Usage: &&2/<command> local/global"
-    message: "&&1💬 You switched the chat to <chat>"
+  chat:
+    usage: "&&1⚑ Usage: &&2/<command> switch/hide local/global"
+    switch-message: "&&1💬 You switched chat to <chat>"
+    hide-message: "&&1💬 You hid <chat> chat"
 
   tic-tac-toe:
     usage: "&&1⚑ Usage: &&2/<command> (player)"

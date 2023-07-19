@@ -10,10 +10,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandSwitchChat extends FTabCompleter {
+public class CommandChat extends FTabCompleter {
 
-    public CommandSwitchChat(){
-        super.commandName = "switch-chat";
+    public CommandChat(){
+        super.commandName = "chat";
     }
 
     @Override
@@ -23,16 +23,19 @@ public class CommandSwitchChat extends FTabCompleter {
 
         if(fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if(fCommand.isInsufficientArgs(2)) return true;
 
-        String chat = strings[0].toLowerCase();
+        String chatParam = strings[0].toLowerCase();
+        String chat = strings[1].toLowerCase();
 
-        if(!chat.equals("local") && !chat.equals("global")){
+        if(!chatParam.equals("switch") && !chatParam.equals("hide") && !chat.equals("local") && !chat.equals("global")){
             fCommand.sendUsageMessage();
             return true;
         }
 
-        if(!Main.config.getBoolean("chat.global.enable")){
+        boolean isSwitch = chatParam.equals("switch");
+
+        if(isSwitch && !Main.config.getBoolean("chat.global.enable")){
             fCommand.sendMeMessage("command.disabled");
             return true;
         }
@@ -41,10 +44,13 @@ public class CommandSwitchChat extends FTabCompleter {
 
         if(fCommand.isMuted()) return true;
 
-        fCommand.getFPlayer().setChat(chat);
+        String fPlayerChat = isSwitch ? chat : chat.equals("global") ? "onlylocal" : "onlyglobal";
+
+        fCommand.getFPlayer().setChat(fPlayerChat);
         fCommand.getFPlayer().setUpdated(true);
 
-        fCommand.sendMeMessage("command.switch-chat.message", "<chat>", chat);
+        String localeString = isSwitch ? "command.chat.switch-message" : "command.chat.hide-message";
+        fCommand.sendMeMessage(localeString, "<chat>", chat);
 
         return true;
     }
@@ -55,8 +61,11 @@ public class CommandSwitchChat extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            isStartsWith(strings[0], "local");
-            isStartsWith(strings[0], "global");
+            isStartsWith(strings[0], "switch");
+            isStartsWith(strings[0], "hide");
+        } else if(strings.length == 2){
+            isStartsWith(strings[1], "local");
+            isStartsWith(strings[1], "global");
         }
 
         return wordsList;

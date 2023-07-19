@@ -1,7 +1,9 @@
 package net.flectone.listeners;
 
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,15 +25,20 @@ public class AsyncPlayerChatListener implements Listener {
     @EventHandler
     public void chat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Set<Player> recipients = new HashSet<>(event.getRecipients());
-        String message = event.getMessage();
+
+        String fPlayerChat = FPlayerManager.getPlayer(player).getChat();
         String globalPrefix = Main.locale.getString("chat.global.prefix");
+        String message = event.getMessage();
 
-        recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
-
-        String chatType = ((message.startsWith(globalPrefix) && !message.equals(globalPrefix))
-                || FPlayerManager.getPlayer(player).getChat().equals("global")) && Main.config.getBoolean("chat.global.enable")
+        String chatType = Main.config.getBoolean("chat.global.enable")
+                && (fPlayerChat.contains("global")
+                || message.startsWith(globalPrefix) && !message.equals(globalPrefix) && !fPlayerChat.equals("onlylocal"))
                 ? "global" : "local";
+
+        String reversedChatType = chatType.equals("global") ? "local" : "global";
+
+        Set<Player> recipients = new HashSet<>(event.getRecipients());
+        removeRecipients(recipients, player, reversedChatType);
 
         if (chatType.equals("local")) {
             int localRange = Main.config.getInt("chat.local.range");
@@ -43,13 +50,6 @@ public class AsyncPlayerChatListener implements Listener {
                 noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
             }
 
-            if(Main.config.getBoolean("chat.local.admin-see.enable")){
-                Bukkit.getOnlinePlayers()
-                        .stream()
-                        .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see") || onlinePlayer.isOp())
-                        .forEach(recipients::add);
-            }
-
             if(Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
@@ -58,16 +58,18 @@ public class AsyncPlayerChatListener implements Listener {
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
-        createMessage(recipients, player, message, chatType);
+        createMessage(recipients, player, message, chatType, null);
         event.getRecipients().clear();
     }
 
-
-    public void createMessage(Set<Player> recipients, Player player, String message, String chatType){
-        createMessage(recipients, player, message, chatType, null);
-    }
-
     public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack){
+
+        if(chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")){
+            Bukkit.getOnlinePlayers()
+                    .stream()
+                    .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see"))
+                    .forEach(recipients::add);
+        }
 
         FCommands fCommands = new FCommands(player, chatType + "chat", chatType + " chat", new String[]{});
 
@@ -94,14 +96,27 @@ public class AsyncPlayerChatListener implements Listener {
 
         Player player = (Player) event.getWhoClicked();
 
+        String chatType = Main.config.getBoolean("chat.global.enable")
+                && FPlayerManager.getPlayer(player).getChat().contains("global")
+                ? "global" : "local";
+        String reversedChatType = chatType.equals("global") ? "local" : "global";
+
         Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), 100, 100, 100)
                 .stream()
                 .filter(entity -> entity instanceof Player)
                 .map(entity -> (Player) entity)
                 .collect(Collectors.toSet());
+        
+        removeRecipients(recipients, player, reversedChatType);
 
-        recipients.removeIf(recipient -> FPlayerManager.getPlayer(recipient).isIgnored(player));
+        createMessage(recipients, player, "%item%", chatType, event.getCursor());
+    }
+    
+    private void removeRecipients(Set<Player> recipients, Player player, String reversedChatType){
+        recipients.removeIf(recipient -> {
+            FPlayer fPlayer = FPlayerManager.getPlayer(recipient);
 
-        createMessage(recipients, player, "%item%", "local", event.getCursor());
+            return fPlayer.isIgnored(player) || fPlayer.getChat().equals("only" + reversedChatType);
+        });
     }
 }

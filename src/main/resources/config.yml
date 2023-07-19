@@ -161,10 +161,10 @@ cool-down:
     enable: true
     time: 5
     permission: "flectonechat.clear-chat.cooldown.immune"
-  switch-chat:
+  chat:
     enable: true
     time: 5
-    permission: "flectonechat.switch-chat.cooldown.immune"
+    permission: "flectonechat.chat.cooldown.immune"
   localchat:
     enable: true
     time: 5
@@ -274,7 +274,7 @@ sound:
   clear-chat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
-  switch-chat:
+  chat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
   localchat:
