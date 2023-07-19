@@ -53,6 +53,7 @@ public final class Main extends JavaPlugin {
         this.database.load();
 
         FPlayerManager.loadPlayers();
+        FPlayerManager.loadBanList();
 
         registerClasses();
         hookPlugins();

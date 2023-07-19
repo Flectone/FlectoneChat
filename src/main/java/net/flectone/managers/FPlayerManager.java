@@ -3,6 +3,7 @@ package net.flectone.managers;
 import net.flectone.Main;
 import net.flectone.custom.FEntity;
 import net.flectone.custom.FPlayer;
+import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -25,6 +26,22 @@ public class FPlayerManager {
         Main.getDatabase().loadDatabase();
 
         Bukkit.getOnlinePlayers().forEach(player -> getPlayer(player).initialize(player));
+    }
+
+    public static void loadBanList(){
+        BanList banList = Bukkit.getBanList(BanList.Type.NAME);
+
+        Bukkit.getBannedPlayers().forEach(offlinePlayer -> {
+            FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
+            if(fPlayer == null) return;
+
+            String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
+            fPlayer.setTempBanReason(reason);
+            fPlayer.setTempBanTime(-1);
+            fPlayer.setUpdated(true);
+
+            banList.pardon(offlinePlayer.getName());
+        });
     }
 
     public static void uploadPlayers(){
