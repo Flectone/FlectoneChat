@@ -101,7 +101,8 @@ public class AsyncPlayerChatListener implements Listener {
                 ? "global" : "local";
         String reversedChatType = chatType.equals("global") ? "local" : "global";
 
-        Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), 100, 100, 100)
+        int localRange = Main.config.getInt("chat.local.range");
+        Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), localRange, localRange, localRange)
                 .stream()
                 .filter(entity -> entity instanceof Player)
                 .map(entity -> (Player) entity)
