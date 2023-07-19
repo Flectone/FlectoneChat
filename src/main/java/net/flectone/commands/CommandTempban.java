@@ -51,7 +51,7 @@ public class CommandTempban extends FTabCompleter {
 
         int time = fCommand.getTimeFromString(stringTime);
 
-        if(time < 0){
+        if(time < -1){
             fCommand.sendMeMessage("command.long-number");
             return true;
         }
