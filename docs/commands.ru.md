@@ -150,12 +150,15 @@
 Использование: `/mute <player> <time> <reason>`  
 Разрешение: `flectonechat.technical-works` (op)
 
-## /switch-chat
-Переключить чат по умолчанию на локальный или глобальный
+## /chat
+Использования:
 
-Использование: `/switch-chat <local/global>`  
-Вариации: `chat`  
-Разрешение: `flectonechat.switch-chat` (default)
+- switch: `/chat switch <local/global>` - писать в локальный/глобальный чат по умолчанию
+- hide: `/chat hide <local/global>` - скрыть локальные/глобальные сообщения
+
+Вариации: `chat`, `switch-chat`, `off-chat`  
+Разрешение: `flectonechat.chat` (default)
+
 
 ## /ball
 Задать вопрос хрустальному шару, чтобы получить ответ
