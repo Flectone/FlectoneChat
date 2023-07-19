@@ -49,11 +49,16 @@ public class CommandTempban extends FTabCompleter {
             return true;
         }
 
+        int time = fCommand.getTimeFromString(stringTime);
+
+        if(time < 0){
+            fCommand.sendMeMessage("command.long-number");
+            return true;
+        }
+
         if(fCommand.isHaveCD()) return true;
 
         String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.tempban.default-reason");
-
-        int time = fCommand.getTimeFromString(stringTime);
 
         String globalStringMessage = time == -1 ? "command.ban.global-message" : "command.tempban.global-message";
 

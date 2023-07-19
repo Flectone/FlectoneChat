@@ -93,6 +93,7 @@ command:
   you-ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
   he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
   disabled: "#ff4e4e⁉ This command disabled on server"
+  long-number: "#ff4e4e⁉ The number you entered is too large"
 
   poll:
     usage: "&&1⚑ Usage: &&2/<command> create/vote"
