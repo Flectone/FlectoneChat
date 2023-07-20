@@ -1,7 +1,7 @@
 package net.flectone.messages;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.flectone.utils.ReflectionUtil;
 import net.md_5.bungee.api.chat.*;
@@ -38,7 +38,7 @@ public class MessageBuilder {
 
         AtomicInteger index = new AtomicInteger();
 
-        Arrays.stream(text.split(" ")).map(word -> {
+        Arrays.stream(text.split(" ")).parallel().map(word -> {
             WordParams wordParams = new WordParams();
 
             word = replacePattern(word);
@@ -49,14 +49,10 @@ public class MessageBuilder {
                 return wordParams;
             }
 
-            if (FCommands.isContainsPlayerName(word) && clickable) {
-                wordParams.setClickable(true, Bukkit.getPlayer(word).getName());
-            }
-
             if (word.startsWith(pingPrefix)) {
                 String playerName = word.replaceFirst(pingPrefix, "");
 
-                if(FCommands.isOnlinePlayer(playerName)){
+                if(FPlayerManager.getPlayerFromName(playerName) != null){
                     Player player = Bukkit.getPlayer(playerName);
 
                     word = Main.locale.getString("chat.ping.message")
@@ -92,11 +88,11 @@ public class MessageBuilder {
             wordParams.setText(word);
             return wordParams;
         })
-        .forEach(wordParams -> messageHashMap.put(index.getAndIncrement(), wordParams));
+        .forEachOrdered(wordParams -> messageHashMap.put(index.getAndIncrement(), wordParams));
     }
 
     public String getMessage() {
-        return messageHashMap.values().stream()
+        return messageHashMap.values().parallelStream()
                 .map(wordParams -> {
                     String word = wordParams.getText();
                     if (wordParams.isEdited()) {
@@ -239,19 +235,20 @@ public class MessageBuilder {
     public static void loadPatterns(){
         patternMap.clear();
 
-        for(String patternString : Main.config.getStringList("chat.patterns")){
-            String[] patternComponents = patternString.split(" , ");
-            if(patternComponents.length < 2) continue;
+        Main.config.getStringList("chat.patterns")
+                .forEach(patternString -> {
+                    String[] patternComponents = patternString.split(" , ");
+                    if(patternComponents.length < 2) return;
 
-            patternMap.put(patternComponents[0], patternComponents[1]);
-        }
+                    patternMap.put(patternComponents[0], patternComponents[1]);
+                });
     }
 
     private String replacePattern(String word){
         String wordLowerCased = word.toLowerCase();
 
         Map.Entry<String, String> pattern = patternMap.entrySet()
-                .stream().parallel()
+                .parallelStream()
                 .filter(entry -> wordLowerCased.contains(entry.getKey().toLowerCase()))
                 .findFirst()
                 .orElse(null);

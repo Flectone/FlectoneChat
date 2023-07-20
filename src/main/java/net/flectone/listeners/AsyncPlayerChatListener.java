@@ -65,8 +65,7 @@ public class AsyncPlayerChatListener implements Listener {
     public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack){
 
         if(chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")){
-            Bukkit.getOnlinePlayers()
-                    .stream()
+            Bukkit.getOnlinePlayers().parallelStream()
                     .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see"))
                     .forEach(recipients::add);
         }
@@ -103,7 +102,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         int localRange = Main.config.getInt("chat.local.range");
         Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), localRange, localRange, localRange)
-                .stream()
+                .parallelStream()
                 .filter(entity -> entity instanceof Player)
                 .map(entity -> (Player) entity)
                 .collect(Collectors.toSet());

@@ -39,9 +39,8 @@ public class Poll {
                     .replace("<disagree>", Main.locale.getString("command.poll.format.disagree"))
                     .replace("<disagree_count>", String.valueOf(disagree));
 
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                player.sendMessage(ObjectUtil.formatString(formatMessage, player));
-            });
+            Bukkit.getOnlinePlayers().parallelStream()
+                    .forEach(player -> player.sendMessage(ObjectUtil.formatString(formatMessage, player)));
 
         }, 20L * Main.config.getInt("command.poll.time"));
     }

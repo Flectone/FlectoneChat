@@ -117,11 +117,9 @@ public class CommandPoll extends FTabCompleter {
                 isStartsWith(strings[1], "(message)");
             } else {
                 PollManager.getPollList()
-                        .stream()
+                        .parallelStream()
                         .filter(poll -> !poll.isExpired())
-                        .forEach(poll -> {
-                            isStartsWith(strings[1], String.valueOf(poll.getId()));
-                        });
+                        .forEach(poll -> isStartsWith(strings[1], String.valueOf(poll.getId())));
             }
         } else if(strings.length == 3 && strings[0].equalsIgnoreCase("vote")){
             isStartsWith(strings[2], "agree");

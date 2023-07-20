@@ -21,7 +21,7 @@ public class TickerManager {
     }
 
     public static void clear(){
-        bukkitRunnableList.forEach(BukkitRunnable::cancel);
+        bukkitRunnableList.parallelStream().forEach(BukkitRunnable::cancel);
         bukkitRunnableList.clear();
     }
 
@@ -40,6 +40,6 @@ public class TickerManager {
             addTicker(new TabTicker());
         }
 
-        bukkitRunnableList.forEach(FBukkitRunnable::runTaskTimer);
+        bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);
     }
 }

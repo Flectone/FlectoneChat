@@ -57,7 +57,7 @@ public class CommandMailClear extends FTabCompleter {
 
         int number = Integer.parseInt(strings[1]);
 
-        Map.Entry<String, Mail> entry = mailsList.entrySet().stream()
+        Map.Entry<String, Mail> entry = mailsList.entrySet().parallelStream()
                 .filter(stringMailEntry -> !stringMailEntry.getValue().isRemoved())
                 .skip(number - 1)
                 .findFirst()
@@ -96,7 +96,7 @@ public class CommandMailClear extends FTabCompleter {
 
                 if (mailsList != null && !mailsList.isEmpty()) {
                     int[] counter = {1};
-                    mailsList.entrySet().stream()
+                    mailsList.entrySet().parallelStream()
                             .filter(entry -> !entry.getValue().isRemoved())
                             .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
                 }

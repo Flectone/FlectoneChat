@@ -6,6 +6,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
+import java.util.Arrays;
+
 public class SignChangeListener implements Listener {
 
     @EventHandler

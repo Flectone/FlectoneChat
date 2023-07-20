@@ -428,11 +428,13 @@ public class FPlayer {
     }
 
     public List<Entity> getChatBubbleEntities() {
-        return player.getPassengers().stream().filter(entity -> entity instanceof AreaEffectCloud).collect(Collectors.toList());
+        return player.getPassengers().parallelStream()
+                .filter(entity -> entity instanceof AreaEffectCloud)
+                .collect(Collectors.toList());
     }
 
     public void clearChatBubbles() {
-        getChatBubbleEntities().forEach(Entity::remove);
+        getChatBubbleEntities().parallelStream().forEach(Entity::remove);
         listChatBubbles.clear();
     }
 

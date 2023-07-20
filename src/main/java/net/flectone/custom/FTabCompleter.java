@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
@@ -31,38 +32,33 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
     }
 
     protected void addKeysFile(FileManager fileManager, String arg){
-        for(String key : fileManager.getKeys()){
-
-            if(fileManager.getString(key).contains("root='YamlConfiguration'")) continue;
-
-            isStartsWith(arg, key);
-        }
+        fileManager.getKeys().parallelStream()
+                .filter(key -> !fileManager.getString(key).contains("root='YamlConfiguration'"))
+                .forEach(key -> isStartsWith(arg, key));
     }
 
     protected void isOfflinePlayer(String arg){
-        FPlayerManager.getPlayers().forEach(offlinePlayer -> {
-            isStartsWith(arg, offlinePlayer.getRealName());
-        });
+        FPlayerManager.getPlayers().parallelStream()
+                .forEach(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
     }
 
     protected void isOnlinePlayer(String arg){
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            isStartsWith(arg, player.getName());
-        });
+        Bukkit.getOnlinePlayers().parallelStream()
+                .forEach(player -> isStartsWith(arg, player.getName()));
     }
 
     protected void isFormatString(String arg){
-        for(String format : FCommands.formatTimeList){
-            if(arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))){
-                isStartsWith(arg, arg + format);
-            } else {
-                for(int x = 1; x < 10; x++){
-                    isStartsWith(arg, x + format);
-                }
-            }
-        }
+        Arrays.stream(FCommands.formatTimeList).parallel()
+                .forEach(format -> {
+                    if(arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))){
+                        isStartsWith(arg, arg + format);
+                    } else {
+                        for(int x = 1; x < 10; x++){
+                            isStartsWith(arg, x + format);
+                        }
+                    }
+                });
     }
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {

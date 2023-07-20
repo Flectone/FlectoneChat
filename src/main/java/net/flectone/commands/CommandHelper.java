@@ -35,7 +35,7 @@ public class CommandHelper extends FTabCompleter {
         String permission = Main.config.getString("command.helper.see.permission");
 
         Set<Player> playerSet = Bukkit.getOnlinePlayers()
-                .stream()
+                .parallelStream()
                 .filter(player -> player.isOp() || player.hasPermission(permission))
                 .collect(Collectors.toSet());
 

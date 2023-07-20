@@ -36,7 +36,7 @@ public class PlayerJoinListener implements Listener {
         HashMap<String, Mail> mails = fPlayer.getMails();
         if(mails == null) return;
 
-        mails.values().stream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
+        mails.values().parallelStream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
 
             String playerName = FPlayerManager.getPlayer(mail.getSender()).getRealName();
 

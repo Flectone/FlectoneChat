@@ -17,7 +17,7 @@ public class AfkTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(player -> {
+        Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             Block block = fPlayer.getPlayer().getLocation().getBlock();

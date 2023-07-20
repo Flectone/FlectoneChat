@@ -43,7 +43,8 @@ public class FEntity {
     public static void removeFromTeam(Entity entity, String color){
         if(entity instanceof Player) {
             Player player = (Player) entity;
-            Bukkit.getScoreboardManager().getMainScoreboard().getTeam(player.getName())
+            Bukkit.getScoreboardManager().getMainScoreboard()
+                    .getTeam(player.getName())
                     .setColor(ChatColor.WHITE);
             return;
         }
@@ -59,8 +60,7 @@ public class FEntity {
     }
 
     public static void removeBugEntities(Player player){
-        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, entity -> entity.isGlowing()).forEach(entity -> {
-
+        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).parallelStream().forEach(entity -> {
             if(entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
 
             entity.setGlowing(false);

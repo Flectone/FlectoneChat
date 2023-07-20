@@ -25,7 +25,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(player -> {
+        Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
             List<Entity> entities = fPlayer.getChatBubbleEntities();

@@ -57,8 +57,6 @@ public class CommandMute extends FTabCompleter {
 
         String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.mute.default-reason");
 
-
-
         String formatString = Main.locale.getString("command.mute.global-message")
                 .replace("<player>", mutedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
@@ -68,7 +66,7 @@ public class CommandMute extends FTabCompleter {
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
-                : Bukkit.getOnlinePlayers().stream()
+                : Bukkit.getOnlinePlayers().parallelStream()
                 .filter(player -> player.hasPermission("flectonechat.mute") || player.equals(mutedFPlayer.getPlayer()))
                 .collect(Collectors.toSet());
 

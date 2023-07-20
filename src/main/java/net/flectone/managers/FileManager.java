@@ -33,11 +33,10 @@ public class FileManager extends FileConfiguration {
 
         YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 
-        for (String string : internalLangConfig.getKeys(true)) {
-            if (!fileConfiguration.contains(string)) {
-                fileConfiguration.set(string, internalLangConfig.get(string));
-            }
-        }
+        internalLangConfig.getKeys(true).parallelStream()
+                .filter(string -> !fileConfiguration.contains(string))
+                .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
+
         try {
             fileConfiguration.save(file);
         } catch (IOException io) {

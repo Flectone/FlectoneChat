@@ -25,28 +25,29 @@ public class FPlayerManager {
 
         Main.getDatabase().loadDatabase();
 
-        Bukkit.getOnlinePlayers().forEach(player -> getPlayer(player).initialize(player));
+        Bukkit.getOnlinePlayers().parallelStream()
+                .forEach(player -> getPlayer(player).initialize(player));
     }
 
     public static void loadBanList(){
         BanList banList = Bukkit.getBanList(BanList.Type.NAME);
 
-        Bukkit.getBannedPlayers().forEach(offlinePlayer -> {
-            FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
-            if(fPlayer == null) return;
+        Bukkit.getBannedPlayers().parallelStream()
+                .forEach(offlinePlayer -> {
+                    FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
+                    if(fPlayer == null) return;
 
-            String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
-            fPlayer.setTempBanReason(reason);
-            fPlayer.setTempBanTime(-1);
-            fPlayer.setUpdated(true);
+                    String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
+                    fPlayer.setTempBanReason(reason);
+                    fPlayer.setTempBanTime(-1);
+                    fPlayer.setUpdated(true);
 
-            banList.pardon(offlinePlayer.getName());
-        });
+                    banList.pardon(offlinePlayer.getName());
+                });
     }
 
     public static void uploadPlayers(){
-        fPlayerHashMap.values()
-                .stream()
+        fPlayerHashMap.values().stream()
                 .filter(FPlayer::isUpdated)
                 .forEach(fPlayer -> {
                     Main.getDatabase().uploadDatabase(fPlayer);
@@ -90,13 +91,10 @@ public class FPlayerManager {
     }
 
     public static FPlayer getPlayerFromName(String name){
-        FPlayer player = null;
-        player = fPlayerHashMap.values()
-                .stream()
+        return fPlayerHashMap.values()
+                .parallelStream()
                 .filter(fPlayer -> fPlayer.getRealName().equals(name))
                 .findFirst().orElse(null);
-
-        return player;
     }
 
     public static FPlayer getPlayer(@NotNull OfflinePlayer offlinePlayer){

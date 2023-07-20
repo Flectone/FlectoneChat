@@ -54,8 +54,9 @@ public class CommandUnban extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            FPlayerManager.getPlayers().stream().filter(fPlayer -> fPlayer.isBanned() || fPlayer.isPermanentlyBanned()).forEach(fPlayer ->
-                    isStartsWith(strings[0], fPlayer.getRealName()));
+            FPlayerManager.getPlayers().parallelStream()
+                    .filter(fPlayer -> fPlayer.isBanned() || fPlayer.isPermanentlyBanned())
+                    .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
         }
 
         Collections.sort(wordsList);

@@ -49,11 +49,10 @@ public class CommandTechnicalWorks extends FTabCompleter {
         isTechnicalWorks = strings[0].equalsIgnoreCase("on");
 
         if(isTechnicalWorks){
-            for(Player player : Bukkit.getOnlinePlayers()){
-                if(player.isOp() || player.hasPermission(Main.config.getString("command.technical-works.permission"))) continue;
 
-                player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null));
-            }
+            Bukkit.getOnlinePlayers().parallelStream()
+                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")))
+                    .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null)));
         }
 
         fCommand.sendMeMessage("command.technical-works.turned-" + strings[0].toLowerCase() + ".message");

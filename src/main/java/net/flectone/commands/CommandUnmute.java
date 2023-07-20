@@ -59,8 +59,9 @@ public class CommandUnmute extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            FPlayerManager.getPlayers().stream().filter(FPlayer::isMuted).forEach(fPlayer ->
-                    isStartsWith(strings[0], fPlayer.getRealName()));
+            FPlayerManager.getPlayers().parallelStream()
+                    .filter(FPlayer::isMuted)
+                    .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
         }
 
         Collections.sort(wordsList);

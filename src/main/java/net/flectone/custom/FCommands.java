@@ -13,6 +13,7 @@ import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.managers.FileManager;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -157,16 +158,6 @@ public class FCommands {
         return args[0].equalsIgnoreCase(player.getName());
     }
 
-    public static boolean isOnlinePlayer(String playerName){
-        return Bukkit.getOnlinePlayers().stream()
-                .anyMatch(onlinePlayer -> onlinePlayer.getName().equalsIgnoreCase(playerName));
-    }
-
-    public static boolean isContainsPlayerName(String playerName){
-        return Bukkit.getOnlinePlayers().stream()
-                .anyMatch(onlinePlayer -> playerName.contains(onlinePlayer.getName()));
-    }
-
     public void sendUsageMessage(){
         sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
@@ -201,7 +192,7 @@ public class FCommands {
 
         MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, clickable);
 
-        recipientsSet.forEach(recipient -> {
+        recipientsSet.parallelStream().forEach(recipient -> {
 
             ObjectUtil.playSound(recipient, command);
 
@@ -221,10 +212,8 @@ public class FCommands {
 
             int localRange = Main.config.getInt("chat.local.range");
 
-            Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange)
-                    .stream()
-                    .filter(entity -> entity instanceof Player
-                            && !FPlayerManager.getPlayer((Player) entity).isIgnored(player))
+            Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange).parallelStream()
+                    .filter(entity -> entity instanceof Player && !FPlayerManager.getPlayer((Player) entity).isIgnored(player))
                     .map(entity -> (Player) entity)
                     .collect(Collectors.toSet());
 
@@ -233,8 +222,7 @@ public class FCommands {
             return playerSet;
         }
 
-        return Bukkit.getOnlinePlayers()
-                .stream()
+        return Bukkit.getOnlinePlayers().parallelStream()
                 .filter(onlinePlayer -> !FPlayerManager.getPlayer(onlinePlayer).isIgnored(player))
                 .collect(Collectors.toSet());
     }
@@ -298,12 +286,7 @@ public class FCommands {
     public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
 
     public boolean isStringTime(String string){
-
-        for(String format : formatTimeList){
-            if(string.contains(format)) return true;
-        }
-
-        return false;
+        return Arrays.stream(formatTimeList).parallel().anyMatch(string::contains);
     }
 
     public int getTimeFromString(String string){
