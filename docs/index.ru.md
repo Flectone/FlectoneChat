@@ -1,6 +1,6 @@
 # Главная страница
 <p align="center">
- <img src="https://cdn.discordapp.com/attachments/1125856632996380753/1125870323322069004/flectonechat.png">
+ <img src="https://i.imgur.com/odTmiw2.png">
  <a href="https://modrinth.com/plugin/flectonechat">
    <img src="https://chat.flectone.net/assets/getonmodrinth.svg" />
  </a>
