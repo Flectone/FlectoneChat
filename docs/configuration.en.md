@@ -91,32 +91,8 @@
 | `cleared` | Remove global prefix for other plugins support (DiscordSRV etc.) | bool | `true`  |
 
 ### `chat.patterns`
-Chat patterns is a system for replacing any custom words/patterns.  
-Each `chat.patterns` field is a new pattern that specifies the expression to be replaced and the expression it will be replaced with.  
-The expressions are separated by combining the characters "` , `"
 
-A few standard patterns:
-
-```yaml
-  patterns:
-    - ":) , ☺"
-    - ":D , ☻"
-    - ":( , ☹"
-    - ":ok: , 🖒"
-    - ":+1: , 🖒"
-    - ":-1: , 🖓"
-    - ":cool: , 😎"
-    - "B) , 😎"
-    - ":clown: , 🤡"
-    - "<3 , ❤"
-    - "xd , 😆"
-    - "%) , 😵"
-    - "=D , 😃"
-    - ">:( , 😡"
-    - ":idk: , ¯\\_(ツ)_/¯"
-    - ":angry: , (╯°□°)╯︵ ┻━┻"
-    - ":happy: , ＼(＾O＾)／"
-```
+check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ## Player
 `player.*`

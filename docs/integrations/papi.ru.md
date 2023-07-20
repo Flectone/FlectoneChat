@@ -9,3 +9,6 @@
 
 ### `%flectonechat_afk_suffix%`
 плейсхолдер суффикса афк игроков
+
+### `%flectonechat_player_name%`
+полный displayname игрока

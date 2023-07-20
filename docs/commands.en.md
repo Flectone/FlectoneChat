@@ -150,12 +150,14 @@ Ignores players with `flectonechat.technical-works` permission and ops
 Usage: `/mute <player> <time> <reason>`  
 Permission: `flectonechat.technical-works` (op)
 
-## /switch-chat
-Switch your default chat to local or global
+## /chat
+Usages:
 
-Usage: `/switch-chat <local/global>`  
-Aliases: `chat`  
-Permission: `flectonechat.switch-chat` (default)
+- switch: `/chat switch <local/global>` - write to global/local by default
+- hide: `/chat hide <local/global>` - hide messages from local/global chat
+
+Aliases: `chat`, `switch-chat`, `off-chat`  
+Permission: `flectonechat.chat` (default)
 
 ## /ball
 Ask crystal ball for any answer

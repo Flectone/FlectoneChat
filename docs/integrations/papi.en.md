@@ -9,3 +9,6 @@ streamers' prefix placeholder
 
 ### `%flectonechat_afk_suffix%`
 afk players' suffix placeholder
+
+### `%flectonechat_player_name%`
+Player's full displayname 
