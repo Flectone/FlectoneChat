@@ -24,6 +24,8 @@ public final class Main extends JavaPlugin {
 
     public static boolean isHaveVault = false;
 
+    public static boolean isHaveInteractiveChat = false;
+
     private static Main instance;
 
     public static FileManager config;
@@ -108,6 +110,11 @@ public final class Main extends JavaPlugin {
         if(Bukkit.getPluginManager().getPlugin("plasmovoice") != null){
             isHavePlasmoVoice = true;
             getLogger().info("\uD83D\uDD12 PlasmoVoice detected and hooked");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("InteractiveChat") != null){
+            isHaveInteractiveChat = true;
+            getLogger().info("\uD83D\uDD12 InteractiveChat detected and hooked");
         }
     }
 
