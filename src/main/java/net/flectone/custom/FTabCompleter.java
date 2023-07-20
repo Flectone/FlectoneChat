@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -11,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
@@ -40,8 +40,8 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
     }
 
     protected void isOfflinePlayer(String arg){
-        Arrays.stream(Bukkit.getOfflinePlayers()).forEach(offlinePlayer -> {
-            isStartsWith(arg, offlinePlayer.getName());
+        FPlayerManager.getPlayers().forEach(offlinePlayer -> {
+            isStartsWith(arg, offlinePlayer.getRealName());
         });
     }
 
