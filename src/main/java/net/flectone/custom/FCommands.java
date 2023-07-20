@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.integrations.interactivechat.FlectoneInteractiveChat;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
@@ -190,6 +191,12 @@ public class FCommands {
 
         itemStack = message.contains("%item%") ? itemStack == null ? player.getItemInHand() : itemStack : null;
 
+        Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
+
+        if (Main.isHaveInteractiveChat) {
+            message = FlectoneInteractiveChat.mark(message, player.getUniqueId());
+        }
+
         MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, clickable);
 
         recipientsSet.parallelStream().forEach(recipient -> {
@@ -200,9 +207,6 @@ public class FCommands {
         });
 
         if(command.contains("chat")) getFPlayer().addChatBubble(messageBuilder.getMessage());
-
-
-        Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
     }
 
     private Set<Player> getFilteredPlayers(){
