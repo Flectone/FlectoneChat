@@ -258,8 +258,8 @@
 ```yaml
   command-name:
     enable: false
-    time: 5 # time in seconds
-    permission: "flectonechat.command-name.cooldown.immune" # разрешение на иммунитет
+    time: 5 # Время в секундах
+    permission: "flectonechat.command-name.cooldown.immune" # Разрешение на иммунитет
 ```
 
 ## Звук
