@@ -4,6 +4,7 @@ import net.flectone.custom.FCommands;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.managers.TickerManager;
+import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -79,6 +80,7 @@ public class CommandFlectonechat extends FTabCompleter {
 
         TickerManager.clear();
         TickerManager.start();
+        MessageBuilder.loadPatterns();
 
         fCommand.sendMeMessage("command.flectonechat.message");
 

@@ -35,23 +35,13 @@ public class MessageBuilder {
         this.command = command;
 
         String pingPrefix = Main.locale.getString("chat.ping.prefix");
-        List<String> patternList = Main.config.getStringList("chat.patterns");
 
         AtomicInteger index = new AtomicInteger();
 
         Arrays.stream(text.split(" ")).map(word -> {
             WordParams wordParams = new WordParams();
 
-            for (String patternString : patternList) {
-                String[] patternComponents = patternString.split(" , ");
-                if(patternComponents.length < 2) continue;
-
-                String wordLowerCased = word.toLowerCase();
-                if(wordLowerCased.contains(patternComponents[0])){
-                    word = wordLowerCased.replace(patternComponents[0].toLowerCase(), patternComponents[1]);
-                }
-
-            }
+            word = replacePattern(word);
 
             if (itemStack != null && word.equalsIgnoreCase("%item%")) {
                 wordParams.setItem(true);
@@ -238,5 +228,36 @@ public class MessageBuilder {
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
         return textComponent;
+    }
+
+    private static final HashMap<String, String> patternMap = new HashMap<>();
+
+    static {
+        loadPatterns();
+    }
+
+    public static void loadPatterns(){
+        patternMap.clear();
+
+        for(String patternString : Main.config.getStringList("chat.patterns")){
+            String[] patternComponents = patternString.split(" , ");
+            if(patternComponents.length < 2) continue;
+
+            patternMap.put(patternComponents[0], patternComponents[1]);
+        }
+    }
+
+    private String replacePattern(String word){
+        String wordLowerCased = word.toLowerCase();
+
+        Map.Entry<String, String> pattern = patternMap.entrySet()
+                .stream().parallel()
+                .filter(entry -> wordLowerCased.contains(entry.getKey().toLowerCase()))
+                .findFirst()
+                .orElse(null);
+
+        if(pattern == null) return word;
+
+        return wordLowerCased.replace(pattern.getKey().toLowerCase(), pattern.getValue());
     }
 }
