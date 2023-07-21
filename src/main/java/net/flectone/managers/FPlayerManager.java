@@ -15,8 +15,14 @@ public class FPlayerManager {
 
     private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
 
+    private static final Set<FPlayer> bannedPlayers = new HashSet<>();
+
     public static Collection<FPlayer> getPlayers(){
         return fPlayerHashMap.values();
+    }
+
+    public static Set<FPlayer> getBannedPlayers() {
+        return bannedPlayers;
     }
 
     public static void loadPlayers(){
@@ -65,7 +71,9 @@ public class FPlayerManager {
 
         FPlayer fPlayer = new FPlayer(offlinePlayer);
         fPlayerHashMap.put(uuid, fPlayer);
+        if (fPlayer.isBanned() || fPlayer.isPermanentlyBanned()) bannedPlayers.add(fPlayer);
     }
+
 
     public static FPlayer addPlayer(@NotNull Player player){
         String uuid = player.getUniqueId().toString();
@@ -79,6 +87,7 @@ public class FPlayerManager {
         fPlayerHashMap.put(uuid, fPlayer);
         fPlayer.initialize(player);
         Main.getDatabase().setPlayer(fPlayer.getUUID());
+        if (fPlayer.isBanned() || fPlayer.isPermanentlyBanned()) bannedPlayers.add(fPlayer);
         return fPlayer;
     }
 

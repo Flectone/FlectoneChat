@@ -125,6 +125,10 @@ commands:
     aliases: [ pardon ]
     permission: flectonechat.ban
 
+  banlist:
+    usage: /banlist
+    permission: flectonechat.banlist
+
   broadcast:
     usage: /broadcast <message>
     aliases: [ bc ]

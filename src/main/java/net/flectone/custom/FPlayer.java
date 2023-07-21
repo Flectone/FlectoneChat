@@ -1,6 +1,7 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
@@ -140,10 +141,7 @@ public class FPlayer {
     public boolean isBanned() {
         boolean isBanned = getTempBanTime() > 0;
 
-        if(!isBanned && !isPermanentlyBanned()){
-            setTempBanTime(0);
-            setTempBanReason("");
-        }
+        if(!isBanned && !isPermanentlyBanned()) unban();
 
         return isBanned;
     }
@@ -202,6 +200,30 @@ public class FPlayer {
 
     public void setTempBanReason(String tempBanReason) {
         this.tempBanReason = tempBanReason;
+    }
+
+    public void tempban(int time, String reason) {
+        setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
+        setTempBanReason(reason);
+        setUpdated(true);
+        FPlayerManager.getBannedPlayers().add(this);
+
+        if(!(player != null && player.isOnline())) return;
+
+        String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
+
+        String localMessage = Main.locale.getFormatString(localStringMessage, player)
+                .replace("<time>", ObjectUtil.convertTimeToString(time))
+                .replace("<reason>", reason);
+
+        player.kickPlayer(localMessage);
+    }
+
+    public void unban() {
+        setTempBanTime(0);
+        setTempBanReason("");
+        setUpdated(true);
+        FPlayerManager.getBannedPlayers().remove(this);
     }
 
     public void setIgnoreList(ArrayList<String> ignoreList) {

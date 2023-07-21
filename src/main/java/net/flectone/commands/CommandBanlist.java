@@ -1,9 +1,10 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -11,11 +12,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
-public class CommandUnban extends FTabCompleter {
+public class CommandBanlist extends FTabCompleter {
 
-    public CommandUnban(){
-        super.commandName = "unban";
+    public CommandBanlist(){
+        super.commandName = "banlist";
     }
 
     @Override
@@ -23,25 +25,23 @@ public class CommandUnban extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
-
-        FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
-
-        if(fPlayer == null){
-            fCommand.sendMeMessage("command.null-player");
-            return true;
-        }
-
-        if(!fPlayer.isBanned() && !fPlayer.isPermanentlyBanned()){
-            fCommand.sendMeMessage("command.unban.not-banned");
-            return true;
-        }
-
         if(fCommand.isHaveCD()) return true;
 
-        fPlayer.unban();
+        int perpage = 20;
 
-        fCommand.sendMeMessage("command.unban.message", "<player>", fPlayer.getRealName());
+        int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perpage);
+
+        int page = strings.length > 0 ? Math.max(0, Integer.parseInt(strings[0])) : 1;
+
+        page = Math.min(lastPage, page);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("page: ").append(page).append("/").append(lastPage);
+        FPlayerManager.getBannedPlayers().stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
+            stringBuilder.append("\n").append(fPlayer.getRealName());
+        });
+
+        commandSender.sendMessage(stringBuilder.toString());
 
         return true;
     }
@@ -52,8 +52,7 @@ public class CommandUnban extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            FPlayerManager.getBannedPlayers()
-                    .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
+            isStartsWith(strings[0], "(message)");
         }
 
         Collections.sort(wordsList);
