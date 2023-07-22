@@ -84,6 +84,14 @@ player:
     sign:
       enable: true
 
+  join:
+    message:
+      enable: true
+
+  quit:
+    message:
+      enable: true
+
 command:
   poll:
     time: 50

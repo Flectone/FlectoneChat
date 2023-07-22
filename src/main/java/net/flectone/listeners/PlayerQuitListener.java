@@ -19,8 +19,13 @@ public class PlayerQuitListener implements Listener {
         event.setQuitMessage(null);
         FCommands fCommands = new FCommands(player, "quit", "quit", new String[]{});
 
-        String string = Main.locale.getString("player.quit.message")
-                .replace("<player>", player.getName());
-        fCommands.sendGlobalMessage(string);
+
+        boolean sendMessage = Main.config.getBoolean("player.quit.message.enable");
+
+        if (sendMessage) {
+            String string = Main.locale.getString("player.quit.message")
+                    .replace("<player>", player.getName());
+            fCommands.sendGlobalMessage(string);
+        }
     }
 }

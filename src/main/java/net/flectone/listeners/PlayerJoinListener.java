@@ -28,10 +28,14 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
         FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
 
-        String string = player.hasPlayedBefore() ? Main.locale.getString("player.join.message") : Main.locale.getString("player.join.first-time.message");
-        string = string.replace("<player>", player.getName());
+        boolean sendMessage = Main.config.getBoolean("player.join.message.enable");
 
-        fCommands.sendGlobalMessage(string);
+        if (sendMessage) {
+            String string = player.hasPlayedBefore() ? Main.locale.getString("player.join.message") : Main.locale.getString("player.join.first-time.message");
+            string = string.replace("<player>", player.getName());
+
+            fCommands.sendGlobalMessage(string);
+        }
 
         HashMap<String, Mail> mails = fPlayer.getMails();
         if(mails == null) return;
