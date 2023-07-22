@@ -325,7 +325,7 @@ public class FPlayer {
                 .replace("<vault_suffix>", this.vaultSuffix)
                 .replace("<afk_suffix>", this.afkSuffix);
 
-        return ObjectUtil.translateHexToColor(name);
+        return ObjectUtil.formatString(name, this.getPlayer());
     }
 
     public String getRealName(){
