@@ -206,7 +206,13 @@ public class FCommands {
             recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
         });
 
-        if(command.contains("chat")) getFPlayer().addChatBubble(messageBuilder.getMessage());
+        String bubbleMessage = messageBuilder.getMessage();
+
+        if (Main.isHaveInteractiveChat) {
+            bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
+        }
+
+        if(command.contains("chat")) getFPlayer().addChatBubble(bubbleMessage);
     }
 
     private Set<Player> getFilteredPlayers(){
@@ -262,6 +268,10 @@ public class FCommands {
     public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String message){
 
         ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getItemInHand() : null;
+
+        if (Main.isHaveInteractiveChat) {
+            message = FlectoneInteractiveChat.mark(message, player.getUniqueId());
+        }
 
         MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, true);
 
