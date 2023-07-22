@@ -198,6 +198,21 @@ command:
     not-banned: "#ff4e4e⁉ Этот игрок не заблокирован"
     message: "#ff4e4e☻ Игрок <player> разблокирован"
 
+  banlist:
+    no-banned-players: "#4eff52☺ Забаненных игроков не найдено"
+
+    pageline: "&&2<prev-page>&&1 Страница: &&2<page>&&1/&&2<last-page> &&2<next-page>"
+    first-pageline: "&&1Страница: &&2<page>&&1/&&2<last-page> &&2<next-page>"
+    last-pageline: "&&2<prev-page> &&1Page: &&2<page>&&1/&&2<last-page>"
+    single-pageline: "&&1Страница: &&2<page>&&1/&&2<last-page>"
+    prev-page: "🡸"
+    next-page: "🡺"
+
+    player-ban: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 осталось <left>"
+    player-ban-permanently: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 навсегда"
+    unban-button: "[❌]"
+    unban-hover: "&&1Нажми, чтобы разбанить &&2<player>"
+
   ignore:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"
     myself: "#ff4e4e⁉ Ты не можешь игнорировать себя"

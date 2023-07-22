@@ -198,6 +198,21 @@ command:
     not-banned: "#ff4e4e⁉ This player is not banned"
     message: "#ff4e4e☻ Player <player> unbanned"
 
+  banlist:
+    no-banned-players: "#4eff52☺ No banned players found"
+
+    pageline: "&&2<prev-page>&&1 Page: &&2<page>&&1/&&2<last-page> &&2<next-page>"
+    first-pageline: "&&1Page: &&2<page>&&1/&&2<last-page> &&2<next-page>"
+    last-pageline: "&&2<prev-page> &&1Page: &&2<page>&&1/&&2<last-page>"
+    single-pageline: "&&1Page: &&2<page>&&1/&&2<last-page>"
+    prev-page: "🡸"
+    next-page: "🡺"
+
+    player-ban: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 <left> left"
+    player-ban-permanently: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 permanently"
+    unban-button: "[❌]"
+    unban-hover: "&&1Click to unban &&2<player>"
+
   ignore:
     usage: "&&1⚑ Usage: &&2/<command> (player)"
     myself: "#ff4e4e⁉ You can't ignore yourself"
