@@ -44,9 +44,7 @@ public class FPlayerManager {
                     if(fPlayer == null) return;
 
                     String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
-                    fPlayer.setTempBanReason(reason);
-                    fPlayer.setTempBanTime(-1);
-                    fPlayer.setUpdated(true);
+                    fPlayer.tempban(-1, reason);
 
                     banList.pardon(offlinePlayer.getName());
                 });
