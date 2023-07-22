@@ -7,14 +7,14 @@
 Разрешение: `flectonechat.chatcolor` (default)
 
 ## /lastonline
-Узнайте, когда игрок последний раз входил на сервер
+узнать когда игрок последний раз входил на сервер
 
 Использование: `/lastonline <player>`  
 Вариации: `lonline`  
 Разрешение: `flectonechat.lastonline` (default)
 
 ## /firstonline
-Узнайте, когда игрок впервые вошел на сервер
+Узнать когда игрок впервые вошел на сервер
 
 Использование: `/firstonline <player>`  
 Вариации: `fonline`  
@@ -81,7 +81,7 @@
 ## /flectonechat
 Внутренняя команда FlectoneChat для администраторов
 
-Использованиеs:
+Использования:
 
 - reload: `/flectonechat reload <config/locale>`  
 - locale: `/flectonechat locale <locale param> set <type> <value>`  
@@ -145,17 +145,20 @@
 
 ## /technical-works
 Кикнуть всех игроков и не позволить им присоединиться к игре.  
-Игнорирует игрокив с разрешением `flectonechat.technical-works` и операторов
+Игнорирует игроков с разрешением `flectonechat.technical-works` и операторов
 
 Использование: `/mute <player> <time> <reason>`  
 Разрешение: `flectonechat.technical-works` (op)
 
-## /switch-chat
-Переключить чат по умолчанию на локальный или глобальный
+## /chat
+Использования:
 
-Использование: `/switch-chat <local/global>`  
-Вариации: `chat`  
-Разрешение: `flectonechat.switch-chat` (default)
+- switch: `/chat switch <local/global>` - писать в локальный/глобальный чат по умолчанию
+- hide: `/chat hide <local/global>` - скрыть локальные/глобальные сообщения
+
+Вариации: `chat`, `switch-chat`, `off-chat`  
+Разрешение: `flectonechat.chat` (default)
+
 
 ## /ball
 Задать вопрос хрустальному шару, чтобы получить ответ
@@ -211,4 +214,4 @@
 
 Использование: `/poll create/vote <poll>`  
 Разрешение: `flectonechat.pollvote` (default)  
-Creating Разрешение: `flectonechat.pollcreate` (op)
+Разрешение на создание: `flectonechat.pollcreate` (op)

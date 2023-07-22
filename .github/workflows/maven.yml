@@ -8,10 +8,7 @@ on:
 
 jobs:
   build:
-    if: | 
-      "!contains(github.event.commits[0].message, '[skip ci]') && \
-       !contains(github.event.commits[0].message, 'Docs: ') && \
-       !contains(github.event.commits[0].message, 'Readme: ')"
+    if: "!contains(github.event.commits[0].message, '[skip ci]') && !contains(github.event.commits[0].message, 'Docs:') && !contains(github.event.commits[0].message, 'Readme:')"
     runs-on: ubuntu-latest
 
     steps:

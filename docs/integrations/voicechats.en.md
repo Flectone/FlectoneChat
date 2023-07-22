@@ -9,4 +9,4 @@ Supported plugins:
 ## mute
 `mute` command also mutes in voice chats
 
-![mute](https://cdn.discordapp.com/attachments/1059552328224620596/1128498893865353286/mute.gif)
+![mute](https://i.imgur.com/RBADk74.gif)
