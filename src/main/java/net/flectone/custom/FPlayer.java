@@ -141,7 +141,10 @@ public class FPlayer {
     public boolean isBanned() {
         boolean isBanned = getTempBanTime() > 0;
 
-        if(!isBanned && !isPermanentlyBanned()) unban();
+        if (!isBanned && !isPermanentlyBanned()) {
+            unban();
+            return false;
+        }
 
         return isBanned;
     }

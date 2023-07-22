@@ -71,7 +71,6 @@ public class FPlayerManager {
 
         FPlayer fPlayer = new FPlayer(offlinePlayer);
         fPlayerHashMap.put(uuid, fPlayer);
-        if (fPlayer.isBanned() || fPlayer.isPermanentlyBanned()) bannedPlayers.add(fPlayer);
     }
 
 
@@ -87,7 +86,6 @@ public class FPlayerManager {
         fPlayerHashMap.put(uuid, fPlayer);
         fPlayer.initialize(player);
         Main.getDatabase().setPlayer(fPlayer.getUUID());
-        if (fPlayer.isBanned() || fPlayer.isPermanentlyBanned()) bannedPlayers.add(fPlayer);
         return fPlayer;
     }
 
