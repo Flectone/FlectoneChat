@@ -77,19 +77,7 @@ public class CommandTempban extends FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, globalMessage, false);
 
-        bannedFPlayer.setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
-        bannedFPlayer.setTempBanReason(reason);
-        bannedFPlayer.setUpdated(true);
-
-        if(!bannedFPlayer.isOnline()) return true;
-
-        String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
-
-        String localMessage = Main.locale.getFormatString(localStringMessage, bannedFPlayer.getPlayer())
-                .replace("<time>", ObjectUtil.convertTimeToString(time))
-                .replace("<reason>", reason);
-
-        bannedFPlayer.getPlayer().kickPlayer(localMessage);
+        bannedFPlayer.tempban(time, reason);
 
         return true;
     }

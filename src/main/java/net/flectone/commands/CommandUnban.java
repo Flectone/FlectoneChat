@@ -39,9 +39,7 @@ public class CommandUnban extends FTabCompleter {
 
         if(fCommand.isHaveCD()) return true;
 
-        fPlayer.setTempBanTime(0);
-        fPlayer.setTempBanReason("");
-        fPlayer.setUpdated(true);
+        fPlayer.unban();
 
         fCommand.sendMeMessage("command.unban.message", "<player>", fPlayer.getRealName());
 
@@ -54,8 +52,7 @@ public class CommandUnban extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            FPlayerManager.getPlayers().parallelStream()
-                    .filter(fPlayer -> fPlayer.isBanned() || fPlayer.isPermanentlyBanned())
+            FPlayerManager.getBannedPlayers()
                     .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
         }
 
