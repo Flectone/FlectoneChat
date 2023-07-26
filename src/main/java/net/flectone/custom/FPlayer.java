@@ -38,6 +38,8 @@ public class FPlayer {
 
     private boolean isAfk = false;
 
+    private boolean isStreaming = false;
+
     private boolean isStreamer = false;
 
     private boolean isMuted = false;
@@ -82,6 +84,7 @@ public class FPlayer {
         setBlock(this.player.getLocation().getBlock());
         getVaultPrefixSuffix();
         setWorldPrefix(player.getWorld());
+        setStreamer();
         setDisplayName();
         setUpdated(true);
     }
@@ -100,6 +103,12 @@ public class FPlayer {
 
     public boolean isOnline(){
         return this.offlinePlayer.isOnline();
+    }
+
+    public void setStreamer() {
+        this.isStreamer = player.hasPermission("flectonechat.stream");
+        if(isStreamer) setStreaming(false);
+        else this.streamPrefix = "";
     }
 
     public Player getPlayer() {
@@ -170,7 +179,7 @@ public class FPlayer {
     }
 
     public String getStreamPrefix() {
-        return isStreamer ? Main.locale.getString("command.stream.prefix") : "";
+        return isStreaming ? Main.locale.getString("command.stream.prefix") : "";
     }
 
     public void setMuteReason(String muteReason) {
@@ -332,16 +341,18 @@ public class FPlayer {
         this.numberLastInventory = numberLastInventory;
     }
 
-    public boolean isStreamer() {
-        return this.isStreamer;
+    public boolean isStreaming() {
+        return this.isStreaming;
     }
 
-    public void setStreamer(boolean streamer) {
-        this.isStreamer = streamer;
+    public void setStreaming(boolean streaming) {
+        this.isStreaming = streaming;
+        this.streamPrefix = Main.locale.getFormatString(getStreamFormatPrefix(), getPlayer());
     }
 
-    public void setStreamPrefix(String streamPrefix) {
-        this.streamPrefix = streamPrefix;
+    private String getStreamFormatPrefix(){
+        return isStreaming ? "command.stream.online-prefix" :
+                Main.config.getBoolean("command.stream.offline-prefix.enable") ? "command.stream.offline-prefix" : "";
     }
 
     public void setAfkSuffix(String afkSuffix) {

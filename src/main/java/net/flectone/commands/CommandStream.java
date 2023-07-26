@@ -34,19 +34,19 @@ public class CommandStream extends FTabCompleter {
         }
 
         if(!fCommand.isConsole()){
-            if(!fCommand.getFPlayer().isStreamer() && strings[0].equalsIgnoreCase("end")){
+            if(!fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("end")){
                 fCommand.sendMeMessage("command.stream.end.not");
                 return true;
             }
 
-            if(fCommand.getFPlayer().isStreamer() && strings[0].equalsIgnoreCase("start")){
+            if(fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("start")){
                 fCommand.sendMeMessage("command.stream.start.already");
                 return true;
             }
 
             if(strings[0].equalsIgnoreCase("end")){
-                fCommand.getFPlayer().setStreamer(false);
-                fCommand.getFPlayer().setStreamPrefix("");
+                fCommand.getFPlayer().setStreaming(false);
+                fCommand.getFPlayer().setDisplayName();
                 fCommand.sendMeMessage("command.stream.end.message");
                 return true;
             }
@@ -55,8 +55,7 @@ public class CommandStream extends FTabCompleter {
 
             if(fCommand.isMuted()) return true;
 
-            fCommand.getFPlayer().setStreamer(true);
-            fCommand.getFPlayer().setStreamPrefix(Main.locale.getFormatString("command.stream.prefix", commandSender));
+            fCommand.getFPlayer().setStreaming(true);
         }
 
         StringBuilder stringBuilder = new StringBuilder();

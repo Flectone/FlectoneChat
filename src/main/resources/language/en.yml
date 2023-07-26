@@ -313,7 +313,8 @@ command:
 
   stream:
     usage: "&&1⚑ Usage: &&2/<command> start/end"
-    prefix: "#ff4e4e⏻ "
+    online-prefix: "#ff4e4e⏻&f "
+    offline-prefix: "#666666⏻&f "
     end:
       not: "#ff4e4e⁉ You don't stream"
       message: "&&1★ Thanks for streaming on our server!"

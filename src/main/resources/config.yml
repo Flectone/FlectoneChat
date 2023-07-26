@@ -103,6 +103,8 @@ command:
 
   stream:
     global: true
+    offline-prefix:
+      enable: true
 
   afk:
     timeout:
