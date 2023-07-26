@@ -146,6 +146,9 @@ public abstract class Database {
                 fPlayer.setIgnoreList(arrayList);
                 fPlayer.setMuteTime(resultSet.getInt("mute_time"));
                 fPlayer.setMuteReason(resultSet.getString("mute_reason"));
+
+                if(fPlayer.isMuted()) FPlayerManager.getMutedPlayers().add(fPlayer);
+
                 fPlayer.setTempBanTime(resultSet.getInt("tempban_time"));
                 fPlayer.setTempBanReason(resultSet.getString("tempban_reason"));
 
@@ -206,8 +209,8 @@ public abstract class Database {
             else if(fPlayer.getRealBanTime() == -1) ps1.setInt(3, -1);
             else ps1.setObject(3, null);
 
-            String tempBanReason = fPlayer.getTempBanReason();
-            tempBanReason = tempBanTime > 0 ? tempBanReason : null;
+            String tempBanReason = fPlayer.getBanReason();
+            tempBanReason = fPlayer.isBanned() ? tempBanReason : null;
             ps1.setString(4, tempBanReason);
 
             String[] colors = fPlayer.getColors();
