@@ -16,6 +16,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Criteria;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 
 import java.io.File;
 
@@ -58,6 +61,7 @@ public final class Main extends JavaPlugin {
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
         loadIcons();
+        loadScoreboard();
 
         this.database = new SQLite(this);
         this.database.load();
@@ -73,6 +77,12 @@ public final class Main extends JavaPlugin {
         info("✔ Plugin enabled");
 
         WebUtil.checkNewerVersion();
+    }
+
+    private void loadScoreboard(){
+        FPlayerManager.setScoreBoard(Bukkit.getScoreboardManager().getNewScoreboard());
+        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", Criteria.DUMMY, "ping");
+        objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
     private void registerClasses() {
@@ -106,12 +116,6 @@ public final class Main extends JavaPlugin {
             getLogger().info("\uD83D\uDD12 Vault detected and hooked");
         }
 
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            isHavePAPI = true;
-            new FExpansion().register();
-            getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
-        }
-
         if (Bukkit.getPluginManager().getPlugin("voicechat") != null) {
             new RegisterSimpleVoiceChat();
             getLogger().info("\uD83D\uDD12 SimpleVoiceChat detected and hooked");
@@ -130,6 +134,12 @@ public final class Main extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
             new FLuckPerms(this);
             getLogger().info("\uD83D\uDD12 LuckPerms detected and hooked");
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            isHavePAPI = true;
+            getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
+            new FExpansion().register();
         }
     }
 

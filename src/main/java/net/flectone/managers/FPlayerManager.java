@@ -14,13 +14,17 @@ import java.util.*;
 
 public class FPlayerManager {
 
-    private static final Scoreboard scoreBoard = Bukkit.getScoreboardManager().getNewScoreboard();
+    private static Scoreboard scoreBoard;
 
     private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
 
     private static final Set<FPlayer> bannedPlayers = new HashSet<>();
 
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
+
+    public static void setScoreBoard(Scoreboard scoreBoard) {
+        FPlayerManager.scoreBoard = scoreBoard;
+    }
 
     public static Scoreboard getScoreBoard() {
         return scoreBoard;
