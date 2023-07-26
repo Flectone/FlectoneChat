@@ -3,8 +3,8 @@ package net.flectone.listeners;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,7 +46,8 @@ public class AsyncPlayerChatListener implements Listener {
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            if(recipients.size() == 1 && Main.config.getBoolean("chat.local.no-recipients.enable")){
+            if(recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1
+                    && Main.config.getBoolean("chat.local.no-recipients.enable")){
                 noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
             }
 
