@@ -20,7 +20,13 @@
 
 server:
   motd:
-    message: "&&1This server uses FlectoneChat ❤"
+    messages:
+      - "&&1This server uses FlectoneChat ❤"
+      - "&&1Welcome to our server!"
+      - "&&1Join us and enjoy a unique game experience!"
+      - "&&1Join our Discord server for communication and updates: https://discord.flectone.net"
+      - "&&1We have a friendly community - be polite and respect each other!"
+      - "&&1Enjoy the game! If you have any questions, feel free to contact the administration"
 
 tab:
   header:

@@ -1,16 +1,27 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
+import net.flectone.utils.ObjectUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.util.CachedServerIcon;
+
+import java.io.File;
+import java.util.List;
+import java.util.Random;
 
 public class ServerListPingListener implements Listener {
 
     @EventHandler
     public void updateServerList(ServerListPingEvent event){
-        if(Main.config.getBoolean("server.motd.message.enable")){
-            event.setMotd(Main.locale.getFormatString("server.motd.message", null));
+        if(Main.config.getBoolean("server.motd.messages.enable")){
+            List<String> motds = Main.locale.getStringList("server.motd.messages");
+
+            int numberMotd = new Random().nextInt(0, motds.size());
+
+            event.setMotd(ObjectUtil.formatString(motds.get(numberMotd), null));
         }
 
         if(Main.config.getBoolean("server.online.count.enable")){
