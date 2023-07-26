@@ -173,6 +173,20 @@ public class FPlayer {
         this.muteReason = muteReason;
     }
 
+    public void mute(int time, String reason) {
+        setMuteTime(time + ObjectUtil.getCurrentTime());
+        setMuteReason(reason);
+        setUpdated(true);
+        FPlayerManager.getMutedPlayers().add(this);
+    }
+
+    public void unmute(){
+        setMuteTime(0);
+        setMuteReason("");
+        setUpdated(true);
+        FPlayerManager.getMutedPlayers().remove(this);
+    }
+
     public String getMuteReason() {
         return this.muteReason;
     }

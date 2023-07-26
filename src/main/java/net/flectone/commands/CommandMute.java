@@ -76,9 +76,7 @@ public class CommandMute extends FTabCompleter {
             FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
         }
 
-        mutedFPlayer.setMuteTime(time + ObjectUtil.getCurrentTime());
-        mutedFPlayer.setMuteReason(reason);
-        mutedFPlayer.setUpdated(true);
+        mutedFPlayer.mute(time, reason);
 
         return true;
     }

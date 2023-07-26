@@ -40,15 +40,13 @@ public class CommandUnmute extends FTabCompleter {
 
         if(fCommand.isHaveCD()) return true;
 
-        fPlayer.setMuteTime(0);
-        fPlayer.setMuteReason("");
-        fPlayer.setUpdated(true);
-
-        fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
-
         if(Main.isHavePlasmoVoice) {
             FlectonePlasmoVoice.unmute(fPlayer.getRealName());
         }
+
+        fPlayer.unmute();
+
+        fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
 
         return true;
     }
