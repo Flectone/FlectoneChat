@@ -18,7 +18,7 @@ public class PlayerInteractAtEntityListener implements Listener {
         if(Main.config.getBoolean("player.team.name-visible")) return;
 
         String formatMessage = Main.locale.getFormatString("player.team.right-click-message", event.getPlayer())
-                .replace("<player>", FPlayerManager.getPlayer(((Player) event.getRightClicked()).getPlayer()).getName());
+                .replace("<player>", FPlayerManager.getPlayer(((Player) event.getRightClicked()).getPlayer()).getDisplayName());
 
         event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
 

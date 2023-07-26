@@ -368,10 +368,10 @@ public class FPlayer {
         }
     }
 
-    public String getName() {
+    private String getName(String formatName){
         getVaultPrefixSuffix();
 
-        String name = Main.config.getString("player.name")
+        String name = Main.config.getString("player." + formatName)
                 .replace("<vault_prefix>", this.vaultPrefix)
                 .replace("<world_prefix>", this.worldPrefix)
                 .replace("<stream_prefix>", this.streamPrefix)
@@ -380,6 +380,15 @@ public class FPlayer {
                 .replace("<afk_suffix>", this.afkSuffix);
 
         return ObjectUtil.formatString(name, this.getPlayer());
+
+    }
+
+    public String getDisplayName() {
+        return getName("display-name");
+    }
+
+    public String getTabName() {
+        return getName("tab-name");
     }
 
     public String getRealName(){
@@ -387,19 +396,17 @@ public class FPlayer {
     }
 
     public void setDisplayName(){
-        String name = getName();
+        String name = getDisplayName();
         String[] strings = name.split(this.name);
         String prefix = strings.length > 0 ? strings[0] : "";
         String suffix = strings.length > 1 ? strings[1] : "";
 
-        this.player.setPlayerListName(name);
+        this.player.setPlayerListName(getTabName());
         this.team.setPrefix(prefix);
         this.team.setSuffix(suffix);
     }
 
     public void setPlayerListHeaderFooter() {
-        if (!player.isOnline()) return;
-
         setDisplayName();
 
         if (Main.config.getBoolean("tab.header-message.enable")) {

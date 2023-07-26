@@ -83,7 +83,7 @@ public class AsyncPlayerChatListener implements Listener {
         }
 
         String configMessage = Main.locale.getString("chat." + chatType + ".message")
-                .replace("<player>", FPlayerManager.getPlayer(player).getName());
+                .replace("<player>", FPlayerManager.getPlayer(player).getDisplayName());
 
         fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
     }

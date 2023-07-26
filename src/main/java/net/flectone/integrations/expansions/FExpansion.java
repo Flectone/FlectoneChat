@@ -70,7 +70,7 @@ public class FExpansion extends PlaceholderExpansion {
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
-            return fPlayer.getName();
+            return fPlayer.getDisplayName();
         }
 
         return null; // Placeholder is unknown by the Expansion
