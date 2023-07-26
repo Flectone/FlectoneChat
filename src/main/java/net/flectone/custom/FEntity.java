@@ -21,14 +21,14 @@ public class FEntity {
             return;
         }
 
-        if(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color) != null)
-            noCollisionTeamMap.put(color, Bukkit.getScoreboardManager().getMainScoreboard().getTeam(color));
+        if(FPlayerManager.getScoreBoard().getTeam(color) != null)
+            noCollisionTeamMap.put(color, FPlayerManager.getScoreBoard().getTeam(color));
 
         Team team = noCollisionTeamMap.get(color);
 
         if(team == null){
 
-            team = Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(color);
+            team = FPlayerManager.getScoreBoard().registerNewTeam(color);
 
             team.setCanSeeFriendlyInvisibles(false);
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
@@ -43,7 +43,7 @@ public class FEntity {
     public static void removeFromTeam(Entity entity, String color){
         if(entity instanceof Player) {
             Player player = (Player) entity;
-            Bukkit.getScoreboardManager().getMainScoreboard()
+            FPlayerManager.getScoreBoard()
                     .getTeam(player.getName())
                     .setColor(ChatColor.WHITE);
             return;
@@ -54,13 +54,13 @@ public class FEntity {
     }
 
     public static void removePlayerFromTeam(FPlayer fPlayer){
-        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(fPlayer.getRealName());
+        Team team = FPlayerManager.getScoreBoard().getTeam(fPlayer.getRealName());
         if(team == null) return;
         team.removeEntry(fPlayer.getRealName());
     }
 
     public static void removeBugEntities(Player player){
-        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).parallelStream().forEach(entity -> {
+        player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).forEach(entity -> {
             if(entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
 
             entity.setGlowing(false);
