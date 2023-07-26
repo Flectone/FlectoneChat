@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class CommandBall extends FTabCompleter {
 
-    public CommandBall(){
+    public CommandBall() {
         super.commandName = "ball";
     }
 
@@ -24,11 +24,11 @@ public class CommandBall extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
         List<String> answers = Main.locale.getStringList("command.ball.format");
 
@@ -49,7 +49,7 @@ public class CommandBall extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "(message)");
         }
 

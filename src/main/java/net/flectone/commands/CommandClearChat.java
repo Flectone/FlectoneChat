@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CommandClearChat extends FTabCompleter {
 
-    public CommandClearChat(){
+    public CommandClearChat() {
         super.commandName = "clear-chat";
     }
 
@@ -20,7 +20,7 @@ public class CommandClearChat extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         String string = " \n".repeat(100);
 

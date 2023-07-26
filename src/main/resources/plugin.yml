@@ -3,7 +3,7 @@ version: '${project.version}'
 main: net.flectone.Main
 api-version: 1.16
 authors: [ TheFaser, fxd ]
-softdepend: [ Vault, PlaceHolderAPI, voicechat, plasmovoice, InteractiveChat, LuckPerms]
+softdepend: [ Vault, PlaceHolderAPI, voicechat, plasmovoice, InteractiveChat, LuckPerms ]
 commands:
   ignore:
     usage: /ignore <player>

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandIgnoreList extends FTabCompleter {
 
-    public CommandIgnoreList(){
+    public CommandIgnoreList() {
         super.commandName = "ignore-list";
     }
 
@@ -24,16 +24,16 @@ public class CommandIgnoreList extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
         List<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
-        if(ignoreList.isEmpty()){
+        if (ignoreList.isEmpty()) {
             fCommand.sendMeMessage("command.ignore-list.empty");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         List<Inventory> inventoryList = new ArrayList<>();
 
@@ -42,8 +42,8 @@ public class CommandIgnoreList extends FTabCompleter {
         int inventorySize = 9 * 3;
         int numInventories = (ignoreList.size() - 1) / inventorySize + 1;
 
-        for(int x = 0; x < numInventories; x++){
-            Inventory inventory = Bukkit.createInventory(null, 9*3, inventoryTitle.replace("<number>", String.valueOf(x+1)));
+        for (int x = 0; x < numInventories; x++) {
+            Inventory inventory = Bukkit.createInventory(null, 9 * 3, inventoryTitle.replace("<number>", String.valueOf(x + 1)));
             inventoryList.add(inventory);
         }
 

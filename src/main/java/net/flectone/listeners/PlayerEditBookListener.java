@@ -11,16 +11,16 @@ import org.bukkit.inventory.meta.BookMeta;
 public class PlayerEditBookListener implements Listener {
 
     @EventHandler
-    public void onPlayerEditBook(PlayerEditBookEvent event){
+    public void onPlayerEditBook(PlayerEditBookEvent event) {
         BookMeta bookMeta = event.getNewBookMeta();
         String command = "book";
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getItemInUse();
 
-        for(int x = 1; x <= event.getNewBookMeta().getPages().size(); x++){
+        for (int x = 1; x <= event.getNewBookMeta().getPages().size(); x++) {
             String string = bookMeta.getPage(x);
 
-            if(string.isEmpty()) continue;
+            if (string.isEmpty()) continue;
 
             bookMeta.setPage(x, ObjectUtil.buildFormattedMessage(player, command, string, itemInHand));
         }

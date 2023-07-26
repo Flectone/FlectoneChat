@@ -6,7 +6,14 @@ public class WordParams {
     private boolean isPlayerPing = false;
 
     private String playerPingName;
-
+    private boolean clickable = false;
+    private boolean isItem = false;
+    private boolean isUrl = false;
+    private String url;
+    private boolean isHide;
+    private String hideMessage;
+    private String text;
+    private boolean isFormatted;
 
     public String getPlayerPingName() {
         return playerPingName;
@@ -20,8 +27,6 @@ public class WordParams {
         isPlayerPing = playerPing;
     }
 
-    private boolean clickable = false;
-
     public void setClickable(boolean clickable, String playerPingName) {
         this.clickable = clickable;
         this.playerPingName = playerPingName;
@@ -31,23 +36,12 @@ public class WordParams {
         return clickable;
     }
 
-    private boolean isItem = false;
-
-    public void setItem(boolean item) {
-        isItem = item;
-    }
-
     public boolean isItem() {
         return isItem;
     }
 
-    private boolean isUrl = false;
-    
-    private String url;
-
-    public void setUrl(String url) {
-        isUrl = true;
-        this.url = url;
+    public void setItem(boolean item) {
+        isItem = item;
     }
 
     public String getUrl() {
@@ -58,7 +52,10 @@ public class WordParams {
         return isUrl;
     }
 
-    private boolean isHide;
+    public void setUrl(String url) {
+        isUrl = true;
+        this.url = url;
+    }
 
     public boolean isHide() {
         return isHide;
@@ -68,37 +65,31 @@ public class WordParams {
         isHide = hide;
     }
 
-    private String hideMessage;
-
-    public void setHideMessage(String hideMessage) {
-        this.hideMessage = hideMessage;
-    }
-
     public String getHideMessage() {
         return hideMessage;
     }
 
-    private String text;
-
-    public void setText(String text) {
-        this.text = text;
+    public void setHideMessage(String hideMessage) {
+        this.hideMessage = hideMessage;
     }
 
     public String getText() {
         return text;
     }
 
-    private boolean isFormatted;
-
-    public void setFormatted(boolean formatted) {
-        isFormatted = formatted;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public boolean isFormatted() {
         return isFormatted;
     }
 
-    public boolean isEdited(){
+    public void setFormatted(boolean formatted) {
+        isFormatted = formatted;
+    }
+
+    public boolean isEdited() {
         return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isFormatted();
     }
 }

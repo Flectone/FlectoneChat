@@ -19,42 +19,41 @@ import java.util.stream.Collectors;
 public class FTabCompleter implements CommandExecutor, TabCompleter {
 
     protected String commandName;
+    protected List<String> wordsList = new ArrayList<>();
 
     public String getCommandName() {
         return commandName;
     }
 
-    protected List<String> wordsList = new ArrayList<>();
-
-    protected void isStartsWith(String arg, String string){
-        if(string.toLowerCase().startsWith(arg.toLowerCase()) || arg.replace(" ", "").isEmpty()){
+    protected void isStartsWith(String arg, String string) {
+        if (string.toLowerCase().startsWith(arg.toLowerCase()) || arg.replace(" ", "").isEmpty()) {
             wordsList.add(string);
         }
     }
 
-    protected void addKeysFile(FileManager fileManager, String arg){
+    protected void addKeysFile(FileManager fileManager, String arg) {
         fileManager.getKeys().parallelStream()
                 .filter(key -> !fileManager.getString(key).contains("root='YamlConfiguration'"))
                 .forEachOrdered(key -> isStartsWith(arg, key));
     }
 
-    protected void isOfflinePlayer(String arg){
+    protected void isOfflinePlayer(String arg) {
         FPlayerManager.getPlayers().parallelStream()
                 .forEach(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
     }
 
-    protected void isOnlinePlayer(String arg){
+    protected void isOnlinePlayer(String arg) {
         Bukkit.getOnlinePlayers().parallelStream()
                 .forEach(player -> isStartsWith(arg, player.getName()));
     }
 
-    protected void isFormatString(String arg){
+    protected void isFormatString(String arg) {
         Arrays.stream(FCommands.formatTimeList).parallel()
                 .forEach(format -> {
-                    if(arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))){
+                    if (arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))) {
                         isStartsWith(arg, arg + format);
                     } else {
-                        for(int x = 1; x < 10; x++){
+                        for (int x = 1; x < 10; x++) {
                             isStartsWith(arg, x + format);
                         }
                     }

@@ -1,7 +1,6 @@
 package net.flectone.integrations.expansions;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
@@ -10,10 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FExpansion extends PlaceholderExpansion {
 
-    private final Main plugin;
-
-    public FExpansion(Main plugin) {
-        this.plugin = plugin;
+    public FExpansion() {
     }
 
     @Override
@@ -39,42 +35,42 @@ public class FExpansion extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
 
-        if(params.equalsIgnoreCase("stream_prefix")){
+        if (params.equalsIgnoreCase("stream_prefix")) {
 
-            if(player == null || !player.isOnline()) return "";
+            if (player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return ObjectUtil.translateHexToColor(fPlayer.getStreamPrefix());
         }
 
-        if(params.equalsIgnoreCase("afk_suffix")) {
+        if (params.equalsIgnoreCase("afk_suffix")) {
 
-            if(player == null || !player.isOnline()) return "";
+            if (player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
         }
 
-        if(params.equalsIgnoreCase("world_prefix")){
-            if(player == null || !player.isOnline()) return "";
+        if (params.equalsIgnoreCase("world_prefix")) {
+            if (player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
         }
 
-        if(params.equalsIgnoreCase("player_display_name")){
-            if(player == null || !player.isOnline()) return "";
+        if (params.equalsIgnoreCase("player_display_name")) {
+            if (player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return fPlayer.getDisplayName();
         }
 
-        if(params.equalsIgnoreCase("player_tab_name")){
-            if(player == null || !player.isOnline()) return "";
+        if (params.equalsIgnoreCase("player_tab_name")) {
+            if (player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 

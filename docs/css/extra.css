@@ -1,20 +1,20 @@
 body {
-  --md-default-bg-color: #171717 !important;
-  --md-default-fg-color--light: #a6adc8 !important;
-  --md-accent-fg-color: #cdd6f4 !important;
-  --md-footer-bg-color: var(--md-default-bg-color) !important;
-  --md-footer-bg-color--dark: var(--md-default-bg-color) !important;
-  --md-code-bg-color: #101010 !important;
+    --md-default-bg-color: #171717 !important;
+    --md-default-fg-color--light: #a6adc8 !important;
+    --md-accent-fg-color: #cdd6f4 !important;
+    --md-footer-bg-color: var(--md-default-bg-color) !important;
+    --md-footer-bg-color--dark: var(--md-default-bg-color) !important;
+    --md-code-bg-color: #101010 !important;
 }
 
 .md-typeset h3,
 .md-typeset h2 {
-  font-weight: bold;
-  color: #89b4fa;
+    font-weight: bold;
+    color: #89b4fa;
 }
 
 .md-typeset__table {
-   min-width: 100%;
+    min-width: 100%;
 }
 
 .md-typeset table:not([class]) {
@@ -22,17 +22,17 @@ body {
 }
 
 th:nth-child(1) {
-  width: 10%;
+    width: 10%;
 }
 
 th:nth-child(2) {
-  width: 50%;
+    width: 50%;
 }
 
 th:nth-child(3) {
-  width: 10%;
+    width: 10%;
 }
 
 th:nth-child(4) {
-  width: 30%;
+    width: 30%;
 }

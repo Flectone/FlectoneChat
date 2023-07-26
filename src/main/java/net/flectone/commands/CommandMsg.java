@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CommandMsg extends FTabCompleter {
 
-    public CommandMsg(){
+    public CommandMsg() {
         super.commandName = "msg";
     }
 
@@ -27,37 +27,37 @@ public class CommandMsg extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
         FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(playerName);
-        if(secondFPlayer == null){
+        if (secondFPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if(!secondFPlayer.isOnline()){
+        if (!secondFPlayer.isOnline()) {
             Bukkit.dispatchCommand(commandSender, "mail " + playerName + " " + message);
             return true;
         }
 
-        if(!fCommand.isConsole()){
-            if(fCommand.getSenderName().equalsIgnoreCase(playerName)){
+        if (!fCommand.isConsole()) {
+            if (fCommand.getSenderName().equalsIgnoreCase(playerName)) {
                 commandSender.sendMessage(Main.locale.getFormatString("command.msg.myself", commandSender) + message);
                 return true;
             }
 
-            if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
+            if (fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())) {
                 fCommand.sendMeMessage("command.you_ignore");
                 return true;
             }
-            if(secondFPlayer.isIgnored((Player) commandSender)){
+            if (secondFPlayer.isIgnored((Player) commandSender)) {
                 fCommand.sendMeMessage("command.he_ignore");
                 return true;
             }
@@ -73,9 +73,9 @@ public class CommandMsg extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isOfflinePlayer(strings[0]);
-        } else if(strings.length == 2) {
+        } else if (strings.length == 2) {
             isStartsWith(strings[1], "(message)");
         }
 

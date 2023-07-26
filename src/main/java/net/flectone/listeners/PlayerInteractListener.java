@@ -42,16 +42,16 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
-    public void playerItemClick(PlayerInteractEvent event){
+    public void playerItemClick(PlayerInteractEvent event) {
 
-        if(FPlayerManager.getPlayer(event.getPlayer()).isAfk()){
+        if (FPlayerManager.getPlayer(event.getPlayer()).isAfk()) {
             CommandAfk.setAfkFalse(event.getPlayer());
         } else FPlayerManager.getPlayer(event.getPlayer()).setBlock(event.getPlayer().getLocation().getBlock());
 
-        if(event.getAction().equals(Action.LEFT_CLICK_BLOCK)
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                 && Main.config.getBoolean("player.item.sign.enable")
                 && event.getClickedBlock() != null
-                && event.getClickedBlock().getType().equals(Material.ANVIL)){
+                && event.getClickedBlock().getType().equals(Material.ANVIL)) {
 
             PlayerInventory playerInventory = event.getPlayer().getInventory();
             ItemStack offHandItem = playerInventory.getItemInOffHand();
@@ -73,15 +73,15 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        if(!Main.config.getBoolean("command.mark.enable")) return;
-        if(!event.getPlayer().hasPermission("flectonechat.mark")) return;
+        if (!Main.config.getBoolean("command.mark.enable")) return;
+        if (!event.getPlayer().hasPermission("flectonechat.mark")) return;
 
-        if(event.getItem() == null) return;
+        if (event.getItem() == null) return;
 
-        if(event.getItem().getType().equals(Material.NETHER_STAR)){
+        if (event.getItem().getType().equals(Material.NETHER_STAR)) {
             String itemName = event.getItem().getItemMeta().getDisplayName();
-            if(!itemName.isEmpty() && itemName.toLowerCase().equals("flectone")){
-                Bukkit.dispatchCommand(event.getPlayer(), "mark " + CommandMark.chatColorValues[((int) (Math.random()* CommandMark.chatColorValues.length))]);
+            if (itemName.equalsIgnoreCase("flectone")) {
+                Bukkit.dispatchCommand(event.getPlayer(), "mark " + CommandMark.chatColorValues[((int) (Math.random() * CommandMark.chatColorValues.length))]);
                 return;
             }
         }
@@ -91,18 +91,18 @@ public class PlayerInteractListener implements Listener {
         try {
             markItem = Material.valueOf(Main.config.getString("command.mark.item").toUpperCase());
 
-        } catch (IllegalArgumentException | NullPointerException exception ){
+        } catch (IllegalArgumentException | NullPointerException exception) {
             Main.getInstance().getLogger().warning("Item for mark was not found");
             markItem = Material.WOODEN_SWORD;
         }
 
-        if(!event.getItem().getType().equals(markItem)) return;
+        if (!event.getItem().getType().equals(markItem)) return;
 
         String itemName = event.getItem().getItemMeta().getDisplayName().toUpperCase();
 
         String command = "mark";
 
-        if(!itemName.isEmpty() && containsColor(itemName)){
+        if (!itemName.isEmpty() && containsColor(itemName)) {
             command += " " + itemName;
         }
 
@@ -110,15 +110,15 @@ public class PlayerInteractListener implements Listener {
 
     }
 
-    private boolean containsColor(String color){
+    private boolean containsColor(String color) {
         return Arrays.asList(CommandMark.chatColorValues).contains(color.toUpperCase());
     }
 
-    private void paintItem(ItemStack itemStack, String playerName, String color){
+    private void paintItem(ItemStack itemStack, String playerName, String color) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> stringList = itemMeta.getLore();
 
-        if(stringList == null){
+        if (stringList == null) {
             stringList = new ArrayList<>();
         }
 
@@ -137,7 +137,7 @@ public class PlayerInteractListener implements Listener {
 
         formatString = ObjectUtil.translateHexToColor(color + formatString);
 
-        if(numberPaint != -1){
+        if (numberPaint != -1) {
             stringList.set(numberPaint, formatString);
         } else {
             stringList.add(formatString);
@@ -147,15 +147,15 @@ public class PlayerInteractListener implements Listener {
         itemStack.setItemMeta(itemMeta);
     }
 
-    private interface ReplaceItem {
-        void setItemNull();
-    }
-
-    private void decreaseItemAmount(ItemStack itemStack, ReplaceItem replaceItem){
-        if (itemStack.getAmount() == 1){
+    private void decreaseItemAmount(ItemStack itemStack, ReplaceItem replaceItem) {
+        if (itemStack.getAmount() == 1) {
             replaceItem.setItemNull();
         } else {
             itemStack.setAmount(itemStack.getAmount() - 1);
         }
+    }
+
+    private interface ReplaceItem {
+        void setItemNull();
     }
 }

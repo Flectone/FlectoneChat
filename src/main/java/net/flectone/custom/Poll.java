@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Poll {
 
-    private List<FPlayer> fPlayerList = new ArrayList<>();
+    private final List<FPlayer> fPlayerList = new ArrayList<>();
 
-    private String message;
+    private final String message;
 
     private int agree = 0;
 
@@ -22,7 +22,7 @@ public class Poll {
 
     private int id;
 
-    public Poll(String message){
+    public Poll(String message) {
         this.message = message;
 
         this.id = PollManager.getPollList().size();
@@ -45,12 +45,12 @@ public class Poll {
         }, 20L * Main.config.getInt("command.poll.time"));
     }
 
-    public int vote(FPlayer fPlayer, String typeVote){
-        if(fPlayerList.contains(fPlayer)) return 0;
+    public int vote(FPlayer fPlayer, String typeVote) {
+        if (fPlayerList.contains(fPlayer)) return 0;
 
         fPlayerList.add(fPlayer);
 
-        if(typeVote.equalsIgnoreCase("agree")) return ++agree;
+        if (typeVote.equalsIgnoreCase("agree")) return ++agree;
         else return ++disagree;
     }
 
@@ -62,7 +62,7 @@ public class Poll {
         return message;
     }
 
-    public boolean isExpired(){
+    public boolean isExpired() {
         return isExpired;
     }
 

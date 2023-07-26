@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 
 public class AfkTicker extends FBukkitRunnable {
 
-    public AfkTicker(){
+    public AfkTicker() {
         super.period = 20L;
     }
 
@@ -22,14 +22,14 @@ public class AfkTicker extends FBukkitRunnable {
 
             Block block = fPlayer.getPlayer().getLocation().getBlock();
 
-            if(!fPlayer.isMoved(block)){
+            if (!fPlayer.isMoved(block)) {
 
                 boolean isEnable = Main.config.getBoolean("command.afk.timeout.enable");
-                if(fPlayer.isAfk() || !isEnable) return;
+                if (fPlayer.isAfk() || !isEnable) return;
 
                 int diffTime = ObjectUtil.getCurrentTime() - fPlayer.getLastTimeMoved();
 
-                if(diffTime >= Main.config.getInt("command.afk.timeout.time")){
+                if (diffTime >= Main.config.getInt("command.afk.timeout.time")) {
                     CommandAfk.sendMessage(fPlayer, true);
                     fPlayer.setDisplayName();
                 }
@@ -39,7 +39,7 @@ public class AfkTicker extends FBukkitRunnable {
 
             fPlayer.setBlock(block);
 
-            if(!fPlayer.isAfk()) return;
+            if (!fPlayer.isAfk()) return;
 
             CommandAfk.sendMessage(fPlayer, false);
             fPlayer.setDisplayName();

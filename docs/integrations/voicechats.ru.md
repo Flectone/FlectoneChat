@@ -7,6 +7,7 @@ FlectoneChat имеет интеграции с популярными плаг�
 - [Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat/)
 
 ## Мут
+
 команда `mute` также отключает звук в голосовых чатах
 
 ![mute](https://i.imgur.com/RBADk74.gif)

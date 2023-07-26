@@ -22,12 +22,12 @@ import java.util.UUID;
 public class InventoryOpenListener implements Listener {
 
     @EventHandler
-    public void inventoryOpen(InventoryOpenEvent event){
+    public void inventoryOpen(InventoryOpenEvent event) {
 
         FPlayer fPlayer = FPlayerManager.getPlayer((OfflinePlayer) event.getPlayer());
 
         List<Inventory> inventoryList = fPlayer.getInventoryList();
-        if(inventoryList == null
+        if (inventoryList == null
                 || !inventoryList.contains(event.getInventory())) return;
 
         List<String> ignoreList = fPlayer.getIgnoreList();
@@ -35,9 +35,9 @@ public class InventoryOpenListener implements Listener {
         int indexItem = 0;
         int numberInventory = 0;
         int maxSlotsInventory = 17;
-        for(int y = 0; y < ignoreList.size(); y++){
+        for (int y = 0; y < ignoreList.size(); y++) {
 
-            if(y > maxSlotsInventory){
+            if (y > maxSlotsInventory) {
                 maxSlotsInventory += 18;
                 indexItem = 0;
                 numberInventory++;
@@ -57,19 +57,19 @@ public class InventoryOpenListener implements Listener {
 
         }
 
-        for(int x = 0; x < inventoryList.size(); x++){
+        for (int x = 0; x < inventoryList.size(); x++) {
             Inventory inventory = inventoryList.get(x);
 
-            if(inventoryList.size() > x+1){
+            if (inventoryList.size() > x + 1) {
                 inventory.setItem(26, createArrowItem(new ItemStack(Material.SPECTRAL_ARROW), "spectral_arrow", event.getPlayer()));
             }
-            if(x != 0){
+            if (x != 0) {
                 inventory.setItem(18, createArrowItem(new ItemStack(Material.ARROW), "arrow", event.getPlayer()));
             }
         }
     }
 
-    private ItemStack createArrowItem(ItemStack arrow, String arrowName, HumanEntity player){
+    private ItemStack createArrowItem(ItemStack arrow, String arrowName, HumanEntity player) {
         ItemMeta itemMeta = arrow.getItemMeta();
         itemMeta.setDisplayName(Main.locale.getFormatString("command.ignore-list." + arrowName, (Player) player));
         arrow.setItemMeta(itemMeta);

@@ -46,16 +46,17 @@ public class AsyncPlayerChatListener implements Listener {
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            if(recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1
-                    && Main.config.getBoolean("chat.local.no-recipients.enable")){
+            if (recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1
+                    && Main.config.getBoolean("chat.local.no-recipients.enable")) {
                 noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
             }
 
-            if(Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
+            if (Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
-            if(Main.config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
-            if(Main.config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
+            if (Main.config.getBoolean("chat.global.prefix.cleared"))
+                event.setMessage(message.replaceFirst(globalPrefix, ""));
+            if (Main.config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
             message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
@@ -63,9 +64,9 @@ public class AsyncPlayerChatListener implements Listener {
         event.getRecipients().clear();
     }
 
-    public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack){
+    public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack) {
 
-        if(chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")){
+        if (chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")) {
             Bukkit.getOnlinePlayers().parallelStream()
                     .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see"))
                     .forEach(recipients::add);
@@ -73,11 +74,11 @@ public class AsyncPlayerChatListener implements Listener {
 
         FCommands fCommands = new FCommands(player, chatType + "chat", chatType + " chat", new String[]{});
 
-        if(fCommands.isHaveCD()) return;
+        if (fCommands.isHaveCD()) return;
 
-        if(fCommands.isMuted()) return;
+        if (fCommands.isMuted()) return;
 
-        if(!noRecipientsMessage.isEmpty()) {
+        if (!noRecipientsMessage.isEmpty()) {
             player.sendMessage(noRecipientsMessage);
             noRecipientsMessage = "";
         }
@@ -107,13 +108,13 @@ public class AsyncPlayerChatListener implements Listener {
                 .filter(entity -> entity instanceof Player)
                 .map(entity -> (Player) entity)
                 .collect(Collectors.toSet());
-        
+
         removeRecipients(recipients, player, reversedChatType);
 
         createMessage(recipients, player, "%item%", chatType, event.getCursor());
     }
-    
-    private void removeRecipients(Set<Player> recipients, Player player, String reversedChatType){
+
+    private void removeRecipients(Set<Player> recipients, Player player, String reversedChatType) {
         recipients.removeIf(recipient -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(recipient);
 

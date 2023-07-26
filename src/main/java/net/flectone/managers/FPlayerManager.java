@@ -22,11 +22,11 @@ public class FPlayerManager {
 
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
 
-    public static Scoreboard getScoreBoard(){
+    public static Scoreboard getScoreBoard() {
         return scoreBoard;
     }
 
-    public static Collection<FPlayer> getPlayers(){
+    public static Collection<FPlayer> getPlayers() {
         return fPlayerHashMap.values();
     }
 
@@ -38,7 +38,7 @@ public class FPlayerManager {
         return mutedPlayers;
     }
 
-    public static void loadPlayers(){
+    public static void loadPlayers() {
         Arrays.stream(Bukkit.getOfflinePlayers())
                 .forEach(FPlayerManager::addPlayer);
 
@@ -48,13 +48,13 @@ public class FPlayerManager {
                 .forEach(player -> getPlayer(player).initialize(player));
     }
 
-    public static void loadBanList(){
+    public static void loadBanList() {
         BanList banList = Bukkit.getBanList(BanList.Type.NAME);
 
         Bukkit.getBannedPlayers().parallelStream()
                 .forEach(offlinePlayer -> {
                     FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
-                    if(fPlayer == null) return;
+                    if (fPlayer == null) return;
 
                     String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
                     fPlayer.tempban(-1, reason);
@@ -63,7 +63,7 @@ public class FPlayerManager {
                 });
     }
 
-    public static void uploadPlayers(){
+    public static void uploadPlayers() {
         fPlayerHashMap.values().stream()
                 .filter(FPlayer::isUpdated)
                 .forEach(fPlayer -> {
@@ -72,22 +72,22 @@ public class FPlayerManager {
                 });
     }
 
-    public static void removePlayersFromTeams(){
+    public static void removePlayersFromTeams() {
         fPlayerHashMap.values().forEach(FEntity::removePlayerFromTeam);
     }
 
-    public static void addPlayer(@NotNull OfflinePlayer offlinePlayer){
+    public static void addPlayer(@NotNull OfflinePlayer offlinePlayer) {
         String uuid = offlinePlayer.getUniqueId().toString();
-        if(fPlayerHashMap.containsKey(uuid)) return;
+        if (fPlayerHashMap.containsKey(uuid)) return;
 
         FPlayer fPlayer = new FPlayer(offlinePlayer);
         fPlayerHashMap.put(uuid, fPlayer);
     }
 
 
-    public static FPlayer addPlayer(@NotNull Player player){
+    public static FPlayer addPlayer(@NotNull Player player) {
         String uuid = player.getUniqueId().toString();
-        if(fPlayerHashMap.containsKey(uuid)) {
+        if (fPlayerHashMap.containsKey(uuid)) {
             FPlayer fPlayer = getPlayer(uuid);
             fPlayer.initialize(player);
             return fPlayer;
@@ -100,51 +100,39 @@ public class FPlayerManager {
         return fPlayer;
     }
 
-    public static void addPlayer(String uuid){
-        addPlayer(Bukkit.getOfflinePlayer(UUID.fromString(uuid)));
-    }
-
-    public static void addPlayer(UUID uuid){
-        addPlayer(Bukkit.getOfflinePlayer(uuid));
-    }
-
-    public static FPlayer getPlayerFromName(String name){
+    public static FPlayer getPlayerFromName(String name) {
         return fPlayerHashMap.values()
                 .parallelStream()
                 .filter(fPlayer -> fPlayer.getRealName().equals(name))
                 .findFirst().orElse(null);
     }
 
-    public static FPlayer getPlayer(@NotNull OfflinePlayer offlinePlayer){
+    public static FPlayer getPlayer(@NotNull OfflinePlayer offlinePlayer) {
         return getPlayer(offlinePlayer.getUniqueId());
     }
 
-    public static FPlayer getPlayer(@NotNull Player player){
+    public static FPlayer getPlayer(@NotNull Player player) {
         return getPlayer(player.getUniqueId());
     }
 
-    public static FPlayer getPlayer(String uuid){
+    public static FPlayer getPlayer(String uuid) {
         return fPlayerHashMap.get(uuid);
     }
 
-    public static FPlayer getPlayer(UUID uuid){
+    public static FPlayer getPlayer(UUID uuid) {
         return getPlayer(uuid.toString());
     }
 
-    public static void removePlayer(String uuid){
+    public static void removePlayer(String uuid) {
         fPlayerHashMap.remove(uuid);
     }
 
-    public static void removePlayer(UUID uuid){
+    public static void removePlayer(UUID uuid) {
         removePlayer(uuid.toString());
     }
 
-    public static void removePlayer(@NotNull Player player){
+    public static void removePlayer(@NotNull Player player) {
         removePlayer(player.getUniqueId());
-    }
-
-    public static void removePlayer(@NotNull OfflinePlayer offlinePlayer){
-        removePlayer(offlinePlayer.getUniqueId());
     }
 
 }

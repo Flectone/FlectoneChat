@@ -24,40 +24,40 @@ import java.util.List;
 
 public class CommandMark extends FTabCompleter {
 
-    public CommandMark(){
+    public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
+
+    public CommandMark() {
         super.commandName = "mark";
     }
-
-    public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(!Main.config.getBoolean("command.mark.enable")) {
-            fCommand.sendMeMessage( "command.disabled");
+        if (!Main.config.getBoolean("command.mark.enable")) {
+            fCommand.sendMeMessage("command.disabled");
             return true;
         }
 
         String color = (strings.length > 0) ? strings[0].toUpperCase() : "WHITE";
 
-        if(!Arrays.asList(chatColorValues).contains(color)){
+        if (!Arrays.asList(chatColorValues).contains(color)) {
             fCommand.sendMeMessage("command.mark.wrong-color");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
         int range = Main.config.getInt("command.mark.range");
 
         Entity entity = getEntityInLineOfSightVectorMath((Player) commandSender, range);
 
-        if(entity != null && !entity.isGlowing()){
+        if (entity != null && !entity.isGlowing()) {
             entity.setGlowing(true);
 
             Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
@@ -83,8 +83,8 @@ public class CommandMark extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
-            for(String color : chatColorValues){
+        if (strings.length == 1) {
+            for (String color : chatColorValues) {
                 isStartsWith(strings[0], color);
             }
         }

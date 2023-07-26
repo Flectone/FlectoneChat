@@ -1,7 +1,7 @@
 # World prefixes
 
 World prefixes are colored dots by default.  
-To change their display, check your lang file.  
+To change their display, check your lang file.
 
 ```yaml
   world:

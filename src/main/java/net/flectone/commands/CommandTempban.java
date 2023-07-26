@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class CommandTempban extends FTabCompleter {
 
-    public CommandTempban(){
+    public CommandTempban() {
         super.commandName = "tempban";
     }
 
@@ -31,12 +31,12 @@ public class CommandTempban extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
         String stringTime = strings.length > 1 ? strings[1] : "permanent";
 
-        if((!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1)))
-                && !stringTime.equals("permanent")){
+        if ((!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1)))
+                && !stringTime.equals("permanent")) {
             fCommand.sendUsageMessage();
             return true;
         }
@@ -44,19 +44,19 @@ public class CommandTempban extends FTabCompleter {
         String playerName = strings[0];
         FPlayer bannedFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(bannedFPlayer == null){
+        if (bannedFPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         int time = fCommand.getTimeFromString(stringTime);
 
-        if(time < -1){
+        if (time < -1) {
             fCommand.sendMeMessage("command.long-number");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.tempban.default-reason");
 
@@ -87,8 +87,8 @@ public class CommandTempban extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1) isOfflinePlayer(strings[0]);
-        else if(strings.length == 2){
+        if (strings.length == 1) isOfflinePlayer(strings[0]);
+        else if (strings.length == 2) {
             isFormatString(strings[1]);
             isStartsWith(strings[1], "permanent");
         } else if (strings.length == 3) isStartsWith(strings[2], "(reason)");

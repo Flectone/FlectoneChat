@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandReply extends FTabCompleter {
 
-    public CommandReply(){
+    public CommandReply() {
         super.commandName = "reply";
     }
 
@@ -24,33 +24,33 @@ public class CommandReply extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.getFPlayer().getLastWriter() == null){
+        if (fCommand.getFPlayer().getLastWriter() == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
 
-        if(!secondFPlayer.isOnline()){
+        if (!secondFPlayer.isOnline()) {
             fCommand.sendMeMessage("command.reply.no-receiver");
             return true;
         }
 
-        if(fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())){
+        if (fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())) {
             fCommand.sendMeMessage("command.you_ignore");
             return true;
         }
 
-        if(secondFPlayer.isIgnored(fCommand.getPlayer())){
+        if (secondFPlayer.isIgnored(fCommand.getPlayer())) {
             fCommand.sendMeMessage("command.he_ignore");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
         String message = ObjectUtil.toString(strings);
         fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), message);
@@ -63,7 +63,7 @@ public class CommandReply extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "(message)");
         }
 

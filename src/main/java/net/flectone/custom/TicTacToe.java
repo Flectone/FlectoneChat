@@ -22,9 +22,9 @@ public class TicTacToe {
 
     private final String[][] marks;
 
-    private String firstPlayer;
+    private final String firstPlayer;
 
-    private String secondPlayer;
+    private final String secondPlayer;
 
     private String nextPlayer;
 
@@ -32,7 +32,7 @@ public class TicTacToe {
 
     private boolean isAccepted = false;
 
-    public TicTacToe(int size, String firstPlayer, String secondPlayer){
+    public TicTacToe(int size, String firstPlayer, String secondPlayer) {
         this.uuid = UUID.randomUUID().toString();
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
@@ -40,8 +40,8 @@ public class TicTacToe {
 
         marks = new String[size][size];
 
-        for(int x = 0; x < size; x++){
-            for(int y = 0; y < size; y++){
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
                 this.marks[x][y] = mark;
             }
         }
@@ -49,19 +49,23 @@ public class TicTacToe {
         ticTacToeHashMap.put(uuid, this);
     }
 
-    public String getUuid() {
-        return uuid;
+    public static TicTacToe get(String uuid) {
+        return ticTacToeHashMap.get(uuid);
     }
 
-    public void setAccepted(boolean accepted) {
-        isAccepted = accepted;
+    public String getUuid() {
+        return uuid;
     }
 
     public boolean isAccepted() {
         return isAccepted;
     }
 
-    public void setMark(String player, int number){
+    public void setAccepted(boolean accepted) {
+        isAccepted = accepted;
+    }
+
+    public void setMark(String player, int number) {
         int row = (number - 1) / marks.length;
         int column = (number - 1) % marks.length;
 
@@ -70,28 +74,28 @@ public class TicTacToe {
         nextPlayer = player.equals(firstPlayer) ? firstPlayer : secondPlayer;
     }
 
-    public FPlayer getSecondFPlayer(String player){
+    public FPlayer getSecondFPlayer(String player) {
         return FPlayerManager.getPlayer(player.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
-    public boolean isBusy(int number){
+    public boolean isBusy(int number) {
         int row = (number - 1) / marks.length;
         int column = (number - 1) % marks.length;
         return !marks[row][column].equals(mark);
     }
 
-    public boolean isNextPlayer(String player){
+    public boolean isNextPlayer(String player) {
         return nextPlayer.equals(player);
     }
 
-    public FPlayer getCurrentFPlayer(){
+    public FPlayer getCurrentFPlayer() {
         return FPlayerManager.getPlayer(nextPlayer.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
-    public BaseComponent[] build(FPlayer fPlayer){
+    public BaseComponent[] build(FPlayer fPlayer) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        if(!isEnded){
+        if (!isEnded) {
             componentBuilder.append("\n");
             String moveMessage = (Main.locale.getFormatString("command.tic-tac-toe.game.move", fPlayer.getPlayer())
                     .replace("<player>", getCurrentFPlayer().getRealName()));
@@ -104,11 +108,12 @@ public class TicTacToe {
         boolean isNext = isNextPlayer(fPlayer.getUUID());
 
         int k = 0;
-        for(String[] row : marks){
-            for(String mark : row){
+        for (String[] row : marks) {
+            for (String mark : row) {
                 k++;
                 TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(ObjectUtil.formatString(mark, fPlayer.getPlayer())));
-                if(!isNext) textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ttt " + uuid + " " + k));
+                if (!isNext)
+                    textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ttt " + uuid + " " + k));
 
                 componentBuilder.append(textComponent);
             }
@@ -117,10 +122,6 @@ public class TicTacToe {
 
 
         return componentBuilder.create();
-    }
-
-    public static TicTacToe get(String uuid){
-        return ticTacToeHashMap.get(uuid);
     }
 
     public boolean hasWinningTrio() {
@@ -187,7 +188,7 @@ public class TicTacToe {
         isEnded = ended;
     }
 
-    public boolean checkDraw(){
+    public boolean checkDraw() {
         for (String[] strings : marks) {
             for (int y = 0; y < marks.length; y++) {
                 if (strings[y].equals(mark)) return false;

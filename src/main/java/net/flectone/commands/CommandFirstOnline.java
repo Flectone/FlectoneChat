@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandFirstOnline extends FTabCompleter {
 
-    public CommandFirstOnline(){
+    public CommandFirstOnline() {
         super.commandName = "firstonline";
     }
 
@@ -24,17 +24,17 @@ public class CommandFirstOnline extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
         String playerName = strings[0];
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(fPlayer == null){
+        if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         long playedTime = fPlayer.getOfflinePlayer().getFirstPlayed();
 
@@ -51,7 +51,7 @@ public class CommandFirstOnline extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isOfflinePlayer(strings[0]);
         }
 

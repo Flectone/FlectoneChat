@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class PlayerJoinListener implements Listener {
 
     @EventHandler
-    public void joinPlayer(PlayerJoinEvent event){
+    public void joinPlayer(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         FEntity.removeBugEntities(player);
@@ -38,7 +38,7 @@ public class PlayerJoinListener implements Listener {
         }
 
         HashMap<String, Mail> mails = fPlayer.getMails();
-        if(mails == null) return;
+        if (mails == null) return;
 
         mails.values().parallelStream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
 
@@ -54,10 +54,10 @@ public class PlayerJoinListener implements Listener {
     }
 
     @EventHandler
-    public void onLoginPlayer(PlayerLoginEvent event){
+    public void onLoginPlayer(PlayerLoginEvent event) {
 
         FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
-        if(fPlayer != null && fPlayer.isBanned()){
+        if (fPlayer != null && fPlayer.isBanned()) {
             String localString = fPlayer.isPermanentlyBanned() ? "command.ban.local-message" : "command.tempban.local-message";
             int bannedTime = fPlayer.isPermanentlyBanned() ? -1 : fPlayer.getTempBanTime();
 
@@ -68,9 +68,9 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        if(Main.config.getBoolean("command.technical-works.enable")
+        if (Main.config.getBoolean("command.technical-works.enable")
                 && !event.getPlayer().isOp()
-                && !event.getPlayer().hasPermission("flectonechat.technical-works")){
+                && !event.getPlayer().hasPermission("flectonechat.technical-works")) {
 
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, Main.locale.getFormatString("command.technical-works.kicked-message", null));
         }

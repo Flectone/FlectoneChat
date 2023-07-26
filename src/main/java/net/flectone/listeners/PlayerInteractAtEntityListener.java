@@ -12,13 +12,13 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 public class PlayerInteractAtEntityListener implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractAtEntityEvent event){
-        if(!(event.getRightClicked() instanceof Player)) return;
+    public void onPlayerInteract(PlayerInteractAtEntityEvent event) {
+        if (!(event.getRightClicked() instanceof Player)) return;
 
-        if(Main.config.getBoolean("player.team.name-visible")) return;
+        if (Main.config.getBoolean("player.team.name-visible")) return;
 
         String formatMessage = Main.locale.getFormatString("player.team.right-click-message", event.getPlayer())
-                .replace("<player>", FPlayerManager.getPlayer(((Player) event.getRightClicked()).getPlayer()).getDisplayName());
+                .replace("<player>", FPlayerManager.getPlayer((Player) event.getRightClicked()).getDisplayName());
 
         event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
 

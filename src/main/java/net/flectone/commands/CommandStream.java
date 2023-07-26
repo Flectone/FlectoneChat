@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CommandStream extends FTabCompleter {
 
-    public CommandStream(){
+    public CommandStream() {
         super.commandName = "stream";
     }
 
@@ -23,43 +23,43 @@ public class CommandStream extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(strings.length < 1 || !strings[0].equalsIgnoreCase("start") && !strings[0].equalsIgnoreCase("end")){
+        if (strings.length < 1 || !strings[0].equalsIgnoreCase("start") && !strings[0].equalsIgnoreCase("end")) {
             fCommand.sendUsageMessage();
             return true;
         }
 
-        if(strings.length == 1 && strings[0].equalsIgnoreCase("start")){
+        if (strings.length == 1 && strings[0].equalsIgnoreCase("start")) {
             fCommand.sendMeMessage("command.stream.start.need-url");
             return true;
         }
 
-        if(!fCommand.isConsole()){
-            if(!fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("end")){
+        if (!fCommand.isConsole()) {
+            if (!fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("end")) {
                 fCommand.sendMeMessage("command.stream.end.not");
                 return true;
             }
 
-            if(fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("start")){
+            if (fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("start")) {
                 fCommand.sendMeMessage("command.stream.start.already");
                 return true;
             }
 
-            if(strings[0].equalsIgnoreCase("end")){
+            if (strings[0].equalsIgnoreCase("end")) {
                 fCommand.getFPlayer().setStreaming(false);
                 fCommand.getFPlayer().setDisplayName();
                 fCommand.sendMeMessage("command.stream.end.message");
                 return true;
             }
 
-            if(fCommand.isHaveCD()) return true;
+            if (fCommand.isHaveCD()) return true;
 
-            if(fCommand.isMuted()) return true;
+            if (fCommand.isMuted()) return true;
 
             fCommand.getFPlayer().setStreaming(true);
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        for(String string : Main.locale.getStringList("command.stream.start.message")){
+        for (String string : Main.locale.getStringList("command.stream.start.message")) {
 
             string = string
                     .replace("<player>", fCommand.getSenderName())
@@ -80,10 +80,10 @@ public class CommandStream extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "start");
             isStartsWith(strings[0], "end");
-        } else if(strings.length == 2 && strings[0].equalsIgnoreCase("start")){
+        } else if (strings.length == 2 && strings[0].equalsIgnoreCase("start")) {
             isStartsWith(strings[1], "https://flectone.net");
         }
 

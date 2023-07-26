@@ -15,8 +15,8 @@ import java.util.Random;
 public class ServerListPingListener implements Listener {
 
     @EventHandler
-    public void updateServerList(ServerListPingEvent event){
-        if(Main.config.getBoolean("server.motd.messages.enable")){
+    public void updateServerList(ServerListPingEvent event) {
+        if (Main.config.getBoolean("server.motd.messages.enable")) {
             List<String> motds = Main.locale.getStringList("server.motd.messages");
 
             int numberMotd = new Random().nextInt(0, motds.size());
@@ -24,11 +24,11 @@ public class ServerListPingListener implements Listener {
             event.setMotd(ObjectUtil.formatString(motds.get(numberMotd), null));
         }
 
-        if(Main.config.getBoolean("server.online.count.enable")){
+        if (Main.config.getBoolean("server.online.count.enable")) {
             event.setMaxPlayers(Main.config.getInt("server.online.count.digit"));
         }
 
-        if(Main.config.getBoolean("server.icon.enable")){
+        if (Main.config.getBoolean("server.icon.enable")) {
             List<String> iconNames = Main.config.getStringList("server.icon.names");
 
             int numberIcon = Main.config.getString("server.icon.mode").equals("single") ? 0 :
@@ -38,11 +38,11 @@ public class ServerListPingListener implements Listener {
         }
     }
 
-    private void setIcon(ServerListPingEvent event, String iconName){
+    private void setIcon(ServerListPingEvent event, String iconName) {
         try {
             CachedServerIcon serverIcon = Bukkit.loadServerIcon(new File(Main.getInstance().getDataFolder(), "icons" + File.separator + iconName + ".png"));
             event.setServerIcon(serverIcon);
-        } catch (Exception exception){
+        } catch (Exception exception) {
             Main.warning("Unable to load and install " + iconName + ".png image");
             exception.printStackTrace();
         }

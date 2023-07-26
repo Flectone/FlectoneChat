@@ -9,7 +9,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 public class EntityDismountListener implements Listener {
 
     @EventHandler
-    public void checkAreaEffectCloudDismount(EntityDismountEvent event){
+    public void checkAreaEffectCloudDismount(EntityDismountEvent event) {
         Entity entity = event.getEntity();
         if (entity.getType().equals(EntityType.AREA_EFFECT_CLOUD)) entity.remove();
     }

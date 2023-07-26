@@ -102,7 +102,7 @@ public class ReflectionUtil {
         }
     }
 
-    public static String[] getFormattedStringItem(ItemStack itemStack){
+    public static String[] getFormattedStringItem(ItemStack itemStack) {
 
         String itemName = ReflectionUtil.getMinecraftName(itemStack);
         itemName = itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty() ? itemName : itemStack.getItemMeta().getDisplayName();
@@ -198,9 +198,9 @@ public class ReflectionUtil {
         }
     }
 
-    public static void registerClasses(String packageName, RegisterInterface registerInterface){
+    public static void registerClasses(String packageName, RegisterInterface registerInterface) {
         try {
-            for(ClassPath.ClassInfo classInfo : ClassPath.from(Main.getInstance().getClass().getClassLoader()).getTopLevelClassesRecursive(packageName)){
+            for (ClassPath.ClassInfo classInfo : ClassPath.from(Main.getInstance().getClass().getClassLoader()).getTopLevelClassesRecursive(packageName)) {
 
                 Class<?> c = Class.forName(classInfo.getName());
 
@@ -208,7 +208,7 @@ public class ReflectionUtil {
             }
 
         } catch (IOException | NoSuchMethodException | ClassNotFoundException | InstantiationException |
-                 IllegalAccessException | InvocationTargetException e){
+                 IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }

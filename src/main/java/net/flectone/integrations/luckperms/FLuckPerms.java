@@ -22,7 +22,7 @@ public class FLuckPerms {
     }
 
     private void onUserPromote(NodeMutateEvent event) {
-        if(event.getTarget() instanceof User) {
+        if (event.getTarget() instanceof User) {
             FPlayer fPlayer = FPlayerManager.getPlayer(((User) event.getTarget()).getUniqueId());
             fPlayer.setStreamer();
             fPlayer.setDisplayName();

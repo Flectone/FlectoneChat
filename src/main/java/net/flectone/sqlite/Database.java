@@ -26,7 +26,7 @@ public abstract class Database {
     Main plugin;
     Connection connection;
 
-    public Database(Main instance){
+    public Database(Main instance) {
         plugin = instance;
     }
 
@@ -34,13 +34,13 @@ public abstract class Database {
 
     public abstract void load();
 
-    public void initialize(){
+    public void initialize() {
         Main.info("\uD83D\uDCCA Database connecting");
         connection = getSQLConnection();
-        try{
+        try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
             ResultSet rs = ps.executeQuery();
-            close(ps,rs);
+            close(ps, rs);
 
             Arrays.stream(Bukkit.getOfflinePlayers())
                     .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId().toString()));
@@ -50,17 +50,17 @@ public abstract class Database {
         }
     }
 
-    private void loadOldConfigs(){
+    private void loadOldConfigs() {
         Main.info("\uD83D\uDCCA Migrating old configs to database");
         ArrayList<FPlayer> fPlayers = new ArrayList<>();
 
         File themeFile = new File(plugin.getDataFolder(), "themes.yml");
-        if(themeFile.exists()){
-            FileConfiguration themesConfiguration =  YamlConfiguration.loadConfiguration(themeFile);
-            for(String uuid : themesConfiguration.getKeys(true)){
+        if (themeFile.exists()) {
+            FileConfiguration themesConfiguration = YamlConfiguration.loadConfiguration(themeFile);
+            for (String uuid : themesConfiguration.getKeys(true)) {
                 FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
                 List<String> stringList = themesConfiguration.getStringList(uuid);
-                if(fPlayer == null || stringList.size() < 2) continue;
+                if (fPlayer == null || stringList.size() < 2) continue;
 
                 fPlayer.setColors(stringList.get(0), stringList.get(1));
                 fPlayers.add(fPlayer);
@@ -68,12 +68,12 @@ public abstract class Database {
         }
 
         File muteFile = new File(plugin.getDataFolder(), "mutes.yml");
-        if(muteFile.exists()){
-            FileConfiguration muteConfiguration =  YamlConfiguration.loadConfiguration(muteFile);
-            for(String uuid : muteConfiguration.getKeys(true)){
+        if (muteFile.exists()) {
+            FileConfiguration muteConfiguration = YamlConfiguration.loadConfiguration(muteFile);
+            for (String uuid : muteConfiguration.getKeys(true)) {
                 FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
                 List<String> stringList = muteConfiguration.getStringList(uuid);
-                if(fPlayer == null || stringList.size() < 2) continue;
+                if (fPlayer == null || stringList.size() < 2) continue;
 
                 fPlayer.setMuteReason(stringList.get(0));
                 fPlayer.setMuteTime(Integer.parseInt(stringList.get(1)));
@@ -82,12 +82,12 @@ public abstract class Database {
         }
 
         File ignoreFile = new File(plugin.getDataFolder(), "ignores.yml");
-        if(ignoreFile.exists()){
+        if (ignoreFile.exists()) {
             FileConfiguration ignoreConfiguration = YamlConfiguration.loadConfiguration(ignoreFile);
-            for(String uuid : ignoreConfiguration.getKeys(true)){
+            for (String uuid : ignoreConfiguration.getKeys(true)) {
                 FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
                 List<String> stringList = ignoreConfiguration.getStringList(uuid);
-                if(fPlayer == null || stringList.isEmpty()) continue;
+                if (fPlayer == null || stringList.isEmpty()) continue;
 
                 fPlayer.setIgnoreList(new ArrayList<>(stringList));
                 fPlayers.add(fPlayer);
@@ -95,16 +95,16 @@ public abstract class Database {
         }
 
         File mailFile = new File(plugin.getDataFolder(), "mails.yml");
-        if(mailFile.exists()){
+        if (mailFile.exists()) {
             FileConfiguration mailConfiguration = YamlConfiguration.loadConfiguration(mailFile);
-            for(String uuid : mailConfiguration.getKeys(true)){
-                if(!uuid.contains(".")) continue;
+            for (String uuid : mailConfiguration.getKeys(true)) {
+                if (!uuid.contains(".")) continue;
                 String[] uuids = uuid.split("\\.");
                 FPlayer firstFPlayer = FPlayerManager.getPlayer(uuids[0]);
                 FPlayer secondFPlayer = FPlayerManager.getPlayer(uuids[1]);
 
                 List<String> stringList = mailConfiguration.getStringList(uuid);
-                for(String message : stringList){
+                for (String message : stringList) {
                     Mail mail = new Mail(secondFPlayer.getUUID(), firstFPlayer.getUUID(), message);
                     firstFPlayer.addMail(mail.getUUID(), mail);
                 }
@@ -116,7 +116,7 @@ public abstract class Database {
         Main.info("\uD83D\uDCCA Migration of old configs to database is finished");
     }
 
-    public void setPlayer(String uuid){
+    public void setPlayer(String uuid) {
         try (Connection conn = getSQLConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
 
@@ -129,17 +129,17 @@ public abstract class Database {
     }
 
 
-    public void loadDatabase(){
+    public void loadDatabase() {
         Main.info("\uD83D\uDCCA Start loading database");
         try (Connection conn = getSQLConnection();
-             PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM players")){
+             PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM players")) {
 
             ResultSet resultSet = ps1.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
 
                 FPlayer fPlayer = FPlayerManager.getPlayer(resultSet.getString("uuid"));
-                if(fPlayer == null) continue;
+                if (fPlayer == null) continue;
 
                 String color = resultSet.getString("colors");
 
@@ -153,7 +153,7 @@ public abstract class Database {
                 fPlayer.setMuteTime(resultSet.getInt("mute_time"));
                 fPlayer.setMuteReason(resultSet.getString("mute_reason"));
 
-                if(fPlayer.isMuted()) FPlayerManager.getMutedPlayers().add(fPlayer);
+                if (fPlayer.isMuted()) FPlayerManager.getMutedPlayers().add(fPlayer);
 
                 fPlayer.setTempBanTime(resultSet.getInt("tempban_time"));
                 fPlayer.setTempBanReason(resultSet.getString("tempban_reason"));
@@ -165,10 +165,10 @@ public abstract class Database {
                 fPlayer.setChat(chat);
 
                 String mail = resultSet.getString("mails");
-                if(mail == null) continue;
+                if (mail == null) continue;
                 String[] mails = mail.split(",");
 
-                for(String uuid : mails){
+                for (String uuid : mails) {
                     PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM mails WHERE uuid = ?");
                     ps2.setString(1, uuid);
 
@@ -186,10 +186,10 @@ public abstract class Database {
 
         Main.info("\uD83D\uDCCA Database loaded successfully");
 
-        if(SQLite.isOldVersion) loadOldConfigs();
+        if (SQLite.isOldVersion) loadOldConfigs();
     }
 
-    public void uploadDatabase(FPlayer fPlayer){
+    public void uploadDatabase(FPlayer fPlayer) {
         try (Connection conn = getSQLConnection();
              PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET " +
                      "mute_time = ? ," +
@@ -200,10 +200,10 @@ public abstract class Database {
                      "ignore_list = ? ," +
                      "mails = ? ," +
                      "chat = ?" +
-                     "WHERE uuid = ?")){
+                     "WHERE uuid = ?")) {
 
             int muteTime = fPlayer.getMuteTime();
-            if(muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
+            if (muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
             else ps1.setObject(1, null);
 
             String muteReason = fPlayer.getMuteReason();
@@ -211,8 +211,8 @@ public abstract class Database {
             ps1.setString(2, muteReason);
 
             int tempBanTime = fPlayer.getTempBanTime();
-            if(tempBanTime > 0) ps1.setInt(3, tempBanTime + ObjectUtil.getCurrentTime());
-            else if(fPlayer.getRealBanTime() == -1) ps1.setInt(3, -1);
+            if (tempBanTime > 0) ps1.setInt(3, tempBanTime + ObjectUtil.getCurrentTime());
+            else if (fPlayer.getRealBanTime() == -1) ps1.setInt(3, -1);
             else ps1.setObject(3, null);
 
             String tempBanReason = fPlayer.getBanReason();
@@ -223,18 +223,18 @@ public abstract class Database {
             ps1.setString(5, colors[0] + "," + colors[1]);
 
             String ignoreListString = "";
-            for(String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString += ignoredPlayer + ",";
+            for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString += ignoredPlayer + ",";
             ignoreListString = ignoreListString.length() == 0 ? null : ignoreListString;
             ps1.setString(6, ignoreListString);
 
-            if(!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0){
+            if (!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0) {
                 fPlayer.getMails().forEach((uuid, mail) -> {
-                    if(mail.isRemoved()){
+                    if (mail.isRemoved()) {
                         try {
                             PreparedStatement ps2 = conn.prepareStatement("DELETE FROM mails WHERE uuid = ?");
                             ps2.setString(1, uuid);
                             ps2.executeUpdate();
-                        } catch (SQLException e){
+                        } catch (SQLException e) {
                             plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), e);
                         }
                         return;
@@ -270,18 +270,19 @@ public abstract class Database {
         }
     }
 
-    public void close(PreparedStatement ps,ResultSet rs){
+    public void close(PreparedStatement ps, ResultSet rs) {
         try {
             if (ps != null)
                 ps.close();
             if (rs != null)
                 rs.close();
         } catch (SQLException ex) {
-            Error.close(plugin, ex);
+            Main.warning("Failed to close MySQL connection");
+            ex.printStackTrace();
         }
     }
 
-    public void delayedUpdateDatabase(){
+    public void delayedUpdateDatabase() {
         Main.info("\uD83D\uDCCA Loaded players to database");
 
         FPlayerManager.uploadPlayers();

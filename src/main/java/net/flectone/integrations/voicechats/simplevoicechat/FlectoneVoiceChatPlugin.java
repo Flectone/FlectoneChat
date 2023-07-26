@@ -44,10 +44,10 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
         registration.registerEvent(MicrophonePacketEvent.class, this::onMicrophonePacketEvent);
     }
 
-    private void onMicrophonePacketEvent(MicrophonePacketEvent event){
+    private void onMicrophonePacketEvent(MicrophonePacketEvent event) {
         Player player = (Player) event.getSenderConnection().getPlayer().getPlayer();
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
-        if(fPlayer != null && fPlayer.isMuted()) {
+        if (fPlayer != null && fPlayer.isMuted()) {
             event.cancel();
             String formatMessage = Main.locale.getFormatString("command.mute.local-message", player)
                     .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))

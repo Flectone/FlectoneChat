@@ -9,9 +9,10 @@ public class FBukkitRunnable extends BukkitRunnable {
     protected long period;
 
     @Override
-    public void run() {}
+    public void run() {
+    }
 
-    public void runTaskTimer(){
+    public void runTaskTimer() {
         super.runTaskTimer(Main.getInstance(), delay, period);
     }
 }

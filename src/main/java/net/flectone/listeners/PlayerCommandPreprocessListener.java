@@ -10,10 +10,10 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class PlayerCommandPreprocessListener implements Listener {
 
     @EventHandler
-    public void checkPlayerUseCommand(PlayerCommandPreprocessEvent event){
+    public void checkPlayerUseCommand(PlayerCommandPreprocessEvent event) {
         FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
 
-        if(!fPlayer.isAfk() || event.getMessage().startsWith("/afk")) return;
+        if (!fPlayer.isAfk() || event.getMessage().startsWith("/afk")) return;
 
         CommandAfk.setAfkFalse(event.getPlayer());
     }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CommandIgnore extends FTabCompleter {
 
-    public CommandIgnore(){
+    public CommandIgnore() {
         super.commandName = "ignore";
     }
 
@@ -24,11 +24,11 @@ public class CommandIgnore extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
-        if(fCommand.isSelfCommand()){
+        if (fCommand.isSelfCommand()) {
             fCommand.sendMeMessage("command.ignore.myself");
             return true;
         }
@@ -36,19 +36,19 @@ public class CommandIgnore extends FTabCompleter {
         String playerName = strings[0];
         FPlayer ignoredFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(ignoredFPlayer == null){
+        if (ignoredFPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         ArrayList<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
         boolean isIgnored = fCommand.getFPlayer().isIgnored(ignoredFPlayer.getUUID());
         fCommand.sendMeMessage("command.ignore." + !isIgnored + "-message", "<player>", ignoredFPlayer.getRealName());
 
-        if(isIgnored) ignoreList.remove(ignoredFPlayer.getUUID());
+        if (isIgnored) ignoreList.remove(ignoredFPlayer.getUUID());
         else ignoreList.add(ignoredFPlayer.getUUID());
 
         fCommand.getFPlayer().setIgnoreList(ignoreList);
@@ -62,7 +62,7 @@ public class CommandIgnore extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isOfflinePlayer(strings[0]);
         }
 

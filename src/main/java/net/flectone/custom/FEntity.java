@@ -12,20 +12,20 @@ public class FEntity {
 
     private static final HashMap<String, Team> noCollisionTeamMap = new HashMap<>();
 
-    public static void addToTeam(Entity entity, String color){
-        if(entity instanceof Player) {
+    public static void addToTeam(Entity entity, String color) {
+        if (entity instanceof Player) {
 
             Player player = (Player) entity;
             FPlayerManager.getPlayer(player).setTeamColor(color);
             return;
         }
 
-        if(FPlayerManager.getScoreBoard().getTeam(color) != null)
+        if (FPlayerManager.getScoreBoard().getTeam(color) != null)
             noCollisionTeamMap.put(color, FPlayerManager.getScoreBoard().getTeam(color));
 
         Team team = noCollisionTeamMap.get(color);
 
-        if(team == null){
+        if (team == null) {
 
             team = FPlayerManager.getScoreBoard().registerNewTeam(color);
 
@@ -39,8 +39,8 @@ public class FEntity {
         team.addEntry(entity.getUniqueId().toString());
     }
 
-    public static void removeFromTeam(Entity entity, String color){
-        if(entity instanceof Player) {
+    public static void removeFromTeam(Entity entity, String color) {
+        if (entity instanceof Player) {
             Player player = (Player) entity;
             FPlayerManager.getScoreBoard()
                     .getTeam(player.getName())
@@ -52,15 +52,15 @@ public class FEntity {
         team.removeEntry(entity.getUniqueId().toString());
     }
 
-    public static void removePlayerFromTeam(FPlayer fPlayer){
+    public static void removePlayerFromTeam(FPlayer fPlayer) {
         Team team = FPlayerManager.getScoreBoard().getTeam(fPlayer.getRealName());
-        if(team == null) return;
+        if (team == null) return;
         team.removeEntry(fPlayer.getRealName());
     }
 
-    public static void removeBugEntities(Player player){
+    public static void removeBugEntities(Player player) {
         player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).forEach(entity -> {
-            if(entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
+            if (entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
 
             entity.setGlowing(false);
         });

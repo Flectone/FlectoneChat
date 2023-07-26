@@ -22,24 +22,17 @@ import java.util.stream.Collectors;
 public class FCommands {
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
-
+    public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
     private final FileManager locale = Main.locale;
-
     private final String command;
-
     private final String[] args;
-
     private final CommandSender sender;
-
-    private Player player = null;
-
     private final String senderName;
 
     private final boolean isConsole;
-
-    private boolean isHaveCD = false;
-
     private final String alias;
+    private Player player = null;
+    private boolean isHaveCD = false;
 
     public FCommands(CommandSender sender, String command, String label, String[] args) {
         this.sender = sender;
@@ -53,16 +46,16 @@ public class FCommands {
 
         checkAndResetAfk();
 
-        if(isConsole || !isCDEnabled()) return;
+        if (isConsole || !isCDEnabled()) return;
 
-        if(hasCD()) {
+        if (hasCD()) {
             String[] replaceStrings = {"<alias>", "<time>"};
             String[] replaceTo = {alias, ObjectUtil.convertTimeToString(getCDTime() - ObjectUtil.getCurrentTime())};
             sendMeMessage("command.cool-down", replaceStrings, replaceTo);
             return;
         }
 
-        if(isCDExpired()) {
+        if (isCDExpired()) {
             commandsCDMap.remove(getCommandKey());
             return;
         }
@@ -104,8 +97,8 @@ public class FCommands {
         return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt("cool-down." + command + ".time") + ObjectUtil.getCurrentTime();
     }
 
-    public boolean isMuted(){
-        if(isConsole || !getFPlayer().isMuted()) return false;
+    public boolean isMuted() {
+        if (isConsole || !getFPlayer().isMuted()) return false;
 
         String[] stringsReplace = {"<time>", "<reason>"};
         String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getMuteTime()), getFPlayer().getMuteReason()};
@@ -125,19 +118,18 @@ public class FCommands {
 
     public boolean isConsoleMessage() {
 
-        if(isConsole){
+        if (isConsole) {
             sendMeMessage("command.not-support-console");
         }
 
         return isConsole;
     }
 
-    public boolean isConsole(){
+    public boolean isConsole() {
         return isConsole;
     }
 
-
-    public FPlayer getFPlayer(){
+    public FPlayer getFPlayer() {
         return FPlayerManager.getPlayer(player.getUniqueId());
     }
 
@@ -145,51 +137,51 @@ public class FCommands {
         return player;
     }
 
-    public boolean isInsufficientArgs(int count){
+    public boolean isInsufficientArgs(int count) {
         boolean isInsufficientArgs = args.length < count;
-        if(isInsufficientArgs){
+        if (isInsufficientArgs) {
             sendUsageMessage();
         }
         return isInsufficientArgs;
     }
 
-    public boolean isSelfCommand(){
-        if(isConsole) return false;
+    public boolean isSelfCommand() {
+        if (isConsole) return false;
 
         return args[0].equalsIgnoreCase(player.getName());
     }
 
-    public void sendUsageMessage(){
+    public void sendUsageMessage() {
         sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
 
-    public void sendGlobalMessage(String message){
+    public void sendGlobalMessage(String message) {
         sendGlobalMessage(message, true);
     }
 
-    public void sendGlobalMessage(String format, String message){
+    public void sendGlobalMessage(String format, String message) {
         sendGlobalMessage(format, message, true);
     }
 
-    public void sendGlobalMessage(String format, String message, boolean clickable){
+    public void sendGlobalMessage(String format, String message, boolean clickable) {
         sendGlobalMessage(getFilteredPlayers(), format, message, null, clickable);
     }
 
-    public void sendGlobalMessage(String message, boolean clickable){
+    public void sendGlobalMessage(String message, boolean clickable) {
         sendGlobalMessage(getFilteredPlayers(), message, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> set, String message, boolean clickable){
+    public void sendGlobalMessage(Set<Player> set, String message, boolean clickable) {
         sendGlobalMessage(set, message, null, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> set, String message, ItemStack item, boolean clickable){
+    public void sendGlobalMessage(Set<Player> set, String message, ItemStack item, boolean clickable) {
         sendGlobalMessage(set, message, "", item, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack itemStack, boolean clickable){
+    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack itemStack, boolean clickable) {
 
-        itemStack = message.contains("%item%") ? itemStack == null ? player.getItemInHand() : itemStack : null;
+        itemStack = message.contains("%item%") ? itemStack == null ? player.getInventory().getItemInMainHand() : itemStack : null;
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
 
@@ -208,7 +200,7 @@ public class FCommands {
 
         String bubbleMessage = messageBuilder.getMessage();
 
-        if(command.contains("chat")) {
+        if (command.contains("chat")) {
             if (Main.isHaveInteractiveChat) {
                 bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
             }
@@ -217,10 +209,10 @@ public class FCommands {
         }
     }
 
-    private Set<Player> getFilteredPlayers(){
-        if(Main.config.getString("command." + command + ".global") != null
+    private Set<Player> getFilteredPlayers() {
+        if (Main.config.getString("command." + command + ".global") != null
                 && !Main.config.getBoolean("command." + command + ".global")
-                && !isConsole){
+                && !isConsole) {
 
             int localRange = Main.config.getInt("chat.local.range");
 
@@ -239,37 +231,37 @@ public class FCommands {
                 .collect(Collectors.toSet());
     }
 
-    public void sendMeMessage(String localeString){
+    public void sendMeMessage(String localeString) {
         ObjectUtil.playSound(player, command);
 
         sender.sendMessage(locale.getFormatString(localeString, sender));
     }
 
-    public void sendMeMessage(String localeString, String replaceString, String replaceTo){
+    public void sendMeMessage(String localeString, String replaceString, String replaceTo) {
         ObjectUtil.playSound(player, command);
 
         sender.sendMessage(locale.getFormatString(localeString, sender).replace(replaceString, replaceTo));
     }
 
-    public void sendMeMessage(String localeString, String[] replaceStrings, String[] replaceTos){
+    public void sendMeMessage(String localeString, String[] replaceStrings, String[] replaceTos) {
         ObjectUtil.playSound(player, command);
 
         String formatString = locale.getFormatString(localeString, sender);
 
-        for(int x = 0; x < replaceStrings.length; x++){
+        for (int x = 0; x < replaceStrings.length; x++) {
             formatString = formatString.replace(replaceStrings[x], replaceTos[x]);
         }
 
         sender.sendMessage(formatString);
     }
 
-    private boolean isPlayer(CommandSender sender){
+    private boolean isPlayer(CommandSender sender) {
         return sender instanceof Player;
     }
 
-    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String message){
+    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String message) {
 
-        ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getItemInHand() : null;
+        ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getInventory().getItemInMainHand() : null;
 
         if (Main.isHaveInteractiveChat) {
             message = FlectoneInteractiveChat.mark(message, player.getUniqueId());
@@ -277,45 +269,48 @@ public class FCommands {
 
         MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, true);
 
-        if(firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
+        if (firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
         sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
         sendTellUtil(messageBuilder, "get", secondPlayer, firstPlayer, firstPlayer);
     }
 
-    private void sendTellUtil(MessageBuilder messageBuilder, String typeMessage, CommandSender firstPlayer, CommandSender secondPlayer, CommandSender sender){
+    private void sendTellUtil(MessageBuilder messageBuilder, String typeMessage, CommandSender firstPlayer, CommandSender secondPlayer, CommandSender sender) {
         String getFormatString1 = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
                 .replace("<player>", secondPlayer.getName());
 
         BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);
         firstPlayer.spigot().sendMessage(baseComponents1);
 
-        if(isPlayer(firstPlayer) && isPlayer(secondPlayer)){
+        if (isPlayer(firstPlayer) && isPlayer(secondPlayer)) {
             FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
         }
     }
 
-    public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer){
+    public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer) {
         return FPlayerManager.getPlayer(firstPlayer).isIgnored(secondPlayer);
     }
 
-    public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
-
-    public boolean isStringTime(String string){
+    public boolean isStringTime(String string) {
         return Arrays.stream(formatTimeList).parallel().anyMatch(string::contains);
     }
 
-    public int getTimeFromString(String string){
-        if(string.equals("permanent")) return -1;
+    public int getTimeFromString(String string) {
+        if (string.equals("permanent")) return -1;
         int time = Integer.parseInt(string.substring(0, string.length() - 1));
         string = string.substring(string.length() - 1);
 
-        switch (string){
-            case "y": time *= 30 * 12;
-            case "d": time *= 24;
-            case "h": time *= 60;
-            case "m": time *= 60;
-            case "s": break;
+        switch (string) {
+            case "y":
+                time *= 30 * 12;
+            case "d":
+                time *= 24;
+            case "h":
+                time *= 60;
+            case "m":
+                time *= 60;
+            case "s":
+                break;
         }
 
         return time;

@@ -4,17 +4,13 @@ import java.util.UUID;
 
 public class Mail {
 
+    private final String uuid;
+    private final String sender;
+    private final String receiver;
+    private final String message;
     private boolean isRemoved = false;
 
-    private final String uuid;
-
-    private final String sender;
-
-    private final String receiver;
-
-    private final String message;
-
-    public Mail(String sender, String receiver, String message){
+    public Mail(String sender, String receiver, String message) {
         this.uuid = UUID.randomUUID().toString();
         this.sender = sender;
         this.receiver = receiver;
@@ -37,11 +33,11 @@ public class Mail {
         return message;
     }
 
-    public void setRemoved(boolean removed) {
-        isRemoved = removed;
-    }
-
     public boolean isRemoved() {
         return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuitListener implements Listener {
 
     @EventHandler
-    public void leftPlayer(PlayerQuitEvent event){
+    public void leftPlayer(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
         FEntity.removeBugEntities(player);

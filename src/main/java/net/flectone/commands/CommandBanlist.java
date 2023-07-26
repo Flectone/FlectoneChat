@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class CommandBanlist extends FTabCompleter {
 
-    public CommandBanlist(){
+    public CommandBanlist() {
         super.commandName = "banlist";
     }
 
@@ -38,21 +38,21 @@ public class CommandBanlist extends FTabCompleter {
 
         int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perpage);
 
-        if(strings.length != 0 &&
+        if (strings.length != 0 &&
                 (!StringUtils.isNumeric(strings[0])
                         || Integer.parseInt(strings[0]) < 1
-                        || Integer.parseInt(strings[0]) > lastPage) ){
+                        || Integer.parseInt(strings[0]) > lastPage)) {
 
             fCommand.sendMeMessage("command.banlist.page-not-exist");
             return true;
         }
 
-        if(bannedPlayers.isEmpty()){
+        if (bannedPlayers.isEmpty()) {
             fCommand.sendMeMessage("command.banlist.empty");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
@@ -70,7 +70,7 @@ public class CommandBanlist extends FTabCompleter {
         bannedPlayers.stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
 
             String playerBanFormat = "command.banlist.player-ban";
-            if(fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
+            if (fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
 
             playerBanFormat = Main.locale.getFormatString(playerBanFormat, commandSender)
                     .replace("<unban>", unbanButton)
@@ -89,17 +89,17 @@ public class CommandBanlist extends FTabCompleter {
         });
 
         String pageLine = Main.locale.getFormatString("command.banlist.page-line", commandSender)
-                    .replace("<page>", String.valueOf(page))
-                    .replace("<last-page>", String.valueOf(lastPage));
+                .replace("<page>", String.valueOf(page))
+                .replace("<last-page>", String.valueOf(lastPage));
 
         String chatColor = "";
 
-        for(String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})){
+        for (String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})) {
 
             int pageNumber = page;
             String button = null;
 
-            switch(part){
+            switch (part) {
                 case "<prev-page>":
                     pageNumber--;
                     button = Main.locale.getFormatString("command.banlist.prev-page", commandSender);
@@ -111,7 +111,7 @@ public class CommandBanlist extends FTabCompleter {
             }
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + part));
-            if(button != null){
+            if (button != null) {
                 textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + button));
                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + pageNumber));
             }
@@ -131,13 +131,13 @@ public class CommandBanlist extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             int perpage = Main.config.getInt("command.banlist.per-page");
 
             int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perpage);
 
-            for(int x = 0; x < lastPage; x++){
-                isStartsWith(strings[0], String.valueOf(x+1));
+            for (int x = 0; x < lastPage; x++) {
+                isStartsWith(strings[0], String.valueOf(x + 1));
             }
 
         }

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CommandUnmute extends FTabCompleter {
 
-    public CommandUnmute(){
+    public CommandUnmute() {
         super.commandName = "unmute";
     }
 
@@ -25,23 +25,23 @@ public class CommandUnmute extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
-        if(fPlayer == null){
+        if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
-        if(fPlayer.getMuteTime() < 0){
+        if (fPlayer.getMuteTime() < 0) {
             fCommand.sendMeMessage("command.unmute.not-muted");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(Main.isHavePlasmoVoice) {
+        if (Main.isHavePlasmoVoice) {
             FlectonePlasmoVoice.unmute(fPlayer.getRealName());
         }
 
@@ -57,7 +57,7 @@ public class CommandUnmute extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             FPlayerManager.getPlayers().parallelStream()
                     .filter(FPlayer::isMuted)
                     .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));

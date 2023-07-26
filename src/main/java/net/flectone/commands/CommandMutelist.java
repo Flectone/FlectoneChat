@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class CommandMutelist extends FTabCompleter {
 
-    public CommandMutelist(){
+    public CommandMutelist() {
         super.commandName = "mutelist";
     }
 
@@ -38,21 +38,21 @@ public class CommandMutelist extends FTabCompleter {
 
         int lastPage = (int) Math.ceil((double) mutedPlayers.size() / perpage);
 
-        if(strings.length != 0 &&
+        if (strings.length != 0 &&
                 (!StringUtils.isNumeric(strings[0])
                         || Integer.parseInt(strings[0]) < 1
-                        || Integer.parseInt(strings[0]) > lastPage) ){
+                        || Integer.parseInt(strings[0]) > lastPage)) {
 
             fCommand.sendMeMessage("command.mutelist.page-not-exist");
             return true;
         }
 
-        if(mutedPlayers.isEmpty()){
+        if (mutedPlayers.isEmpty()) {
             fCommand.sendMeMessage("command.mutelist.empty");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
@@ -91,12 +91,12 @@ public class CommandMutelist extends FTabCompleter {
 
         String chatColor = "";
 
-        for(String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})){
+        for (String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})) {
 
             int pageNumber = page;
             String button = null;
 
-            switch(part){
+            switch (part) {
                 case "<prev-page>":
                     pageNumber--;
                     button = Main.locale.getFormatString("command.mutelist.prev-page", commandSender);
@@ -108,7 +108,7 @@ public class CommandMutelist extends FTabCompleter {
             }
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + part));
-            if(button != null){
+            if (button != null) {
                 textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + button));
                 textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mutelist " + pageNumber));
             }
@@ -128,13 +128,13 @@ public class CommandMutelist extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             int perpage = Main.config.getInt("command.mutelist.per-page");
 
             int lastPage = (int) Math.ceil((double) FPlayerManager.getMutedPlayers().size() / perpage);
 
-            for(int x = 0; x < lastPage; x++){
-                isStartsWith(strings[0], String.valueOf(x+1));
+            for (int x = 0; x < lastPage; x++) {
+                isStartsWith(strings[0], String.valueOf(x + 1));
             }
 
         }

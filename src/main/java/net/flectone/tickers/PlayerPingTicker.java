@@ -15,7 +15,7 @@ public class PlayerPingTicker extends FBukkitRunnable {
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
-    public PlayerPingTicker(){
+    public PlayerPingTicker() {
         super.period = 20L;
     }
 

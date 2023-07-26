@@ -16,15 +16,16 @@ import java.util.List;
 public class InventoryClickListener implements Listener {
 
     @EventHandler
-    public void inventoryClick(InventoryClickEvent event){
+    public void inventoryClick(InventoryClickEvent event) {
 
-        if(FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList() == null
-                || !FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList().contains(event.getInventory())) return;
+        if (FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList() == null
+                || !FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList().contains(event.getInventory()))
+            return;
 
 
         event.setCancelled(true);
 
-        if(event.getCurrentItem() == null) return;
+        if (event.getCurrentItem() == null) return;
 
 
         Player eventPlayer = (Player) event.getWhoClicked();
@@ -32,7 +33,7 @@ public class InventoryClickListener implements Listener {
 
         ItemStack clickedItem = event.getCurrentItem();
 
-        switch(clickedItem.getType()){
+        switch (clickedItem.getType()) {
             case PLAYER_HEAD: {
 
                 String secondPlayerName = clickedItem.getItemMeta().getLocalizedName();
@@ -45,8 +46,8 @@ public class InventoryClickListener implements Listener {
                 eventPlayer.closeInventory();
 
                 List<Inventory> inventoryList = eventFPlayer.getInventoryList();
-                for(int x = 0; x < inventoryList.size(); x++){
-                    if(inventoryList.get(x) == event.getClickedInventory()){
+                for (int x = 0; x < inventoryList.size(); x++) {
+                    if (inventoryList.get(x) == event.getClickedInventory()) {
                         eventFPlayer.setNumberLastInventory(x);
                         break;
                     }
@@ -62,23 +63,23 @@ public class InventoryClickListener implements Listener {
 
                 List<Inventory> inventoryList = eventFPlayer.getInventoryList();
 
-                for(int x = 0; x < inventoryList.size(); x++){
-                    if(inventoryList.get(x) == event.getClickedInventory()){
-                        eventPlayer.openInventory(inventoryList.get(x+1));
+                for (int x = 0; x < inventoryList.size(); x++) {
+                    if (inventoryList.get(x) == event.getClickedInventory()) {
+                        eventPlayer.openInventory(inventoryList.get(x + 1));
                         break;
                     }
                 }
                 break;
             }
 
-            case ARROW:{
+            case ARROW: {
                 eventPlayer.closeInventory();
 
                 List<Inventory> inventoryList = eventFPlayer.getInventoryList();
 
-                for(int x = 1; x < inventoryList.size(); x++){
-                    if(inventoryList.get(x) == event.getClickedInventory()){
-                        eventPlayer.openInventory(inventoryList.get(x-1));
+                for (int x = 1; x < inventoryList.size(); x++) {
+                    if (inventoryList.get(x) == event.getClickedInventory()) {
+                        eventPlayer.openInventory(inventoryList.get(x - 1));
                         break;
                     }
                 }

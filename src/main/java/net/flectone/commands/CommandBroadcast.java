@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CommandBroadcast extends FTabCompleter {
 
-    public CommandBroadcast(){
+    public CommandBroadcast() {
         super.commandName = "broadcast";
     }
 
@@ -25,14 +25,14 @@ public class CommandBroadcast extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
-        if(fCommand.isHaveCD() || fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         String formatString = Main.locale.getString("command.broadcast.message")
                 .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString,  ObjectUtil.toString(strings), null, false);
+        fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, ObjectUtil.toString(strings), null, false);
 
         return true;
     }
@@ -42,7 +42,7 @@ public class CommandBroadcast extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "(message)");
         }
 

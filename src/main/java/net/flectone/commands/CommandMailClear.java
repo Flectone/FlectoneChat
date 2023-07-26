@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class CommandMailClear extends FTabCompleter {
 
-    public CommandMailClear(){
+    public CommandMailClear() {
         super.commandName = "mail-clear";
     }
 
@@ -27,33 +27,33 @@ public class CommandMailClear extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(fPlayer == null){
+        if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         HashMap<String, Mail> mailsList = fPlayer.getMails();
 
-        if(fPlayer.isOnline() || mailsList == null || mailsList.isEmpty()){
+        if (fPlayer.isOnline() || mailsList == null || mailsList.isEmpty()) {
             fCommand.sendMeMessage("command.mail-clear.empty");
             return true;
         }
 
-        if(!StringUtils.isNumeric(strings[1])){
+        if (!StringUtils.isNumeric(strings[1])) {
             fCommand.sendMeMessage("command.mail-clear.wrong-number");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
         int number = Integer.parseInt(strings[1]);
 
@@ -84,14 +84,14 @@ public class CommandMailClear extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isOfflinePlayer(strings[0]);
-        } else if(strings.length == 2){
+        } else if (strings.length == 2) {
 
             String playerName = strings[0];
             FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-            if(fPlayer != null){
+            if (fPlayer != null) {
                 HashMap<String, Mail> mailsList = fPlayer.getMails();
 
                 if (mailsList != null && !mailsList.isEmpty()) {

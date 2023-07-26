@@ -12,7 +12,6 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -23,61 +22,49 @@ import java.util.stream.Collectors;
 
 public class FPlayer {
 
-    private OfflinePlayer offlinePlayer;
-
-    private Player player;
-
-    private Block block;
-
+    private final OfflinePlayer offlinePlayer;
     private final String name;
-
     private final String uuid;
-
+    private final HashMap<String, Mail> mails = new HashMap<>();
+    private final List<String> listChatBubbles = new ArrayList<>();
+    private Player player;
+    private Block block;
     private Team team;
-
     private boolean isAfk = false;
-
     private boolean isStreaming = false;
-
     private boolean isStreamer = false;
-
-    private boolean isMuted = false;
-
     private String[] colors = new String[]{};
-
     private ArrayList<String> ignoreList = new ArrayList<>();
-
     private List<Inventory> inventoryList = new ArrayList<>();
-
     private String muteReason;
-
     private int muteTime;
-
     private String tempBanReason;
-
     private int tempBanTime;
-
     private int numberLastInventory;
-
     private int lastTimeMoved;
-
     private String streamPrefix = "";
-
     private String afkSuffix = "";
-
     private String vaultSuffix = "";
-
     private String vaultPrefix = "";
-
     private String chat = "local";
+    private Player lastWriter;
+    private String worldPrefix = "";
+    private boolean isUpdated;
 
-    public FPlayer(OfflinePlayer offlinePlayer){
+    public FPlayer(OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
         this.name = offlinePlayer.getName();
         this.uuid = offlinePlayer.getUniqueId().toString();
     }
 
-    public void initialize(Player player){
+    public FPlayer(Player player) {
+        this.player = player;
+        this.offlinePlayer = player;
+        this.name = player.getName();
+        this.uuid = player.getUniqueId().toString();
+    }
+
+    public void initialize(Player player) {
         setPlayer(player);
         setTeam(getPlayerTeam());
         setBlock(this.player.getLocation().getBlock());
@@ -88,29 +75,22 @@ public class FPlayer {
         setUpdated(true);
     }
 
-    public FPlayer(Player player){
-        this.player = player;
-        this.offlinePlayer = player;
-        this.name = player.getName();
-        this.uuid = player.getUniqueId().toString();
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public boolean isOnline(){
+    public boolean isOnline() {
         return this.offlinePlayer.isOnline();
     }
 
     public void setStreamer() {
         this.isStreamer = player.hasPermission("flectonechat.stream");
-        if(isStreamer) setStreaming(false);
+        if (isStreamer) setStreaming(false);
         else this.streamPrefix = "";
     }
 
     public Player getPlayer() {
         return this.player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public OfflinePlayer getOfflinePlayer() {
@@ -121,7 +101,7 @@ public class FPlayer {
         return this.uuid;
     }
 
-    public boolean isMoved(Block block){
+    public boolean isMoved(Block block) {
         return !block.equals(this.block);
     }
 
@@ -137,7 +117,7 @@ public class FPlayer {
     public boolean isMuted() {
         boolean isMuted = getMuteTime() > 0;
 
-        if(!isMuted) {
+        if (!isMuted) {
             setMuteTime(0);
             setMuteReason("");
         }
@@ -156,11 +136,11 @@ public class FPlayer {
         return isBanned;
     }
 
-    public boolean isPermanentlyBanned(){
+    public boolean isPermanentlyBanned() {
         return getRealBanTime() == -1;
     }
 
-    public boolean isBanned(){
+    public boolean isBanned() {
         return isTempBanned() || isPermanentlyBanned();
     }
 
@@ -176,12 +156,12 @@ public class FPlayer {
         return isAfk ? Main.locale.getString("command.afk.suffix") : "";
     }
 
-    public String getStreamPrefix() {
-        return isStreaming ? Main.locale.getString("command.stream.prefix") : "";
+    public void setAfkSuffix(String afkSuffix) {
+        this.afkSuffix = afkSuffix;
     }
 
-    public void setMuteReason(String muteReason) {
-        this.muteReason = muteReason;
+    public String getStreamPrefix() {
+        return isStreaming ? Main.locale.getString("command.stream.prefix") : "";
     }
 
     public void mute(int time, String reason) {
@@ -191,7 +171,7 @@ public class FPlayer {
         FPlayerManager.getMutedPlayers().add(this);
     }
 
-    public void unmute(){
+    public void unmute() {
         setMuteTime(0);
         setMuteReason("");
         setUpdated(true);
@@ -202,24 +182,28 @@ public class FPlayer {
         return this.muteReason;
     }
 
-    public void setMuteTime(int muteTime) {
-        this.muteTime = muteTime;
+    public void setMuteReason(String muteReason) {
+        this.muteReason = muteReason;
     }
 
-    public int getMuteTime(){
+    public int getMuteTime() {
         return this.muteTime - ObjectUtil.getCurrentTime();
+    }
+
+    public void setMuteTime(int muteTime) {
+        this.muteTime = muteTime;
     }
 
     public int getTempBanTime() {
         return this.tempBanTime - ObjectUtil.getCurrentTime();
     }
 
-    public int getRealBanTime(){
-        return this.tempBanTime;
-    }
-
     public void setTempBanTime(int tempBanTime) {
         this.tempBanTime = tempBanTime;
+    }
+
+    public int getRealBanTime() {
+        return this.tempBanTime;
     }
 
     public String getBanReason() {
@@ -236,7 +220,7 @@ public class FPlayer {
         setUpdated(true);
         FPlayerManager.getBannedPlayers().add(this);
 
-        if(!(player != null && player.isOnline())) return;
+        if (!(player != null && player.isOnline())) return;
 
         String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
@@ -254,27 +238,27 @@ public class FPlayer {
         FPlayerManager.getBannedPlayers().remove(this);
     }
 
-    public void setIgnoreList(ArrayList<String> ignoreList) {
-        this.ignoreList = ignoreList;
-    }
-
     public ArrayList<String> getIgnoreList() {
         return ignoreList;
     }
 
-    public boolean isIgnored(Player player){
-        if(player == null || this.player == player) return false;
+    public void setIgnoreList(ArrayList<String> ignoreList) {
+        this.ignoreList = ignoreList;
+    }
+
+    public boolean isIgnored(Player player) {
+        if (player == null || this.player == player) return false;
 
         return isIgnored(player.getUniqueId().toString());
     }
 
-    public boolean isIgnored(OfflinePlayer offlinePlayer){
-        if(offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
+    public boolean isIgnored(OfflinePlayer offlinePlayer) {
+        if (offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
 
         return isIgnored(offlinePlayer.getUniqueId().toString());
     }
 
-    public boolean isIgnored(String uuid){
+    public boolean isIgnored(String uuid) {
         return this.ignoreList.contains(uuid);
     }
 
@@ -283,7 +267,7 @@ public class FPlayer {
     }
 
     public String[] getColors() {
-        if(this.colors.length != 0) return this.colors;
+        if (this.colors.length != 0) return this.colors;
 
         String firstColor = Main.getInstance().getConfig().getString("color.first");
         String secondColor = Main.getInstance().getConfig().getString("color.second");
@@ -296,35 +280,33 @@ public class FPlayer {
         this.team = team;
     }
 
-    public Team getPlayerTeam(){
+    public Team getPlayerTeam() {
         Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(this.name);
         Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(this.name);
 
         boolean colorWorldsEnabled = Main.config.getBoolean("player.team.enable");
 
-        if(!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
-        if(team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
+        if (!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
+        if (team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
 
-        team.setNameTagVisibility(Main.config.getBoolean("player.team.name-visible")
-                ? NameTagVisibility.ALWAYS : NameTagVisibility.NEVER);
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Main.config.getBoolean("player.team.name-visible")
+                ? Team.OptionStatus.ALWAYS : Team.OptionStatus.NEVER);
 
         team.setColor(ChatColor.WHITE);
 
         return team;
     }
 
-    public void setTeamColor(String teamColor){
+    public void setTeamColor(String teamColor) {
         this.team.setColor(ChatColor.valueOf(teamColor));
-    }
-
-    private Player lastWriter;
-
-    public void setLastWriter(Player lastWriter) {
-        this.lastWriter = lastWriter;
     }
 
     public Player getLastWriter() {
         return this.lastWriter;
+    }
+
+    public void setLastWriter(Player lastWriter) {
+        this.lastWriter = lastWriter;
     }
 
     public List<Inventory> getInventoryList() {
@@ -352,16 +334,12 @@ public class FPlayer {
         this.streamPrefix = Main.locale.getFormatString(getStreamFormatPrefix(), getPlayer());
     }
 
-    private String getStreamFormatPrefix(){
+    private String getStreamFormatPrefix() {
         return isStreaming ? "command.stream.online-prefix" :
                 Main.config.getBoolean("command.stream.offline-prefix.enable") ? "command.stream.offline-prefix" : "";
     }
 
-    public void setAfkSuffix(String afkSuffix) {
-        this.afkSuffix = afkSuffix;
-    }
-
-    public void getVaultPrefixSuffix(){
+    public void getVaultPrefixSuffix() {
         if (Main.isHaveVault) {
             Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
 
@@ -370,7 +348,7 @@ public class FPlayer {
         }
     }
 
-    private String getName(String formatName){
+    private String getName(String formatName) {
         getVaultPrefixSuffix();
 
         String name = Main.config.getString("player." + formatName)
@@ -393,11 +371,11 @@ public class FPlayer {
         return getName("tab-name");
     }
 
-    public String getRealName(){
+    public String getRealName() {
         return this.name;
     }
 
-    public void setDisplayName(){
+    public void setDisplayName() {
         String name = getDisplayName();
         String[] strings = name.split(this.name);
         String prefix = strings.length > 0 ? strings[0] : "";
@@ -419,7 +397,9 @@ public class FPlayer {
         }
     }
 
-    private String worldPrefix = "";
+    public String getWorldPrefix() {
+        return worldPrefix;
+    }
 
     public void setWorldPrefix(World world) {
         if (Main.getInstance().getConfig().getBoolean("player.world.prefix.enable")) {
@@ -429,7 +409,7 @@ public class FPlayer {
                     : world.getName().toLowerCase();
 
             this.worldPrefix = Main.locale.getString("player.world.prefix." + worldType);
-            if(this.worldPrefix == null){
+            if (this.worldPrefix == null) {
                 Main.warning("The prefix for " + worldType + " could not be determined");
                 this.worldPrefix = Main.locale.getString("player.world.prefix.normal");
             }
@@ -440,53 +420,39 @@ public class FPlayer {
         setDisplayName();
     }
 
-    public String getWorldPrefix() {
-        return worldPrefix;
-    }
-
-    private final HashMap<String, Mail> mails = new HashMap<>();
-
     public HashMap<String, Mail> getMails() {
         return mails;
     }
 
-    public void addMail(String uuid, Mail mail){
+    public void addMail(String uuid, Mail mail) {
         mails.put(uuid, mail);
     }
 
-    public Mail getMail(String uuid){
-        return mails.get(uuid);
-    }
-
-    public void removeMail(String uuid){
+    public void removeMail(String uuid) {
         mails.get(uuid).setRemoved(true);
-    }
-
-    private boolean isUpdated;
-
-    public void setUpdated(boolean updated) {
-        isUpdated = updated;
     }
 
     public boolean isUpdated() {
         return isUpdated;
     }
 
-    public void setChat(String chat) {
-        this.chat = chat;
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
     }
 
     public String getChat() {
         return chat;
     }
 
-    private final List<String> listChatBubbles = new ArrayList<>();
+    public void setChat(String chat) {
+        this.chat = chat;
+    }
 
-    public void addChatBubble(String message){
+    public void addChatBubble(String message) {
         listChatBubbles.add(message);
     }
 
-    public void removeChatBubble(){
+    public void removeChatBubble() {
         if (!listChatBubbles.isEmpty()) listChatBubbles.remove(0);
     }
 

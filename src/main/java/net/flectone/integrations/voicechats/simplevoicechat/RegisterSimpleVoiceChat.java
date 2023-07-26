@@ -5,7 +5,7 @@ import net.flectone.Main;
 
 public class RegisterSimpleVoiceChat {
 
-    public RegisterSimpleVoiceChat(){
+    public RegisterSimpleVoiceChat() {
         BukkitVoicechatService service = Main.getInstance().getServer().getServicesManager().load(BukkitVoicechatService.class);
         if (service != null) {
             FlectoneVoiceChatPlugin flectoneVoiceChatPlugin = new FlectoneVoiceChatPlugin();

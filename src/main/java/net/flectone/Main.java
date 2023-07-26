@@ -28,21 +28,25 @@ public final class Main extends JavaPlugin {
     public static boolean isHaveVault = false;
 
     public static boolean isHaveInteractiveChat = false;
-
-    private static Main instance;
-
     public static FileManager config;
-
     public static FileManager locale;
+    private static Main instance;
+    private Database database;
 
-    public static Main getInstance(){
+    public static Main getInstance() {
         return instance;
     }
 
-    private Database database;
-
     public static Database getDatabase() {
         return getInstance().database;
+    }
+
+    public static void info(String message) {
+        getInstance().getLogger().info(message);
+    }
+
+    public static void warning(String message) {
+        getInstance().getLogger().warning(message);
     }
 
     @Override
@@ -71,15 +75,7 @@ public final class Main extends JavaPlugin {
         WebUtil.checkNewerVersion();
     }
 
-    public static void info(String message){
-        getInstance().getLogger().info(message);
-    }
-
-    public static void warning(String message){
-        getInstance().getLogger().warning(message);
-    }
-
-    private void registerClasses(){
+    private void registerClasses() {
         ReflectionUtil.registerClasses("net.flectone.listeners", (fClass) ->
                 Bukkit.getServer().getPluginManager().registerEvents((Listener) fClass.getDeclaredConstructor().newInstance(), this));
 
@@ -87,51 +83,51 @@ public final class Main extends JavaPlugin {
             FTabCompleter fTabCompleter = (FTabCompleter) fClass.getDeclaredConstructor().newInstance();
             PluginCommand pluginCommand = Main.getInstance().getCommand(fTabCompleter.getCommandName());
 
-            if(pluginCommand == null) return;
+            if (pluginCommand == null) return;
 
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });
     }
 
-    private void loadIcons(){
+    private void loadIcons() {
         String path = Main.getInstance().getDataFolder() + File.separator + "icons" + File.separator;
 
-        for(String iconName : Main.config.getStringList("server.icon.names")){
-            if(new File(path + iconName + ".png").exists()) continue;
+        for (String iconName : Main.config.getStringList("server.icon.names")) {
+            if (new File(path + iconName + ".png").exists()) continue;
 
             Main.getInstance().saveResource("icons" + File.separator + iconName + ".png", false);
         }
     }
 
-    private void hookPlugins(){
-        if(Bukkit.getPluginManager().getPlugin("Vault") != null){
+    private void hookPlugins() {
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
             isHaveVault = true;
             getLogger().info("\uD83D\uDD12 Vault detected and hooked");
         }
 
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;
-            new FExpansion(this).register();
+            new FExpansion().register();
             getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
         }
 
-        if(Bukkit.getPluginManager().getPlugin("voicechat") != null) {
+        if (Bukkit.getPluginManager().getPlugin("voicechat") != null) {
             new RegisterSimpleVoiceChat();
             getLogger().info("\uD83D\uDD12 SimpleVoiceChat detected and hooked");
         }
 
-        if(Bukkit.getPluginManager().getPlugin("plasmovoice") != null){
+        if (Bukkit.getPluginManager().getPlugin("plasmovoice") != null) {
             isHavePlasmoVoice = true;
             getLogger().info("\uD83D\uDD12 PlasmoVoice detected and hooked");
         }
 
-        if(Bukkit.getPluginManager().getPlugin("InteractiveChat") != null){
+        if (Bukkit.getPluginManager().getPlugin("InteractiveChat") != null) {
             isHaveInteractiveChat = true;
             getLogger().info("\uD83D\uDD12 InteractiveChat detected and hooked");
         }
 
-        if(Bukkit.getPluginManager().getPlugin("LuckPerms") != null){
+        if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
             new FLuckPerms(this);
             getLogger().info("\uD83D\uDD12 LuckPerms detected and hooked");
         }

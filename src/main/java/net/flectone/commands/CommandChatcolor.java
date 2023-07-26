@@ -13,24 +13,28 @@ import java.util.List;
 
 public class CommandChatcolor extends FTabCompleter {
 
-    public CommandChatcolor(){
+    public CommandChatcolor() {
         super.commandName = "chatcolor";
+    }
+
+    public static String[] getDefaultColors() {
+        return new String[]{Main.config.getString("color.first"), Main.config.getString("color.second")};
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(strings.length == 0 || (strings.length != 2 && !strings[0].equalsIgnoreCase("default"))) {
+        if (strings.length == 0 || (strings.length != 2 && !strings[0].equalsIgnoreCase("default"))) {
             fCommand.sendUsageMessage();
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(strings[0].equalsIgnoreCase("default")){
+        if (strings[0].equalsIgnoreCase("default")) {
             strings = getDefaultColors();
         }
 
@@ -47,11 +51,11 @@ public class CommandChatcolor extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "default");
             isStartsWith(strings[0], "#1abaf0");
             isStartsWith(strings[0], "&b");
-        } else if(strings.length == 2){
+        } else if (strings.length == 2) {
             isStartsWith(strings[1], "#77d7f7");
             isStartsWith(strings[1], "&f");
         }
@@ -59,9 +63,5 @@ public class CommandChatcolor extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
-    }
-
-    public static String[] getDefaultColors() {
-        return new String[]{Main.config.getString("color.first"), Main.config.getString("color.second")};
     }
 }

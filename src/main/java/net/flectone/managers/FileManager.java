@@ -3,9 +3,9 @@ package net.flectone.managers;
 import net.flectone.Main;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,10 +19,10 @@ public class FileManager extends FileConfiguration {
     private FileConfiguration fileConfiguration;
     private File file;
 
-    public FileManager(String path){
+    public FileManager(String path) {
         this.file = new File(Main.getInstance().getDataFolder() + File.separator + path);
 
-        if(path.contains("language")){
+        if (path.contains("language")) {
             checkExists("language/ru.yml");
             checkExists("language/en.yml");
         } else checkExists(path);
@@ -45,33 +45,33 @@ public class FileManager extends FileConfiguration {
 
     }
 
-    private void checkExists(String path){
-        if(!new File(Main.getInstance().getDataFolder() + File.separator + path).exists())
+    private void checkExists(String path) {
+        if (!new File(Main.getInstance().getDataFolder() + File.separator + path).exists())
             Main.getInstance().saveResource(path, false);
     }
 
-    public void saveFile(){
+    public void saveFile() {
         try {
 
             fileConfiguration.save(file);
             this.file = new File(file.getPath());
 
-        } catch (IOException error){
+        } catch (IOException error) {
             Main.getInstance().getLogger().warning(error.getLocalizedMessage());
         }
     }
 
-    public Set<String> getKeys(){
+    public Set<String> getKeys() {
         return fileConfiguration.getKeys(true);
     }
 
 
-    public List<String> getStringList(String path){
+    public List<String> getStringList(String path) {
         return fileConfiguration.getStringList(path);
     }
 
 
-    public void set(String string, List<String> stringList){
+    public void set(String string, List<String> stringList) {
         fileConfiguration.set(string, stringList);
     }
 
@@ -80,37 +80,37 @@ public class FileManager extends FileConfiguration {
     }
 
     @Override
-    public String getString(String string){
+    public String getString(@NotNull String string) {
         return fileConfiguration.getString(string);
     }
 
     @Override
-    public int getInt(String string){
+    public int getInt(@NotNull String string) {
         return Integer.parseInt(fileConfiguration.getString(string));
     }
 
     @Override
-    public boolean getBoolean(String string){
+    public boolean getBoolean(@NotNull String string) {
         return Boolean.parseBoolean(fileConfiguration.getString(string));
     }
 
-    public String getFormatString(String string, CommandSender sender, CommandSender papiPlayer){
+    public String getFormatString(String string, CommandSender sender, CommandSender papiPlayer) {
         string = fileConfiguration.getString(string);
         return ObjectUtil.formatString(string, sender, papiPlayer);
     }
 
-    public String getFormatString(String string, CommandSender sender){
+    public String getFormatString(String string, CommandSender sender) {
         string = fileConfiguration.getString(string);
         return ObjectUtil.formatString(string, sender);
     }
 
     @Override
-    public String saveToString() {
-        return null;
+    public @NotNull String saveToString() {
+        return "";
     }
 
     @Override
-    public void loadFromString(String contents) throws InvalidConfigurationException {
+    public void loadFromString(@NotNull String contents) {
 
     }
 

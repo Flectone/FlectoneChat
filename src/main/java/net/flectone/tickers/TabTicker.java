@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 
 public class TabTicker extends FBukkitRunnable {
 
-    public TabTicker(){
+    public TabTicker() {
         super.period = 20L * Main.config.getInt("tab.update.rate");
     }
 

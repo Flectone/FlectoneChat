@@ -18,7 +18,7 @@ import java.util.List;
 
 public class CommandMail extends FTabCompleter {
 
-    public CommandMail(){
+    public CommandMail() {
         super.commandName = "mail";
     }
 
@@ -27,35 +27,35 @@ public class CommandMail extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(fPlayer == null){
+        if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if(fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())){
+        if (fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())) {
             fCommand.sendMeMessage("command.you_ignore");
             return true;
         }
 
-        if(fCommand.isIgnored(fPlayer.getOfflinePlayer(), (Player) commandSender)){
+        if (fCommand.isIgnored(fPlayer.getOfflinePlayer(), (Player) commandSender)) {
             fCommand.sendMeMessage("command.he_ignore");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
-        if(fCommand.isMuted()) return true;
+        if (fCommand.isMuted()) return true;
 
-        if(fPlayer.isOnline()){
+        if (fPlayer.isOnline()) {
             Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
             return true;
         }
@@ -78,9 +78,9 @@ public class CommandMail extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isOfflinePlayer(strings[0]);
-        } else if(strings.length == 2) {
+        } else if (strings.length == 2) {
             isStartsWith(strings[1], "(message)");
         }
 

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class CommandMute extends FTabCompleter {
 
-    public CommandMute(){
+    public CommandMute() {
         super.commandName = "mute";
     }
 
@@ -32,11 +32,11 @@ public class CommandMute extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isInsufficientArgs(2)) return true;
 
         String stringTime = strings[1];
 
-        if(!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1))){
+        if (!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1))) {
             fCommand.sendUsageMessage();
             return true;
         }
@@ -44,19 +44,19 @@ public class CommandMute extends FTabCompleter {
         String playerName = strings[0];
         FPlayer mutedFPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-        if(mutedFPlayer == null){
+        if (mutedFPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
 
         int time = fCommand.getTimeFromString(stringTime);
 
-        if(time < -1){
+        if (time < -1) {
             fCommand.sendMeMessage("command.long-number");
             return true;
         }
 
-        if(fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return true;
 
         String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.mute.default-reason");
 
@@ -75,7 +75,7 @@ public class CommandMute extends FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, formatString, false);
 
-        if(Main.isHavePlasmoVoice) {
+        if (Main.isHavePlasmoVoice) {
             FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
         }
 
@@ -89,8 +89,8 @@ public class CommandMute extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1) isOfflinePlayer(strings[0]);
-        else if(strings.length == 2) isFormatString(strings[1]);
+        if (strings.length == 1) isOfflinePlayer(strings[0]);
+        else if (strings.length == 2) isFormatString(strings[1]);
         else if (strings.length == 3) isStartsWith(strings[2], "(reason)");
 
         Collections.sort(wordsList);

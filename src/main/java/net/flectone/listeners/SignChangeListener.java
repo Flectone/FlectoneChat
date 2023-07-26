@@ -10,15 +10,15 @@ import org.bukkit.inventory.ItemStack;
 public class SignChangeListener implements Listener {
 
     @EventHandler
-    public void onSignChange(SignChangeEvent event){
+    public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
-        String command =  "sign";
+        String command = "sign";
         ItemStack itemInHand = player.getItemInUse();
 
-        for(int x = 0; x < event.getLines().length; x++){
+        for (int x = 0; x < event.getLines().length; x++) {
             String string = event.getLine(x);
 
-            if(string == null || string.isEmpty()) continue;
+            if (string == null || string.isEmpty()) continue;
 
             event.setLine(x, ObjectUtil.buildFormattedMessage(player, command, string, itemInHand));
         }

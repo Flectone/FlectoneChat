@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ChatBubbleTicker extends FBukkitRunnable {
 
-    public ChatBubbleTicker(){
+    public ChatBubbleTicker() {
         super.period = 5L;
     }
 
@@ -34,7 +34,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
                 fPlayer.clearChatBubbles();
             }
 
-            if(fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
+            if (fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
 
             String message = fPlayer.getListChatBubbles().get(0);
             spawnMessageBubble(fPlayer.getPlayer(), message);
@@ -43,16 +43,16 @@ public class ChatBubbleTicker extends FBukkitRunnable {
         });
     }
 
-    private void spawnMessageBubble(Player player, String message){
+    private void spawnMessageBubble(Player player, String message) {
         List<String> messageStrings = divideText(message, Main.config.getInt("chat.bubble.max-per-line"));
         String color = Main.locale.getFormatString("chat.bubble.color", null);
         int readSpeed = Main.config.getInt("chat.bubble.read-speed");
 
-        int duration = (message.length() + 8*messageStrings.size())*1200/readSpeed;
+        int duration = (message.length() + 8 * messageStrings.size()) * 1200 / readSpeed;
 
         Entity lastVehicle = spawnStringBubble(player, "", player.getLocation(), duration);
 
-        for(int x = messageStrings.size() - 1; x > -1; x--){
+        for (int x = messageStrings.size() - 1; x > -1; x--) {
             lastVehicle = spawnStringBubble(lastVehicle, color + messageStrings.get(x), player.getLocation(), duration);
         }
     }
@@ -61,26 +61,26 @@ public class ChatBubbleTicker extends FBukkitRunnable {
         List<String> lines = new ArrayList<>();
         String line = "";
 
-        for(int x = 0; x < text.length(); x++){
+        for (int x = 0; x < text.length(); x++) {
             char symbol = text.charAt(x);
             line += symbol;
 
-            if((symbol == ' ' && line.length() > maxCharactersPerLine - 5)
-                    || line.length() > maxCharactersPerLine){
+            if ((symbol == ' ' && line.length() > maxCharactersPerLine - 5)
+                    || line.length() > maxCharactersPerLine) {
 
                 lines.add(symbol == ' ' ? line.trim() : line + "-");
                 line = "";
             }
         }
 
-        if(!line.isEmpty()) lines.add(line);
+        if (!line.isEmpty()) lines.add(line);
 
         return lines;
     }
 
     // Thanks @atesin for chat bubbles implementation
     // https://github.com/atesin/LightChatBubbles
-    private AreaEffectCloud spawnStringBubble(Entity vehicle, String message, Location location, int duration){
+    private AreaEffectCloud spawnStringBubble(Entity vehicle, String message, Location location, int duration) {
         location.setDirection(new Vector(0, -1, 0));
         AreaEffectCloud nameTag = (AreaEffectCloud) location.getWorld().spawnEntity(location, EntityType.AREA_EFFECT_CLOUD);
         nameTag.setParticle(Particle.TOWN_AURA);

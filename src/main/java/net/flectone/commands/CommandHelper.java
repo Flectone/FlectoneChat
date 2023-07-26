@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class CommandHelper extends FTabCompleter {
 
-    public CommandHelper(){
+    public CommandHelper() {
         super.commandName = "helper";
     }
 
@@ -27,9 +27,9 @@ public class CommandHelper extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if(fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage()) return true;
 
-        if(fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return true;
 
         String permission = Main.config.getString("command.helper.see.permission");
 
@@ -38,7 +38,7 @@ public class CommandHelper extends FTabCompleter {
                 .filter(player -> player.isOp() || player.hasPermission(permission))
                 .collect(Collectors.toSet());
 
-        if(playerSet.size() == 0){
+        if (playerSet.size() == 0) {
             fCommand.sendMeMessage("command.helper.no-helpers");
             return true;
         }
@@ -58,7 +58,7 @@ public class CommandHelper extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if(strings.length == 1){
+        if (strings.length == 1) {
             isStartsWith(strings[0], "(message)");
         }
 

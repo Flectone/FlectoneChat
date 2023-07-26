@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 public class PlayerChangeWorldListener implements Listener {
 
     @EventHandler
-    public void changeWorldEvent(PlayerChangedWorldEvent event){
+    public void changeWorldEvent(PlayerChangedWorldEvent event) {
         FPlayerManager.getPlayer(event.getPlayer()).setWorldPrefix(event.getPlayer().getWorld());
     }
 }

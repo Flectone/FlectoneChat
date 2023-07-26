@@ -241,7 +241,7 @@ command:
     usage: "&&1⚑ Использование: &&2/<command>"
     empty: "#ff4e4e⁉ Ты никого не игнорируешь"
     name: "&&1Список игнорируемых <number>"
-    arrow:  "&&1Назад"
+    arrow: "&&1Назад"
     spectral_arrow: "&&1Вперёд"
 
   msg:

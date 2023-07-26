@@ -11,12 +11,12 @@ import org.bukkit.util.Vector;
 public class EntitySpawnListener implements Listener {
 
     @EventHandler
-    public void checkCustomEntitySpawn(EntitySpawnEvent event){
-        if(!(event.getEntity() instanceof MagmaCube) && !(event.getEntity() instanceof AreaEffectCloud)) return;
+    public void checkCustomEntitySpawn(EntitySpawnEvent event) {
+        if (!(event.getEntity() instanceof MagmaCube) && !(event.getEntity() instanceof AreaEffectCloud)) return;
 
         Location location = event.getEntity().getLocation();
 
-        if(location.getDirection().equals(new Vector(0, 1, 0))){
+        if (location.getDirection().equals(new Vector(0, 1, 0))) {
 
             MagmaCube entity = (MagmaCube) event.getEntity();
 
@@ -32,7 +32,7 @@ public class EntitySpawnListener implements Listener {
             return;
         }
 
-        if(location.getDirection().equals(new Vector(0, -1, 0))){
+        if (location.getDirection().equals(new Vector(0, -1, 0))) {
             AreaEffectCloud entity = (AreaEffectCloud) event.getEntity();
             entity.setRadius(0);
             return;

@@ -12,8 +12,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class AnvilClickListener implements Listener {
 
     @EventHandler
-    public void onAnvilClick(InventoryClickEvent event){
-        if(!(event.getClickedInventory() instanceof AnvilInventory)
+    public void onAnvilClick(InventoryClickEvent event) {
+        if (!(event.getClickedInventory() instanceof AnvilInventory)
                 || event.getSlot() != 2
                 || event.getCurrentItem() == null
                 || event.getCurrentItem().getItemMeta() == null
