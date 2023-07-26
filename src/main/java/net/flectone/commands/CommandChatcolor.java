@@ -35,6 +35,7 @@ public class CommandChatcolor extends FTabCompleter {
         }
 
         fCommand.getFPlayer().setColors(strings[0], strings[1]);
+        fCommand.getFPlayer().setDisplayName();
         fCommand.getFPlayer().setUpdated(true);
 
         fCommand.sendMeMessage("command.chatcolor.message");
