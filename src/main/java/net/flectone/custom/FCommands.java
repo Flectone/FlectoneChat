@@ -208,11 +208,13 @@ public class FCommands {
 
         String bubbleMessage = messageBuilder.getMessage();
 
-        if (Main.isHaveInteractiveChat) {
-            bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
-        }
+        if(command.contains("chat")) {
+            if (Main.isHaveInteractiveChat) {
+                bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
+            }
 
-        if(command.contains("chat")) getFPlayer().addChatBubble(bubbleMessage);
+            getFPlayer().addChatBubble(bubbleMessage);
+        }
     }
 
     private Set<Player> getFilteredPlayers(){
