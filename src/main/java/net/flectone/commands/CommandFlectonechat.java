@@ -71,12 +71,10 @@ public class CommandFlectonechat extends FTabCompleter {
 
         Main.config = new FileManager("config.yml");
         Main.locale = new FileManager("language/" + Main.config.getString("language") + ".yml");
-        FPlayerManager.uploadPlayers();
 
-        Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
-            FPlayerManager.removePlayer(player);
-            FPlayerManager.addPlayer(player);
-        });
+        FPlayerManager.uploadPlayers();
+        Bukkit.getOnlinePlayers().parallelStream().forEach(FPlayerManager::removePlayer);
+        FPlayerManager.loadPlayers();
 
         TickerManager.clear();
         TickerManager.start();
