@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
 
@@ -34,7 +35,7 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
     protected void addKeysFile(FileManager fileManager, String arg){
         fileManager.getKeys().parallelStream()
                 .filter(key -> !fileManager.getString(key).contains("root='YamlConfiguration'"))
-                .forEach(key -> isStartsWith(arg, key));
+                .forEachOrdered(key -> isStartsWith(arg, key));
     }
 
     protected void isOfflinePlayer(String arg){
@@ -58,6 +59,19 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
                         }
                     }
                 });
+    }
+
+    protected ArrayList<String> splitLine(String line, String[] placeholders) {
+        ArrayList<String> split = new ArrayList<>(List.of(line));
+
+        for (String placeholder : placeholders) {
+            split = (ArrayList<String>) split.stream().flatMap(part -> {
+                String[] sp = part.split("((?=@)|(?<=@))".replaceAll("@", placeholder));
+                return Arrays.stream(sp);
+            }).collect(Collectors.toList());
+        }
+
+        return split;
     }
 
     @Override
