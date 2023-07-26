@@ -65,12 +65,20 @@ public class FExpansion extends PlaceholderExpansion {
             return ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
         }
 
-        if(params.equalsIgnoreCase("player_name")){
+        if(params.equalsIgnoreCase("player_display_name")){
             if(player == null || !player.isOnline()) return "";
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
             return fPlayer.getDisplayName();
+        }
+
+        if(params.equalsIgnoreCase("player_tab_name")){
+            if(player == null || !player.isOnline()) return "";
+
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
+
+            return fPlayer.getTabName();
         }
 
         return null; // Placeholder is unknown by the Expansion
