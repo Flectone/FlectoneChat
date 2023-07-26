@@ -2,6 +2,7 @@ package net.flectone;
 
 import net.flectone.custom.FTabCompleter;
 import net.flectone.integrations.expansions.FExpansion;
+import net.flectone.integrations.luckperms.FLuckPerms;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
@@ -115,6 +116,11 @@ public final class Main extends JavaPlugin {
         if(Bukkit.getPluginManager().getPlugin("InteractiveChat") != null){
             isHaveInteractiveChat = true;
             getLogger().info("\uD83D\uDD12 InteractiveChat detected and hooked");
+        }
+
+        if(Bukkit.getPluginManager().getPlugin("LuckPerms") != null){
+            new FLuckPerms(this);
+            getLogger().info("\uD83D\uDD12 LuckPerms detected and hooked");
         }
     }
 
