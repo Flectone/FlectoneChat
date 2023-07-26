@@ -2,6 +2,7 @@ package net.flectone.listeners;
 
 import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,21 +17,18 @@ public class AnvilClickListener implements Listener {
         if(!(event.getClickedInventory() instanceof AnvilInventory)
                 || event.getSlot() != 2
                 || event.getCurrentItem() == null
-                || event.getCurrentItem().getItemMeta() == null) return;
+                || event.getCurrentItem().getItemMeta() == null
+                || !(event.getWhoClicked() instanceof Player)) return;
+
+        Player player = (Player) event.getWhoClicked();
+        String command = "anvil";
 
         ItemStack itemStack = event.getCurrentItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         String displayName = itemMeta.getDisplayName();
 
-        MessageBuilder messageBuilder = new MessageBuilder("anvilitem", displayName, itemStack, false);
-        displayName = messageBuilder.getMessage();
-
-        if(event.getWhoClicked().isOp() || event.getWhoClicked().hasPermission("flectonechat.formatting")){
-            displayName = ObjectUtil.formatString(displayName, event.getWhoClicked());
-        }
-
-        itemMeta.setDisplayName(displayName);
+        itemMeta.setDisplayName(ObjectUtil.buildFormattedMessage(player, command, displayName, itemStack));
         itemStack.setItemMeta(itemMeta);
     }
 }

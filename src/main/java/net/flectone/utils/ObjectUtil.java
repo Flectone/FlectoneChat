@@ -4,10 +4,12 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.messages.MessageBuilder;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -117,5 +119,18 @@ public class ObjectUtil {
             Main.getInstance().getLogger().warning("Incorrect sound " + soundName + " for " + command + ".sound.type");
         }
 
+    }
+
+    public static String buildFormattedMessage(Player player, String command, String text, ItemStack itemStack){
+        if(text == null) return "";
+
+        MessageBuilder messageBuilder = new MessageBuilder(command, text, itemStack, false);
+        String message = messageBuilder.getMessage();
+
+        if(player.isOp() || player.hasPermission("flectonechat.formatting")){
+            message = ObjectUtil.formatString(message, player);
+        }
+
+        return message;
     }
 }
