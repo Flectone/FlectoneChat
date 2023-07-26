@@ -2,12 +2,8 @@ package net.flectone.managers;
 
 import net.flectone.Main;
 import net.flectone.custom.FBukkitRunnable;
-import net.flectone.tickers.AfkTicker;
-import net.flectone.tickers.ChatBubbleTicker;
-import net.flectone.tickers.DatabaseTicker;
-import net.flectone.tickers.TabTicker;
+import net.flectone.tickers.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +32,12 @@ public class TickerManager {
             addTicker(new AfkTicker());
         }
 
-        if(Main.config.getBoolean("tab.update.enable")) {
+        if(Main.config.getBoolean("tab.update.enable")){
             addTicker(new TabTicker());
+        }
+
+        if(Main.config.getBoolean("tab.player-ping.enable")){
+            addTicker(new PlayerPingTicker());
         }
 
         bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);
