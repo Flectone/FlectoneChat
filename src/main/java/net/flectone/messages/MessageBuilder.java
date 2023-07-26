@@ -1,11 +1,11 @@
 package net.flectone.messages;
 
 import net.flectone.Main;
+import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.flectone.utils.ReflectionUtil;
 import net.md_5.bungee.api.chat.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -52,8 +52,9 @@ public class MessageBuilder {
             if (word.startsWith(pingPrefix)) {
                 String playerName = word.replaceFirst(pingPrefix, "");
 
-                if(FPlayerManager.getPlayerFromName(playerName) != null){
-                    Player player = Bukkit.getPlayer(playerName);
+                FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
+                if(fPlayer != null && fPlayer.isOnline()){
+                    Player player = fPlayer.getPlayer();
 
                     word = Main.locale.getString("chat.ping.message")
                             .replace("<player>", player.getName())

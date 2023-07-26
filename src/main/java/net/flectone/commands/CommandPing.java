@@ -29,7 +29,7 @@ public class CommandPing extends FTabCompleter {
 
         FPlayer fPlayer = strings.length > 0 ? FPlayerManager.getPlayerFromName(strings[0]) : fCommand.getFPlayer();
 
-        if(fPlayer == null){
+        if(fPlayer == null || !fPlayer.isOnline()){
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
