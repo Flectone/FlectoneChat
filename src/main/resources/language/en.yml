@@ -178,6 +178,19 @@ command:
     global-message: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>"
     local-message: "#ff4e4e☠ You are in mute, <time> left. Reason: <reason>"
 
+  mutelist:
+    empty: "#4eff52☺ No muted players found"
+    page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+    title: "&&2════ Muted: <count> ════"
+    player-mute: "<unmute> &&1<player> - <reason> - <time> left"
+    page-line: "<prev-page> Page: <page>/<last-page> <next-page>"
+
+    prev-page: "&&2←"
+    next-page: "&&2→"
+
+    unmute-button: "&c☒"
+    unmute-hover: "&&1Click to unmute &&2<player>"
+
   unmute:
     usage: "&&1⚑ Usage: &&2/<command> (player)"
     not-muted: "#ff4e4e⁉ This player does not muted"
@@ -199,18 +212,17 @@ command:
     message: "#ff4e4e☻ Player <player> unbanned"
 
   banlist:
-    no-banned-players: "#4eff52☺ No banned players found"
+    empty: "#4eff52☺ No banned players found"
+    page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+    title: "&&2════ Banned: <count> ════"
+    player-ban: "<unban> &&1<player> - <reason> - <time> left"
+    player-ban-permanently: "<unban> &&1<player> - <reason> - permanently"
+    page-line: "<prev-page> Page: <page>/<last-page> <next-page>"
 
-    pageline: "&&2<prev-page>&&1 Page: &&2<page>&&1/&&2<last-page> &&2<next-page>"
-    first-pageline: "&&1Page: &&2<page>&&1/&&2<last-page> &&2<next-page>"
-    last-pageline: "&&2<prev-page> &&1Page: &&2<page>&&1/&&2<last-page>"
-    single-pageline: "&&1Page: &&2<page>&&1/&&2<last-page>"
-    prev-page: "🡸"
-    next-page: "🡺"
+    prev-page: "&&2←"
+    next-page: "&&2→"
 
-    player-ban: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 <left> left"
-    player-ban-permanently: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 permanently"
-    unban-button: "[❌]"
+    unban-button: "&c☒"
     unban-hover: "&&1Click to unban &&2<player>"
 
   ignore:

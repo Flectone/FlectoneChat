@@ -129,6 +129,10 @@ commands:
     usage: /banlist
     permission: flectonechat.banlist
 
+  mutelist:
+    usage: /mutelist
+    permission: flectonechat.mutelist
+
   broadcast:
     usage: /broadcast <message>
     aliases: [ bc ]
@@ -193,3 +197,7 @@ permissions:
     default: op
   flectonechat.pollvote:
     default: true
+  flectonechat.banlist:
+    default: op
+  flectonechat.mutelist:
+    default: op

@@ -144,8 +144,15 @@ command:
   mute:
     announce: true
 
+  mutelist:
+    per-page: 4
+
   tempban:
     announce: true
+
+  banlist:
+    per-page: 4
+
 
 cool-down:
   enable: false
@@ -265,6 +272,14 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.tic-tac-toe.cooldown.immune"
+  banlist:
+    enable: false
+    time: 5
+    permission: "flectonechat.banlist.cooldown.immune"
+  mutelist:
+    enable: false
+    time: 5
+    permission: "flectonechat.mutelist.cooldown.immune"
 
 sound:
   poll:

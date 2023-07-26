@@ -17,12 +17,18 @@ public class FPlayerManager {
 
     private static final Set<FPlayer> bannedPlayers = new HashSet<>();
 
+    private static final Set<FPlayer> mutedPlayers = new HashSet<>();
+
     public static Collection<FPlayer> getPlayers(){
         return fPlayerHashMap.values();
     }
 
     public static Set<FPlayer> getBannedPlayers() {
         return bannedPlayers;
+    }
+
+    public static Set<FPlayer> getMutedPlayers() {
+        return mutedPlayers;
     }
 
     public static void loadPlayers(){

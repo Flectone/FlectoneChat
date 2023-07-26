@@ -198,20 +198,32 @@ command:
     not-banned: "#ff4e4e⁉ Этот игрок не заблокирован"
     message: "#ff4e4e☻ Игрок <player> разблокирован"
 
+  mutelist:
+    empty: "#4eff52☺ Нет игроков в муте"
+    page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
+    title: "&&2════ В муте: <count> ════"
+    player-mute: "<unmute> &&1<player> - <reason> - <time> left"
+    page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
+
+    prev-page: "&&2←"
+    next-page: "&&2→"
+
+    unmute-button: "&c☒"
+    unmute-hover: "&&1Нажми, чтобы размутить &&2<player>"
+
   banlist:
-    no-banned-players: "#4eff52☺ Забаненных игроков не найдено"
+    empty: "#4eff52☺ Нет заблокированных игроков"
+    page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
+    title: "&&2════ Заблокированных: <count> ════"
+    player-ban: "<unban> &&1<player> - <reason> - <time> left"
+    player-ban-permanently: "<unban> &&1<player> - <reason> - навсегда"
+    page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
 
-    pageline: "&&2<prev-page>&&1 Страница: &&2<page>&&1/&&2<last-page> &&2<next-page>"
-    first-pageline: "&&1Страница: &&2<page>&&1/&&2<last-page> &&2<next-page>"
-    last-pageline: "&&2<prev-page> &&1Page: &&2<page>&&1/&&2<last-page>"
-    single-pageline: "&&1Страница: &&2<page>&&1/&&2<last-page>"
-    prev-page: "🡸"
-    next-page: "🡺"
+    prev-page: "&&2←"
+    next-page: "&&2→"
 
-    player-ban: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 осталось <left>"
-    player-ban-permanently: "&c<unban> &&1<name> &&2|&&1 <reason> &&2|&&1 навсегда"
-    unban-button: "[❌]"
-    unban-hover: "&&1Нажми, чтобы разбанить &&2<player>"
+    unban-button: "&c☒"
+    unban-hover: "&&1Нажми, чтобы разблокировать &&2<player>"
 
   ignore:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"
