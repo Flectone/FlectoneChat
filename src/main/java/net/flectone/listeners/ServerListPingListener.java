@@ -16,5 +16,25 @@ public class ServerListPingListener implements Listener {
         if(Main.config.getBoolean("server.online.count.enable")){
             event.setMaxPlayers(Main.config.getInt("server.online.count.digit"));
         }
+
+        if(Main.config.getBoolean("server.icon.enable")){
+            List<String> iconNames = Main.config.getStringList("server.icon.names");
+
+            int numberIcon = Main.config.getString("server.icon.mode").equals("single") ? 0 :
+                    new Random().nextInt(0, iconNames.size());
+
+            setIcon(event, iconNames.get(numberIcon));
+        }
     }
+
+    private void setIcon(ServerListPingEvent event, String iconName){
+        try {
+            CachedServerIcon serverIcon = Bukkit.loadServerIcon(new File(Main.getInstance().getDataFolder(), "icons" + File.separator + iconName + ".png"));
+            event.setServerIcon(serverIcon);
+        } catch (Exception exception){
+            Main.warning("Unable to load and install " + iconName + ".png image");
+            exception.printStackTrace();
+        }
+    }
+
 }

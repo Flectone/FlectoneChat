@@ -17,6 +17,8 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public final class Main extends JavaPlugin {
 
     public static boolean isHavePAPI = false;
@@ -51,6 +53,7 @@ public final class Main extends JavaPlugin {
 
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
+        loadIcons();
 
         this.database = new SQLite(this);
         this.database.load();
@@ -89,6 +92,16 @@ public final class Main extends JavaPlugin {
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });
+    }
+
+    private void loadIcons(){
+        String path = Main.getInstance().getDataFolder() + File.separator + "icons" + File.separator;
+
+        for(String iconName : Main.config.getStringList("server.icon.names")){
+            if(new File(path + iconName + ".png").exists()) continue;
+
+            Main.getInstance().saveResource("icons" + File.separator + iconName + ".png", false);
+        }
     }
 
     private void hookPlugins(){

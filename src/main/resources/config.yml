@@ -24,6 +24,15 @@ server:
     count:
       enable: true
       digit: 69
+  icon:
+    enable: true
+    # Modes: single or random
+    mode: random
+
+    # If "single" mode is enabled, only the first one will be displayed
+    names:
+      - "server-icon-1"
+      - "server-icon-2"
 
 chat:
   bubble:
