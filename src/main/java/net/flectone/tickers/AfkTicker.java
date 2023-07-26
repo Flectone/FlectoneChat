@@ -31,6 +31,7 @@ public class AfkTicker extends FBukkitRunnable {
 
                 if(diffTime >= Main.config.getInt("command.afk.timeout.time")){
                     CommandAfk.sendMessage(fPlayer, true);
+                    fPlayer.setDisplayName();
                 }
 
                 return;
@@ -41,6 +42,7 @@ public class AfkTicker extends FBukkitRunnable {
             if(!fPlayer.isAfk()) return;
 
             CommandAfk.sendMessage(fPlayer, false);
+            fPlayer.setDisplayName();
         });
     }
 }
