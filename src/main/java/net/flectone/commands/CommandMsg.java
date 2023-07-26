@@ -6,6 +6,7 @@ import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -41,6 +42,11 @@ public class CommandMsg extends FTabCompleter {
 
         String message = ObjectUtil.toString(strings, 1);
 
+        if(!secondFPlayer.isOnline()){
+            Bukkit.dispatchCommand(commandSender, "mail " + playerName + " " + message);
+            return true;
+        }
+
         if(!fCommand.isConsole()){
             if(fCommand.getSenderName().equalsIgnoreCase(playerName)){
                 commandSender.sendMessage(Main.locale.getFormatString("command.msg.myself", commandSender) + message);
@@ -68,7 +74,7 @@ public class CommandMsg extends FTabCompleter {
         wordsList.clear();
 
         if(strings.length == 1){
-            isOnlinePlayer(strings[0]);
+            isOfflinePlayer(strings[0]);
         } else if(strings.length == 2) {
             isStartsWith(strings[1], "(message)");
         }

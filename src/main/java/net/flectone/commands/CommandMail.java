@@ -41,11 +41,6 @@ public class CommandMail extends FTabCompleter {
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if(fPlayer.isOnline()){
-            Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
-            return true;
-        }
-
         if(fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())){
             fCommand.sendMeMessage("command.you_ignore");
             return true;
@@ -59,6 +54,11 @@ public class CommandMail extends FTabCompleter {
         if(fCommand.isHaveCD()) return true;
 
         if(fCommand.isMuted()) return true;
+
+        if(fPlayer.isOnline()){
+            Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
+            return true;
+        }
 
         Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
         mail.setRemoved(false);
