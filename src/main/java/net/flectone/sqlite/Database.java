@@ -149,7 +149,7 @@ public abstract class Database {
                 fPlayer.setTempBanTime(resultSet.getInt("tempban_time"));
                 fPlayer.setTempBanReason(resultSet.getString("tempban_reason"));
 
-                if (fPlayer.isBanned() || fPlayer.isPermanentlyBanned()) FPlayerManager.getBannedPlayers().add(fPlayer);
+                if (fPlayer.isBanned()) FPlayerManager.getBannedPlayers().add(fPlayer);
 
                 String chat = resultSet.getString("chat");
                 chat = chat == null ? "local" : chat;

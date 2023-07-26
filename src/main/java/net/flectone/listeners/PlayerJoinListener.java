@@ -57,13 +57,13 @@ public class PlayerJoinListener implements Listener {
     public void onLoginPlayer(PlayerLoginEvent event){
 
         FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
-        if(fPlayer != null && (fPlayer.isPermanentlyBanned() || fPlayer.isBanned())){
+        if(fPlayer != null && fPlayer.isBanned()){
             String localString = fPlayer.isPermanentlyBanned() ? "command.ban.local-message" : "command.tempban.local-message";
             int bannedTime = fPlayer.isPermanentlyBanned() ? -1 : fPlayer.getTempBanTime();
 
             String formatMessage = Main.locale.getFormatString(localString, fPlayer.getPlayer())
                     .replace("<time>", ObjectUtil.convertTimeToString(bannedTime))
-                    .replace("<reason>", fPlayer.getTempBanReason());
+                    .replace("<reason>", fPlayer.getBanReason());
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
             return;
         }

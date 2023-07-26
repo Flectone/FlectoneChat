@@ -138,7 +138,7 @@ public class FPlayer {
         return isMuted;
     }
 
-    public boolean isBanned() {
+    public boolean isTempBanned() {
         boolean isBanned = getTempBanTime() > 0;
 
         if (!isBanned && !isPermanentlyBanned()) {
@@ -151,6 +151,10 @@ public class FPlayer {
 
     public boolean isPermanentlyBanned(){
         return getRealBanTime() == -1;
+    }
+
+    public boolean isBanned(){
+        return isTempBanned() || isPermanentlyBanned();
     }
 
     public boolean isAfk() {
@@ -211,7 +215,7 @@ public class FPlayer {
         this.tempBanTime = tempBanTime;
     }
 
-    public String getTempBanReason() {
+    public String getBanReason() {
         return tempBanReason;
     }
 

@@ -32,7 +32,7 @@ public class CommandUnban extends FTabCompleter {
             return true;
         }
 
-        if(!fPlayer.isBanned() && !fPlayer.isPermanentlyBanned()){
+        if(!fPlayer.isBanned()){
             fCommand.sendMeMessage("command.unban.not-banned");
             return true;
         }
