@@ -2,6 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
@@ -9,16 +10,14 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CommandBanlist extends FTabCompleter {
 
@@ -31,145 +30,118 @@ public class CommandBanlist extends FTabCompleter {
 
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
+        Set<FPlayer> bannedPlayers = FPlayerManager.getBannedPlayers();
+
+        int perpage = Main.config.getInt("command.banlist.per-page");
+
+        int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perpage);
+
+        if(strings.length != 0 &&
+                (!StringUtils.isNumeric(strings[0])
+                        || Integer.parseInt(strings[0]) < 1
+                        || Integer.parseInt(strings[0]) > lastPage) ){
+
+            fCommand.sendMeMessage("command.banlist.page-not-exist");
+            return true;
+        }
+
+        if(bannedPlayers.isEmpty()){
+            fCommand.sendMeMessage("command.banlist.empty");
+            return true;
+        }
+
         if(fCommand.isHaveCD()) return true;
 
-        int perpage = 4;
+        ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perpage);
+        String title = Main.locale.getFormatString("command.banlist.title", commandSender)
+                .replace("<count>", String.valueOf(bannedPlayers.size()));
+
+        componentBuilder.append(TextComponent.fromLegacyText(title)).append("\n\n");
+
+        String unbanButton = Main.locale.getFormatString("command.banlist.unban-button", commandSender);
 
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
 
         page = Math.min(lastPage, page);
 
-        ComponentBuilder componentBuilder = new ComponentBuilder("\n");
+        bannedPlayers.stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
 
-        String rawPlayerBanLine = Main.locale.getFormatString("command.banlist.player-ban", commandSender);
-        String rawPlayerBanPermanentlyLine = Main.locale.getFormatString("command.banlist.player-ban-permanently", commandSender);
+            String playerBanFormat = "command.banlist.player-ban";
+            if(fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
 
-        String unbanButton = Main.locale.getFormatString("command.banlist.unban-button", commandSender);
-        String unbanButtonHover = Main.locale.getFormatString("command.banlist.unban-hover", commandSender);
+            playerBanFormat = Main.locale.getFormatString(playerBanFormat, commandSender)
+                    .replace("<unban>", unbanButton)
+                    .replace("<player>", fPlayer.getRealName())
+                    .replace("<reason>", fPlayer.getBanReason())
+                    .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getTempBanTime()));
 
-        if(FPlayerManager.getBannedPlayers().size() == 0){
-            fCommand.sendMeMessage("command.banlist.no-banned-players");
-            return true;
-        }
+            String unbanHover = Main.locale.getFormatString("command.banlist.unban-hover", commandSender)
+                    .replace("<player>", fPlayer.getRealName());
 
-        FPlayerManager.getBannedPlayers().stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
-            String lastColor = ChatColor.getLastColors(componentBuilder.getCurrentComponent().toString());
+            TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(playerBanFormat));
+            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(unbanHover)));
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/unban " + fPlayer.getRealName()));
 
-            String banLine = fPlayer.isPermanentlyBanned() ? rawPlayerBanPermanentlyLine : rawPlayerBanLine;
-
-            for (String part : splitLine(banLine, new String[]{"<unban>", "<name>", "<reason>", "<left>"})) {
-                TextComponent component = new TextComponent(TextComponent.fromLegacyText(lastColor + part));
-                lastColor = ChatColor.getLastColors((component.toString()));
-
-                switch (part) {
-                    case "<unban>":
-                        component = new TextComponent(TextComponent.fromLegacyText(lastColor + unbanButton));
-                        component.setClickEvent(
-                                new ClickEvent(
-                                        ClickEvent.Action.RUN_COMMAND,
-                                        "/unban " + fPlayer.getRealName()
-                                )
-                        );
-                        component.setHoverEvent(
-                                new HoverEvent(
-                                        HoverEvent.Action.SHOW_TEXT,
-                                        TextComponent.fromLegacyText(
-                                                unbanButtonHover.replaceAll(
-                                                        "<player>",
-                                                        fPlayer.getRealName()
-                                                )
-                                        )
-                                )
-                        );
-                        break;
-                    case "<name>":
-                        component = new TextComponent(TextComponent.fromLegacyText(lastColor + fPlayer.getRealName()));
-                        break;
-                    case "<reason>":
-                        component = new TextComponent(TextComponent.fromLegacyText(lastColor + fPlayer.getTempBanReason()));
-                        break;
-                    case "<left>":
-                        String bannedTime = fPlayer.isPermanentlyBanned() ?
-                                "∞" : ObjectUtil.convertTimeToString(fPlayer.getTempBanTime());
-                        component = new TextComponent(TextComponent.fromLegacyText(lastColor + bannedTime));
-                        break;
-                }
-
-                componentBuilder.append(component, ComponentBuilder.FormatRetention.NONE);
-            }
-            componentBuilder.append(lastColor + "\n");
+            componentBuilder.append(textComponent).append("\n\n");
         });
 
-        componentBuilder.append("\n");
+        String pageLine = Main.locale.getFormatString("command.banlist.page-line", commandSender)
+                    .replace("<page>", String.valueOf(page))
+                    .replace("<last-page>", String.valueOf(lastPage));
 
-        String pageType = "";
-        if (page == lastPage) pageType = "last-";
-        if (page == 1) pageType = "first-";
-        if (page == lastPage && page == 1) pageType = "single-";
+        String chatColor = "";
 
-        String rawPageLine = Main.locale.getFormatString("command.banlist." + pageType + "pageline", commandSender);
+        for(String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})){
 
-        String nextPageButton = Main.locale.getFormatString("command.banlist.next-page", commandSender);
-        String prevPageButton = Main.locale.getFormatString("command.banlist.prev-page", commandSender);
+            int pageNumber = page;
+            String button = null;
 
-        for (String part : splitLine(rawPageLine, new String[]{"<last-page>", "<page>", "<next-page>", "<prev-page>"})) {
-            String lastColor = ChatColor.getLastColors(componentBuilder.getCurrentComponent().toString());
-            TextComponent component = new TextComponent(TextComponent.fromLegacyText(lastColor + part));
-
-            lastColor = ChatColor.getLastColors((component.toString()));
-
-            switch (part) {
-                case "<page>":
-                    component = new TextComponent(TextComponent.fromLegacyText(lastColor + page));
-                    break;
-                case "<last-page>":
-                    component = new TextComponent(TextComponent.fromLegacyText(lastColor + lastPage));
+            switch(part){
+                case "<prev-page>":
+                    pageNumber--;
+                    button = Main.locale.getFormatString("command.banlist.prev-page", commandSender);
                     break;
                 case "<next-page>":
-                    component = new TextComponent(TextComponent.fromLegacyText(lastColor + nextPageButton));
-                    component.setClickEvent(
-                            new ClickEvent(
-                                    ClickEvent.Action.RUN_COMMAND,
-                                    "/" + s + " " + (page + 1)
-                            )
-                    );
-                    break;
-                case "<prev-page>":
-                    component = new TextComponent(TextComponent.fromLegacyText(lastColor + prevPageButton));
-                    component.setClickEvent(
-                            new ClickEvent(
-                                    ClickEvent.Action.RUN_COMMAND,
-                                    "/" + s + " " + (page - 1)
-                            )
-                    );
+                    pageNumber++;
+                    button = Main.locale.getFormatString("command.banlist.next-page", commandSender);
                     break;
             }
 
-            componentBuilder.append(component, ComponentBuilder.FormatRetention.NONE);
+            TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + part));
+            if(button != null){
+                textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + button));
+                textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/banlist " + pageNumber));
+            }
+
+            componentBuilder.append(textComponent, ComponentBuilder.FormatRetention.NONE);
+
+            chatColor = ChatColor.getLastColors(chatColor + componentBuilder.getCurrentComponent().toString());
         }
 
         commandSender.spigot().sendMessage(componentBuilder.create());
+
         return true;
-    }
-
-    private ArrayList<String> splitLine(String line, String[] placeholders) {
-        ArrayList<String> split = new ArrayList<>(List.of(line));
-
-        for (String placeholder : placeholders) {
-            split = (ArrayList<String>) split.stream().flatMap(part -> {
-                        String[] sp = part.split("((?=@)|(?<=@))".replaceAll("@", placeholder));
-                        return Arrays.stream(sp);
-                    }).collect(Collectors.toList());
-        }
-
-        return split;
     }
 
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if(strings.length == 1){
+            int perpage = Main.config.getInt("command.banlist.per-page");
+
+            int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perpage);
+
+            for(int x = 0; x < lastPage; x++){
+                isStartsWith(strings[0], String.valueOf(x+1));
+            }
+
+        }
+
+        Collections.sort(wordsList);
+
         return wordsList;
     }
 }
