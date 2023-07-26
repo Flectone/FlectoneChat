@@ -3,9 +3,9 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
+import net.flectone.custom.FTabCompleter;
 import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.custom.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -15,7 +15,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CommandMute extends FTabCompleter {

@@ -1,14 +1,11 @@
 package net.flectone.listeners;
 
-import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Arrays;
 
 public class SignChangeListener implements Listener {
 

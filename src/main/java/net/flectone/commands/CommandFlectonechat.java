@@ -1,18 +1,17 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.Main;
-import net.flectone.managers.FileManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;

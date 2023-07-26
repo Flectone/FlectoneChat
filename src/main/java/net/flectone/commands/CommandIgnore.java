@@ -2,8 +2,8 @@ package net.flectone.commands;
 
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

@@ -1,6 +1,5 @@
 package net.flectone.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.MagmaCube;

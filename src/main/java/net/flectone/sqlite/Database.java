@@ -1,11 +1,5 @@
 package net.flectone.sqlite;
 
-import java.io.File;
-import java.sql.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
 import net.flectone.custom.FPlayer;
@@ -15,6 +9,18 @@ import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public abstract class Database {
     Main plugin;

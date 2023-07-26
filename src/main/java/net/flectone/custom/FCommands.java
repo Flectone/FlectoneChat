@@ -1,18 +1,18 @@
 package net.flectone.custom;
 
+import net.flectone.Main;
+import net.flectone.commands.CommandAfk;
 import net.flectone.integrations.interactivechat.FlectoneInteractiveChat;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.FileManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.utils.ObjectUtil;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import net.flectone.Main;
-import net.flectone.commands.CommandAfk;
-import net.flectone.managers.FileManager;
 
 import java.util.Arrays;
 import java.util.HashMap;

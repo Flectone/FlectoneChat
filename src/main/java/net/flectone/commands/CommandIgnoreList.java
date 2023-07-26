@@ -1,5 +1,6 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
@@ -7,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.Main;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

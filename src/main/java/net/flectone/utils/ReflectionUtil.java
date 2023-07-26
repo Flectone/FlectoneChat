@@ -4,7 +4,6 @@ import com.google.common.reflect.ClassPath;
 import net.flectone.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;

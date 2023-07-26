@@ -1,11 +1,11 @@
 package net.flectone.managers;
 
+import net.flectone.Main;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import net.flectone.Main;
 
 import java.io.File;
 import java.io.IOException;

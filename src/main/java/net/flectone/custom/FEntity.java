@@ -1,7 +1,6 @@
 package net.flectone.custom;
 
 import net.flectone.managers.FPlayerManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

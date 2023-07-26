@@ -1,14 +1,14 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.Main;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;

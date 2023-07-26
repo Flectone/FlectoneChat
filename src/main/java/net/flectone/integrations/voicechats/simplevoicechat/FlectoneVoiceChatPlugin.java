@@ -2,7 +2,8 @@ package net.flectone.integrations.voicechats.simplevoicechat;
 
 import de.maxhenkel.voicechat.api.VoicechatApi;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
-import de.maxhenkel.voicechat.api.events.*;
+import de.maxhenkel.voicechat.api.events.EventRegistration;
+import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;

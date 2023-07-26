@@ -1,5 +1,6 @@
 package net.flectone.listeners;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
@@ -12,7 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
-import net.flectone.Main;
 
 import java.util.HashSet;
 import java.util.Set;

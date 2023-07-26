@@ -1,8 +1,12 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FEntity;
 import net.flectone.custom.FTabCompleter;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -12,8 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import net.flectone.Main;
-import net.flectone.custom.FEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;

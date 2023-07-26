@@ -1,7 +1,5 @@
 package net.flectone.utils;
 
-import com.google.gson.Gson;
-import com.loohp.interactivechat.libs.org.apache.commons.io.IOUtils;
 import net.flectone.Main;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,7 +14,6 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.Charset;
 
 public class WebUtil {
 

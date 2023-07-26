@@ -1,5 +1,7 @@
 package net.flectone.sqlite;
 
+import net.flectone.Main;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,8 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
-
-import net.flectone.Main;
 
 
 public class SQLite extends Database{
