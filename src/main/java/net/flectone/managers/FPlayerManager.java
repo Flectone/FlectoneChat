@@ -7,17 +7,24 @@ import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 public class FPlayerManager {
 
+    private static final Scoreboard scoreBoard = Bukkit.getScoreboardManager().getNewScoreboard();
+
     private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
 
     private static final Set<FPlayer> bannedPlayers = new HashSet<>();
 
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
+
+    public static Scoreboard getScoreBoard(){
+        return scoreBoard;
+    }
 
     public static Collection<FPlayer> getPlayers(){
         return fPlayerHashMap.values();
@@ -139,4 +146,5 @@ public class FPlayerManager {
     public static void removePlayer(@NotNull OfflinePlayer offlinePlayer){
         removePlayer(offlinePlayer.getUniqueId());
     }
+
 }

@@ -4,7 +4,6 @@ import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -13,8 +12,7 @@ import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scoreboard.NameTagVisibility;
-import org.bukkit.scoreboard.Team;
+import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,11 +74,11 @@ public class FPlayer {
         this.offlinePlayer = offlinePlayer;
         this.name = offlinePlayer.getName();
         this.uuid = offlinePlayer.getUniqueId().toString();
-        this.team = getPlayerTeam();
     }
 
     public void initialize(Player player){
         setPlayer(player);
+        setTeam(getPlayerTeam());
         setBlock(this.player.getLocation().getBlock());
         getVaultPrefixSuffix();
         setWorldPrefix(player.getWorld());
@@ -94,7 +92,6 @@ public class FPlayer {
         this.offlinePlayer = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId().toString();
-        this.team = getPlayerTeam();
     }
 
     public void setPlayer(Player player) {
@@ -294,9 +291,13 @@ public class FPlayer {
         return this.colors;
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public Team getPlayerTeam(){
-        Team bukkitTeam = Bukkit.getScoreboardManager().getMainScoreboard().getTeam(this.name);
-        Team team = bukkitTeam != null ? bukkitTeam : Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(this.name);
+        Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(this.name);
+        Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(this.name);
 
         boolean colorWorldsEnabled = Main.config.getBoolean("player.team.enable");
 
@@ -502,4 +503,5 @@ public class FPlayer {
     public List<String> getListChatBubbles() {
         return listChatBubbles;
     }
+
 }
