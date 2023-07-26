@@ -162,7 +162,7 @@ permissions:
   flectonechat.chatcolor:
     default: true
   flectonechat.stream:
-    default: not op
+    default: false
   flectonechat.ping:
     default: true
   flectonechat.mark:
