@@ -6,6 +6,7 @@ import net.flectone.custom.FBukkitRunnable;
 public class DatabaseTicker extends FBukkitRunnable {
 
     public DatabaseTicker(){
+        super.delay = 20L * 3600 * 5;
         super.period = 20L * 3600 * 5;
     }
 
