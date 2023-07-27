@@ -285,12 +285,9 @@ public class FPlayer {
         Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(this.name);
         Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(this.name);
 
-        boolean colorWorldsEnabled = Main.config.getBoolean("player.team.enable");
+        if (!team.hasEntry(this.name)) team.addEntry(this.name);
 
-        if (!team.hasEntry(this.name) && colorWorldsEnabled) team.addEntry(this.name);
-        if (team.hasEntry(this.name) && !colorWorldsEnabled) team.removeEntry(this.name);
-
-        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Main.config.getBoolean("player.team.name-visible")
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Main.config.getBoolean("player.name-visible")
                 ? Team.OptionStatus.ALWAYS : Team.OptionStatus.NEVER);
 
         team.setColor(ChatColor.WHITE);
@@ -377,12 +374,16 @@ public class FPlayer {
     }
 
     public void setDisplayName() {
-        String name = getDisplayName();
-        String[] strings = name.split(this.name);
-        String prefix = strings.length > 0 ? strings[0] : "";
-        String suffix = strings.length > 1 ? strings[1] : "";
-
         this.player.setPlayerListName(getTabName());
+
+        String prefix = "";
+        String suffix = "";
+        if(Main.config.getBoolean("player.name-tag.enable")){
+            String[] strings = getDisplayName().split(this.name);
+            prefix = strings.length > 0 ? strings[0] : "";
+            suffix = strings.length > 1 ? strings[1] : "";
+        }
+
         this.team.setPrefix(prefix);
         this.team.setSuffix(suffix);
     }
