@@ -15,7 +15,7 @@ commands:
 
   msg:
     usage: /msg <player> <message>
-    aliases: [ w, tell, message, send ]
+    aliases: [ w, tell, message, send, m ]
     permission: flectonechat.msg
 
   try-cube:
@@ -56,7 +56,7 @@ commands:
 
   mark:
     usage: /mark
-    aliases: [ f, m ]
+    aliases: [ f ]
     permission: flectonechat.mark
 
   firstonline:
