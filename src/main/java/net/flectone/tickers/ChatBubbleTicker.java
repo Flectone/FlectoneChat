@@ -4,10 +4,7 @@ import net.flectone.Main;
 import net.flectone.custom.FBukkitRunnable;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -59,30 +56,34 @@ public class ChatBubbleTicker extends FBukkitRunnable {
 
     private List<String> divideText(String text, int maxCharactersPerLine) {
         List<String> lines = new ArrayList<>();
-        String line = "";
+        StringBuilder line = new StringBuilder();
 
         for (int x = 0; x < text.length(); x++) {
             char symbol = text.charAt(x);
-            line += symbol;
+            line.append(symbol);
 
             if ((symbol == ' ' && line.length() > maxCharactersPerLine - 5)
                     || line.length() > maxCharactersPerLine) {
 
-                lines.add(symbol == ' ' ? line.trim() : line + "-");
-                line = "";
+                lines.add(symbol == ' ' ? line.toString().trim() : line + "-");
+                line = new StringBuilder();
             }
         }
 
-        if (!line.isEmpty()) lines.add(line);
+        if (line.length() > 0) lines.add(line.toString());
 
         return lines;
     }
 
-    // Thanks @atesin for chat bubbles implementation
+    // Thanks, @atesin, for chat bubbles implementation
     // https://github.com/atesin/LightChatBubbles
     private AreaEffectCloud spawnStringBubble(Entity vehicle, String message, Location location, int duration) {
         location.setDirection(new Vector(0, -1, 0));
-        AreaEffectCloud nameTag = (AreaEffectCloud) location.getWorld().spawnEntity(location, EntityType.AREA_EFFECT_CLOUD);
+
+        World world = location.getWorld();
+        if(world == null) return null;
+
+        AreaEffectCloud nameTag = (AreaEffectCloud) world.spawnEntity(location, EntityType.AREA_EFFECT_CLOUD);
         nameTag.setParticle(Particle.TOWN_AURA);
         nameTag.setRadius(0);
 

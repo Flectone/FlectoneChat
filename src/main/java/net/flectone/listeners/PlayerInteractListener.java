@@ -78,7 +78,7 @@ public class PlayerInteractListener implements Listener {
 
         if (event.getItem() == null) return;
 
-        if (event.getItem().getType().equals(Material.NETHER_STAR)) {
+        if (event.getItem().getType().equals(Material.NETHER_STAR) && event.getItem().getItemMeta() != null) {
             String itemName = event.getItem().getItemMeta().getDisplayName();
             if (itemName.equalsIgnoreCase("flectone")) {
                 Bukkit.dispatchCommand(event.getPlayer(), "mark " + CommandMark.chatColorValues[((int) (Math.random() * CommandMark.chatColorValues.length))]);
@@ -96,7 +96,7 @@ public class PlayerInteractListener implements Listener {
             markItem = Material.WOODEN_SWORD;
         }
 
-        if (!event.getItem().getType().equals(markItem)) return;
+        if (!event.getItem().getType().equals(markItem) || event.getItem().getItemMeta() == null) return;
 
         String itemName = event.getItem().getItemMeta().getDisplayName().toUpperCase();
 
@@ -116,6 +116,8 @@ public class PlayerInteractListener implements Listener {
 
     private void paintItem(ItemStack itemStack, String playerName, String color) {
         ItemMeta itemMeta = itemStack.getItemMeta();
+        if(itemMeta == null) return;
+
         List<String> stringList = itemMeta.getLore();
 
         if (stringList == null) {

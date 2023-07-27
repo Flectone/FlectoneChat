@@ -45,6 +45,8 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
     }
 
     private void onMicrophonePacketEvent(MicrophonePacketEvent event) {
+        if(!(event.getSenderConnection() instanceof Player)) return;
+
         Player player = (Player) event.getSenderConnection().getPlayer().getPlayer();
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if (fPlayer != null && fPlayer.isMuted()) {

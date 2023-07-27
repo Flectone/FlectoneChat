@@ -17,10 +17,6 @@ public class PollManager {
         pollList.add(poll);
     }
 
-    public static void remove(Poll poll) {
-        pollList.remove(poll);
-    }
-
     public static List<Poll> getPollList() {
         return pollList;
     }

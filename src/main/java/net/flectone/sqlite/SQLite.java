@@ -24,7 +24,6 @@ public class SQLite extends Database {
             "'mails' text[]," +
             "'chat' varchar(32)," +
             "PRIMARY KEY (`uuid`)" +
-            "FOREIGN KEY ('mails') REFERENCES mails (uuid)" +
             ");";
     public String SQLiteCreateTokensMails = "CREATE TABLE IF NOT EXISTS mails (" +
             "`uuid` varchar(32) NOT NULL," +
@@ -46,7 +45,7 @@ public class SQLite extends Database {
         File dataFolder = new File(plugin.getDataFolder(), dbname + ".db");
         if (!dataFolder.exists()) {
             try {
-                dataFolder.createNewFile();
+                if(!dataFolder.createNewFile()) Main.warning("Failed to create file " + dbname + ".db");
                 isOldVersion = true;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");

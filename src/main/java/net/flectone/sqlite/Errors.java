@@ -10,7 +10,7 @@ public class Errors {
     }
 
     public static String noSQLConnection() {
-        return "Unable to retreive MYSQL connection: ";
+        return "Unable to retrieve MYSQL connection: ";
     }
 
     public static String noTableFound() {

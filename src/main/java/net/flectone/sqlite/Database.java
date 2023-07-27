@@ -46,7 +46,7 @@ public abstract class Database {
                     .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId().toString()));
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Unable to retreive connection", ex);
+            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
@@ -222,10 +222,9 @@ public abstract class Database {
             String[] colors = fPlayer.getColors();
             ps1.setString(5, colors[0] + "," + colors[1]);
 
-            String ignoreListString = "";
-            for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString += ignoredPlayer + ",";
-            ignoreListString = ignoreListString.length() == 0 ? null : ignoreListString;
-            ps1.setString(6, ignoreListString);
+            StringBuilder ignoreListString = new StringBuilder();
+            for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
+            ps1.setString(6, ignoreListString.length() == 0 ? null : ignoreListString.toString());
 
             if (!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0) {
                 fPlayer.getMails().forEach((uuid, mail) -> {

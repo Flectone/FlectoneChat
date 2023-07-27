@@ -34,9 +34,9 @@ public class CommandBanlist extends FTabCompleter {
 
         Set<FPlayer> bannedPlayers = FPlayerManager.getBannedPlayers();
 
-        int perpage = Main.config.getInt("command.banlist.per-page");
+        int perPage = Main.config.getInt("command.banlist.per-page");
 
-        int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perpage);
+        int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perPage);
 
         if (strings.length != 0 &&
                 (!StringUtils.isNumeric(strings[0])
@@ -67,7 +67,7 @@ public class CommandBanlist extends FTabCompleter {
 
         page = Math.min(lastPage, page);
 
-        bannedPlayers.stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
+        bannedPlayers.stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(fPlayer -> {
 
             String playerBanFormat = "command.banlist.player-ban";
             if (fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
@@ -132,9 +132,9 @@ public class CommandBanlist extends FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            int perpage = Main.config.getInt("command.banlist.per-page");
+            int perPage = Main.config.getInt("command.banlist.per-page");
 
-            int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perpage);
+            int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perPage);
 
             for (int x = 0; x < lastPage; x++) {
                 isStartsWith(strings[0], String.valueOf(x + 1));

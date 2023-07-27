@@ -91,7 +91,10 @@ public class AsyncPlayerChatListener implements Listener {
 
     @EventHandler
     public void checkItemTooltipShortcut(InventoryClickEvent event) {
-        if (event.getSlot() != 39 || !event.isShiftClick() || event.getCursor().getType().equals(Material.AIR)) {
+        if (event.getSlot() != 39
+                || !event.isShiftClick()
+                || event.getCursor() == null
+                || event.getCursor().getType().equals(Material.AIR)) {
             return;
         }
 

@@ -20,7 +20,7 @@ public class Poll {
 
     private boolean isExpired = false;
 
-    private int id;
+    private final int id;
 
     public Poll(String message) {
         this.message = message;

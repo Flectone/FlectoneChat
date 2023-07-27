@@ -58,7 +58,7 @@ public class FPlayerManager {
         Bukkit.getBannedPlayers().parallelStream()
                 .forEach(offlinePlayer -> {
                     FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
-                    if (fPlayer == null) return;
+                    if (fPlayer == null || offlinePlayer.getName() == null) return;
 
                     String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
                     fPlayer.tempban(-1, reason);

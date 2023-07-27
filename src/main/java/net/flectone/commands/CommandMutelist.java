@@ -34,9 +34,9 @@ public class CommandMutelist extends FTabCompleter {
 
         Set<FPlayer> mutedPlayers = FPlayerManager.getMutedPlayers();
 
-        int perpage = Main.config.getInt("command.mutelist.per-page");
+        int perPage = Main.config.getInt("command.mutelist.per-page");
 
-        int lastPage = (int) Math.ceil((double) mutedPlayers.size() / perpage);
+        int lastPage = (int) Math.ceil((double) mutedPlayers.size() / perPage);
 
         if (strings.length != 0 &&
                 (!StringUtils.isNumeric(strings[0])
@@ -67,7 +67,7 @@ public class CommandMutelist extends FTabCompleter {
 
         page = Math.min(lastPage, page);
 
-        mutedPlayers.stream().skip((long) (page - 1) * perpage).limit(perpage).forEach(fPlayer -> {
+        mutedPlayers.stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(fPlayer -> {
 
             String playerMuteFormat = Main.locale.getFormatString("command.mutelist.player-mute", commandSender)
                     .replace("<unmute>", unmuteButton)
@@ -129,9 +129,9 @@ public class CommandMutelist extends FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            int perpage = Main.config.getInt("command.mutelist.per-page");
+            int perPage = Main.config.getInt("command.mutelist.per-page");
 
-            int lastPage = (int) Math.ceil((double) FPlayerManager.getMutedPlayers().size() / perpage);
+            int lastPage = (int) Math.ceil((double) FPlayerManager.getMutedPlayers().size() / perPage);
 
             for (int x = 0; x < lastPage; x++) {
                 isStartsWith(strings[0], String.valueOf(x + 1));

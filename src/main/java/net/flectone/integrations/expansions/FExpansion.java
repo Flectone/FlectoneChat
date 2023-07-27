@@ -19,7 +19,7 @@ public class FExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "TheFaser";
+        return "TheFaser, fxd";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class FExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String params) {
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
         if (player == null || !player.isOnline()) return "";
 
         FPlayer fPlayer = FPlayerManager.getPlayer(player);

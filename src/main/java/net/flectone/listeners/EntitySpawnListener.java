@@ -34,7 +34,6 @@ public class EntitySpawnListener implements Listener {
         if (location.getDirection().equals(new Vector(0, -1, 0))) {
             AreaEffectCloud entity = (AreaEffectCloud) event.getEntity();
             entity.setRadius(0);
-            return;
         }
 
     }

@@ -61,9 +61,8 @@ public class CommandPoll extends FTabCompleter {
                     .append(" ", ComponentBuilder.FormatRetention.NONE)
                     .append(createVoteComponent("disagree", poll.getId()));
 
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                player.spigot().sendMessage(componentBuilder.create());
-            });
+            Bukkit.getOnlinePlayers().parallelStream()
+                    .forEach(player -> player.spigot().sendMessage(componentBuilder.create()));
 
             return true;
         }
