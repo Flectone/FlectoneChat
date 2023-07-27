@@ -30,6 +30,7 @@ public class PlayerPingTicker extends FBukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             Objective objective = FPlayerManager.getScoreBoard().getObjective("ping");
+            if(objective == null) return;
             Score score = objective.getScore(player.getName());
 
             score.setScore(player.getPing());
