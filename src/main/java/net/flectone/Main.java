@@ -80,7 +80,7 @@ public final class Main extends JavaPlugin {
 
     private void loadScoreboard(){
         FPlayerManager.setScoreBoard(Bukkit.getScoreboardManager().getNewScoreboard());
-        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", "dummy");
+        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", "dummy", "ping");
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
