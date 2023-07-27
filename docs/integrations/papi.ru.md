@@ -6,12 +6,20 @@
 
 ### `%flectonechat_stream_prefix%`
 
-плейсхолдер префикса стримеров
+Плейсхолдер префикса стримеров
 
 ### `%flectonechat_afk_suffix%`
 
-плейсхолдер суффикса афк игроков
+Плейсхолдер суффикса афк игроков
 
-### `%flectonechat_player_name%`
+### `%flectonechat_player_display_name%`
 
-полный displayname игрока
+Полный displayname игрока
+
+### `%flectonechat_player_tab_name%`
+
+Таб префикс игрока
+
+### `%flectonechat_world_prefix%`
+
+Префикс мира игрока
