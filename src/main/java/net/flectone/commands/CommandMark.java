@@ -95,10 +95,10 @@ public class CommandMark extends FTabCompleter {
     }
 
     private Entity getEntityInLineOfSightVectorMath(Player player, int range) {
-        RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getLocation().getDirection(), range, entity -> {
-            if (entity instanceof Player) {
-                return !player.equals(entity);
-            }
+        RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getLocation().getDirection(), range, 0.35, entity -> {
+            // ignoring executor
+            if (player.equals(entity)) return false;
+
             return player.hasLineOfSight(entity);
         });
 
