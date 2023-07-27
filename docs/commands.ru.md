@@ -156,6 +156,13 @@
 Использование: `/mute <player> <time> <reason>`  
 Разрешение: `flectonechat.mute` (op)
 
+## /mutelist
+
+Список замученных игроков
+
+Использование: `/mutelist <page>`
+Разрешение: `flectonechat.mutelist` (op)
+
 ## /helper
 
 Отправить сообщение всем с разрешением `flectonechat.helpersee`
@@ -229,6 +236,13 @@
 Использование: `/unban <player> <time> <reason>`  
 Вариации: `pardon`  
 Разрешение: `flectonechat.ban` (op)
+
+## /banlist
+
+Список забаненных игроков
+
+Использование: `/banlist <page>`
+Разрешение: `flectonechat.banlist` (op)
 
 ## /broadcast
 

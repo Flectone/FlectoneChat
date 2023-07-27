@@ -39,12 +39,18 @@ Configuration
 | enable | Enable tab updates           | bool | `true`  |
 | rate   | Tab update rate (in seconds) | int  | `2`     |
 
+- `tab.player-ping`
+
+| name   | description                | type | default |
+| ------ | -------------------------- | ---- | ------- |
+| enable | Enable ping display in tab | bool | `true`  |
+
 ## Server
 
 `server.*`
 
 - `server.motd`
-    * `server.motd.message`
+    * `server.motd.messages`
 
 | name     | description        | type | default |
 |----------|--------------------|------|---------|
@@ -57,6 +63,14 @@ Configuration
 |----------|------------------------------------------------|------|---------|
 | `enable` | Enable custom max online players (only visual) | bool | `true`  |
 | `digit`  | Max players count                              | int  | `69`    |
+
+- `server.icon`
+
+| name     | description          | type                  | default                          |
+| -------- | -------------------- | --------------------- | -------------------------------- |
+| `enable` | Enable custom icon   | bool                  | `true`                           |
+| `mode`   | Icon displaying mode | string{random/single} | `random`                         |
+| `names`  | Icon file names      | stirng[]              | `[server-icon-1, server-icon-2]` |
 
 ## Chat
 
@@ -103,9 +117,10 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 `player.*`
 
-| name   | description                 | type   | default                                                                         |
-|--------|-----------------------------|--------|---------------------------------------------------------------------------------|
-| `name` | Players' displayname format | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| name           | description                 | type   | default                                                                         |
+| -------------- | --------------------------- | ------ | ------------------------------------------------------------------------------- |
+| `display-name` | Players' displayname format | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| `tab-name`     | Players' tab name format    | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
 
 ### `player.world`
 
@@ -134,6 +149,22 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 |----------|---------------------|------|---------|
 | `enable` | Enable item signing | bool | `true`  |
 
+### `player.join`
+
+- `player.join.message`
+
+| name     | description         | type | default |
+|----------|---------------------|------|---------|
+| `enable` | Enable join message | bool | `true`  |
+
+### `player.quit`
+
+- `player.quit.message`
+
+| name     | description         | type | default |
+|----------|---------------------|------|---------|
+| `enable` | Enable quit message | bool | `true`  |
+
 ## Command
 
 ### `command.technical-works`
@@ -148,6 +179,12 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 | name     | description                        | type | default |
 |----------|------------------------------------|------|---------|
 | `global` | Send stream message to global chat | bool | `true`  |
+
+- `command.stream.offline-prefix`
+
+| name     | description                      | type | default |
+| -------- | -------------------------------- | ---- | ------- |
+| `enable` | Enable streamer's offline prefix | bool | `true`  |
 
 ### `command.afk`
 

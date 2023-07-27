@@ -156,6 +156,13 @@ Unmute a player
 Usage: `/mute <player> <time> <reason>`  
 Permission: `flectonechat.mute` (op)
 
+## /mutelist
+
+List muted players
+
+Usage: `/mutelist <page>`
+Permission: `flectonechat.mutelist` (op)
+
 ## /helper
 
 Send message to all players with `flectonechat.helpersee` permission
@@ -229,6 +236,13 @@ Unban a player
 Usage: `/unban <player> <time> <reason>`  
 Aliases: `pardon`  
 Permission: `flectonechat.ban` (op)
+
+## /banlist
+
+List banned players
+
+Usage: `/banlist <page>`
+Permission: `flectonechat.banlist` (op)
 
 ## /broadcast
 
