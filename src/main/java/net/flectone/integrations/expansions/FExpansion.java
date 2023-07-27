@@ -34,46 +34,27 @@ public class FExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
+        if (player == null || !player.isOnline()) return "";
+
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
         if (params.equalsIgnoreCase("stream_prefix")) {
-
-            if (player == null || !player.isOnline()) return "";
-
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-
             return ObjectUtil.translateHexToColor(fPlayer.getStreamPrefix());
         }
 
         if (params.equalsIgnoreCase("afk_suffix")) {
-
-            if (player == null || !player.isOnline()) return "";
-
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-
             return ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
         }
 
         if (params.equalsIgnoreCase("world_prefix")) {
-            if (player == null || !player.isOnline()) return "";
-
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-
             return ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
         }
 
         if (params.equalsIgnoreCase("player_display_name")) {
-            if (player == null || !player.isOnline()) return "";
-
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-
             return fPlayer.getDisplayName();
         }
 
         if (params.equalsIgnoreCase("player_tab_name")) {
-            if (player == null || !player.isOnline()) return "";
-
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-
             return fPlayer.getTabName();
         }
 

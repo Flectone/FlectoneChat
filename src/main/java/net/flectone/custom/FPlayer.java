@@ -411,7 +411,7 @@ public class FPlayer {
                     : world.getName().toLowerCase();
 
             this.worldPrefix = Main.locale.getString("player.world.prefix." + worldType);
-            if (this.worldPrefix == null) {
+            if (this.worldPrefix.isEmpty()) {
                 Main.warning("The prefix for " + worldType + " could not be determined");
                 this.worldPrefix = Main.locale.getString("player.world.prefix.normal");
             }

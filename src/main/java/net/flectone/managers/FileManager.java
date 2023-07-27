@@ -65,8 +65,8 @@ public class FileManager extends FileConfiguration {
         return fileConfiguration.getKeys(true);
     }
 
-
-    public List<String> getStringList(String path) {
+    @NotNull
+    public List<String> getStringList(@NotNull String path) {
         return fileConfiguration.getStringList(path);
     }
 
@@ -79,9 +79,12 @@ public class FileManager extends FileConfiguration {
         this.fileConfiguration = fileConfiguration;
     }
 
+    @NotNull
     @Override
     public String getString(@NotNull String string) {
-        return fileConfiguration.getString(string);
+        string = fileConfiguration.getString(string);
+        if(string == null) string = "";
+        return string;
     }
 
     @Override

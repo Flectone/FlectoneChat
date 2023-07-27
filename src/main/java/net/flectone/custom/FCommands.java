@@ -31,7 +31,7 @@ public class FCommands {
 
     private final boolean isConsole;
     private final String alias;
-    private Player player = null;
+    private final Player player;
     private boolean isHaveCD = false;
 
     public FCommands(CommandSender sender, String command, String label, String[] args) {
@@ -210,7 +210,7 @@ public class FCommands {
     }
 
     private Set<Player> getFilteredPlayers() {
-        if (Main.config.getString("command." + command + ".global") != null
+        if (!Main.config.getString("command." + command + ".global").isEmpty()
                 && !Main.config.getBoolean("command." + command + ".global")
                 && !isConsole) {
 
