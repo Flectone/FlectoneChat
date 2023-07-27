@@ -16,7 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
@@ -81,7 +80,7 @@ public final class Main extends JavaPlugin {
 
     private void loadScoreboard(){
         FPlayerManager.setScoreBoard(Bukkit.getScoreboardManager().getNewScoreboard());
-        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", Criteria.DUMMY, "ping");
+        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", "dummy");
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
