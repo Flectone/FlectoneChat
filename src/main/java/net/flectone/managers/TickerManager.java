@@ -37,8 +37,9 @@ public class TickerManager {
         }
 
         if (Main.config.getBoolean("tab.player-ping.enable")) {
+            PlayerPingTicker.registerPingObjective();
             addTicker(new PlayerPingTicker());
-        }
+        } else PlayerPingTicker.unregisterPingObjective();
 
         bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);
     }

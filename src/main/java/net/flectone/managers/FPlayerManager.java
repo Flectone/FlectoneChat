@@ -22,8 +22,8 @@ public class FPlayerManager {
 
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
 
-    public static void setScoreBoard(Scoreboard scoreBoard) {
-        FPlayerManager.scoreBoard = scoreBoard;
+    public static void setScoreBoard() {
+        scoreBoard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
     public static Scoreboard getScoreBoard() {

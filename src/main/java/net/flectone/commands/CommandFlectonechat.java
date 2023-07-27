@@ -73,10 +73,11 @@ public class CommandFlectonechat extends FTabCompleter {
 
         FPlayerManager.uploadPlayers();
         Bukkit.getOnlinePlayers().parallelStream().forEach(FPlayerManager::removePlayer);
-        FPlayerManager.loadPlayers();
 
         TickerManager.clear();
         TickerManager.start();
+
+        FPlayerManager.loadPlayers();
         MessageBuilder.loadPatterns();
 
         fCommand.sendMeMessage("command.flectonechat.message");

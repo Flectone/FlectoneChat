@@ -16,8 +16,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
 
 import java.io.File;
 
@@ -60,7 +58,7 @@ public final class Main extends JavaPlugin {
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
         loadIcons();
-        loadScoreboard();
+        FPlayerManager.setScoreBoard();
 
         this.database = new SQLite(this);
         this.database.load();
@@ -76,12 +74,6 @@ public final class Main extends JavaPlugin {
         info("✔ Plugin enabled");
 
         WebUtil.checkNewerVersion();
-    }
-
-    private void loadScoreboard(){
-        FPlayerManager.setScoreBoard(Bukkit.getScoreboardManager().getNewScoreboard());
-        Objective objective = FPlayerManager.getScoreBoard().registerNewObjective("ping", "dummy", "ping");
-        objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
     private void registerClasses() {

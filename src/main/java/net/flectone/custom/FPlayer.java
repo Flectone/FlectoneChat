@@ -66,6 +66,7 @@ public class FPlayer {
 
     public void initialize(Player player) {
         setPlayer(player);
+        player.setScoreboard(FPlayerManager.getScoreBoard());
         setTeam(getPlayerTeam());
         setBlock(this.player.getLocation().getBlock());
         getVaultPrefixSuffix();
