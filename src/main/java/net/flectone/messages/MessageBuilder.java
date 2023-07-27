@@ -236,7 +236,8 @@ public class MessageBuilder {
 
     private TextComponent createClickableComponent(TextComponent textComponent, String playerName, CommandSender recipient, CommandSender sender) {
         String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.name.hover-message", recipient, sender);
+        String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
+                .replace("<player>", playerName);
 
         if (sender instanceof ConsoleCommandSender) return textComponent;
 

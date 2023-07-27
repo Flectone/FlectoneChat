@@ -35,11 +35,8 @@ tab:
     message: "\n &&1FlectoneChat \n"
 
 player:
-  team:
-    right-click-message: "&&1-⏴ <player> &&1⏵-"
-
-  name:
-    hover-message: "&&1Click to write to him"
+  right-click-message: "&&1-⏴ <player> &&1⏵-"
+  hover-message: "&&1Click to write to &&2<player>"
 
   item:
     sign: "&o#<player>"

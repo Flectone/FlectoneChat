@@ -88,9 +88,10 @@ player:
     prefix:
       enable: true
 
-  team:
+  name-tag:
     enable: true
-    name-visible: false
+
+  name-visible: false
 
   item:
     sign:
