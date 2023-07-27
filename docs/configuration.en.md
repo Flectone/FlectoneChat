@@ -117,10 +117,11 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 `player.*`
 
-| name           | description                 | type   | default                                                                         |
-| -------------- | --------------------------- | ------ | ------------------------------------------------------------------------------- |
-| `display-name` | Players' displayname format | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
-| `tab-name`     | Players' tab name format    | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| name           | description                          | type   | default                                                                         |
+| -------------- | ------------------------------------ | ------ | ------------------------------------------------------------------------------- |
+| `display-name` | Players' displayname format          | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| `tab-name`     | Players' tab name format             | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| `name-visible` | Show displayname above player's head | `bool` | `false`                                                                         |
 
 ### `player.world`
 
@@ -134,12 +135,11 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 |----------|-----------------------------------------|------|---------|
 | `enable` | Enable world type prefix in displayname | bool | `true`  |
 
-### `player.team`
+### `player.name-tag`
 
-| name           | description                          | type   | default |
-|----------------|--------------------------------------|--------|---------|
-| `enable`       | Enable custom displayname            | `bool` | `true`  |
-| `name-visible` | Show displayname above player's head | `bool` | `false` |
+| name     | description                                | type   | default |
+| -------- | ------------------------------------------ | ------ | ------- |
+| `enable` | Show suffix and prefix above player's head | `bool` | `true`  |
 
 ### `player.item`
 
