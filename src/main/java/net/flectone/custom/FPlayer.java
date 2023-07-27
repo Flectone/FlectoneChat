@@ -161,7 +161,7 @@ public class FPlayer {
     }
 
     public String getStreamPrefix() {
-        return isStreaming ? Main.locale.getString("command.stream.prefix") : "";
+        return streamPrefix;
     }
 
     public void mute(int time, String reason) {
