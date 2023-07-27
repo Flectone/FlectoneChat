@@ -15,7 +15,7 @@ public class PlayerEditBookListener implements Listener {
         BookMeta bookMeta = event.getNewBookMeta();
         String command = "book";
         Player player = event.getPlayer();
-        ItemStack itemInHand = player.getItemInUse();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         for (int x = 1; x <= event.getNewBookMeta().getPages().size(); x++) {
             String string = bookMeta.getPage(x);

@@ -24,7 +24,6 @@ public class EntitySpawnListener implements Listener {
             entity.setSilent(true);
             entity.setInvulnerable(true);
             entity.setGlowing(true);
-            entity.setVisualFire(false);
             entity.setAI(false);
             entity.setSize(1);
             entity.setInvisible(true);

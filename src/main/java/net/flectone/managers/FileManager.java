@@ -114,6 +114,12 @@ public class FileManager extends FileConfiguration {
 
     }
 
+    @NotNull
+    @Override
+    protected String buildHeader() {
+        return "";
+    }
+
     public void setObject(String path, Object object) {
         fileConfiguration.set(path, object);
     }

@@ -114,7 +114,7 @@ public class ObjectUtil {
         String soundName = Main.config.getString("sound." + command + ".type");
 
         try {
-            player.playSound(player, Sound.valueOf(soundName), 1, 1);
+            player.playSound(player.getLocation(), Sound.valueOf(soundName), 1, 1);
         } catch (IllegalArgumentException exception) {
             Main.getInstance().getLogger().warning("Incorrect sound " + soundName + " for " + command + ".sound.type");
         }

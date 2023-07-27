@@ -13,7 +13,7 @@ public class SignChangeListener implements Listener {
     public void onSignChange(SignChangeEvent event) {
         Player player = event.getPlayer();
         String command = "sign";
-        ItemStack itemInHand = player.getItemInUse();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         for (int x = 0; x < event.getLines().length; x++) {
             String string = event.getLine(x);

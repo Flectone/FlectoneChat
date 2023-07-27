@@ -3,8 +3,10 @@ package net.flectone.custom;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
@@ -60,7 +62,8 @@ public class FEntity {
 
     public static void removeBugEntities(Player player) {
         player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).forEach(entity -> {
-            if (entity.isSilent() && entity.isInvulnerable() && !entity.isVisualFire()) entity.remove();
+            if (entity instanceof MagmaCube
+                    && entity.getLocation().getDirection().equals(new Vector(0, 1, 0))) entity.remove();
 
             entity.setGlowing(false);
         });
