@@ -12,6 +12,22 @@ streamers' prefix placeholder
 
 afk players' suffix placeholder
 
-### `%flectonechat_player_name%`
+### `%player_display_name%`
 
 Player's full displayname 
+
+### `%player_tab_name%`
+
+Player's tab name 
+
+### `%afk_suffix%`
+
+Player's afk suffix
+
+### `%world_prefix%`
+
+Player's world prefix
+
+### `%world_prefix%`
+
+Player's world prefix
