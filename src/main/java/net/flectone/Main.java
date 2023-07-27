@@ -10,7 +10,7 @@ import net.flectone.managers.TickerManager;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.utils.MetricsUtil;
-import net.flectone.utils.ReflectionUtil;
+import net.flectone.utils.NMSUtil;
 import net.flectone.utils.WebUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -77,10 +77,10 @@ public final class Main extends JavaPlugin {
     }
 
     private void registerClasses() {
-        ReflectionUtil.registerClasses("net.flectone.listeners", (fClass) ->
+        NMSUtil.registerClasses("net.flectone.listeners", (fClass) ->
                 Bukkit.getServer().getPluginManager().registerEvents((Listener) fClass.getDeclaredConstructor().newInstance(), this));
 
-        ReflectionUtil.registerClasses("net.flectone.commands", (fClass) -> {
+        NMSUtil.registerClasses("net.flectone.commands", (fClass) -> {
             FTabCompleter fTabCompleter = (FTabCompleter) fClass.getDeclaredConstructor().newInstance();
             PluginCommand pluginCommand = Main.getInstance().getCommand(fTabCompleter.getCommandName());
 

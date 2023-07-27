@@ -4,7 +4,7 @@ import net.flectone.Main;
 import net.flectone.custom.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
-import net.flectone.utils.ReflectionUtil;
+import net.flectone.utils.NMSUtil;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -205,7 +205,7 @@ public class MessageBuilder {
 
         TranslatableComponent item;
 
-        String[] formattedItemArray = ReflectionUtil.getFormattedStringItem(itemStack);
+        String[] formattedItemArray = NMSUtil.getFormattedStringItem(itemStack);
         item = new TranslatableComponent(formattedItemArray[0]);
         item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
 
