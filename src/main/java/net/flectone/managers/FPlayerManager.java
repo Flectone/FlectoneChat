@@ -23,7 +23,8 @@ public class FPlayerManager {
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
 
     public static void setScoreBoard() {
-        scoreBoard = Bukkit.getScoreboardManager().getNewScoreboard();
+        scoreBoard = Main.config.getBoolean("scoreboard.custom") ?
+                Bukkit.getScoreboardManager().getNewScoreboard() : Bukkit.getScoreboardManager().getMainScoreboard();
     }
 
     public static Scoreboard getScoreBoard() {
