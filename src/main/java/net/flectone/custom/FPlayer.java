@@ -329,7 +329,9 @@ public class FPlayer {
 
     public void setStreaming(boolean streaming) {
         this.isStreaming = streaming;
-        this.streamPrefix = Main.locale.getFormatString(getStreamFormatPrefix(), getPlayer());
+
+        String streamFormatPrefix = getStreamFormatPrefix();
+        this.streamPrefix = streamFormatPrefix.isEmpty() ? "" : Main.locale.getFormatString(streamFormatPrefix, getPlayer());
     }
 
     private String getStreamFormatPrefix() {
