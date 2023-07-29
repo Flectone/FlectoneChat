@@ -36,7 +36,7 @@ public class CommandTempban extends FTabCompleter {
         String stringTime = strings.length > 1 ? strings[1] : "permanent";
 
         if ((!fCommand.isStringTime(stringTime) || !StringUtils.isNumeric(stringTime.substring(0, stringTime.length() - 1)))
-                && !stringTime.equals("permanent") && !stringTime.equals("0")) {
+                && (!stringTime.equals("permanent") || !stringTime.equals("0"))) {
             fCommand.sendUsageMessage();
             return true;
         }
