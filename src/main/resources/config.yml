@@ -3,7 +3,7 @@
 language: en
 database: "database"
 scoreboard:
-  custom: true
+  custom: false
 
 color:
   first: "#1abaf0"
