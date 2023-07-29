@@ -91,6 +91,7 @@ public class CommandTempban extends FTabCompleter {
         else if (strings.length == 2) {
             isFormatString(strings[1]);
             isStartsWith(strings[1], "permanent");
+            isStartsWith(strings[1], "0");
         } else if (strings.length == 3) isStartsWith(strings[2], "(reason)");
 
         Collections.sort(wordsList);
