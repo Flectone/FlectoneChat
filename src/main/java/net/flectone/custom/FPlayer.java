@@ -13,6 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,8 +180,9 @@ public class FPlayer {
         FPlayerManager.getMutedPlayers().remove(this);
     }
 
+    @NotNull
     public String getMuteReason() {
-        return this.muteReason;
+        return this.muteReason != null ? muteReason : "";
     }
 
     public void setMuteReason(String muteReason) {
@@ -207,8 +209,9 @@ public class FPlayer {
         return this.tempBanTime;
     }
 
+    @NotNull
     public String getBanReason() {
-        return tempBanReason;
+        return tempBanReason != null ? tempBanReason : "";
     }
 
     public void setTempBanReason(String tempBanReason) {
