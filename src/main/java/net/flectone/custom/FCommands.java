@@ -296,7 +296,7 @@ public class FCommands {
     }
 
     public int getTimeFromString(String string) {
-        if (string.equals("permanent")) return -1;
+        if (string.equals("permanent") || string.equals("0")) return -1;
         int time = Integer.parseInt(string.substring(0, string.length() - 1));
         string = string.substring(string.length() - 1);
 
