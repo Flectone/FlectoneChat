@@ -38,7 +38,7 @@ public class FPlayer {
     private List<Inventory> inventoryList = new ArrayList<>();
     private String muteReason;
     private int muteTime;
-    private String tempBanReason;
+    private String tempBanReason = "";
     private int tempBanTime;
     private int numberLastInventory;
     private int lastTimeMoved;
