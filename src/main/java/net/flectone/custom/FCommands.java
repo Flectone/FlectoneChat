@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class FCommands {
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
-    public final static String[] formatTimeList = {"s", "m", "h", "d", "y"};
+    public final static String[] formatTimeList = {"s", "m", "h", "d", "w", "y"};
     private final FileManager locale = Main.locale;
     private final String command;
     private final String[] args;
@@ -302,7 +302,9 @@ public class FCommands {
 
         switch (string) {
             case "y":
-                time *= 30 * 12;
+                time *= 4 * 12 + 4;
+            case "w":
+                time *= 7;
             case "d":
                 time *= 24;
             case "h":
