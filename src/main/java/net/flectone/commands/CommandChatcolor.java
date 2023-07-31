@@ -2,7 +2,9 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
+import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.managers.FPlayerManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -25,11 +27,22 @@ public class CommandChatcolor extends FTabCompleter {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
-
-        if (strings.length == 0 || (strings.length != 2 && !strings[0].equalsIgnoreCase("default"))) {
+        if (strings.length == 0 || (strings.length == 1 && !strings[0].equalsIgnoreCase("default"))) {
             fCommand.sendUsageMessage();
             return true;
+        }
+
+        FPlayer fPlayer;
+
+        if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")) {
+            fPlayer = FPlayerManager.getPlayerFromName(strings[2]);
+            if (fPlayer == null) {
+                fCommand.sendMeMessage("command.null-player");
+                return true;
+            }
+        } else {
+            if (fCommand.isConsoleMessage()) return true;
+            fPlayer = fCommand.getFPlayer();
         }
 
         if (fCommand.isHaveCD()) return true;
@@ -38,12 +51,18 @@ public class CommandChatcolor extends FTabCompleter {
             strings = getDefaultColors();
         }
 
-        fCommand.getFPlayer().setColors(strings[0], strings[1]);
-        fCommand.getFPlayer().setDisplayName();
-        fCommand.getFPlayer().setUpdated(true);
-
-        fCommand.sendMeMessage("command.chatcolor.message");
+        setColors(fPlayer, strings);
         return true;
+    }
+
+    private void setColors(FPlayer fPlayer, String[] strings) {
+        fPlayer.setColors(strings[0], strings[1]);
+        fPlayer.setUpdated(true);
+
+        if (fPlayer.isOnline()) {
+            fPlayer.setDisplayName();
+            fPlayer.getPlayer().sendMessage(Main.locale.getFormatString("command.chatcolor.message", fPlayer.getPlayer()));
+        }
     }
 
     @Nullable
@@ -58,6 +77,8 @@ public class CommandChatcolor extends FTabCompleter {
         } else if (strings.length == 2) {
             isStartsWith(strings[1], "#77d7f7");
             isStartsWith(strings[1], "&f");
+        } else if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")){
+            isOfflinePlayer(strings[2]);
         }
 
         Collections.sort(wordsList);
