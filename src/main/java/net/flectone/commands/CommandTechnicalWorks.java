@@ -49,7 +49,7 @@ public class CommandTechnicalWorks extends FTabCompleter {
 
         if (isTechnicalWorks) {
 
-            Bukkit.getOnlinePlayers().parallelStream()
+            Bukkit.getOnlinePlayers().stream()
                     .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")))
                     .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null)));
         }
