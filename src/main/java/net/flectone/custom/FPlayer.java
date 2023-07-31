@@ -1,6 +1,7 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
+import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FPlayer {
@@ -343,8 +343,8 @@ public class FPlayer {
     }
 
     public void getVaultPrefixSuffix() {
-        if (Main.isHaveVault) {
-            Chat provider = Objects.requireNonNull(Main.getInstance().getServer().getServicesManager().getRegistration(Chat.class)).getProvider();
+        if (FVault.registered) {
+            Chat provider = FVault.getProvider();
 
             this.vaultPrefix = provider.getPlayerPrefix(player);
             this.vaultSuffix = provider.getPlayerSuffix(player);

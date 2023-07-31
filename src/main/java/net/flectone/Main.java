@@ -3,6 +3,7 @@ package net.flectone;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.integrations.luckperms.FLuckPerms;
+import net.flectone.integrations.vault.FVault;
 import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
@@ -24,8 +25,6 @@ public final class Main extends JavaPlugin {
     public static boolean isHavePAPI = false;
 
     public static boolean isHavePlasmoVoice = false;
-
-    public static boolean isHaveVault = false;
 
     public static boolean isHaveInteractiveChat = false;
     public static FileManager config;
@@ -103,7 +102,7 @@ public final class Main extends JavaPlugin {
 
     private void hookPlugins() {
         if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            isHaveVault = true;
+            FVault.register();
             getLogger().info("\uD83D\uDD12 Vault detected and hooked");
         }
 
