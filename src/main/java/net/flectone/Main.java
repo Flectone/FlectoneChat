@@ -10,6 +10,7 @@ import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
+import net.flectone.tickers.PlayerPingTicker;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.WebUtil;
@@ -137,6 +138,7 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         FPlayerManager.uploadPlayers();
         FPlayerManager.removePlayersFromTeams();
+        PlayerPingTicker.unregisterPingObjective();
         info("✔ Plugin disabled");
     }
 }
