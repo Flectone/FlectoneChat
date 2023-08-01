@@ -11,16 +11,13 @@ import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
 
     protected String commandName;
-    protected List<String> wordsList = new ArrayList<>();
+    protected List<String> wordsList = Collections.synchronizedList(new ArrayList<>());
 
     public String getCommandName() {
         return commandName;
@@ -28,6 +25,7 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
 
     protected void isStartsWith(String arg, String string) {
         if (string.toLowerCase().startsWith(arg.toLowerCase()) || arg.replace(" ", "").isEmpty()) {
+            if(wordsList.contains(string)) return;
             wordsList.add(string);
         }
     }
@@ -40,7 +38,7 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
 
     protected void isOfflinePlayer(String arg) {
         FPlayerManager.getPlayers().parallelStream().filter(Objects::nonNull)
-                .forEach(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
+                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
     }
 
     protected void isOnlinePlayer(String arg) {
