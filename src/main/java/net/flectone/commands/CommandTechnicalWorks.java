@@ -6,10 +6,13 @@ import net.flectone.custom.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CommandTechnicalWorks extends FTabCompleter {
 
@@ -49,8 +52,10 @@ public class CommandTechnicalWorks extends FTabCompleter {
 
         if (isTechnicalWorks) {
 
-            Bukkit.getOnlinePlayers().stream()
-                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")))
+            Set<Player> playerSet = new HashSet<>(Bukkit.getOnlinePlayers());
+
+            playerSet.stream().parallel()
+                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")) && player.isOnline())
                     .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null)));
         }
 
