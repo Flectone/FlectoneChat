@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
@@ -38,7 +39,7 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
     }
 
     protected void isOfflinePlayer(String arg) {
-        FPlayerManager.getPlayers().parallelStream()
+        FPlayerManager.getPlayers().parallelStream().filter(Objects::nonNull)
                 .forEach(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
     }
 
