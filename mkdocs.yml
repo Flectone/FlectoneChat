@@ -11,6 +11,7 @@ theme:
     primary: black
     accent: blue
 plugins:
+  - search
   - i18n:
       default_language: en
       nav_translations:
