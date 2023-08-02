@@ -117,5 +117,11 @@
             <version>5.4</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.LeonMangler</groupId>
+            <artifactId>SuperVanish</artifactId>
+            <version>6.2.6-4</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package net.flectone.custom;
 
+import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +44,7 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
 
     protected void isOnlinePlayer(String arg) {
         Bukkit.getOnlinePlayers().parallelStream()
+                .filter(player -> !FSuperVanish.isVanished(player))
                 .forEach(player -> isStartsWith(arg, player.getName()));
     }
 

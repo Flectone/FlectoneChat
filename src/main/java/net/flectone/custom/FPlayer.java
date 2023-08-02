@@ -1,6 +1,7 @@
 package net.flectone.custom;
 
 import net.flectone.Main;
+import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
@@ -78,6 +79,8 @@ public class FPlayer {
     }
 
     public boolean isOnline() {
+        if(player != null && FSuperVanish.isVanished(player)) return false;
+
         return this.offlinePlayer.isOnline();
     }
 
@@ -224,7 +227,7 @@ public class FPlayer {
         setUpdated(true);
         FPlayerManager.getBannedPlayers().add(this);
 
-        if (!(player != null && player.isOnline())) return;
+        if (!(player != null && isOnline())) return;
 
         String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 

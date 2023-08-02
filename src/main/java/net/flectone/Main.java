@@ -3,6 +3,7 @@ package net.flectone;
 import net.flectone.custom.FTabCompleter;
 import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.integrations.luckperms.FLuckPerms;
+import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
 import net.flectone.managers.FPlayerManager;
@@ -135,6 +136,11 @@ public final class Main extends JavaPlugin {
             isHavePAPI = true;
             getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
             new FExpansion().register();
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("SuperVanish") != null) {
+            Bukkit.getPluginManager().registerEvents(new FSuperVanish(), this);
+            getLogger().info("\uD83D\uDD12 SuperVanish detected and hooked");
         }
     }
 
