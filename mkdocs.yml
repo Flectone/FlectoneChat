@@ -2,6 +2,7 @@ site_name: FlectoneChat Docs
 theme:
   features:
     - content.code.annotate
+    - navigation.expand
   logo: assets/logo.png
   favicon: assets/logo.png
   name: material
