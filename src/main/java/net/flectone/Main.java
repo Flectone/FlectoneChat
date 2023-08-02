@@ -132,15 +132,15 @@ public final class Main extends JavaPlugin {
             getLogger().info("\uD83D\uDD12 LuckPerms detected and hooked");
         }
 
+        if (Bukkit.getPluginManager().getPlugin("SuperVanish") != null) {
+            Bukkit.getPluginManager().registerEvents(new FSuperVanish(), this);
+            getLogger().info("\uD83D\uDD12 SuperVanish detected and hooked");
+        }
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             isHavePAPI = true;
             getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
             new FExpansion().register();
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("SuperVanish") != null) {
-            Bukkit.getPluginManager().registerEvents(new FSuperVanish(), this);
-            getLogger().info("\uD83D\uDD12 SuperVanish detected and hooked");
         }
     }
 
