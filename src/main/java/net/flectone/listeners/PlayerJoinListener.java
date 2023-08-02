@@ -23,14 +23,17 @@ public class PlayerJoinListener implements Listener {
 
         FEntity.removeBugEntities(player);
 
-        FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
-
         event.setJoinMessage(null);
-        FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
 
-        boolean sendMessage = Main.config.getBoolean("player.join.message.enable");
+        FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
+        sendJoinMessage(fPlayer, player, fPlayer.isOnline());
+    }
 
-        if (sendMessage) {
+    public static void sendJoinMessage(FPlayer fPlayer, Player player, boolean isOnline){
+        boolean isEnable = Main.config.getBoolean("player.join.message.enable");
+        if (isEnable && isOnline){
+            FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
+
             String string = player.hasPlayedBefore() ? Main.locale.getString("player.join.message") : Main.locale.getString("player.join.first-time.message");
             string = string.replace("<player>", player.getName());
 
@@ -51,6 +54,11 @@ public class PlayerJoinListener implements Listener {
             player.sendMessage(newLocaleString);
             mail.setRemoved(true);
         });
+    }
+
+    public static void sendJoinMessage(Player player){
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        sendJoinMessage(fPlayer, player, true);
     }
 
     @EventHandler
