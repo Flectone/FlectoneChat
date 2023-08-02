@@ -16,6 +16,14 @@ public class ServerListPingListener implements Listener {
 
     @EventHandler
     public void updateServerList(ServerListPingEvent event) {
+        if(Main.config.getBoolean("command.maintenance.enable")){
+            String motd = Main.locale.getFormatString("server.motd.maintenance", null);
+            event.setMotd(motd);
+            setIcon(event, "maintenance");
+            event.setMaxPlayers(-1);
+            return;
+        }
+
         if (Main.config.getBoolean("server.motd.messages.enable")) {
             List<String> motds = Main.locale.getStringList("server.motd.messages");
 
