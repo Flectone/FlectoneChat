@@ -12,6 +12,7 @@ theme:
     accent: blue
 plugins:
   - search
+  - awesome-pages
   - i18n:
       default_language: en
       nav_translations:
