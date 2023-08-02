@@ -46,3 +46,4 @@ markdown_extensions:
 copyright: Copyright &copy; 2023 - 2023 Flectone
 
 extra_css: [ css/extra.css ]
+extra_javascript: [ js/language.js ]
