@@ -68,11 +68,11 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        if (Main.config.getBoolean("command.technical-works.enable")
+        if (Main.config.getBoolean("command.maintenance.enable")
                 && !event.getPlayer().isOp()
-                && !event.getPlayer().hasPermission("flectonechat.technical-works")) {
+                && !event.getPlayer().hasPermission("flectonechat.maintenance")) {
 
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, Main.locale.getFormatString("command.technical-works.kicked-message", null));
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, Main.locale.getFormatString("command.maintenance.kicked-message", null));
         }
     }
 }

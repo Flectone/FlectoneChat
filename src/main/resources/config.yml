@@ -112,8 +112,8 @@ command:
     time: 50
     permission: "flectonechat.pollcreate"
 
-  technical-works:
-    permission: "flectonechat.technical-works"
+  maintenance:
+    permission: "flectonechat.maintenance"
     enable: false
 
   stream:
@@ -277,10 +277,10 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.mute.cooldown.immune"
-  technical-works:
+  maintenance:
     enable: false
     time: 5
-    permission: "flectonechat.technical-works.cooldown.immune"
+    permission: "flectonechat.maintenance.cooldown.immune"
   ball:
     enable: false
     time: 5
@@ -386,7 +386,7 @@ sound:
   unmute:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
-  technical-works:
+  maintenance:
     enable: true
     type: "BLOCK_NOTE_BLOCK_BELL"
   ball:

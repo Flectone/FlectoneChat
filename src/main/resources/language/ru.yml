@@ -20,6 +20,7 @@
 
 server:
   motd:
+    maintenance: "&cВ настоящее время проводятся технические работы"
     messages:
       - "&&1Этот сервер использует FlectoneChat ❤"
       - "&&1Добро пожаловать на наш сервер!"
@@ -331,7 +332,7 @@ command:
         - "&&2• • • • • • • • •"
         - "&&1Ссылка(и): \n<links>"
 
-  technical-works:
+  maintenance:
     usage: "&&1⚑ Использование: &&2/<command> on/off"
     turned-on:
       already: "#ff4e4e⁉ Вы уже включили технические работы"

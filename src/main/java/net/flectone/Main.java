@@ -20,6 +20,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.List;
 
 public final class Main extends JavaPlugin {
 
@@ -94,7 +95,10 @@ public final class Main extends JavaPlugin {
     private void loadIcons() {
         String path = Main.getInstance().getDataFolder() + File.separator + "icons" + File.separator;
 
-        for (String iconName : Main.config.getStringList("server.icon.names")) {
+        List<String> iconNames = Main.config.getStringList("server.icon.names");
+        iconNames.add("maintenance");
+
+        for (String iconName : iconNames) {
             if (new File(path + iconName + ".png").exists()) continue;
 
             Main.getInstance().saveResource("icons" + File.separator + iconName + ".png", false);

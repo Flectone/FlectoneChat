@@ -14,10 +14,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CommandTechnicalWorks extends FTabCompleter {
+public class CommandMaintenance extends FTabCompleter {
 
-    public CommandTechnicalWorks() {
-        super.commandName = "technical-works";
+    public CommandMaintenance() {
+        super.commandName = "maintenance";
     }
 
     @Override
@@ -32,15 +32,15 @@ public class CommandTechnicalWorks extends FTabCompleter {
             return true;
         }
 
-        boolean isTechnicalWorks = Main.config.getBoolean("command.technical-works.enable");
+        boolean haveMaintenance = Main.config.getBoolean("command.maintenance.enable");
 
-        if (isTechnicalWorks && strings[0].equalsIgnoreCase("on")) {
-            fCommand.sendMeMessage("command.technical-works.turned-on.already");
+        if (haveMaintenance && strings[0].equalsIgnoreCase("on")) {
+            fCommand.sendMeMessage("command.maintenance.turned-on.already");
             return true;
         }
 
-        if (!isTechnicalWorks && strings[0].equalsIgnoreCase("off")) {
-            fCommand.sendMeMessage("command.technical-works.turned-off.not");
+        if (!haveMaintenance && strings[0].equalsIgnoreCase("off")) {
+            fCommand.sendMeMessage("command.maintenance.turned-off.not");
             return true;
         }
 
@@ -48,19 +48,19 @@ public class CommandTechnicalWorks extends FTabCompleter {
 
         if (fCommand.isMuted()) return true;
 
-        isTechnicalWorks = strings[0].equalsIgnoreCase("on");
+        haveMaintenance = strings[0].equalsIgnoreCase("on");
 
-        if (isTechnicalWorks) {
+        if (haveMaintenance) {
 
             Set<Player> playerSet = new HashSet<>(Bukkit.getOnlinePlayers());
 
             playerSet.stream().parallel()
-                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.technical-works.permission")) && player.isOnline())
-                    .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.technical-works.kicked-message", null)));
+                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.maintenance.permission")) && player.isOnline())
+                    .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.maintenance.kicked-message", null)));
         }
 
-        fCommand.sendMeMessage("command.technical-works.turned-" + strings[0].toLowerCase() + ".message");
-        Main.config.setObject("command.technical-works.enable", isTechnicalWorks);
+        fCommand.sendMeMessage("command.maintenance.turned-" + strings[0].toLowerCase() + ".message");
+        Main.config.setObject("command.maintenance.enable", haveMaintenance);
         Main.config.saveFile();
 
         return true;

@@ -93,9 +93,10 @@ commands:
     usage: /helper <message>
     permission: flectonechat.helper
 
-  technical-works:
-    usage: /technical-works on/off
-    permission: flectonechat.technical-works
+  maintenance:
+    usage: /maintenance on/off
+    aliases: [ technical-works ]
+    permission: flectonechat.maintenance
 
   chat:
     usage: /chat switch/hide local/global
@@ -181,7 +182,7 @@ permissions:
     default: op
   flectonechat.helper:
     default: true
-  flectonechat.technical-works:
+  flectonechat.maintenance:
     default: op
   flectonechat.chat:
     default: true

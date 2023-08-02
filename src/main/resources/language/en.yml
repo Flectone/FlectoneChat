@@ -20,6 +20,7 @@
 
 server:
   motd:
+    maintenance: "&cThe server is under maintenance"
     messages:
       - "&&1This server uses FlectoneChat ❤"
       - "&&1Welcome to our server!"
@@ -331,15 +332,15 @@ command:
         - "&&2• • • • • • • • •"
         - "&&1Url(s): \n<links>"
 
-  technical-works:
+  maintenance:
     usage: "&&1⚑ Usage: &&2/<command> on/off"
     turned-on:
-      already: "#ff4e4e⁉ You have already enabled technical work"
-      message: "&&1★ You have enabled technical works on server"
+      already: "#ff4e4e⁉ You have already switched on maintenance"
+      message: "&&1★ You have enabled maintenance on the server"
     turned-off:
-      not: "#ff4e4e⁉ You did not enabled technical works"
-      message: "&&1★ You turned off technical works on server"
-    kicked-message: "&&1★ The server is undergoing technical works"
+      not: "#ff4e4e⁉ You have not switched on maintenance"
+      message: "&&1★ You have disabled maintenance on the server"
+    kicked-message: "&&1★ The server is under maintenance"
 
   flectonechat:
     usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
