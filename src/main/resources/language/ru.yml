@@ -348,7 +348,7 @@ command:
     message: "&&1★ Плагин успешно перезагружен!"
 
 entity:
-  hover-message: "<name> \nТип: <name> \n<uuid>"
+  hover-message: "<name> \nТип: <type> \n<uuid>"
 
 death:
   due-to: "&&1благодаря &&2<killer>"
@@ -386,5 +386,6 @@ death:
     sonic_boom: "&&1🪦 &&2<player> &&1был уничтожен звуковым ударом <due_to>"
     kill: "&&1🪦 &&2<player> &&1был убит <due_to>"
   mob:
+    default: "&&1🪦 &&2<player> &&1был убит мобом &&2<killer> <due_to>"
     player: "&&1🪦 &&2<player> &&1был убит игроком &&2<killer> <by_item>"
     zombie: "&&1🪦 &&2<player> &&1был съеден &&2<killer> <due_to>"

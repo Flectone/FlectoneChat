@@ -83,6 +83,10 @@ death:
   message:
     enable: true
 
+    # if enabled, then death from any mob will be located on the "death.mob.default",
+    # otherwise it will be necessary to register for each separately
+    mob-default: true
+
 player:
   display-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
   tab-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"

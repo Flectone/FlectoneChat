@@ -348,7 +348,7 @@ command:
     message: "&&1★ Plugin successfully reloaded!"
 
 entity:
-  hover-message: "<name> \nType: <name> \n<uuid>"
+  hover-message: "<name> \nType: <type> \n<uuid>"
 
 death:
   due-to: "&&1due to &&2<killer>"
@@ -386,5 +386,6 @@ death:
     sonic_boom: "&&1🪦 &&2<player> &&1was obliterated by a sonically-charged shriek <due_to>"
     kill: "&&1🪦 &&2<player> &&1was killed <due_to>"
   mob:
-    player: "&&1🪦 &&2<player> &&1was killed by &&2<killer> <by_item>"
+    default: "&&1🪦 &&2<player> &&1was killed by &&2<killer> <due_to>"
+    player: "&&1🪦 &&2<player> &&1was killed by player &&2<killer> <by_item>"
     zombie: "&&1🪦 &&2<player> &&1was eaten by a &&2<killer> <due_to>"
