@@ -154,6 +154,7 @@ public class PlayerDeathEventListener implements Listener {
                 placeholders.add("<block>");
 
                 Block block = ((EntityDamageByBlockEvent) lastDamageEvent).getDamager();
+                if(block == null) break;
                 fDamager.setFinalDamager(block.getBlockData().getMaterial());
                 break;
             case PROJECTILE:
