@@ -236,11 +236,10 @@ public class PlayerDeathEventListener implements Listener {
 
                     break;
                 case "<due_to>":
-                    if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())) {
+                    if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())
+                            || fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType())) {
                         break;
                     }
-
-
 
                     String formatDueToMessage = Main.locale.getFormatString("death.due-to", recipient, sender);
 
