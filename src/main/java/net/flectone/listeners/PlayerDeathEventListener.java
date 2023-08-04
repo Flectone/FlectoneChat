@@ -109,6 +109,8 @@ public class PlayerDeathEventListener implements Listener {
         placeholders.add("<player>");
         placeholders.add("<due_to>");
 
+        if (!fPlayer.isDeathByObject()) fDamager.setKiller(null);
+
         switch (lastDamageEvent.getCause()) {
             case ENTITY_EXPLOSION:
                 placeholders.add("<killer>");
@@ -237,6 +239,9 @@ public class PlayerDeathEventListener implements Listener {
                     if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())) {
                         break;
                     }
+
+
+
                     String formatDueToMessage = Main.locale.getFormatString("death.due-to", recipient, sender);
 
                     String dueToColor = "";
