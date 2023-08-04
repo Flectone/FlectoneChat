@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class FTabCompleter implements CommandExecutor, TabCompleter {
 
@@ -59,19 +58,6 @@ public class FTabCompleter implements CommandExecutor, TabCompleter {
                         }
                     }
                 });
-    }
-
-    protected ArrayList<String> splitLine(String line, String[] placeholders) {
-        ArrayList<String> split = new ArrayList<>(List.of(line));
-
-        for (String placeholder : placeholders) {
-            split = (ArrayList<String>) split.stream().flatMap(part -> {
-                String[] sp = part.split("((?=@)|(?<=@))".replaceAll("@", placeholder));
-                return Arrays.stream(sp);
-            }).collect(Collectors.toList());
-        }
-
-        return split;
     }
 
     @Override

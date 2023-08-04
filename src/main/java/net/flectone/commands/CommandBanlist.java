@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -94,7 +95,7 @@ public class CommandBanlist extends FTabCompleter {
 
         String chatColor = "";
 
-        for (String part : splitLine(pageLine, new String[]{"<prev-page>", "<next-page>"})) {
+        for (String part : ObjectUtil.splitLine(pageLine, new ArrayList<>(List.of("<prev-page>", "<next-page>")))) {
 
             int pageNumber = page;
             String button = null;

@@ -11,7 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -132,5 +134,18 @@ public class ObjectUtil {
         }
 
         return message;
+    }
+
+    public static ArrayList<String> splitLine(String line, ArrayList<String> placeholders) {
+        ArrayList<String> split = new ArrayList<>(List.of(line));
+
+        for (String placeholder : placeholders) {
+            split = (ArrayList<String>) split.stream().flatMap(part -> {
+                String[] sp = part.split("((?="+placeholder+")|(?<="+placeholder+"))");
+                return Arrays.stream(sp);
+            }).collect(Collectors.toList());
+        }
+
+        return split;
     }
 }
