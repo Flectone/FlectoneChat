@@ -6,6 +6,7 @@ import net.flectone.integrations.luckperms.FLuckPerms;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
+import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
@@ -72,6 +73,7 @@ public final class Main extends JavaPlugin {
         hookPlugins();
 
         TickerManager.start();
+        PlayerDeathEventListener.reload();
 
         info("✔ Plugin enabled");
 

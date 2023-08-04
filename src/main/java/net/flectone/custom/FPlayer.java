@@ -51,6 +51,7 @@ public class FPlayer {
     private String chat = "local";
     private Player lastWriter;
     private String worldPrefix = "";
+    private FDamager lastFDamager = new FDamager();
     private boolean isUpdated;
 
     public FPlayer(OfflinePlayer offlinePlayer) {
@@ -481,4 +482,19 @@ public class FPlayer {
         return listChatBubbles;
     }
 
+    public FDamager getLastFDamager() {
+        return lastFDamager;
+    }
+
+    public void setLastDamager(Entity lastDamager) {
+        this.lastFDamager.replaceDamager(lastDamager);
+    }
+
+    public void resetLastDamager(){
+       this.lastFDamager = new FDamager();
+    }
+
+    public boolean isDeathByObject(){
+        return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
+    }
 }

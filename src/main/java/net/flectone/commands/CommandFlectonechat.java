@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
@@ -80,6 +81,8 @@ public class CommandFlectonechat extends FTabCompleter {
 
         FPlayerManager.loadPlayers();
         MessageBuilder.loadPatterns();
+
+        PlayerDeathEventListener.reload();
 
         fCommand.sendMeMessage("command.flectonechat.message");
 

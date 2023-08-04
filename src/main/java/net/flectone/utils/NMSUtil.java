@@ -4,12 +4,15 @@ import com.google.common.reflect.ClassPath;
 import net.flectone.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
 public class NMSUtil {
@@ -62,6 +65,14 @@ public class NMSUtil {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    public static String getMinecraftName(Entity entity){
+        if(entity == null) return "";
+
+        String string = entityKeys.get(entity.getType().name().toUpperCase());
+
+        return string != null ? string : "";
     }
 
     /**
@@ -211,5 +222,110 @@ public class NMSUtil {
                  IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    private static final Map<String, String> entityKeys = getEntityKeys();
+
+    public static Map<String, String> getEntityKeys() {
+        final LinkedHashMap<String, String> keys = new LinkedHashMap<>();
+        keys.put("DROPPED_ITEM", "entity.minecraft.item");
+        keys.put("EXPERIENCE_ORB", "entity.minecraft.experience_orb");
+        keys.put("SMALL_FIREBALL", "entity.minecraft.small_fireball");
+        keys.put("FIREBALL", "entity.minecraft.fireball");
+        keys.put("DRAGON_FIREBALL", "entity.minecraft.dragon_fireball");
+        keys.put("SPLASH_POTION", "item.minecraft.splash_potion"); // added
+        keys.put("LINGERING_POTION", "item.minecraft.lingering_potion"); // added
+        keys.put("ARROW", "entity.minecraft.arrow");
+        keys.put("SNOWBALL", "entity.minecraft.snowball");
+        keys.put("PAINTING", "entity.minecraft.painting");
+        keys.put("ARMOR_STAND", "entity.minecraft.armor_stand");
+        keys.put("CREEPER", "entity.minecraft.creeper");
+        keys.put("SKELETON", "entity.minecraft.skeleton");
+        keys.put("WITHER_SKELETON", "entity.minecraft.wither_skeleton");
+        keys.put("STRAY", "entity.minecraft.stray");
+        keys.put("SPIDER", "entity.minecraft.spider");
+        keys.put("GIANT", "entity.minecraft.giant");
+        keys.put("ZOMBIE", "entity.minecraft.zombie");
+        keys.put("SLIME", "entity.minecraft.slime");
+        keys.put("GHAST", "entity.minecraft.ghast");
+        keys.put("PIG_ZOMBIE", "entity.minecraft.zombified_piglin");
+        keys.put("ENDERMAN", "entity.minecraft.enderman");
+        keys.put("ENDERMITE", "entity.minecraft.endermite");
+        keys.put("SILVERFISH", "entity.minecraft.silverfish");
+        keys.put("CAVE_SPIDER", "entity.minecraft.cave_spider");
+        keys.put("BLAZE", "entity.minecraft.blaze");
+        keys.put("MAGMA_CUBE", "entity.minecraft.magma_cube");
+        keys.put("MOOSHROOM_COW", "entity.minecraft.mooshroom_cow");
+        keys.put("VILLAGER", "entity.minecraft.villager");
+        keys.put("ZOMBIE_VILLAGER", "entity.minecraft.villager"); // added
+        keys.put("IRON_GOLEM", "entity.minecraft.iron_golem");
+        keys.put("SNOW_GOLEM", "entity.minecraft.snow_golem");
+        keys.put("ENDER_DRAGON", "entity.minecraft.ender_dragon");
+        keys.put("WITHER", "entity.minecraft.wither");
+        keys.put("WITCH", "entity.minecraft.witch");
+        keys.put("GUARDIAN", "entity.minecraft.guardian");
+        keys.put("SHULKER", "entity.minecraft.shulker");
+        keys.put("POLAR_BEAR", "entity.minecraft.polar_bear");
+        keys.put("EVOKER", "entity.minecraft.evoker");
+        keys.put("EVOKER_FANGS", "entity.minecraft.evoker_fangs");
+        keys.put("VEX", "entity.minecraft.vex");
+        keys.put("VINDICATOR", "entity.minecraft.vindicator");
+        keys.put("PARROT", "entity.minecraft.parrot");
+        keys.put("ILLUSIONER", "entity.minecraft.illusioner");
+        keys.put("VILLAGER.FARMER", "entity.minecraft.villager.farmer");
+        keys.put("VILLAGER.FISHERMAN", "entity.minecraft.villager.fisherman");
+        keys.put("VILLAGER.SHEPHERD", "entity.minecraft.villager.shepherd");
+        keys.put("VILLAGER.FLETCHER", "entity.minecraft.villager.fletcher");
+        keys.put("VILLAGER.LIBRARIAN", "entity.minecraft.villager.librarian");
+        keys.put("VILLAGER.CLERIC", "entity.minecraft.villager.cleric");
+        keys.put("VILLAGER.ARMORER", "entity.minecraft.villager.armorer");
+        keys.put("VILLAGER.WEAPON_SMITH", "entity.minecraft.villager.weapon_smith");
+        keys.put("VILLAGER.TOOL_SMITH", "entity.minecraft.villager.tool_smith");
+        keys.put("VILLAGER.BUTCHER", "entity.minecraft.villager.butcher");
+        keys.put("VILLAGER.LEATHERWORKER", "entity.minecraft.villager.leatherworker");
+        keys.put("VILLAGER.NITWIT", "entity.minecraft.villager.nitwit");
+        keys.put("VILLAGER.CARTOGRAPHER", "entity.minecraft.villager.cartographer");
+        keys.put("PIG", "entity.minecraft.pig");
+        keys.put("SHEEP", "entity.minecraft.sheep");
+        keys.put("COW", "entity.minecraft.cow");
+        keys.put("CHICKEN", "entity.minecraft.chicken");
+        keys.put("SQUID", "entity.minecraft.squid");
+        keys.put("WOLF", "entity.minecraft.wolf");
+        keys.put("OCELOT", "entity.minecraft.ocelot");
+        keys.put("BLACK_CAT", "entity.minecraft.cat");
+        keys.put("RED_CAT", "entity.minecraft.cat");
+        keys.put("SIAMESE_CAT", "entity.minecraft.cat");
+        keys.put("BAT", "entity.minecraft.bat");
+        keys.put("HORSE", "entity.minecraft.horse");
+        keys.put("DONKEY", "entity.minecraft.donkey");
+        keys.put("MULE", "entity.minecraft.mule");
+        keys.put("SKELETON_HORSE", "entity.minecraft.skeleton_horse");
+        keys.put("ZOMBIE_HORSE", "entity.minecraft.zombie_horse");
+        keys.put("RABBIT", "entity.minecraft.rabbit");
+        keys.put("RABBIT.THE_KILLER_BUNNY", "entity.minecraft.killer_bunny");
+        keys.put("LLAMA", "entity.minecraft.llama");
+        keys.put("LLAMA_SPIT", "entity.minecraft.llama"); // added
+        keys.put("PRIMED_TNT", "entity.minecraft.tnt");
+        keys.put("FALLING_BLOCK", "entity.minecraft.falling_block");
+        keys.put("MINECART", "entity.minecraft.minecart");
+        keys.put("MINECART_HOPPER", "entity.minecraft.minecart_hopper");
+        keys.put("MINECART_CHEST", "entity.minecraft.minecart_chest");
+        keys.put("MINECART_COMMAND", "item.minecraft.minecartcommand_block");
+        keys.put("MINECART_FURNACE", "item.minecraft.minecart_furnace");
+        keys.put("MINECART_MOB_SPAWNER", "entity.minecraft.minecart");
+        keys.put("MINECART_TNT", "item.minecraft.minecart_tnt");
+        keys.put("BOAT", "entity.minecraft.boat");
+        keys.put("UNKNOWN", "entity.minecraft.generic");
+        keys.put("SPECTRAL_ARROW", "item.minecraft.spectral_arrow");
+        keys.put("TIPPED_ARROW", "item.minecraft.tipped_arrow");
+        keys.put("ENDER_CRYSTAL", "item.minecraft.end_crystal");
+        keys.put("ENDER_PEARL", "item.minecraft.ender_pearl");
+        keys.put("ENDER_SIGNAL", "item.minecraft.end_crystal");
+        keys.put("LEASH_HITCH", "item.minecraft.leash_hitch");
+        keys.put("ITEM_FRAME", "item.minecraft.item_frame");
+        keys.put("FISHING_HOOK", "item.minecraft.fishing_rod");
+        keys.put("COMPLEX_PART", "entity.minecraft.ender_dragon");
+        keys.put("TRIDENT", "entity.minecraft.trident");
+        return keys;
     }
 }
