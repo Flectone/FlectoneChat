@@ -350,7 +350,14 @@ public class PlayerDeathEventListener implements Listener {
             EntityDamageByEntityEvent lastEntityDamageEvent = (EntityDamageByEntityEvent) lastDamageEvent;
 
             Entity damager = lastEntityDamageEvent.getDamager();
-            message = "death.mob." + damager.getType().name().toLowerCase();
+
+            message = "death.mob.";
+
+            message += damager instanceof Player
+                    ? "player"
+                    : Main.config.getBoolean("death.message.mob-default")
+                    ? "default"
+                    : damager.getType().name().toLowerCase();
 
         } else message = "death.natural." + damageCause.name().toLowerCase();
         return message.replace(" ", "_");
