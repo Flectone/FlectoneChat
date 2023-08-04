@@ -28,10 +28,11 @@ public class CommandChat extends FTabCompleter {
         String chatParam = strings[0].toLowerCase();
         String chat = strings[1].toLowerCase();
 
-        if (!chatParam.equals("switch") && !chatParam.equals("hide") && !chat.equals("local") && !chat.equals("global")) {
+        if ((!chatParam.equals("switch") && !chatParam.equals("hide")) || (!chat.equals("local") && !chat.equals("global"))) {
             fCommand.sendUsageMessage();
             return true;
         }
+
 
         boolean isSwitch = chatParam.equals("switch");
 
