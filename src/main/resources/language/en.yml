@@ -348,7 +348,7 @@ command:
     message: "&&1★ Plugin successfully reloaded!"
 
 entity:
-  hover-message: "<name> \nType: <type> \n<uuid>"
+  hover-message: "&&2<name> \n&&1Type: &&2<type> \n&&1<uuid>"
 
 death:
   due-to: "&&1due to &&2<killer>"

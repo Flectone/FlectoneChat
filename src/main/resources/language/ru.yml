@@ -348,7 +348,7 @@ command:
     message: "&&1★ Плагин успешно перезагружен!"
 
 entity:
-  hover-message: "<name> \nТип: <type> \n<uuid>"
+  hover-message: "&&2<name> \n&&1Тип: &&2<type> \n&&1<uuid>"
 
 death:
   due-to: "&&1благодаря &&2<killer>"
