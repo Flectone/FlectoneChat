@@ -67,12 +67,22 @@ public class NMSUtil {
         }
     }
 
-    public static String getMinecraftName(Entity entity){
+    public static String getMinecraftType(Entity entity){
         if(entity == null) return "";
 
         String string = entityKeys.get(entity.getType().name().toUpperCase());
 
-        return string != null ? string : "";
+        if(string == null) string = "entity.minecraft." + entity.getType().name().toLowerCase();
+
+        return string;
+    }
+
+    public static String getMinecraftName(Entity entity){
+        if(entity == null) return "";
+
+        if(entity.getCustomName() != null) return entity.getCustomName();
+
+        return getMinecraftType(entity);
     }
 
     /**
@@ -228,6 +238,7 @@ public class NMSUtil {
 
     public static Map<String, String> getEntityKeys() {
         final LinkedHashMap<String, String> keys = new LinkedHashMap<>();
+        keys.put("FIREWORK", "entity.minecraft.firework_rocket");
         keys.put("DROPPED_ITEM", "entity.minecraft.item");
         keys.put("EXPERIENCE_ORB", "entity.minecraft.experience_orb");
         keys.put("SMALL_FIREBALL", "entity.minecraft.small_fireball");

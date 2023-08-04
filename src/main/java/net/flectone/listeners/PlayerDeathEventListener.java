@@ -311,10 +311,14 @@ public class PlayerDeathEventListener implements Listener {
         ComponentBuilder hoverBuilder = new ComponentBuilder();
 
         String hoverColor = "";
-        for (String hoverPlaceholder : ObjectUtil.splitLine(formatHoverMessage, new ArrayList<>(List.of("<name>")))) {
+        for (String hoverPlaceholder : ObjectUtil.splitLine(formatHoverMessage, new ArrayList<>(List.of("<name>", "<type>")))) {
             if (hoverPlaceholder.equals("<name>")) {
                 hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
                 hoverBuilder.append(new TranslatableComponent(NMSUtil.getMinecraftName(entity)));
+                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
+            } else if (hoverPlaceholder.equals("<type>")){
+                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
+                hoverBuilder.append(new TranslatableComponent(NMSUtil.getMinecraftType(entity)));
                 hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
             } else {
                 hoverBuilder.append(TextComponent.fromLegacyText(hoverColor + hoverPlaceholder), ComponentBuilder.FormatRetention.NONE);
