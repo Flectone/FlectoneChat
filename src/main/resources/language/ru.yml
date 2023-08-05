@@ -347,6 +347,17 @@ command:
     wrong-line: "#ff4e4e⁉ Введи правильно название строки из файла"
     message: "&&1★ Плагин успешно перезагружен!"
 
+advancement:
+  task:
+    name: "#4eff52🌠 &&2<player> &&1выполнил задачу #4eff52[<advancement>]"
+    hover: "#4eff52<name> \n<description>"
+  goal:
+    name: "#f2d40f🌠 &&2<player> &&1достиг цели #f2d40f[<advancement>]"
+    hover: "#f2d40f<name> \n<description>"
+  challenge:
+    name: "#834eff🌠 &&2<player> &&1прошёл испытание #834eff[<advancement>]"
+    hover: "#834eff<name> \n<description>"
+
 entity:
   hover-message: "&&2<name> \n&&1Тип: &&2<type> \n&&1<uuid>"
 

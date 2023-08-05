@@ -347,6 +347,11 @@ command:
     wrong-line: "#ff4e4e⁉ Enter the correct line name"
     message: "&&1★ Plugin successfully reloaded!"
 
+advancement:
+  task: "<player> has made the task <advancement>"
+  goal: "<player> has made the goal <advancement>"
+  challenge: "<player> has made the challenge <advancement>"
+
 entity:
   hover-message: "&&2<name> \n&&1Type: &&2<type> \n&&1<uuid>"
 
