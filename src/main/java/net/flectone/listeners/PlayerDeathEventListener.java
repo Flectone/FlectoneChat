@@ -103,6 +103,11 @@ public class PlayerDeathEventListener implements Listener {
         String formatMessage = Main.locale.getString(getDeathConfigMessage(lastDamageEvent));
         if (formatMessage.isEmpty()) return;
 
+        if (!Main.config.getBoolean("death.message.visible")) {
+            event.setDeathMessage("");
+            return;
+        }
+
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         FDamager fDamager = fPlayer.getLastFDamager();
 

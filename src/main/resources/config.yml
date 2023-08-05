@@ -83,6 +83,9 @@ death:
   message:
     enable: true
 
+    # if disabled, custom death messages will not be shown
+    visible: true
+
     # if enabled, then death from any mob will be located on the "death.mob.default",
     # otherwise it will be necessary to register for each separately
     mob-default: true
