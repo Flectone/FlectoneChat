@@ -2,6 +2,9 @@ package net.flectone.integrations.discordsrv;
 
 import github.scarsz.discordsrv.Debug;
 import github.scarsz.discordsrv.DiscordSRV;
+import github.scarsz.discordsrv.api.ListenerPriority;
+import github.scarsz.discordsrv.api.Subscribe;
+import github.scarsz.discordsrv.api.events.GameChatMessagePreProcessEvent;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.MessageBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.Message;
@@ -32,7 +35,8 @@ public class FDiscordSRV implements Listener {
     }
 
     public static void register(){
-        new FDiscordSRV();
+        FDiscordSRV fDiscordSRV = new FDiscordSRV();
+        DiscordSRV.api.subscribe(fDiscordSRV);
     }
 
     public static void sendDeathMessage(Player player, String message, Entity finalEntity, Material finalBlock, Entity killer, ItemStack killerItem){
@@ -132,5 +136,16 @@ public class FDiscordSRV implements Listener {
 
         TextChannel textChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(channelName);
         DiscordUtil.queueMessage(textChannel, discordMessage, true);
+    }
+
+    @Subscribe(priority = ListenerPriority.HIGHEST)
+    public void onChatMessageFromInGame(GameChatMessagePreProcessEvent event) { // From in-game to Discord
+        Player player = event.getPlayer();
+
+        String message = event.getMessage();
+
+        message = ObjectUtil.buildFormattedMessage(player, "discordchat", message, player.getInventory().getItemInMainHand());
+
+        event.setMessage(message);
     }
 }
