@@ -1,8 +1,8 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FEntity;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.entity.FEntity;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

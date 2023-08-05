@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.actions;
 
 import java.util.UUID;
 

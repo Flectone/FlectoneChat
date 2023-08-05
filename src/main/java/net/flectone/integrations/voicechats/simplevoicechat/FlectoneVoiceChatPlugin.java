@@ -5,7 +5,7 @@ import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import net.flectone.Main;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.ChatMessageType;

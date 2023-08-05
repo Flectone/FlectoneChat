@@ -1,8 +1,8 @@
 package net.flectone.tickers;
 
 import net.flectone.Main;
-import net.flectone.custom.FBukkitRunnable;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.runnables.FBukkitRunnable;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.*;
 import org.bukkit.entity.AreaEffectCloud;

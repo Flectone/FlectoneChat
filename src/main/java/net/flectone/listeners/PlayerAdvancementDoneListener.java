@@ -5,8 +5,8 @@ import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
-import net.flectone.custom.AdvancementType;
-import net.flectone.custom.FAdvancement;
+import net.flectone.misc.advancement.FAdvancementType;
+import net.flectone.misc.advancement.FAdvancement;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,11 +59,11 @@ public class PlayerAdvancementDoneListener implements Listener {
         if(FSuperVanish.isVanished(player)) return;
 
         FAdvancement fAdvancement = new FAdvancement(event.getAdvancement());
-        AdvancementType advancementType = fAdvancement.getType();
+        FAdvancementType FAdvancementType = fAdvancement.getType();
 
-        if(advancementType == AdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat()) return;
+        if(FAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat()) return;
 
-        String formatMessage = Main.locale.getString("advancement." + advancementType + ".name");
+        String formatMessage = Main.locale.getString("advancement." + FAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
         FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);

@@ -1,6 +1,6 @@
 package net.flectone;
 
-import net.flectone.custom.FTabCompleter;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.integrations.luckperms.FLuckPerms;

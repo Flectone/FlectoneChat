@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.commands;
 
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;

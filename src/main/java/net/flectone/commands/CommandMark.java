@@ -1,9 +1,9 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FEntity;
-import net.flectone.custom.FTabCompleter;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.entity.FEntity;
+import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

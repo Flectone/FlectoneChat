@@ -1,7 +1,8 @@
-package net.flectone.custom;
+package net.flectone.misc.actions;
 
 import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

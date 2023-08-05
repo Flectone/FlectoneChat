@@ -1,8 +1,8 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
-import net.flectone.custom.FEntity;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FEntity;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

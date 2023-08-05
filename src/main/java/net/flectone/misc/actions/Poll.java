@@ -1,7 +1,8 @@
-package net.flectone.custom;
+package net.flectone.misc.actions;
 
 import net.flectone.Main;
 import net.flectone.managers.PollManager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 

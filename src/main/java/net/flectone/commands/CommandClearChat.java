@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FTabCompleter;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

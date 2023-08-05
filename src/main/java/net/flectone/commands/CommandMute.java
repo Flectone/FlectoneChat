@@ -1,9 +1,9 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FPlayer;
-import net.flectone.custom.FTabCompleter;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
 import net.flectone.managers.FPlayerManager;

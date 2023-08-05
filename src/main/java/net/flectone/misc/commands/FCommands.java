@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.commands;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
@@ -6,6 +6,7 @@ import net.flectone.integrations.interactivechat.FlectoneInteractiveChat;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.messages.MessageBuilder;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;

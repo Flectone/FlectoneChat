@@ -1,6 +1,6 @@
 package net.flectone.tickers;
 
-import net.flectone.custom.FBukkitRunnable;
+import net.flectone.misc.runnables.FBukkitRunnable;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;

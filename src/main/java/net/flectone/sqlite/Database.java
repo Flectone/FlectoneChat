@@ -2,8 +2,8 @@ package net.flectone.sqlite;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
-import net.flectone.custom.FPlayer;
-import net.flectone.custom.Mail;
+import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.actions.Mail;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;

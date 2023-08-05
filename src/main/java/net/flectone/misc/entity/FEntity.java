@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.entity;
 
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.ChatColor;

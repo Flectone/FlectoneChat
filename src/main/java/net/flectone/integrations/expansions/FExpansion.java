@@ -1,7 +1,7 @@
 package net.flectone.integrations.expansions;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.OfflinePlayer;

@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.advancement;
 
 import net.flectone.utils.NMSUtil;
 import org.bukkit.advancement.Advancement;
@@ -18,7 +18,7 @@ public class FAdvancement {
 
     private String toChat = null, hidden = null, parent = null;
 
-    private AdvancementType type = AdvancementType.UNKNOWN;
+    private FAdvancementType type = FAdvancementType.UNKNOWN;
 
     private Object requirements = null;
 
@@ -67,7 +67,7 @@ public class FAdvancement {
         }
 
         String typeName = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "e"), "PROGRESS");
-        this.type = AdvancementType.getType(typeName);
+        this.type = FAdvancementType.getType(typeName);
 
         parent = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(nmsAdv, "b", "getName"), "null");
         toChat = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "i"));
@@ -111,7 +111,7 @@ public class FAdvancement {
     }
 
     @NotNull
-    public AdvancementType getType() {
+    public FAdvancementType getType() {
         return type;
     }
 

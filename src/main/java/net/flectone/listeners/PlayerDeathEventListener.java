@@ -1,8 +1,8 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.custom.FDamager;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FDamager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;

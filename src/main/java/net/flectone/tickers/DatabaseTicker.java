@@ -1,7 +1,7 @@
 package net.flectone.tickers;
 
 import net.flectone.Main;
-import net.flectone.custom.FBukkitRunnable;
+import net.flectone.misc.runnables.FBukkitRunnable;
 
 public class DatabaseTicker extends FBukkitRunnable {
 

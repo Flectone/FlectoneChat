@@ -1,7 +1,7 @@
 package net.flectone.listeners;
 
 import net.flectone.commands.CommandAfk;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

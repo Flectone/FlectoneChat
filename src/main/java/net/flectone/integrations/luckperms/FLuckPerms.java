@@ -1,7 +1,7 @@
 package net.flectone.integrations.luckperms;
 
 import net.flectone.Main;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.event.EventBus;

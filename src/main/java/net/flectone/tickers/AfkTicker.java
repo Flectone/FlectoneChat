@@ -2,8 +2,8 @@ package net.flectone.tickers;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
-import net.flectone.custom.FBukkitRunnable;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.runnables.FBukkitRunnable;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;

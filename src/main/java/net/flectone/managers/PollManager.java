@@ -1,6 +1,6 @@
 package net.flectone.managers;
 
-import net.flectone.custom.Poll;
+import net.flectone.misc.actions.Poll;
 
 import java.util.ArrayList;
 import java.util.List;

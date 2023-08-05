@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.entity;
 
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;

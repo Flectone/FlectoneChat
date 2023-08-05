@@ -2,7 +2,7 @@ package net.flectone.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.messages.MessageBuilder;
 import net.md_5.bungee.api.ChatColor;

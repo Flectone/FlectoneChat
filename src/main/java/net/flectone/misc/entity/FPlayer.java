@@ -1,9 +1,10 @@
-package net.flectone.custom;
+package net.flectone.misc.entity;
 
 import net.flectone.Main;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.actions.Mail;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;

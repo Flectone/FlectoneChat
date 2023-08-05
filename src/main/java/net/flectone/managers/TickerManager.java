@@ -1,7 +1,7 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
-import net.flectone.custom.FBukkitRunnable;
+import net.flectone.misc.runnables.FBukkitRunnable;
 import net.flectone.tickers.*;
 import org.bukkit.scheduler.BukkitRunnable;
 

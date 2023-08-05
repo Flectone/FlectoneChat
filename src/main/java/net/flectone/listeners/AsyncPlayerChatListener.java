@@ -1,8 +1,8 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FPlayer;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

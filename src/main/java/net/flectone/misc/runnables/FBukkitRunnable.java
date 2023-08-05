@@ -1,4 +1,4 @@
-package net.flectone.custom;
+package net.flectone.misc.runnables;
 
 import net.flectone.Main;
 import org.bukkit.scheduler.BukkitRunnable;

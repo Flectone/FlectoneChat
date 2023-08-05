@@ -17,7 +17,7 @@ import github.scarsz.discordsrv.util.PlaceholderUtil;
 import github.scarsz.discordsrv.util.TimeUtil;
 import net.flectone.Main;
 import net.flectone.utils.ObjectUtil;
-import net.flectone.custom.FAdvancement;
+import net.flectone.misc.advancement.FAdvancement;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

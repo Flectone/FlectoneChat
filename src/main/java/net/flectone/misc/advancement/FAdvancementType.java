@@ -1,15 +1,15 @@
-package net.flectone.custom;
+package net.flectone.misc.advancement;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
-public enum AdvancementType {
+public enum FAdvancementType {
     UNKNOWN,
     TASK,
     GOAL,
     CHALLENGE;
 
-    public static AdvancementType getType(@Nullable String name) {
+    public static FAdvancementType getType(@Nullable String name) {
         if (name == null) return UNKNOWN;
 
         return Arrays.stream(values()).parallel()

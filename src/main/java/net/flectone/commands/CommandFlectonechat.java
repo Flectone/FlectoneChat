@@ -1,8 +1,8 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.custom.FCommands;
-import net.flectone.custom.FTabCompleter;
+import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.listeners.PlayerAdvancementDoneListener;
 import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
