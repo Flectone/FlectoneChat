@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.custom.FDamager;
 import net.flectone.custom.FPlayer;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
+import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;
@@ -61,13 +62,10 @@ public class PlayerDeathEventListener implements Listener {
         else unregister();
     }
 
-    public static PlayerDeathEventListener getInstance() {
-        return instance;
-    }
-
     @EventHandler
     public void onPlayerClickOnBed(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if(FSuperVanish.isVanished(event.getPlayer())) return;
 
         Block block = event.getClickedBlock();
         World.Environment worldEnvironment = block.getWorld().getEnvironment();
@@ -84,6 +82,7 @@ public class PlayerDeathEventListener implements Listener {
     public void onPlayerDamageEvent(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
+        if(FSuperVanish.isVanished(player)) return;
         if (player.getHealth() <= event.getFinalDamage()) return;
 
         FPlayer fPlayer = FPlayerManager.getPlayer((Player) event.getEntity());
@@ -97,6 +96,8 @@ public class PlayerDeathEventListener implements Listener {
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
         EntityDamageEvent lastDamageEvent = player.getLastDamageCause();
+
+        if(FSuperVanish.isVanished(player)) return;
 
         if (lastDamageEvent == null) return;
 
