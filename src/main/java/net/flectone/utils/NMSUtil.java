@@ -238,6 +238,7 @@ public class NMSUtil {
 
     public static Map<String, String> getEntityKeys() {
         final LinkedHashMap<String, String> keys = new LinkedHashMap<>();
+        keys.put("LIGHTNING", "entity.minecraft.lightning_bolt");
         keys.put("FIREWORK", "entity.minecraft.firework_rocket");
         keys.put("DROPPED_ITEM", "entity.minecraft.item");
         keys.put("EXPERIENCE_ORB", "entity.minecraft.experience_orb");
