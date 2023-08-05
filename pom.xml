@@ -78,6 +78,10 @@
             <id>loohp-repo</id>
             <url>https://repo.loohpjames.com/repository</url>
         </repository>
+        <repository>
+            <id>Scarsz-Nexus</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -121,6 +125,12 @@
             <groupId>com.github.LeonMangler</groupId>
             <artifactId>SuperVanish</artifactId>
             <version>6.2.6-4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.25.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

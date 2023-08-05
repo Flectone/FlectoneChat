@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -57,9 +58,14 @@ public class CommandMaintenance extends FTabCompleter {
             playerSet.stream().parallel()
                     .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.maintenance.permission")) && player.isOnline())
                     .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.maintenance.kicked-message", null)));
+
         }
 
-        fCommand.sendMeMessage("command.maintenance.turned-" + strings[0].toLowerCase() + ".message");
+        String maintenanceMessage = "command.maintenance.turned-" + strings[0].toLowerCase() + ".message";
+
+        FDiscordSRV.sendModerationMessage(Main.locale.getString(maintenanceMessage));
+
+        fCommand.sendMeMessage(maintenanceMessage);
         Main.config.setObject("command.maintenance.enable", haveMaintenance);
         Main.config.saveFile();
 

@@ -1,6 +1,7 @@
 package net.flectone;
 
 import net.flectone.custom.FTabCompleter;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.integrations.luckperms.FLuckPerms;
 import net.flectone.integrations.supervanish.FSuperVanish;
@@ -137,6 +138,11 @@ public final class Main extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("SuperVanish") != null) {
             Bukkit.getPluginManager().registerEvents(new FSuperVanish(), this);
             getLogger().info("\uD83D\uDD12 SuperVanish detected and hooked");
+        }
+
+        if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null) {
+            FDiscordSRV.register();
+            getLogger().info("\uD83D\uDD12 DiscordSRV detected and hooked");
         }
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {

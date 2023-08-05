@@ -32,9 +32,16 @@ public class FDamager {
         this.killer = killer;
     }
 
+    private ItemStack killerItem;
+
     public void setKillerItem(ItemStack itemStack) {
+        this.killerItem = itemStack;
         this.killerItemName = NMSUtil.getMinecraftName(itemStack);
         this.killerItemAsJson = NMSUtil.getItemAsJson(itemStack);
+    }
+
+    public ItemStack getKillerItem() {
+        return killerItem;
     }
 
     public String getKillerItemName() {
@@ -61,6 +68,10 @@ public class FDamager {
 
     public String getDamagerTranslateName() {
         return damagerTranslateName;
+    }
+
+    public Material getFinalBlockDamager() {
+        return finalBlockDamager;
     }
 
     public Entity getFinalEntity() {

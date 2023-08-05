@@ -3,6 +3,7 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.custom.FDamager;
 import net.flectone.custom.FPlayer;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;
@@ -195,6 +196,13 @@ public class PlayerDeathEventListener implements Listener {
 
                     recipient.spigot().sendMessage(createDeathComponent(finalPlaceholders, recipient, player, fDamager));
                 });
+
+        FDiscordSRV.sendDeathMessage(player,
+                formatMessage,
+                fDamager.getFinalEntity(),
+                fDamager.getFinalBlockDamager(),
+                fDamager.getKiller(),
+                fDamager.getKillerItem());
 
         event.setDeathMessage("");
         fPlayer.resetLastDamager();

@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -68,6 +69,8 @@ public class CommandStream extends FTabCompleter {
             stringBuilder.append(string);
             stringBuilder.append("\n");
         }
+
+        FDiscordSRV.sendModerationMessage(stringBuilder.toString());
 
         fCommand.sendGlobalMessage(stringBuilder.toString());
         fCommand.getFPlayer().setDisplayName();

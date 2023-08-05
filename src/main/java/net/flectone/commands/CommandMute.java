@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.custom.FCommands;
 import net.flectone.custom.FPlayer;
 import net.flectone.custom.FTabCompleter;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
@@ -66,6 +67,8 @@ public class CommandMute extends FTabCompleter {
                 .replace("<reason>", reason);
 
         boolean announceModeration = Main.config.getBoolean("command.mute.announce");
+
+        if(announceModeration) FDiscordSRV.sendModerationMessage(formatString);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
