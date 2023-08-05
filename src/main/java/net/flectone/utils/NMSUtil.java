@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("ConstantConditions")
 public class NMSUtil {
 
+    private static final Map<String, String> entityKeys = getEntityKeys();
     private static Class<?> bannerClass;
     private static Method nmsStackSaveMethod = null;
     private static double version;
@@ -71,20 +72,20 @@ public class NMSUtil {
         }
     }
 
-    public static String getMinecraftType(Entity entity){
-        if(entity == null) return "";
+    public static String getMinecraftType(Entity entity) {
+        if (entity == null) return "";
 
         String string = entityKeys.get(entity.getType().name().toUpperCase());
 
-        if(string == null) string = "entity.minecraft." + entity.getType().name().toLowerCase();
+        if (string == null) string = "entity.minecraft." + entity.getType().name().toLowerCase();
 
         return string;
     }
 
-    public static String getMinecraftName(Entity entity){
-        if(entity == null) return "";
+    public static String getMinecraftName(Entity entity) {
+        if (entity == null) return "";
 
-        if(entity.getCustomName() != null) return entity.getCustomName();
+        if (entity.getCustomName() != null) return entity.getCustomName();
 
         return getMinecraftType(entity);
     }
@@ -237,8 +238,6 @@ public class NMSUtil {
             e.printStackTrace();
         }
     }
-
-    private static final Map<String, String> entityKeys = getEntityKeys();
 
     public static Map<String, String> getEntityKeys() {
         final LinkedHashMap<String, String> keys = new LinkedHashMap<>();

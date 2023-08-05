@@ -14,19 +14,14 @@ import java.util.Map;
 // Source https://github.com/CroaBeast/AdvancementInfo
 
 public class FAdvancement {
+    private static final String COMP_CLASS = "IChatBaseComponent";
     private final Advancement adv;
-
-    private String toChat = null, hidden = null, parent = null;
-
+    private String toChat = null;
+    private String hidden = null;
     private FAdvancementType type = FAdvancementType.UNKNOWN;
-
     private Object requirements = null;
-
     private ItemStack item = null;
     private Object rewards = null, criteria = null;
-
-    private static final String COMP_CLASS = "IChatBaseComponent";
-
     private String translateKey;
     private String translateDesc;
 
@@ -69,7 +64,6 @@ public class FAdvancement {
         String typeName = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "e"), "PROGRESS");
         this.type = FAdvancementType.getType(typeName);
 
-        parent = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(nmsAdv, "b", "getName"), "null");
         toChat = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "i"));
         hidden = NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "j"));
 
@@ -89,6 +83,14 @@ public class FAdvancement {
         }
     }
 
+    private static boolean is_19_4() {
+        return net.flectone.utils.NMSUtil.getVersion() >= 19.4;
+    }
+
+    private static boolean getBool(String string) {
+        return string.matches("(?i)true|false") && string.matches("(?i)true");
+    }
+
     public String getTitle() {
         return title;
     }
@@ -101,10 +103,6 @@ public class FAdvancement {
         return translateDesc;
     }
 
-    private static boolean is_19_4() {
-        return net.flectone.utils.NMSUtil.getVersion() >= 19.4;
-    }
-
     @NotNull
     public Advancement getBukkit() {
         return adv;
@@ -113,10 +111,6 @@ public class FAdvancement {
     @NotNull
     public FAdvancementType getType() {
         return type;
-    }
-
-    private static boolean getBool(String string) {
-        return string.matches("(?i)true|false") && string.matches("(?i)true");
     }
 
     public boolean announceToChat() {

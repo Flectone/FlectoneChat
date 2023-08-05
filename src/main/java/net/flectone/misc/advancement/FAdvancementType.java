@@ -19,7 +19,7 @@ public enum FAdvancementType {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return name().toLowerCase();
     }
 }

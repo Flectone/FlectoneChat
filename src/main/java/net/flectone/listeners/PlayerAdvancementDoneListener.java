@@ -4,9 +4,9 @@ import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.utils.ObjectUtil;
-import net.flectone.misc.advancement.FAdvancementType;
 import net.flectone.misc.advancement.FAdvancement;
+import net.flectone.misc.advancement.FAdvancementType;
+import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,24 +44,30 @@ public class PlayerAdvancementDoneListener implements Listener {
         if (isEnable) register();
         else unregister();
 
-        Bukkit.getWorlds().stream()
-                .forEach(world -> setVisibleDefaultAnnounce(world, !isEnable));
+        Bukkit.getWorlds().forEach(world -> setVisibleDefaultAnnounce(world, !isEnable));
     }
 
+    private static void setVisibleDefaultAnnounce(World world, boolean visible) {
+        Object value = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
+        if (value == null) return;
+
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, visible);
+    }
 
     @EventHandler
-    public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event){
+    public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
         String key = event.getAdvancement().getKey().getKey();
         if (key.contains("recipe/") || key.contains("recipes/")) return;
 
         Player player = event.getPlayer();
 
-        if(FSuperVanish.isVanished(player)) return;
+        if (FSuperVanish.isVanished(player)) return;
 
         FAdvancement fAdvancement = new FAdvancement(event.getAdvancement());
         FAdvancementType fAdvancementType = fAdvancement.getType();
 
-        if(fAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat()) return;
+        if (fAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat())
+            return;
 
         String formatMessage = Main.locale.getString("advancement." + fAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
@@ -77,12 +83,12 @@ public class PlayerAdvancementDoneListener implements Listener {
                 });
     }
 
-    private BaseComponent[] createAdvancementComponent(ArrayList<String> placeholders, CommandSender recipient, CommandSender sender, FAdvancement fAdvancement){
+    private BaseComponent[] createAdvancementComponent(ArrayList<String> placeholders, CommandSender recipient, CommandSender sender, FAdvancement fAdvancement) {
         String mainColor = "";
         ComponentBuilder mainBuilder = new ComponentBuilder();
         for (String mainPlaceholder : placeholders) {
 
-            switch(mainPlaceholder){
+            switch (mainPlaceholder) {
                 case "<player>":
                     mainBuilder.append(createClickableComponent(mainColor, sender, recipient));
                     break;
@@ -94,8 +100,8 @@ public class PlayerAdvancementDoneListener implements Listener {
                     String hoverColor = "";
                     ComponentBuilder hoverBuilder = new ComponentBuilder();
 
-                    for(String hoverPlaceholder : ObjectUtil.splitLine(hover, new ArrayList<>(List.of("<name>", "<description>")))){
-                        switch(hoverPlaceholder){
+                    for (String hoverPlaceholder : ObjectUtil.splitLine(hover, new ArrayList<>(List.of("<name>", "<description>")))) {
+                        switch (hoverPlaceholder) {
                             case "<name>":
                                 hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
                                 hoverBuilder.append(new TranslatableComponent(fAdvancement.getTranslateKey()));
@@ -142,12 +148,5 @@ public class PlayerAdvancementDoneListener implements Listener {
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
         return textComponent;
-    }
-
-    private static void setVisibleDefaultAnnounce(World world, boolean visible){
-        Object value = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
-        if(value == null) return;
-
-        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, visible);
     }
 }
