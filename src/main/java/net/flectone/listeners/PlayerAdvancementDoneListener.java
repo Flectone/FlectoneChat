@@ -59,11 +59,11 @@ public class PlayerAdvancementDoneListener implements Listener {
         if(FSuperVanish.isVanished(player)) return;
 
         FAdvancement fAdvancement = new FAdvancement(event.getAdvancement());
-        FAdvancementType FAdvancementType = fAdvancement.getType();
+        FAdvancementType fAdvancementType = fAdvancement.getType();
 
-        if(FAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat()) return;
+        if(fAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat()) return;
 
-        String formatMessage = Main.locale.getString("advancement." + FAdvancementType + ".name");
+        String formatMessage = Main.locale.getString("advancement." + fAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
         FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
