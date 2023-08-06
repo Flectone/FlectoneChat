@@ -7,6 +7,12 @@ Configuration
 | `language` | Plugin locale            | string | `en`       |
 | `database` | Sqlite database filename | string | `database` |
 
+## scoreboard
+
+| name     | description              | type | default |
+|----------|--------------------------|------|---------|
+| `custom` | Enable custom scoreboard | bool | `true`  |
+
 ## Color
 
 `color.*`
@@ -20,26 +26,26 @@ Configuration
 
 `tab`
 
-- `tab.header-message`
+*   `tab.header-message`
 
 | name   | description              | type | default |
 |--------|--------------------------|------|---------|
 | enable | Enable custom tab header | bool | `true`  |
 
-- `tab.footer-message`
+*   `tab.footer-message`
 
 | name   | description              | type | default |
 |--------|--------------------------|------|---------|
 | enable | Enable custom tab footer | bool | `true`  |
 
-- `tab.update`
+*   `tab.update`
 
 | name   | description                  | type | default |
 |--------|------------------------------|------|---------|
 | enable | Enable tab updates           | bool | `true`  |
 | rate   | Tab update rate (in seconds) | int  | `2`     |
 
-- `tab.player-ping`
+*   `tab.player-ping`
 
 | name   | description                | type | default |
 | ------ | -------------------------- | ---- | ------- |
@@ -49,28 +55,28 @@ Configuration
 
 `server.*`
 
-- `server.motd`
-    * `server.motd.messages`
+*   `server.motd`
+    *   `server.motd.messages`
 
 | name     | description        | type | default |
 |----------|--------------------|------|---------|
 | `enable` | Enable custom motd | bool | `true`  |
 
-- `server.online`
-    * `server.online.count`
+*   `server.online`
+    *   `server.online.count`
 
 | name     | description                                    | type | default |
 |----------|------------------------------------------------|------|---------|
 | `enable` | Enable custom max online players (only visual) | bool | `true`  |
 | `digit`  | Max players count                              | int  | `69`    |
 
-- `server.icon`
+*   `server.icon`
 
 | name     | description          | type                  | default                          |
 | -------- | -------------------- | --------------------- | -------------------------------- |
 | `enable` | Enable custom icon   | bool                  | `true`                           |
 | `mode`   | Icon displaying mode | string{random/single} | `random`                         |
-| `names`  | Icon file names      | stirng[]              | `[server-icon-1, server-icon-2]` |
+| `names`  | Icon file names      | stirng\[]              | `[server-icon-1, server-icon-2]` |
 
 ## Chat
 
@@ -83,13 +89,13 @@ Configuration
 | `range`         | Local chat range                    | int  | `100`   |
 | `set-cancelled` | Cancel chat event for other plugins | bool | `true`  |
 
-- `chat.local.no-recipients`
+*   `chat.local.no-recipients`
 
 | name     | description                                     | type | default |
 |----------|-------------------------------------------------|------|---------|
 | `enable` | Enable no-recipients notification in local chat | bool | `true`  |
 
-- `chat.local.admin-see`
+*   `chat.local.admin-see`
 
 | name         | description                         | type   | default                            |
 |--------------|-------------------------------------|--------|------------------------------------|
@@ -103,7 +109,7 @@ Configuration
 | `enable`        | Enable global chat                  | bool | `true`  |
 | `set-cancelled` | Cancel chat event for other plugins | bool | `true`  |
 
-- `chat.global.prefix`
+*   `chat.global.prefix`
 
 | name      | description                                                      | type | default |
 |-----------|------------------------------------------------------------------|------|---------|
@@ -112,6 +118,14 @@ Configuration
 ### `chat.patterns`
 
 check [Chat features](features/chat.md#patterns) to learn about patterns
+
+## Death
+
+### `death.message`
+
+| name           | description                          | type   | default   |
+| -------------- | ------------------------------------ | ------ | --------- |
+| `enable`       | Enable custom death messages         | bool   | `true`    |
 
 ## Player
 
@@ -129,7 +143,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 |--------|------------------------------------------------------------------------------------------|------|---------|
 | `mode` | World detecting mode. [More info here](https://chat.flectone.net/features/worldprefixes) | bool | `true`  |
 
-- `player.world.prefix`
+*   `player.world.prefix`
 
 | name     | description                             | type | default |
 |----------|-----------------------------------------|------|---------|
@@ -143,7 +157,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `player.item`
 
-- `player.item.sign`
+*   `player.item.sign`
 
 | name     | description         | type | default |
 |----------|---------------------|------|---------|
@@ -151,7 +165,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `player.join`
 
-- `player.join.message`
+*   `player.join.message`
 
 | name     | description         | type | default |
 |----------|---------------------|------|---------|
@@ -159,7 +173,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `player.quit`
 
-- `player.quit.message`
+*   `player.quit.message`
 
 | name     | description         | type | default |
 |----------|---------------------|------|---------|
@@ -180,7 +194,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 |----------|------------------------------------|------|---------|
 | `global` | Send stream message to global chat | bool | `true`  |
 
-- `command.stream.offline-prefix`
+*   `command.stream.offline-prefix`
 
 | name     | description                      | type | default |
 | -------- | -------------------------------- | ---- | ------- |
@@ -188,7 +202,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `command.afk`
 
-- `command.afk.timeout`
+*   `command.afk.timeout`
 
 | name     | description                                             | type   | default |
 |----------|---------------------------------------------------------|--------|---------|
@@ -197,21 +211,21 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `command.ping`
 
-- `command.ping.bad`
+*   `command.ping.bad`
 
 | name    | description        | type   | default |
 |---------|--------------------|--------|---------|
 | `color` | Bad ping color     | bool   | `true`  |
 | `count` | Bad ping threshold | number | `200`   |
 
-- `command.ping.medium`
+*   `command.ping.medium`
 
 | name    | description           | type   | default |
 |---------|-----------------------|--------|---------|
 | `color` | Medium ping color     | bool   | `true`  |
 | `count` | Medium ping threshold | number | `200`   |
 
-- `command.ping.good`
+*   `command.ping.good`
 
 | name    | description     | type | default |
 |---------|-----------------|------|---------|
@@ -250,7 +264,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `command.helper`
 
-- `command.helper.see.permission`
+*   `command.helper.see.permission`
 
 | name     | description           | type   | default                  |
 |----------|-----------------------|--------|--------------------------|
@@ -283,7 +297,7 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 |----------|------------------------|------|---------|
 | `enable` | Enable global cooldown | bool | `false` |
 
-Each command can have a custom cooldown.  
+Each command can have a custom cooldown.\
 You can customize them as follows
 
 ```yaml
@@ -297,7 +311,7 @@ You can customize them as follows
 
 `sound.*`
 
-Each command can have a custom sound.  
+Each command can have a custom sound.\
 You can customize them as follows
 
 ```yaml

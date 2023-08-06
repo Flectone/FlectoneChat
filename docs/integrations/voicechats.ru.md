@@ -1,10 +1,10 @@
 # Голосовые чаты
 
-FlectoneChat имеет интеграции с популярными плагинами для голосовых чатов.  
+FlectoneChat имеет интеграции с популярными плагинами для голосовых чатов.\
 Поддерживаемые плагины:
 
-- [Plasmo Voice](https://modrinth.com/plugin/plasmo-voice)
-- [Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat/)
+*   [Plasmo Voice](https://modrinth.com/plugin/plasmo-voice)
+*   [Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat/)
 
 ## Мут
 

@@ -1,6 +1,6 @@
 # Formatting
 
-formatting is only available to players with certain permissions.  
+formatting is only available to players with certain permissions.\
 The player with op has these permissions by default
 
 If a player has the `flectonechat.formatting` permission, he can use the built-in formatting colors of minecraft (`&c`

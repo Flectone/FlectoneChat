@@ -2,10 +2,10 @@
 
 ## Patterns
 
-Chat patterns is a system for replacing any custom words/patterns.  
+Chat patterns is a system for replacing any custom words/patterns.\
 Each `chat.patterns` (config.yml) field is a new pattern that specifies the expression to be replaced and the expression
-it will be replaced with.  
-The expressions are separated by combining the characters "` , `"
+it will be replaced with.\
+The expressions are separated by combining the characters "`,`"
 
 A few standard patterns:
 
@@ -33,7 +33,7 @@ chat:
 
 ## Items in chat
 
-FlectoneChat has a feature to display items in chat.  
+FlectoneChat has a feature to display items in chat.\
 To do this you just need to write `%item%` in the message and hold the desired item in your hand.
 
 ![](https://i.imgur.com/m26PIre.png)
@@ -50,5 +50,5 @@ Your players can hide words with `||word||` syntax. The word would be shown on h
 
 ## Pings (mentions)
 
-Your players can `@mention` other players in chat.  
+Your players can `@mention` other players in chat.\
 Mentions are clickable and plays custom sound for mentioned player!

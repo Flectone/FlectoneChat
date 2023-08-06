@@ -1,10 +1,10 @@
 # Voice Chats
 
-FlectoneChat have some integrations with popular voicechat plugins.  
+FlectoneChat have some integrations with popular voicechat plugins.\
 Supported plugins:
 
-- [Plasmo Voice](https://modrinth.com/plugin/plasmo-voice)
-- [Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat/)
+*   [Plasmo Voice](https://modrinth.com/plugin/plasmo-voice)
+*   [Simple Voice Chat](https://modrinth.com/plugin/simple-voice-chat/)
 
 ## mute
 

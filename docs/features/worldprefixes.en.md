@@ -1,6 +1,6 @@
 # World prefixes
 
-World prefixes are colored dots by default.  
+World prefixes are colored dots by default.\
 To change their display, check your lang file.
 
 ```yaml
@@ -19,14 +19,14 @@ To change their display, check your lang file.
       world_the_end: "#834eff● &f"
 ```
 
-Worlds can be detected in 2 modes: either by name or by world type.  
+Worlds can be detected in 2 modes: either by name or by world type.\
 To change this behavior change `player.world.mode` in your config.yml
 
 If the mode is set to `type`, the world prefix can be set by 4 world types:
 
-- normal
-- nether
-- the_end
-- custom
+*   normal
+*   nether
+*   the\_end
+*   custom
 
 If the mode is set to `name` the `world.prefix` fields will be defined as world names
