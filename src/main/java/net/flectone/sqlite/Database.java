@@ -226,7 +226,7 @@ public abstract class Database {
             for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
             ps1.setString(6, ignoreListString.length() == 0 ? null : ignoreListString.toString());
 
-            if (!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0) {
+            if (!fPlayer.getMails().isEmpty() && !fPlayer.getMails().isEmpty()) {
                 fPlayer.getMails().forEach((uuid, mail) -> {
                     if (mail.isRemoved()) {
                         try {
@@ -257,7 +257,7 @@ public abstract class Database {
                     .map(Map.Entry::getKey)
                     .collect(Collectors.joining(","));
 
-            mails = mails.length() == 0 ? null : mails;
+            mails = mails.isEmpty() ? null : mails;
 
             ps1.setString(7, mails);
             ps1.setString(8, fPlayer.getChat());
