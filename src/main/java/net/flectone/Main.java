@@ -43,31 +43,36 @@ public final class Main extends JavaPlugin {
     }
 
     public static Database getDatabase() {
-        return getInstance().database;
+        return instance.database;
     }
 
     public static void info(String message) {
-        getInstance().getLogger().info(message);
+        instance.getLogger().info(message);
     }
 
     public static void warning(String message) {
-        getInstance().getLogger().warning(message);
+        instance.getLogger().warning(message);
     }
-
+    
     @Override
-    public void onEnable() {
-        new MetricsUtil(this, 16733);
-
+    public void onLoad() {
         instance = this;
 
         config = new FileManager("config.yml");
         locale = new FileManager("language/" + config.getString("language") + ".yml");
+        
+        database = new SQLite(this);
+    }
+    
+    @Override
+    public void onEnable() {
+        new MetricsUtil(this, 16733);
+
+        database.load();
+        
         loadIcons();
+        
         FPlayerManager.setScoreBoard();
-
-        this.database = new SQLite(this);
-        this.database.load();
-
         FPlayerManager.loadPlayers();
         FPlayerManager.loadBanList();
 
@@ -99,15 +104,16 @@ public final class Main extends JavaPlugin {
     }
 
     private void loadIcons() {
-        String path = Main.getInstance().getDataFolder() + File.separator + "icons" + File.separator;
+        String path = getDataFolder() + File.separator + "icons" + File.separator;
 
-        List<String> iconNames = Main.config.getStringList("server.icon.names");
+        List<String> iconNames = config.getStringList("server.icon.names");
         iconNames.add("maintenance");
 
         for (String iconName : iconNames) {
+            
             if (new File(path + iconName + ".png").exists()) continue;
 
-            Main.getInstance().saveResource("icons" + File.separator + iconName + ".png", false);
+            saveResource("icons" + File.separator + iconName + ".png", false);
         }
     }
 
