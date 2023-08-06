@@ -87,7 +87,7 @@ public class ObjectUtil {
             if (Main.isHavePAPI && string != null && papiSender instanceof Player) {
                 if (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))
                     string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
-
+                    string = PlaceholderAPI.setRelationalPlaceholders((Player) papiSender, player, string);
             }
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
