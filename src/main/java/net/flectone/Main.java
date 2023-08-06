@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin {
     }
 
     public static Database getDatabase() {
-        return database;
+        return instance.database;
     }
 
     public static void info(String message) {
