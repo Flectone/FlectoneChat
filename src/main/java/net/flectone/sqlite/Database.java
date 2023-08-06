@@ -124,7 +124,7 @@ public abstract class Database {
 
             ps.executeUpdate();
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
     }
 
@@ -181,7 +181,7 @@ public abstract class Database {
             }
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
 
         Main.info("\uD83D\uDCCA Database loaded successfully");
@@ -226,7 +226,7 @@ public abstract class Database {
             for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
             ps1.setString(6, ignoreListString.length() == 0 ? null : ignoreListString.toString());
 
-            if (!fPlayer.getMails().isEmpty() && fPlayer.getMails().size() != 0) {
+            if (!fPlayer.getMails().isEmpty() && !fPlayer.getMails().isEmpty()) {
                 fPlayer.getMails().forEach((uuid, mail) -> {
                     if (mail.isRemoved()) {
                         try {
@@ -234,7 +234,7 @@ public abstract class Database {
                             ps2.setString(1, uuid);
                             ps2.executeUpdate();
                         } catch (SQLException e) {
-                            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), e);
+                            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
                         }
                         return;
                     }
@@ -247,7 +247,7 @@ public abstract class Database {
                         ps2.setString(4, mail.getMessage());
                         ps2.executeUpdate();
                     } catch (SQLException e) {
-                        plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), e);
+                        plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
                     }
                 });
             }
@@ -257,7 +257,7 @@ public abstract class Database {
                     .map(Map.Entry::getKey)
                     .collect(Collectors.joining(","));
 
-            mails = mails.length() == 0 ? null : mails;
+            mails = mails.isEmpty() ? null : mails;
 
             ps1.setString(7, mails);
             ps1.setString(8, fPlayer.getChat());
@@ -265,7 +265,7 @@ public abstract class Database {
             ps1.executeUpdate();
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
     }
 
