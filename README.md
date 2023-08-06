@@ -54,6 +54,11 @@ Checkout [**our documentation**](https://chat.flectone.net/configuration/) for a
 
 <br/>
 
+## Russian Video Tutorial
+[![Russian Video Tutorial](https://i.ytimg.com/vi/7_WOJbr51Cg/maxresdefault.jpg)](https://www.youtube.com/watch?v=7_WOJbr51Cg)
+
+<br/>
+
 # Features
 
 ## Chat Colors
