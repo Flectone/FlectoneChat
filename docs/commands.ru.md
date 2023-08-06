@@ -4,8 +4,9 @@
 
 Установка кастомных (для игрока) цветов для чата и команд flectonechat
 
-Использование: `/chatcolor <first color> <second color>`\
-Разрешение: `flectonechat.chatcolor` (default)
+Использование: `/chatcolor <first color> <second color> <player>`\
+Разрешение: `flectonechat.chatcolor` (default)\
+Разрешение (для других): `flectonechat.chatcolor.other` (op)
 
 ## /lastonline
 
@@ -142,6 +143,7 @@
     5m  - 5 минут
     3h  - 3 часов
     2d  - 2 дня
+    3w  - 3 недели
     1y  - 1 год
 
 Использование: `/mute <player> <time> <reason>`\
@@ -169,13 +171,14 @@
 Разрешение: `flectonechat.helper` (default)  helpers'
 Разрешение: `flectonechat.helpersee` (op)
 
-## /technical-works
+## /maintenance
 
 Кикнуть всех игроков и не позволить им присоединиться к игре.\
-Игнорирует игроков с разрешением `flectonechat.technical-works` и операторов
+Игнорирует игроков с разрешением `flectonechat.maintenance` и операторов
 
-Использование: `/mute <player> <time> <reason>`\
-Разрешение: `flectonechat.technical-works` (op)
+Использование: `/maintenance <on/off>`\
+Вариации: `technical-works`\
+Разрешение: `flectonechat.maintenance` (op)
 
 ## /chat
 
@@ -219,9 +222,12 @@
     5m  - 5 минут
     3h  - 3 часов
     2d  - 2 дня
+    3w  - 3 недели
     1y  - 1 год
 
-Использование: `/tempban <player> <time> <reason>`\
+    0   - навсегда
+
+Использование: `/tempban <player> <time/"permanent"> <reason>`\
 Вариации: `ban`, `tban`\
 Разрешение: `flectonechat.ban` (op)
 
