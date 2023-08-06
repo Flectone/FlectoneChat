@@ -29,21 +29,21 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     public static boolean isHavePAPI = false;
-
     public static boolean isHavePlasmoVoice = false;
-
     public static boolean isHaveInteractiveChat = false;
-    public static FileManager config;
-    public static FileManager locale;
+
     private static Main instance;
     private Database database;
+    
+    public static FileManager config;
+    public static FileManager locale;
 
     public static Main getInstance() {
         return instance;
     }
 
     public static Database getDatabase() {
-        return instance.database;
+        return database;
     }
 
     public static void info(String message) {
