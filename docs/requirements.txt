@@ -1,0 +1,4 @@
+mkdocs
+mkdocs-material
+-e git+https://github.com/fxd-s/mkdocs-static-i18n.git#egg=mkdocs-static-i18n
+mkdocs-awesome-pages-plugin
