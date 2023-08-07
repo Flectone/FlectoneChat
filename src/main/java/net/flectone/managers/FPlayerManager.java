@@ -3,6 +3,7 @@ package net.flectone.managers;
 import net.flectone.Main;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
+import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -61,7 +62,10 @@ public class FPlayerManager {
                     FPlayer fPlayer = FPlayerManager.getPlayer(offlinePlayer);
                     if (fPlayer == null || offlinePlayer.getName() == null) return;
 
-                    String reason = banList.getBanEntry(offlinePlayer.getName()).getReason();
+                    BanEntry banEntry = banList.getBanEntry(offlinePlayer.getName());
+                    if(banEntry == null) return;
+
+                    String reason = banEntry.getReason();
                     fPlayer.tempban(-1, reason);
 
                     banList.pardon(offlinePlayer.getName());
