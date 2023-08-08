@@ -80,7 +80,7 @@ public final class Main extends JavaPlugin {
 
         info("✔ Plugin enabled");
 
-        WebUtil.checkNewerVersion();
+        new Thread(WebUtil::checkNewerVersion).start();
     }
 
     private void registerClasses() {
