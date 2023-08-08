@@ -84,23 +84,23 @@ public class ObjectUtil {
     }
 
     @NotNull
-    public static String formatString(@NotNull String string, @Nullable CommandSender colorSender, @Nullable CommandSender papiSender) {
-        return formatString(false, string, colorSender, papiSender);
+    public static String formatString(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
+        return formatString(false, string, recipient, sender);
     }
 
     @NotNull
-    public static String formatString(boolean neededPermission, @NotNull String string, @Nullable CommandSender colorSender, @Nullable CommandSender papiSender) {
+    public static String formatString(boolean neededPermission, @NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
         String[] colors = null;
 
-        if (colorSender instanceof Player player) {
-            if (Main.isHavePAPI && papiSender instanceof Player playerPapi
-                    && (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))) {
+        if (recipient instanceof Player playerRecipient) {
+            if (Main.isHavePAPI && sender instanceof Player playerSender
+                    && (!neededPermission || sender.isOp() || sender.hasPermission("flectonechat.placeholders"))) {
 
-                string = PlaceholderAPI.setPlaceholders(playerPapi, string);
-                string = PlaceholderAPI.setRelationalPlaceholders(playerPapi, player, string);
+                string = PlaceholderAPI.setPlaceholders(playerSender, string);
+                string = PlaceholderAPI.setRelationalPlaceholders(playerSender, playerRecipient, string);
             }
 
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            FPlayer fPlayer = FPlayerManager.getPlayer(playerRecipient);
             colors = fPlayer != null ? fPlayer.getColors() : null;
         }
 
@@ -112,8 +112,8 @@ public class ObjectUtil {
     }
 
     @NotNull
-    public static String formatString(@NotNull String string, @Nullable CommandSender colorSender) {
-        return formatString(string, colorSender, colorSender);
+    public static String formatString(@NotNull String string, @Nullable CommandSender sender) {
+        return formatString(string, sender, sender);
     }
 
     public static int getCurrentTime() {
