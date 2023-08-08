@@ -1,5 +1,7 @@
 package net.flectone.misc.advancement;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.annotation.Nullable;
 import java.util.Arrays;
 
@@ -9,6 +11,7 @@ public enum FAdvancementType {
     GOAL,
     CHALLENGE;
 
+    @NotNull
     public static FAdvancementType getType(@Nullable String name) {
         if (name == null) return UNKNOWN;
 

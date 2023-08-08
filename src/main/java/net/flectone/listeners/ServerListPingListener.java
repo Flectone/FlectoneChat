@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.util.CachedServerIcon;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.Random;
 public class ServerListPingListener implements Listener {
 
     @EventHandler
-    public void updateServerList(ServerListPingEvent event) {
-        if(Main.config.getBoolean("command.maintenance.enable")){
+    public void updateServerList(@NotNull ServerListPingEvent event) {
+        if (Main.config.getBoolean("command.maintenance.enable")) {
             String motd = Main.locale.getFormatString("server.motd.maintenance", null);
             event.setMotd(motd);
             setIcon(event, "maintenance");
@@ -46,7 +47,7 @@ public class ServerListPingListener implements Listener {
         }
     }
 
-    private void setIcon(ServerListPingEvent event, String iconName) {
+    private void setIcon(@NotNull ServerListPingEvent event, @NotNull String iconName) {
         try {
             CachedServerIcon serverIcon = Bukkit.loadServerIcon(new File(Main.getInstance().getDataFolder(), "icons" + File.separator + iconName + ".png"));
             event.setServerIcon(serverIcon);

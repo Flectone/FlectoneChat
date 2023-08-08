@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
@@ -22,7 +22,7 @@ public class CommandTryCube extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(1)) return true;
 
@@ -38,9 +38,7 @@ public class CommandTryCube extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         StringBuilder stringBuilder = new StringBuilder();
         int values = 0;

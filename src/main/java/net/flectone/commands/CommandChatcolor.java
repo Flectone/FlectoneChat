@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -19,13 +19,15 @@ public class CommandChatcolor extends FTabCompleter {
         super.commandName = "chatcolor";
     }
 
+    @NotNull
     public static String[] getDefaultColors() {
         return new String[]{Main.config.getString("color.first"), Main.config.getString("color.second")};
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (strings.length == 0 || (strings.length == 1 && !strings[0].equalsIgnoreCase("default"))) {
             fCommand.sendUsageMessage();
@@ -36,13 +38,14 @@ public class CommandChatcolor extends FTabCompleter {
 
         if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")) {
             fPlayer = FPlayerManager.getPlayerFromName(strings[2]);
-            if (fPlayer == null) {
-                fCommand.sendMeMessage("command.null-player");
-                return true;
-            }
         } else {
             if (fCommand.isConsoleMessage()) return true;
             fPlayer = fCommand.getFPlayer();
+        }
+
+        if (fPlayer == null) {
+            fCommand.sendMeMessage("command.null-player");
+            return true;
         }
 
         if (fCommand.isHaveCD()) return true;
@@ -55,11 +58,11 @@ public class CommandChatcolor extends FTabCompleter {
         return true;
     }
 
-    private void setColors(FPlayer fPlayer, String[] strings) {
+    private void setColors(@NotNull FPlayer fPlayer, @NotNull String[] strings) {
         fPlayer.setColors(strings[0], strings[1]);
         fPlayer.setUpdated(true);
 
-        if (fPlayer.isOnline()) {
+        if (fPlayer.isOnline() && fPlayer.getPlayer() != null) {
             fPlayer.setDisplayName();
             fPlayer.getPlayer().sendMessage(Main.locale.getFormatString("command.chatcolor.message", fPlayer.getPlayer()));
         }
@@ -77,7 +80,7 @@ public class CommandChatcolor extends FTabCompleter {
         } else if (strings.length == 2) {
             isStartsWith(strings[1], "#77d7f7");
             isStartsWith(strings[1], "&f");
-        } else if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")){
+        } else if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")) {
             isOfflinePlayer(strings[2]);
         }
 

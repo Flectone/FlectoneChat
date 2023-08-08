@@ -14,13 +14,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class FCommands {
+public class FCommand {
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
     public final static String[] formatTimeList = {"s", "m", "h", "d", "w", "y"};
@@ -35,7 +37,7 @@ public class FCommands {
     private final Player player;
     private boolean isHaveCD = false;
 
-    public FCommands(CommandSender sender, String command, String label, String[] args) {
+    public FCommand(@NotNull CommandSender sender, @Nullable String command, @Nullable String label, @NotNull String[] args) {
         this.sender = sender;
         this.senderName = sender.getName();
         this.command = command;
@@ -65,7 +67,7 @@ public class FCommands {
     }
 
     private void checkAndResetAfk() {
-        if (!isConsole && getFPlayer().isAfk() && !command.equalsIgnoreCase("afk")) {
+        if (!isConsole && getFPlayer() != null && getFPlayer().isAfk() && !command.equalsIgnoreCase("afk")) {
             CommandAfk.setAfkFalse(player);
         }
     }
@@ -78,6 +80,7 @@ public class FCommands {
         return getCDTime() < ObjectUtil.getCurrentTime();
     }
 
+    @NotNull
     private String getCommandKey() {
         if (player != null) {
             return player.getUniqueId() + command;
@@ -99,7 +102,7 @@ public class FCommands {
     }
 
     public boolean isMuted() {
-        if (isConsole || !getFPlayer().isMuted()) return false;
+        if (isConsole || getFPlayer() == null || !getFPlayer().isMuted()) return false;
 
         String[] stringsReplace = {"<time>", "<reason>"};
         String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getMuteTime()), getFPlayer().getMuteReason()};
@@ -113,6 +116,7 @@ public class FCommands {
         return isHaveCD;
     }
 
+    @NotNull
     public String getSenderName() {
         return senderName;
     }
@@ -130,10 +134,12 @@ public class FCommands {
         return isConsole;
     }
 
+    @Nullable
     public FPlayer getFPlayer() {
         return FPlayerManager.getPlayer(player.getUniqueId());
     }
 
+    @Nullable
     public Player getPlayer() {
         return player;
     }
@@ -156,31 +162,31 @@ public class FCommands {
         sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
 
-    public void sendGlobalMessage(String message) {
+    public void sendGlobalMessage(@NotNull String message) {
         sendGlobalMessage(message, true);
     }
 
-    public void sendGlobalMessage(String format, String message) {
+    public void sendGlobalMessage(@NotNull String format, @NotNull String message) {
         sendGlobalMessage(format, message, true);
     }
 
-    public void sendGlobalMessage(String format, String message, boolean clickable) {
+    public void sendGlobalMessage(@NotNull String format, @NotNull String message, boolean clickable) {
         sendGlobalMessage(getFilteredPlayers(), format, message, null, clickable);
     }
 
-    public void sendGlobalMessage(String message, boolean clickable) {
+    public void sendGlobalMessage(@NotNull String message, boolean clickable) {
         sendGlobalMessage(getFilteredPlayers(), message, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> set, String message, boolean clickable) {
+    public void sendGlobalMessage(@NotNull Set<Player> set, @NotNull String message, boolean clickable) {
         sendGlobalMessage(set, message, null, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> set, String message, ItemStack item, boolean clickable) {
+    public void sendGlobalMessage(@NotNull Set<Player> set, @NotNull String message, ItemStack item, boolean clickable) {
         sendGlobalMessage(set, message, "", item, clickable);
     }
 
-    public void sendGlobalMessage(Set<Player> recipientsSet, String format, String message, ItemStack itemStack, boolean clickable) {
+    public void sendGlobalMessage(@NotNull Set<Player> recipientsSet, @NotNull String format, String message, ItemStack itemStack, boolean clickable) {
 
         itemStack = message.contains("%item%") ? itemStack == null ? player.getInventory().getItemInMainHand() : itemStack : null;
 
@@ -201,7 +207,7 @@ public class FCommands {
 
         String bubbleMessage = messageBuilder.getMessage();
 
-        if (command.contains("chat")) {
+        if (command.contains("chat") && getFPlayer() != null) {
             if (Main.isHaveInteractiveChat) {
                 bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
             }
@@ -210,6 +216,7 @@ public class FCommands {
         }
     }
 
+    @NotNull
     private Set<Player> getFilteredPlayers() {
         if (!Main.config.getString("command." + command + ".global").isEmpty()
                 && !Main.config.getBoolean("command." + command + ".global")
@@ -232,19 +239,19 @@ public class FCommands {
                 .collect(Collectors.toSet());
     }
 
-    public void sendMeMessage(String localeString) {
+    public void sendMeMessage(@NotNull String localeString) {
         ObjectUtil.playSound(player, command);
 
         sender.sendMessage(locale.getFormatString(localeString, sender));
     }
 
-    public void sendMeMessage(String localeString, String replaceString, String replaceTo) {
+    public void sendMeMessage(@NotNull String localeString, @NotNull String replaceString, @NotNull String replaceTo) {
         ObjectUtil.playSound(player, command);
 
         sender.sendMessage(locale.getFormatString(localeString, sender).replace(replaceString, replaceTo));
     }
 
-    public void sendMeMessage(String localeString, String[] replaceStrings, String[] replaceTos) {
+    public void sendMeMessage(@NotNull String localeString, @NotNull String[] replaceStrings, @NotNull String[] replaceTos) {
         ObjectUtil.playSound(player, command);
 
         String formatString = locale.getFormatString(localeString, sender);
@@ -256,11 +263,11 @@ public class FCommands {
         sender.sendMessage(formatString);
     }
 
-    private boolean isPlayer(CommandSender sender) {
+    private boolean isPlayer(@NotNull CommandSender sender) {
         return sender instanceof Player;
     }
 
-    public void sendTellMessage(CommandSender firstPlayer, CommandSender secondPlayer, String message) {
+    public void sendTellMessage(@NotNull CommandSender firstPlayer, @NotNull CommandSender secondPlayer, @NotNull String message) {
 
         ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getInventory().getItemInMainHand() : null;
 
@@ -276,7 +283,7 @@ public class FCommands {
         sendTellUtil(messageBuilder, "get", secondPlayer, firstPlayer, firstPlayer);
     }
 
-    private void sendTellUtil(MessageBuilder messageBuilder, String typeMessage, CommandSender firstPlayer, CommandSender secondPlayer, CommandSender sender) {
+    private void sendTellUtil(@NotNull MessageBuilder messageBuilder, @NotNull String typeMessage, @NotNull CommandSender firstPlayer, @NotNull CommandSender secondPlayer, @NotNull CommandSender sender) {
         String getFormatString1 = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
                 .replace("<player>", secondPlayer.getName());
 
@@ -288,7 +295,7 @@ public class FCommands {
         }
     }
 
-    public boolean isIgnored(OfflinePlayer firstPlayer, OfflinePlayer secondPlayer) {
+    public boolean isIgnored(@NotNull OfflinePlayer firstPlayer, @NotNull OfflinePlayer secondPlayer) {
         return FPlayerManager.getPlayer(firstPlayer).isIgnored(secondPlayer);
     }
 
@@ -296,7 +303,7 @@ public class FCommands {
         return Arrays.stream(formatTimeList).parallel().anyMatch(string::contains);
     }
 
-    public int getTimeFromString(String string) {
+    public int getTimeFromString(@NotNull String string) {
         if (string.equals("permanent") || string.equals("0")) return -1;
         int time = Integer.parseInt(string.substring(0, string.length() - 1));
         string = string.substring(string.length() - 1);

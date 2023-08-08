@@ -91,14 +91,17 @@ public class FAdvancement {
         return string.matches("(?i)true|false") && string.matches("(?i)true");
     }
 
+    @NotNull
     public String getTitle() {
         return title;
     }
 
+    @NotNull
     public String getTranslateKey() {
         return translateKey;
     }
 
+    @NotNull
     public String getTranslateDesc() {
         return translateDesc;
     }

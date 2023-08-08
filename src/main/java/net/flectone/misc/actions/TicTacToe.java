@@ -8,6 +8,8 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -33,7 +35,7 @@ public class TicTacToe {
 
     private boolean isAccepted = false;
 
-    public TicTacToe(int size, String firstPlayer, String secondPlayer) {
+    public TicTacToe(int size, @NotNull String firstPlayer, @NotNull String secondPlayer) {
         this.uuid = UUID.randomUUID().toString();
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
@@ -50,10 +52,12 @@ public class TicTacToe {
         ticTacToeHashMap.put(uuid, this);
     }
 
+    @Nullable
     public static TicTacToe get(String uuid) {
         return ticTacToeHashMap.get(uuid);
     }
 
+    @NotNull
     public String getUuid() {
         return uuid;
     }
@@ -66,7 +70,7 @@ public class TicTacToe {
         isAccepted = accepted;
     }
 
-    public void setMark(String player, int number) {
+    public void setMark(@NotNull String player, int number) {
         int row = (number - 1) / marks.length;
         int column = (number - 1) % marks.length;
 
@@ -75,7 +79,8 @@ public class TicTacToe {
         nextPlayer = player.equals(firstPlayer) ? firstPlayer : secondPlayer;
     }
 
-    public FPlayer getSecondFPlayer(String player) {
+    @Nullable
+    public FPlayer getSecondFPlayer(@NotNull String player) {
         return FPlayerManager.getPlayer(player.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
@@ -85,15 +90,17 @@ public class TicTacToe {
         return !marks[row][column].equals(mark);
     }
 
-    public boolean isNextPlayer(String player) {
+    public boolean isNextPlayer(@NotNull String player) {
         return nextPlayer.equals(player);
     }
 
+    @Nullable
     public FPlayer getCurrentFPlayer() {
         return FPlayerManager.getPlayer(nextPlayer.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
-    public BaseComponent[] build(FPlayer fPlayer) {
+    @NotNull
+    public BaseComponent[] build(@NotNull FPlayer fPlayer) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         if (!isEnded) {

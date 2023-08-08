@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
@@ -31,7 +31,7 @@ public class CommandMute extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(2)) return true;
 
@@ -59,7 +59,9 @@ public class CommandMute extends FTabCompleter {
 
         if (fCommand.isHaveCD()) return true;
 
-        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.mute.default-reason");
+        String reason = strings.length > 2
+                ? ObjectUtil.toString(strings, 2)
+                : Main.locale.getString("command.mute.default-reason");
 
         String formatString = Main.locale.getString("command.mute.global-message")
                 .replace("<player>", mutedFPlayer.getRealName())
@@ -68,7 +70,7 @@ public class CommandMute extends FTabCompleter {
 
         boolean announceModeration = Main.config.getBoolean("command.mute.announce");
 
-        if(announceModeration) FDiscordSRV.sendModerationMessage(formatString);
+        if (announceModeration) FDiscordSRV.sendModerationMessage(formatString);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
@@ -92,9 +94,11 @@ public class CommandMute extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) isOfflinePlayer(strings[0]);
-        else if (strings.length == 2) isFormatString(strings[1]);
-        else if (strings.length == 3) isStartsWith(strings[2], "(reason)");
+        switch (strings.length){
+            case 1 -> isOfflinePlayer(strings[0]);
+            case 2 -> isFormatString(strings[1]);
+            case 3 -> isStartsWith(strings[2], "(reason)");
+        }
 
         Collections.sort(wordsList);
 

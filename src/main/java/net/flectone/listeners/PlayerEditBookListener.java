@@ -7,11 +7,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerEditBookListener implements Listener {
 
     @EventHandler
-    public void onPlayerEditBook(PlayerEditBookEvent event) {
+    public void onPlayerEditBook(@NotNull PlayerEditBookEvent event) {
         BookMeta bookMeta = event.getNewBookMeta();
         String command = "book";
         Player player = event.getPlayer();

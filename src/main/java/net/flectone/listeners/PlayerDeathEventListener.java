@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.command.CommandSender;
@@ -30,6 +31,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,15 +65,17 @@ public class PlayerDeathEventListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerClickOnBed(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
-        if(FSuperVanish.isVanished(event.getPlayer())) return;
+    public void onPlayerClickOnBed(@NotNull PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null
+                || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                || FSuperVanish.isVanished(event.getPlayer())) return;
 
         Block block = event.getClickedBlock();
+        BlockData blockData = block.getBlockData();
         World.Environment worldEnvironment = block.getWorld().getEnvironment();
 
-        if ((block.getBlockData() instanceof Bed && !worldEnvironment.equals(World.Environment.NORMAL))
-                || (block.getBlockData() instanceof RespawnAnchor && !worldEnvironment.equals(World.Environment.NETHER))) {
+        if ((blockData instanceof Bed && !worldEnvironment.equals(World.Environment.NORMAL))
+                || (blockData instanceof RespawnAnchor && !worldEnvironment.equals(World.Environment.NETHER))) {
 
             lastInteractPlayer = event.getPlayer();
             lastBlockInteract = block.getBlockData().getMaterial();
@@ -79,27 +83,24 @@ public class PlayerDeathEventListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDamageEvent(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
-        Player player = (Player) event.getEntity();
-        if(FSuperVanish.isVanished(player)) return;
-        if (player.getHealth() <= event.getFinalDamage()) return;
+    public void onPlayerDamageEvent(@NotNull EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)
+                || FSuperVanish.isVanished(player)
+                || player.getHealth() <= event.getFinalDamage()
+                || !(event instanceof EntityDamageByEntityEvent entityDamageByEntityEvent)) return;
 
-        FPlayer fPlayer = FPlayerManager.getPlayer((Player) event.getEntity());
-        if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) event;
-            fPlayer.setLastDamager(entityDamageByEntityEvent.getDamager());
-        }
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if (fPlayer == null) return;
+
+        fPlayer.setLastDamager(entityDamageByEntityEvent.getDamager());
     }
 
     @EventHandler
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+    public void onPlayerDeathEvent(@NotNull PlayerDeathEvent event) {
         Player player = event.getEntity();
         EntityDamageEvent lastDamageEvent = player.getLastDamageCause();
 
-        if(FSuperVanish.isVanished(player)) return;
-
-        if (lastDamageEvent == null) return;
+        if (FSuperVanish.isVanished(player) || lastDamageEvent == null) return;
 
         String formatMessage = Main.locale.getString(getDeathConfigMessage(lastDamageEvent));
         if (formatMessage.isEmpty()) return;
@@ -110,7 +111,10 @@ public class PlayerDeathEventListener implements Listener {
         }
 
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if (fPlayer == null) return;
+
         FDamager fDamager = fPlayer.getLastFDamager();
+        if (fDamager == null) return;
 
         ArrayList<String> placeholders = new ArrayList<>();
         placeholders.add("<player>");
@@ -119,83 +123,69 @@ public class PlayerDeathEventListener implements Listener {
         if (!fPlayer.isDeathByObject()) fDamager.setKiller(null);
 
         switch (lastDamageEvent.getCause()) {
-            case ENTITY_EXPLOSION:
+            case ENTITY_EXPLOSION -> {
                 placeholders.add("<killer>");
-
                 Entity lastDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setFinalDamager(lastDamager);
-
                 if (isTNT(lastDamager, fDamager)) break;
-                if (isProjectile(lastDamager, fDamager)) break;
-                break;
-            case ENTITY_ATTACK:
+                isProjectile(lastDamager, fDamager);
+            }
+            case ENTITY_ATTACK -> {
                 placeholders.add("<killer>");
-
                 Entity lastEntityAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setFinalDamager(lastEntityAttackDamager);
-
-                if (lastEntityAttackDamager instanceof Player) {
+                if (lastEntityAttackDamager instanceof Player ) {
                     placeholders.add("<by_item>");
 
                     ItemStack itemStack = ((Player) lastEntityAttackDamager).getInventory().getItemInMainHand();
                     if (!itemStack.getType().equals(Material.AIR)) {
-
                         fDamager.setKiller(lastEntityAttackDamager);
                         fDamager.setKillerItem(itemStack);
                     }
                 }
-
-                break;
-
-            case FALLING_BLOCK:
+            }
+            case FALLING_BLOCK -> {
                 placeholders.add("<killer>");
-
                 Entity lastDamagerBlock = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setFinalDamager(lastDamagerBlock);
-                break;
-            case BLOCK_EXPLOSION:
+            }
+            case BLOCK_EXPLOSION -> {
                 placeholders.add("<block>");
-
                 fDamager.setFinalDamager(lastBlockInteract);
                 fDamager.setKiller(lastInteractPlayer);
-                break;
-            case CONTACT:
+            }
+            case CONTACT -> {
                 placeholders.add("<block>");
-
                 Block block = ((EntityDamageByBlockEvent) lastDamageEvent).getDamager();
-                if(block == null) break;
+                if (block == null) break;
                 fDamager.setFinalDamager(block.getBlockData().getMaterial());
-                break;
-            case PROJECTILE:
+            }
+            case PROJECTILE -> {
                 placeholders.add("<projectile>");
-
                 Entity projectileEntity = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setFinalDamager(projectileEntity);
-
-                if (isProjectile(projectileEntity, fDamager)) break;
-                break;
-
-            case MAGIC:
+                isProjectile(projectileEntity, fDamager);
+            }
+            case MAGIC -> {
                 if (!(lastDamageEvent instanceof EntityDamageByEntityEvent)) {
                     fDamager.setKiller(null);
                     break;
                 }
-
                 Entity lastMagicDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setFinalDamager(lastMagicDamager);
-
-                if (isProjectile(lastMagicDamager, fDamager)) break;
-                break;
-
-            case ENTITY_SWEEP_ATTACK:
-            case THORNS:
+                isProjectile(lastMagicDamager, fDamager);
+            }
+            case ENTITY_SWEEP_ATTACK, THORNS -> {
                 Entity lastEntitySweepAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
                 fDamager.setKiller(lastEntitySweepAttackDamager);
-                break;
+            }
         }
 
         Bukkit.getOnlinePlayers().parallelStream()
-                .filter(recipient -> !FPlayerManager.getPlayer(recipient).isIgnored(player))
+                .filter(recipient -> {
+                    FPlayer recipientFPlayer = FPlayerManager.getPlayer(recipient);
+                    return recipientFPlayer != null && !recipientFPlayer.isIgnored(player);
+                })
                 .forEach(recipient -> {
                     String string = ObjectUtil.formatString(formatMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
@@ -214,49 +204,39 @@ public class PlayerDeathEventListener implements Listener {
         fPlayer.resetLastDamager();
     }
 
-    // shit code because text component is shit
-    private BaseComponent[] createDeathComponent(ArrayList<String> placeholders, CommandSender recipient, CommandSender sender, FDamager fDamager) {
+    @NotNull
+    private BaseComponent[] createDeathComponent(@NotNull ArrayList<String> placeholders, @NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull FDamager fDamager) {
         String mainColor = "";
         ComponentBuilder mainBuilder = new ComponentBuilder();
 
         for (String mainPlaceholder : placeholders) {
             switch (mainPlaceholder) {
-                case "<player>":
-                    mainBuilder.append(createClickableComponent(mainColor, sender, recipient));
-                    break;
-                case "<projectile>":
-                case "<killer>":
-                    if (!fDamager.isFinalEntity()) break;
+                case "<player>" -> mainBuilder.append(createClickableComponent(mainColor, sender, recipient));
+                case "<projectile>", "<killer>" -> {
+                    if (fDamager.getFinalEntity() == null) break;
                     Entity entity = fDamager.getFinalEntity();
-
                     if (entity instanceof Player) {
                         mainBuilder.append(createClickableComponent(mainColor, entity, recipient));
                         break;
                     }
-
                     mainBuilder
                             .append(TextComponent.fromLegacyText(mainColor))
                             .append(createTranslatableEntityComponent(recipient, sender, entity))
                             .append(TextComponent.fromLegacyText(mainColor));
-
-                    break;
-                case "<block>":
+                }
+                case "<block>" -> {
                     if (!fDamager.isFinalBlock()) break;
-
                     mainBuilder
                             .append(TextComponent.fromLegacyText(mainColor))
                             .append(new TranslatableComponent(fDamager.getDamagerTranslateName()))
                             .append(TextComponent.fromLegacyText(mainColor));
-
-                    break;
-                case "<due_to>":
+                }
+                case "<due_to>" -> {
                     if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())
                             || fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType())) {
                         break;
                     }
-
                     String formatDueToMessage = Main.locale.getFormatString("death.due-to", recipient, sender);
-
                     String dueToColor = "";
                     ComponentBuilder dueToBuilder = new ComponentBuilder();
                     for (String dueToPlaceholder : ObjectUtil.splitLine(formatDueToMessage, new ArrayList<>(List.of("<killer>")))) {
@@ -275,16 +255,13 @@ public class PlayerDeathEventListener implements Listener {
 
                         dueToColor = ChatColor.getLastColors(dueToColor + dueToBuilder.getCurrentComponent().toString());
                     }
-
                     mainBuilder.append(dueToBuilder.create(), ComponentBuilder.FormatRetention.NONE);
-                    break;
-                case "<by_item>":
+                }
+                case "<by_item>" -> {
                     if (fDamager.getKillerItemName() == null) break;
                     String formatMessage = Main.locale.getFormatString("death.by-item", recipient, sender);
-
                     String byItemColor = "";
                     ComponentBuilder byItemBuilder = new ComponentBuilder();
-
                     for (String byItemPlaceholder : ObjectUtil.splitLine(formatMessage, new ArrayList<>(List.of("<item>")))) {
                         if (byItemPlaceholder.equals("<item>")) {
                             TranslatableComponent translatableComponent = new TranslatableComponent(fDamager.getKillerItemName());
@@ -301,13 +278,10 @@ public class PlayerDeathEventListener implements Listener {
                         }
                         byItemColor = ChatColor.getLastColors(byItemColor + byItemBuilder.getCurrentComponent().toString());
                     }
-
                     mainBuilder.append(byItemBuilder.create(), ComponentBuilder.FormatRetention.NONE);
-                    break;
-
-                default:
-                    mainBuilder.append(TextComponent.fromLegacyText(mainColor + mainPlaceholder), ComponentBuilder.FormatRetention.NONE);
-                    break;
+                }
+                default ->
+                        mainBuilder.append(TextComponent.fromLegacyText(mainColor + mainPlaceholder), ComponentBuilder.FormatRetention.NONE);
             }
 
             mainColor = ChatColor.getLastColors(mainColor + mainBuilder.getCurrentComponent().toString());
@@ -316,7 +290,8 @@ public class PlayerDeathEventListener implements Listener {
         return mainBuilder.create();
     }
 
-    private TranslatableComponent createTranslatableEntityComponent(CommandSender recipient, CommandSender sender, Entity entity) {
+    @NotNull
+    private TranslatableComponent createTranslatableEntityComponent(@NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull Entity entity) {
         TranslatableComponent hoverComponent = new TranslatableComponent(NMSUtil.getMinecraftName(entity));
 
         String formatHoverMessage = Main.locale.getFormatString("entity.hover-message", recipient, sender)
@@ -326,16 +301,17 @@ public class PlayerDeathEventListener implements Listener {
 
         String hoverColor = "";
         for (String hoverPlaceholder : ObjectUtil.splitLine(formatHoverMessage, new ArrayList<>(List.of("<name>", "<type>")))) {
-            if (hoverPlaceholder.equals("<name>")) {
-                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
-                hoverBuilder.append(new TranslatableComponent(NMSUtil.getMinecraftName(entity)));
-                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
-            } else if (hoverPlaceholder.equals("<type>")){
-                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
-                hoverBuilder.append(new TranslatableComponent(NMSUtil.getMinecraftType(entity)));
-                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor));
-            } else {
-                hoverBuilder.append(TextComponent.fromLegacyText(hoverColor + hoverPlaceholder), ComponentBuilder.FormatRetention.NONE);
+            switch (hoverPlaceholder) {
+                case "<name>" ->
+                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor))
+                        .append(new TranslatableComponent(NMSUtil.getMinecraftName(entity)))
+                        .append(TextComponent.fromLegacyText(hoverColor));
+                case "<type>" ->
+                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor))
+                        .append(new TranslatableComponent(NMSUtil.getMinecraftType(entity)))
+                        .append(TextComponent.fromLegacyText(hoverColor));
+                default ->
+                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor + hoverPlaceholder), ComponentBuilder.FormatRetention.NONE);
             }
 
             hoverColor = ChatColor.getLastColors(hoverColor + hoverBuilder.getCurrentComponent().toString());
@@ -345,7 +321,8 @@ public class PlayerDeathEventListener implements Listener {
         return hoverComponent;
     }
 
-    private TextComponent createClickableComponent(String chatColor, CommandSender sender, CommandSender recipient) {
+    @NotNull
+    private TextComponent createClickableComponent(@NotNull String chatColor, @NotNull CommandSender sender, @NotNull CommandSender recipient) {
         String playerName = sender.getName();
         String suggestCommand = "/msg " + playerName + " ";
         String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
@@ -357,14 +334,12 @@ public class PlayerDeathEventListener implements Listener {
         return textComponent;
     }
 
-
-    private String getDeathConfigMessage(EntityDamageEvent lastDamageEvent) {
+    @NotNull
+    private String getDeathConfigMessage(@NotNull EntityDamageEvent lastDamageEvent) {
         String message;
         EntityDamageEvent.DamageCause damageCause = lastDamageEvent.getCause();
-        if (lastDamageEvent instanceof EntityDamageByEntityEvent
+        if (lastDamageEvent instanceof EntityDamageByEntityEvent lastEntityDamageEvent
                 && damageCause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-
-            EntityDamageByEntityEvent lastEntityDamageEvent = (EntityDamageByEntityEvent) lastDamageEvent;
 
             Entity damager = lastEntityDamageEvent.getDamager();
 
@@ -380,9 +355,8 @@ public class PlayerDeathEventListener implements Listener {
         return message.replace(" ", "_");
     }
 
-    private boolean isProjectile(Entity entity, FDamager fDamager) {
-        if (entity instanceof Projectile) {
-            Projectile projectile = (Projectile) entity;
+    private boolean isProjectile(@NotNull Entity entity, @NotNull FDamager fDamager) {
+        if (entity instanceof Projectile projectile) {
             Entity shooter = (Entity) projectile.getShooter();
             if (shooter != null) {
                 fDamager.setKiller(shooter);
@@ -392,9 +366,8 @@ public class PlayerDeathEventListener implements Listener {
         return false;
     }
 
-    private boolean isTNT(Entity entity, FDamager fDamager) {
-        if (entity instanceof TNTPrimed) {
-            TNTPrimed tntPrimed = (TNTPrimed) entity;
+    private boolean isTNT(@NotNull Entity entity, @NotNull FDamager fDamager) {
+        if (entity instanceof TNTPrimed tntPrimed) {
             Entity source = tntPrimed.getSource();
             if (source instanceof Player) {
                 fDamager.setKiller(source);

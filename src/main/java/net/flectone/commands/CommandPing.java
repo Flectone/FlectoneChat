@@ -1,10 +1,10 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -23,13 +23,15 @@ public class CommandPing extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
-
         if (commandSender instanceof ConsoleCommandSender && strings.length == 0) return true;
 
-        FPlayer fPlayer = strings.length > 0 ? FPlayerManager.getPlayerFromName(strings[0]) : fCommand.getFPlayer();
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fPlayer == null || !fPlayer.isOnline()) {
+        FPlayer fPlayer = strings.length > 0
+                ? FPlayerManager.getPlayerFromName(strings[0])
+                : fCommand.getFPlayer();
+
+        if (fPlayer == null || !fPlayer.isOnline() || fPlayer.getPlayer() == null) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
@@ -42,8 +44,7 @@ public class CommandPing extends FTabCompleter {
         String pingColor;
 
         if (currentPing > badPing) pingColor = Main.config.getFormatString("command.ping.bad.color", commandSender);
-        else if (currentPing > mediumPing)
-            pingColor = Main.config.getFormatString("command.ping.medium.color", commandSender);
+        else if (currentPing > mediumPing) pingColor = Main.config.getFormatString("command.ping.medium.color", commandSender);
         else pingColor = Main.config.getFormatString("command.ping.good.color", commandSender);
 
         pingColor += currentPing;

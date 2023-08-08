@@ -9,6 +9,7 @@ import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.Connection;
@@ -23,10 +24,10 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public abstract class Database {
-    Main plugin;
+    final Main plugin;
     Connection connection;
 
-    public Database(Main instance) {
+    public Database(@NotNull Main instance) {
         plugin = instance;
     }
 
@@ -103,6 +104,8 @@ public abstract class Database {
                 FPlayer firstFPlayer = FPlayerManager.getPlayer(uuids[0]);
                 FPlayer secondFPlayer = FPlayerManager.getPlayer(uuids[1]);
 
+                if (firstFPlayer == null || secondFPlayer == null) continue;
+
                 List<String> stringList = mailConfiguration.getStringList(uuid);
                 for (String message : stringList) {
                     Mail mail = new Mail(secondFPlayer.getUUID(), firstFPlayer.getUUID(), message);
@@ -116,7 +119,7 @@ public abstract class Database {
         Main.info("\uD83D\uDCCA Migration of old configs to database is finished");
     }
 
-    public void setPlayer(String uuid) {
+    public void setPlayer(@NotNull String uuid) {
         try (Connection conn = getSQLConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
 
@@ -139,7 +142,7 @@ public abstract class Database {
             while (resultSet.next()) {
 
                 FPlayer fPlayer = FPlayerManager.getPlayer(resultSet.getString("uuid"));
-                if (fPlayer == null || fPlayer.getRealName() == null) continue;
+                if (fPlayer == null) continue;
 
                 String color = resultSet.getString("colors");
 

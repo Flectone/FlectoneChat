@@ -1,6 +1,6 @@
 package net.flectone.commands;
 
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.actions.Mail;
@@ -25,11 +25,9 @@ public class CommandMailClear extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
-
-        if (fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isConsoleMessage() || fCommand.isInsufficientArgs(2)) return true;
 
         String playerName = strings[0];
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
@@ -41,7 +39,7 @@ public class CommandMailClear extends FTabCompleter {
 
         HashMap<String, Mail> mailsList = fPlayer.getMails();
 
-        if (fPlayer.isOnline() || mailsList == null || mailsList.isEmpty()) {
+        if (fPlayer.isOnline() || mailsList.isEmpty()) {
             fCommand.sendMeMessage("command.mail-clear.empty");
             return true;
         }
@@ -51,9 +49,7 @@ public class CommandMailClear extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         int number = Integer.parseInt(strings[1]);
 
@@ -84,22 +80,22 @@ public class CommandMailClear extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isOfflinePlayer(strings[0]);
-        } else if (strings.length == 2) {
+        switch (strings.length) {
+            case 1 -> isOfflinePlayer(strings[0]);
+            case 2 -> {
+                String playerName = strings[0];
+                FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
-            String playerName = strings[0];
-            FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
+                if (fPlayer == null) break;
 
-            if (fPlayer != null) {
                 HashMap<String, Mail> mailsList = fPlayer.getMails();
 
-                if (mailsList != null && !mailsList.isEmpty()) {
-                    int[] counter = {1};
-                    mailsList.entrySet().parallelStream()
-                            .filter(entry -> !entry.getValue().isRemoved())
-                            .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
-                }
+                if (mailsList.isEmpty()) break;
+
+                int[] counter = {1};
+                mailsList.entrySet().parallelStream()
+                        .filter(entry -> !entry.getValue().isRemoved())
+                        .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
             }
         }
 

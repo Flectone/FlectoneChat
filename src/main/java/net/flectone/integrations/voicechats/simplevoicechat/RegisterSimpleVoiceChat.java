@@ -7,9 +7,10 @@ public class RegisterSimpleVoiceChat {
 
     public RegisterSimpleVoiceChat() {
         BukkitVoicechatService service = Main.getInstance().getServer().getServicesManager().load(BukkitVoicechatService.class);
-        if (service != null) {
-            FlectoneVoiceChatPlugin flectoneVoiceChatPlugin = new FlectoneVoiceChatPlugin();
-            service.registerPlugin(flectoneVoiceChatPlugin);
-        }
+
+        if (service == null) return;
+
+        FlectoneVoiceChatPlugin flectoneVoiceChatPlugin = new FlectoneVoiceChatPlugin();
+        service.registerPlugin(flectoneVoiceChatPlugin);
     }
 }

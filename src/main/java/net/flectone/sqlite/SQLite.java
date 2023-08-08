@@ -1,6 +1,8 @@
 package net.flectone.sqlite;
 
 import net.flectone.Main;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.util.logging.Level;
 
 public class SQLite extends Database {
     public static boolean isOldVersion = false;
-    public String SQLiteCreateTokensPlayers = "CREATE TABLE IF NOT EXISTS players (" +
+    public final String SQLiteCreateTokensPlayers = "CREATE TABLE IF NOT EXISTS players (" +
             "'uuid' varchar(32) NOT NULL," +
             "'mute_time' int(11)," +
             "'mute_reason' varchar(32)," +
@@ -25,27 +27,27 @@ public class SQLite extends Database {
             "'chat' varchar(32)," +
             "PRIMARY KEY (`uuid`)" +
             ");";
-    public String SQLiteCreateTokensMails = "CREATE TABLE IF NOT EXISTS mails (" +
+    public final String SQLiteCreateTokensMails = "CREATE TABLE IF NOT EXISTS mails (" +
             "`uuid` varchar(32) NOT NULL," +
             "`sender` varchar(32) NOT NULL," +
             "`receiver` varchar(32) NOT NULL," +
             "`message` varchar(32) NOT NULL," +
             "PRIMARY KEY (`uuid`)" +
             ");";
-    String dbname;
+    final String dbname;
 
 
-    public SQLite(Main instance) {
+    public SQLite(@NotNull Main instance) {
         super(instance);
         dbname = plugin.getConfig().getString("SQLite.Filename", Main.config.getString("database"));
     }
 
-    // SQL creation stuff, You can leave the blow stuff untouched.
+    @Nullable
     public Connection getSQLConnection() {
         File dataFolder = new File(plugin.getDataFolder(), dbname + ".db");
         if (!dataFolder.exists()) {
             try {
-                if(!dataFolder.createNewFile()) Main.warning("Failed to create file " + dbname + ".db");
+                if (!dataFolder.createNewFile()) Main.warning("Failed to create file " + dbname + ".db");
                 isOldVersion = true;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
@@ -68,6 +70,7 @@ public class SQLite extends Database {
 
     public void load() {
         connection = getSQLConnection();
+        if (connection == null) return;
         try {
             Statement s = connection.createStatement();
 

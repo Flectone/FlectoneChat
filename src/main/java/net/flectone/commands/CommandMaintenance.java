@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import org.bukkit.Bukkit;
@@ -24,7 +24,7 @@ public class CommandMaintenance extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(1)) return true;
 
@@ -45,19 +45,19 @@ public class CommandMaintenance extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         haveMaintenance = strings[0].equalsIgnoreCase("on");
 
         if (haveMaintenance) {
-
             Set<Player> playerSet = new HashSet<>(Bukkit.getOnlinePlayers());
 
+            String maintenancePermission = Main.config.getString("command.maintenance.permission");
+            String kickedMessage = Main.locale.getFormatString("command.maintenance.kicked-message", null);
+
             playerSet.stream().parallel()
-                    .filter(player -> !player.isOp() && !player.hasPermission(Main.config.getString("command.maintenance.permission")) && player.isOnline())
-                    .forEach(player -> player.kickPlayer(Main.locale.getFormatString("command.maintenance.kicked-message", null)));
+                    .filter(player -> !player.isOp() && !player.hasPermission(maintenancePermission) && player.isOnline())
+                    .forEach(player -> player.kickPlayer(kickedMessage));
 
         }
 

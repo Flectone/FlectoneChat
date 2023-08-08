@@ -6,11 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class SignChangeListener implements Listener {
 
     @EventHandler
-    public void onSignChange(SignChangeEvent event) {
+    public void onSignChange(@NotNull SignChangeEvent event) {
         Player player = event.getPlayer();
         String command = "sign";
         ItemStack itemInHand = player.getInventory().getItemInMainHand();

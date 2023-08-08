@@ -1,7 +1,7 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.actions.Mail;
@@ -12,40 +12,33 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
 public class PlayerJoinListener implements Listener {
 
-    @EventHandler
-    public void joinPlayer(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-
-        FEntity.removeBugEntities(player);
-
-        event.setJoinMessage(null);
-
-        FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
-        sendJoinMessage(fPlayer, player, fPlayer.isOnline());
-    }
-
-    public static void sendJoinMessage(FPlayer fPlayer, Player player, boolean isOnline){
+    public static void sendJoinMessage(@NotNull FPlayer fPlayer, @NotNull Player player, boolean isOnline) {
         boolean isEnable = Main.config.getBoolean("player.join.message.enable");
-        if (isEnable && isOnline){
-            FCommands fCommands = new FCommands(player, "join", "join", new String[]{});
+        if (isEnable && isOnline) {
+            FCommand fCommand = new FCommand(player, "join", "join", new String[]{});
 
-            String string = player.hasPlayedBefore() ? Main.locale.getString("player.join.message") : Main.locale.getString("player.join.first-time.message");
+            String string = player.hasPlayedBefore()
+                    ? Main.locale.getString("player.join.message")
+                    : Main.locale.getString("player.join.first-time.message");
             string = string.replace("<player>", player.getName());
 
-            fCommands.sendGlobalMessage(string);
+            fCommand.sendGlobalMessage(string);
         }
 
         HashMap<String, Mail> mails = fPlayer.getMails();
-        if (mails == null) return;
+        if (mails.isEmpty()) return;
 
         mails.values().parallelStream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
+            FPlayer mailFPlayer = FPlayerManager.getPlayer(mail.getSender());
+            if (mailFPlayer == null) return;
 
-            String playerName = FPlayerManager.getPlayer(mail.getSender()).getRealName();
+            String playerName = mailFPlayer.getRealName();
 
             String localeString = Main.locale.getFormatString("command.mail.get", player)
                     .replace("<player>", playerName);
@@ -56,13 +49,26 @@ public class PlayerJoinListener implements Listener {
         });
     }
 
-    public static void sendJoinMessage(Player player){
+    public static void sendJoinMessage(@NotNull Player player) {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if (fPlayer == null) return;
         sendJoinMessage(fPlayer, player, true);
     }
 
     @EventHandler
-    public void onLoginPlayer(PlayerLoginEvent event) {
+    public void joinPlayer(@NotNull PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        FEntity.removeBugEntities(player);
+
+        event.setJoinMessage(null);
+
+        FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
+        sendJoinMessage(fPlayer, player, fPlayer.isOnline());
+    }
+
+    @EventHandler
+    public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
 
         FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
         if (fPlayer != null && fPlayer.isBanned()) {

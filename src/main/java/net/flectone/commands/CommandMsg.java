@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -25,7 +25,7 @@ public class CommandMsg extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(2)) return true;
 
@@ -36,9 +36,7 @@ public class CommandMsg extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         String message = ObjectUtil.toString(strings, 1);
 
@@ -53,15 +51,18 @@ public class CommandMsg extends FTabCompleter {
                 return true;
             }
 
-            if (fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())) {
+            if (fCommand.getFPlayer() != null && fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())) {
                 fCommand.sendMeMessage("command.you_ignore");
                 return true;
             }
+
             if (secondFPlayer.isIgnored((Player) commandSender)) {
                 fCommand.sendMeMessage("command.he_ignore");
                 return true;
             }
         }
+
+        if(secondFPlayer.getPlayer() == null) return true;
 
         fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), message);
 
@@ -73,10 +74,9 @@ public class CommandMsg extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isOfflinePlayer(strings[0]);
-        } else if (strings.length == 2) {
-            isStartsWith(strings[1], "(message)");
+        switch (strings.length){
+            case 1 -> isOfflinePlayer(strings[0]);
+            case 2 -> isStartsWith(strings[1], "(message)");
         }
 
         Collections.sort(wordsList);

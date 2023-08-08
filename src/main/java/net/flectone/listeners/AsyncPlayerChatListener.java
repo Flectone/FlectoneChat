@@ -1,7 +1,7 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,10 +25,12 @@ public class AsyncPlayerChatListener implements Listener {
     private String noRecipientsMessage = "";
 
     @EventHandler
-    public void chat(AsyncPlayerChatEvent event) {
+    public void chat(@NotNull AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if(fPlayer == null) return;
 
-        String fPlayerChat = FPlayerManager.getPlayer(player).getChat();
+        String fPlayerChat = fPlayer.getChat();
         String globalPrefix = Main.locale.getString("chat.global.prefix");
         String message = event.getMessage();
 
@@ -46,25 +50,25 @@ public class AsyncPlayerChatListener implements Listener {
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            if (recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1
-                    && Main.config.getBoolean("chat.local.no-recipients.enable")) {
+            if (Main.config.getBoolean("chat.local.no-recipients.enable") &&
+                    recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
                 noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
             }
 
             if (Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
-            if (Main.config.getBoolean("chat.global.prefix.cleared"))
-                event.setMessage(message.replaceFirst(globalPrefix, ""));
+            if (Main.config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
             if (Main.config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
-            message = message.replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
+            message = message
+                    .replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
 
         createMessage(recipients, player, message, chatType, null);
         event.getRecipients().clear();
     }
 
-    public void createMessage(Set<Player> recipients, Player player, String message, String chatType, ItemStack itemStack) {
+    public void createMessage(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String message, @NotNull String chatType, @Nullable ItemStack itemStack) {
 
         if (chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")) {
             Bukkit.getOnlinePlayers().parallelStream()
@@ -72,25 +76,26 @@ public class AsyncPlayerChatListener implements Listener {
                     .forEach(recipients::add);
         }
 
-        FCommands fCommands = new FCommands(player, chatType + "chat", chatType + " chat", new String[]{});
+        FCommand fCommand = new FCommand(player, chatType + "chat", chatType + " chat", new String[]{});
 
-        if (fCommands.isHaveCD()) return;
-
-        if (fCommands.isMuted()) return;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return;
 
         if (!noRecipientsMessage.isEmpty()) {
             player.sendMessage(noRecipientsMessage);
             noRecipientsMessage = "";
         }
 
-        String configMessage = Main.locale.getString("chat." + chatType + ".message")
-                .replace("<player>", FPlayerManager.getPlayer(player).getDisplayName());
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if(fPlayer == null) return;
 
-        fCommands.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
+        String configMessage = Main.locale.getString("chat." + chatType + ".message")
+                .replace("<player>", fPlayer.getDisplayName());
+
+        fCommand.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
     }
 
     @EventHandler
-    public void checkItemTooltipShortcut(InventoryClickEvent event) {
+    public void checkItemTooltipShortcut(@NotNull InventoryClickEvent event) {
         if (event.getSlot() != 39
                 || !event.isShiftClick()
                 || event.getCursor() == null
@@ -99,9 +104,11 @@ public class AsyncPlayerChatListener implements Listener {
         }
 
         Player player = (Player) event.getWhoClicked();
+        FPlayer fPlayer = FPlayerManager.getPlayer(player);
+        if(fPlayer == null) return;
 
         String chatType = Main.config.getBoolean("chat.global.enable")
-                && FPlayerManager.getPlayer(player).getChat().contains("global")
+                && fPlayer.getChat().contains("global")
                 ? "global" : "local";
         String reversedChatType = chatType.equals("global") ? "local" : "global";
 
@@ -117,9 +124,10 @@ public class AsyncPlayerChatListener implements Listener {
         createMessage(recipients, player, "%item%", chatType, event.getCursor());
     }
 
-    private void removeRecipients(Set<Player> recipients, Player player, String reversedChatType) {
+    private void removeRecipients(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String reversedChatType) {
         recipients.removeIf(recipient -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(recipient);
+            if(fPlayer == null) return false;
 
             return fPlayer.isIgnored(player) || fPlayer.getChat().equals("only" + reversedChatType);
         });

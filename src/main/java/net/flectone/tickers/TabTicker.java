@@ -16,6 +16,7 @@ public class TabTicker extends FBukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if (fPlayer == null) return;
             fPlayer.setPlayerListHeaderFooter();
         });
     }

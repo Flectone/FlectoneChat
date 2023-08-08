@@ -1,89 +1,75 @@
 package net.flectone.listeners;
 
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class InventoryClickListener implements Listener {
 
     @EventHandler
-    public void inventoryClick(InventoryClickEvent event) {
+    public void inventoryClick(@NotNull InventoryClickEvent event) {
+        Player whoClicked = (Player) event.getWhoClicked();
+        FPlayer fPlayer = FPlayerManager.getPlayer(whoClicked);
+        if (fPlayer == null) return;
+        List<Inventory> inventoryList = fPlayer.getInventoryList();
 
-        if (FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList() == null
-                || !FPlayerManager.getPlayer((OfflinePlayer) event.getWhoClicked()).getInventoryList().contains(event.getInventory()))
-            return;
-
+        if (!inventoryList.contains(event.getInventory()) || event.getCurrentItem() == null) return;
 
         event.setCancelled(true);
-
-        if (event.getCurrentItem() == null) return;
-
-
-        Player eventPlayer = (Player) event.getWhoClicked();
-        FPlayer eventFPlayer = FPlayerManager.getPlayer(eventPlayer);
 
         ItemStack clickedItem = event.getCurrentItem();
 
         switch (clickedItem.getType()) {
-            case PLAYER_HEAD: {
+            case PLAYER_HEAD -> {
 
                 String secondPlayerName = clickedItem.getItemMeta().getLocalizedName();
                 FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(secondPlayerName);
+                if (secondFPlayer == null) return;
 
-                Bukkit.dispatchCommand(eventPlayer, "ignore " + secondFPlayer.getRealName());
+                Bukkit.dispatchCommand(whoClicked, "ignore " + secondFPlayer.getRealName());
 
                 event.getInventory().remove(event.getCurrentItem());
 
-                eventPlayer.closeInventory();
+                whoClicked.closeInventory();
 
-                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
                 for (int x = 0; x < inventoryList.size(); x++) {
                     if (inventoryList.get(x) == event.getClickedInventory()) {
-                        eventFPlayer.setNumberLastInventory(x);
+                        fPlayer.setNumberLastInventory(x);
                         break;
                     }
                 }
 
-                Bukkit.dispatchCommand(eventPlayer, "ignore-list");
+                Bukkit.dispatchCommand(whoClicked, "ignore-list");
 
-                break;
             }
-
-            case SPECTRAL_ARROW: {
-                eventPlayer.closeInventory();
-
-                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
+            case SPECTRAL_ARROW -> {
+                whoClicked.closeInventory();
 
                 for (int x = 0; x < inventoryList.size(); x++) {
                     if (inventoryList.get(x) == event.getClickedInventory()) {
-                        eventPlayer.openInventory(inventoryList.get(x + 1));
+                        whoClicked.openInventory(inventoryList.get(x + 1));
                         break;
                     }
                 }
-                break;
             }
-
-            case ARROW: {
-                eventPlayer.closeInventory();
-
-                List<Inventory> inventoryList = eventFPlayer.getInventoryList();
+            case ARROW -> {
+                whoClicked.closeInventory();
 
                 for (int x = 1; x < inventoryList.size(); x++) {
                     if (inventoryList.get(x) == event.getClickedInventory()) {
-                        eventPlayer.openInventory(inventoryList.get(x - 1));
+                        whoClicked.openInventory(inventoryList.get(x - 1));
                         break;
                     }
                 }
-                break;
             }
         }
 

@@ -2,9 +2,9 @@ package net.flectone.tickers;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
-import net.flectone.misc.runnables.FBukkitRunnable;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.runnables.FBukkitRunnable;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -19,8 +19,9 @@ public class AfkTicker extends FBukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if(fPlayer == null) return;
 
-            Block block = fPlayer.getPlayer().getLocation().getBlock();
+            Block block = player.getLocation().getBlock();
 
             if (!fPlayer.isMoved(block)) {
 

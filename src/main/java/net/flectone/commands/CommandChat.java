@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,16 +19,16 @@ public class CommandChat extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
-
-        if (fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isConsoleMessage()
+                || fCommand.isInsufficientArgs(2)) return true;
 
         String chatParam = strings[0].toLowerCase();
         String chat = strings[1].toLowerCase();
 
-        if ((!chatParam.equals("switch") && !chatParam.equals("hide")) || (!chat.equals("local") && !chat.equals("global"))) {
+        if ((!chatParam.equals("switch") && !chatParam.equals("hide"))
+                || (!chat.equals("local") && !chat.equals("global"))) {
             fCommand.sendUsageMessage();
             return true;
         }
@@ -41,9 +41,7 @@ public class CommandChat extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted() || fCommand.getFPlayer() == null) return true;
 
         String fPlayerChat = isSwitch ? chat : chat.equals("global") ? "onlylocal" : "onlyglobal";
 

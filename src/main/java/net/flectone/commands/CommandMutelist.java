@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -31,7 +31,7 @@ public class CommandMutelist extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         Set<FPlayer> mutedPlayers = FPlayerManager.getMutedPlayers();
 
@@ -98,14 +98,14 @@ public class CommandMutelist extends FTabCompleter {
             String button = null;
 
             switch (part) {
-                case "<prev-page>":
+                case "<prev-page>" -> {
                     pageNumber--;
                     button = Main.locale.getFormatString("command.mutelist.prev-page", commandSender);
-                    break;
-                case "<next-page>":
+                }
+                case "<next-page>" -> {
                     pageNumber++;
                     button = Main.locale.getFormatString("command.mutelist.next-page", commandSender);
-                    break;
+                }
             }
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + part));

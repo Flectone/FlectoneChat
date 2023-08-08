@@ -2,6 +2,7 @@ package net.flectone.utils;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
+import net.flectone.commands.CommandChatcolor;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.messages.MessageBuilder;
@@ -10,6 +11,8 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 public class ObjectUtil {
 
+    @NotNull
     public static String convertTimeToString(int timeInSeconds) {
         if (timeInSeconds < 0) return "";
 
@@ -36,30 +40,33 @@ public class ObjectUtil {
         return finalString.substring(1);
     }
 
+    @NotNull
     public static String convertTimeToString(long time) {
         String timeoutSecondsString = String.valueOf((time - System.currentTimeMillis()) / 1000).substring(1);
         int timeoutSeconds = Integer.parseInt(timeoutSecondsString);
         return convertTimeToString(timeoutSeconds);
     }
 
-    public static String toString(String[] strings) {
+    @NotNull
+    public static String toString(@NotNull String[] strings) {
         return toString(strings, 0);
     }
 
-
-    public static String toString(String[] strings, int start) {
+    @NotNull
+    public static String toString(@NotNull String[] strings, int start) {
         return toString(strings, start, " ");
     }
 
-    public static String toString(String[] strings, int start, String delimiter) {
+    public static String toString(@NotNull String[] strings, int start, @NotNull String delimiter) {
         return Arrays.stream(strings, start, strings.length)
                 .collect(Collectors.joining(delimiter));
     }
 
-    public static String translateHexToColor(String string) {
+    @NotNull
+    public static String translateHexToColor(@NotNull String string) {
         Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
         Matcher matcher = pattern.matcher(string);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         while (matcher.find()) {
             String hexCode = matcher.group();
@@ -76,21 +83,30 @@ public class ObjectUtil {
         return ChatColor.translateAlternateColorCodes('&', sb.toString());
     }
 
-    public static String formatString(String string, CommandSender colorSender, CommandSender papiSender) {
+    @NotNull
+    public static String formatString(@NotNull String string, @Nullable CommandSender colorSender, @Nullable CommandSender papiSender) {
         return formatString(false, string, colorSender, papiSender);
     }
 
-    public static String formatString(boolean neededPermission, String string, CommandSender colorSender, CommandSender papiSender) {
-        if (colorSender instanceof Player) {
-            Player player = ((Player) colorSender).getPlayer();
+    @NotNull
+    public static String formatString(boolean neededPermission, @NotNull String string, @Nullable CommandSender colorSender, @Nullable CommandSender papiSender) {
+        String[] defaultColors = CommandChatcolor.getDefaultColors();
 
-            if (Main.isHavePAPI && string != null && papiSender instanceof Player) {
-                if (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))
+        if (colorSender instanceof Player player && FPlayerManager.getPlayer(player) != null) {
+
+            if (Main.isHavePAPI && papiSender instanceof Player) {
+                if (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders")){
                     string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
                     string = PlaceholderAPI.setRelationalPlaceholders((Player) papiSender, player, string);
+                }
             }
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if (fPlayer == null) {
+                return translateHexToColor(string
+                        .replace("&&1", defaultColors[0])
+                        .replace("&&2", defaultColors[1]));
+            }
 
             return translateHexToColor(string
                     .replace("&&1", fPlayer.getColors()[0])
@@ -98,11 +114,12 @@ public class ObjectUtil {
         }
 
         return translateHexToColor(string
-                .replace("&&1", Main.config.getString("color.first"))
-                .replace("&&2", Main.config.getString("color.second")));
+                .replace("&&1", defaultColors[0])
+                .replace("&&2", defaultColors[1]));
     }
 
-    public static String formatString(String string, CommandSender colorSender) {
+    @NotNull
+    public static String formatString(@NotNull String string, @Nullable CommandSender colorSender) {
         return formatString(string, colorSender, colorSender);
     }
 
@@ -110,7 +127,7 @@ public class ObjectUtil {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
-    public static void playSound(Player player, String command) {
+    public static void playSound(@Nullable Player player, @NotNull String command) {
         if (player == null || !Main.config.getBoolean("sound." + command + ".enable")) return;
 
         String soundName = Main.config.getString("sound." + command + ".type");
@@ -123,7 +140,8 @@ public class ObjectUtil {
 
     }
 
-    public static String buildFormattedMessage(Player player, String command, String text, ItemStack itemStack) {
+    @NotNull
+    public static String buildFormattedMessage(@NotNull Player player, @NotNull String command, @Nullable String text, @NotNull ItemStack itemStack) {
         if (text == null) return "";
 
         MessageBuilder messageBuilder = new MessageBuilder(command, text, itemStack, false);
@@ -136,12 +154,13 @@ public class ObjectUtil {
         return message;
     }
 
-    public static ArrayList<String> splitLine(String line, ArrayList<String> placeholders) {
+    @NotNull
+    public static ArrayList<String> splitLine(@NotNull String line, @NotNull ArrayList<String> placeholders) {
         ArrayList<String> split = new ArrayList<>(List.of(line));
 
         for (String placeholder : placeholders) {
             split = (ArrayList<String>) split.stream().flatMap(part -> {
-                String[] sp = part.split("((?="+placeholder+")|(?<="+placeholder+"))");
+                String[] sp = part.split("((?=" + placeholder + ")|(?<=" + placeholder + "))");
                 return Arrays.stream(sp);
             }).collect(Collectors.toList());
         }

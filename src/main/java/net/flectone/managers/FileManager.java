@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 
+
 public class FileManager extends FileConfiguration {
 
     private FileConfiguration fileConfiguration;
@@ -83,7 +84,7 @@ public class FileManager extends FileConfiguration {
     @Override
     public String getString(@NotNull String string) {
         string = fileConfiguration.getString(string);
-        if(string == null) string = "";
+        if (string == null) string = "";
         return string;
     }
 

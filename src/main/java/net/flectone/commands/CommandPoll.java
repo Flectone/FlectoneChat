@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.actions.Poll;
 import net.flectone.managers.PollManager;
@@ -29,7 +29,7 @@ public class CommandPoll extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(2)) return true;
 
@@ -76,10 +76,12 @@ public class CommandPoll extends FTabCompleter {
         int id = Integer.parseInt(strings[1]);
         Poll poll = PollManager.get(id);
 
-        if (poll.isExpired()) {
+        if (poll == null || poll.isExpired()) {
             fCommand.sendMeMessage("command.poll.expired-message");
             return true;
         }
+
+        if (fCommand.getFPlayer() == null) return true;
 
         int voteCounts = poll.vote(fCommand.getFPlayer(), strings[2]);
         if (voteCounts == 0) {
@@ -106,23 +108,26 @@ public class CommandPoll extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isStartsWith(strings[0], "vote");
-            if (commandSender.hasPermission(Main.config.getString("command.poll.permission")) || commandSender.isOp()) {
-                isStartsWith(strings[0], "create");
+        switch (strings.length) {
+            case 1 -> {
+                isStartsWith(strings[0], "vote");
+
+                if (commandSender.hasPermission(Main.config.getString("command.poll.permission")) || commandSender.isOp())
+                    isStartsWith(strings[0], "create");
             }
-        } else if (strings.length == 2) {
-            if (strings[0].equalsIgnoreCase("create")) {
-                isStartsWith(strings[1], "(message)");
-            } else {
-                PollManager.getPollList()
-                        .parallelStream()
-                        .filter(poll -> !poll.isExpired())
-                        .forEach(poll -> isStartsWith(strings[1], String.valueOf(poll.getId())));
+            case 2 -> {
+                if (strings[0].equalsIgnoreCase("create")) isStartsWith(strings[1], "(message)");
+                else PollManager.getPollList()
+                            .parallelStream()
+                            .filter(poll -> !poll.isExpired())
+                            .forEach(poll -> isStartsWith(strings[1], String.valueOf(poll.getId())));
             }
-        } else if (strings.length == 3 && strings[0].equalsIgnoreCase("vote")) {
-            isStartsWith(strings[2], "agree");
-            isStartsWith(strings[2], "disagree");
+            case 3 -> {
+                if (strings[0].equalsIgnoreCase("vote")) {
+                    isStartsWith(strings[2], "agree");
+                    isStartsWith(strings[2], "disagree");
+                }
+            }
         }
 
         Collections.sort(wordsList);

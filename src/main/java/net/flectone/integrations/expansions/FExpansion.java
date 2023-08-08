@@ -6,11 +6,11 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FExpansion extends PlaceholderExpansion {
 
-    public FExpansion() {
-    }
+    public FExpansion() {}
 
     @Override
     public @NotNull String getIdentifier() {
@@ -33,31 +33,20 @@ public class FExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, @NotNull String params) {
-        if (player == null || !player.isOnline()) return "";
+    public String onRequest(@Nullable OfflinePlayer player, @NotNull String params) {
+        if (player == null || !player.isOnline()) return null;
 
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
 
-        if (params.equalsIgnoreCase("stream_prefix")) {
-            return ObjectUtil.translateHexToColor(fPlayer.getStreamPrefix());
-        }
+        if(fPlayer == null) return null;
 
-        if (params.equalsIgnoreCase("afk_suffix")) {
-            return ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
-        }
-
-        if (params.equalsIgnoreCase("world_prefix")) {
-            return ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
-        }
-
-        if (params.equalsIgnoreCase("player_display_name")) {
-            return fPlayer.getDisplayName();
-        }
-
-        if (params.equalsIgnoreCase("player_tab_name")) {
-            return fPlayer.getTabName();
-        }
-
-        return null; // Placeholder is unknown by the Expansion
+        return switch (params.toLowerCase()) {
+            case "stream_prefix" -> ObjectUtil.translateHexToColor(fPlayer.getStreamPrefix());
+            case "afk_suffix" -> ObjectUtil.translateHexToColor(fPlayer.getAfkSuffix());
+            case "world_prefix" -> ObjectUtil.translateHexToColor(fPlayer.getWorldPrefix());
+            case "player_display_name" -> fPlayer.getDisplayName();
+            case "player_tab_name" -> fPlayer.getTabName();
+            default -> null;
+        };
     }
 }

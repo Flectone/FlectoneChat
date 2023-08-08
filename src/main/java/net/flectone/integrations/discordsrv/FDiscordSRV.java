@@ -24,6 +24,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.function.BiFunction;
@@ -55,43 +57,32 @@ public class FDiscordSRV implements Listener {
 
     private static boolean isEnable = false;
 
-    public FDiscordSRV(){
+    public FDiscordSRV() {
         isEnable = true;
     }
 
-    public static void register(){
+    public static void register() {
         FDiscordSRV fDiscordSRV = new FDiscordSRV();
         DiscordSRV.api.subscribe(fDiscordSRV);
     }
 
-    @Subscribe(priority = ListenerPriority.HIGHEST)
-    public void onChatMessageFromInGame(GameChatMessagePreProcessEvent event) { // From in-game to Discord
-        Player player = event.getPlayer();
-
-        String message = event.getMessage();
-
-        message = ObjectUtil.buildFormattedMessage(player, "discordchat", message, player.getInventory().getItemInMainHand());
-
-        event.setMessage(message);
-    }
-
-    public static void sendDeathMessage(Player player, String message, Entity finalEntity, Material finalBlock, Entity killer, ItemStack killerItem){
-        if(!isEnable) return;
+    public static void sendDeathMessage(@NotNull Player player, @NotNull String message, @Nullable Entity finalEntity, @Nullable Material finalBlock, @Nullable Entity killer, @Nullable ItemStack killerItem) {
+        if (!isEnable) return;
 
         message = message.replace("<player>", player.getName());
-        if(finalEntity != null) message = message
+        if (finalEntity != null) message = message
                 .replace("<killer>", finalEntity.getName())
                 .replace("<projectile>", finalEntity.getName());
 
-        if(finalBlock != null) message = message
+        if (finalBlock != null) message = message
                 .replace("<block>", finalBlock.name());
 
-        if(killer != null) {
+        if (killer != null) {
             String dueToMessage = Main.locale.getFormatString("death.due-to", null);
             message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
         }
 
-        if(killerItem != null){
+        if (killerItem != null) {
             String byItemMessage = Main.locale.getFormatString("death.by-item", null);
 
             String itemName = killerItem.getItemMeta() != null && !killerItem.getItemMeta().getDisplayName().isEmpty()
@@ -107,7 +98,6 @@ public class FDiscordSRV implements Listener {
                 .replace("<block>", "")
                 .replace("<due_to>", "")
                 .replace("<by_item>", "");
-
 
         String channelName = DiscordSRV.getPlugin().getOptionalChannel("deaths");
         MessageFormat messageFormat = DiscordSRV.getPlugin().getMessageFromConfiguration("MinecraftPlayerDeathMessage");
@@ -134,7 +124,8 @@ public class FDiscordSRV implements Listener {
                     .replace("%embedavatarurl%", avatarUrl)
                     .replace("%botavatarurl%", botAvatarUrl)
                     .replace("%botname%", botName);
-            if (destinationChannel != null) content = DiscordUtil.translateEmotes(content, destinationChannel.getGuild());
+            if (destinationChannel != null)
+                content = DiscordUtil.translateEmotes(content, destinationChannel.getGuild());
             content = PlaceholderUtil.replacePlaceholdersToDiscord(content, player);
             return content;
         };
@@ -150,8 +141,8 @@ public class FDiscordSRV implements Listener {
         DiscordUtil.queueMessage(textChannel, discordMessage, true);
     }
 
-    public static void sendModerationMessage(String message){
-        if(!isEnable) return;
+    public static void sendModerationMessage(@NotNull String message) {
+        if (!isEnable) return;
 
         message = ObjectUtil.formatString(message, null);
         message = PlaceholderUtil.replacePlaceholdersToDiscord(message);
@@ -166,8 +157,8 @@ public class FDiscordSRV implements Listener {
         DiscordUtil.queueMessage(textChannel, messageFormat, true);
     }
 
-    public static void sendAdvancementMessage(Player player, FAdvancement fAdvancement, String lastAdvancement) {
-        if(!isEnable) return;
+    public static void sendAdvancementMessage(@NotNull Player player, @NotNull FAdvancement fAdvancement, @NotNull String lastAdvancement) {
+        if (!isEnable) return;
 
         String channelName = DiscordSRV.getPlugin().getOptionalChannel("awards");
 
@@ -201,7 +192,8 @@ public class FDiscordSRV implements Listener {
                     .replace("%embedavatarurl%", avatarUrl)
                     .replace("%botavatarurl%", botAvatarUrl)
                     .replace("%botname%", botName);
-            if (destinationChannel != null) content = DiscordUtil.translateEmotes(content, destinationChannel.getGuild());
+            if (destinationChannel != null)
+                content = DiscordUtil.translateEmotes(content, destinationChannel.getGuild());
             content = PlaceholderUtil.replacePlaceholdersToDiscord(content, player);
             return content;
         };
@@ -221,6 +213,17 @@ public class FDiscordSRV implements Listener {
 
         TextChannel textChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(channelName);
         DiscordUtil.queueMessage(textChannel, messageBuilder.build(), true);
+    }
+
+    @Subscribe(priority = ListenerPriority.HIGHEST)
+    public void onChatMessageFromInGame(@NotNull GameChatMessagePreProcessEvent event) {
+        Player player = event.getPlayer();
+
+        String message = event.getMessage();
+
+        message = ObjectUtil.buildFormattedMessage(player, "discordchat", message, player.getInventory().getItemInMainHand());
+
+        event.setMessage(message);
     }
 
 }

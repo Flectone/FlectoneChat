@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.listeners.PlayerAdvancementDoneListener;
 import net.flectone.listeners.PlayerDeathEventListener;
@@ -27,7 +27,8 @@ public class CommandFlectonechat extends FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (strings.length < 1 || !strings[0].equals("reload") && strings.length < 5) {
             fCommand.sendUsageMessage();
@@ -43,7 +44,6 @@ public class CommandFlectonechat extends FTabCompleter {
                 return true;
             }
 
-
             if (!Main.config.getKeys().contains(strings[1]) && !Main.locale.getKeys().contains(strings[1])) {
                 fCommand.sendMeMessage("command.flectonechat.wrong-line");
                 return true;
@@ -56,17 +56,16 @@ public class CommandFlectonechat extends FTabCompleter {
                 object = getObject(strings[3], strings[4]);
             }
 
-            //set and save file .yml
             switch (strings[0]) {
-                case "config":
+                case "config" -> {
                     Main.config.setObject(strings[1], object);
                     Main.config.saveFile();
                     Main.locale.setFileConfiguration(new FileManager("language/" + Main.config.getString("language") + ".yml"));
-                    break;
-                case "locale":
+                }
+                case "locale" -> {
                     Main.locale.setObject(strings[1], object);
                     Main.locale.saveFile();
-                    break;
+                }
             }
         }
 
@@ -123,13 +122,10 @@ public class CommandFlectonechat extends FTabCompleter {
     }
 
     private Object getObject(String objectName, String arg) {
-        switch (objectName.toLowerCase()) {
-            case "string":
-                return arg;
-            case "boolean":
-                return Boolean.parseBoolean(arg);
-            default:
-                return Integer.valueOf(arg);
-        }
+        return switch (objectName.toLowerCase()) {
+            case "integer" -> Integer.valueOf(arg);
+            case "boolean" -> Boolean.parseBoolean(arg);
+            default -> arg;
+        };
     }
 }

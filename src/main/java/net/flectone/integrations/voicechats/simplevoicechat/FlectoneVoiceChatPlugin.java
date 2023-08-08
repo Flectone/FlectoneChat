@@ -11,6 +11,7 @@ import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
 
@@ -19,6 +20,7 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
     /**
      * @return the unique ID for this voice chat plugin
      */
+    @NotNull
     @Override
     public String getPluginId() {
         return "FlectoneChat";
@@ -30,7 +32,7 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
      * @param api the voice chat API
      */
     @Override
-    public void initialize(VoicechatApi api) {
+    public void initialize(@NotNull VoicechatApi api) {
         voicechatApi = api;
     }
 
@@ -40,22 +42,23 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
      * @param registration the event registration
      */
     @Override
-    public void registerEvents(EventRegistration registration) {
+    public void registerEvents(@NotNull EventRegistration registration) {
         registration.registerEvent(MicrophonePacketEvent.class, this::onMicrophonePacketEvent);
     }
 
-    private void onMicrophonePacketEvent(MicrophonePacketEvent event) {
-        if(event.getSenderConnection() == null) return;
+    private void onMicrophonePacketEvent(@NotNull MicrophonePacketEvent event) {
+        if (event.getSenderConnection() == null) return;
 
         Player player = (Player) event.getSenderConnection().getPlayer().getPlayer();
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
-        if (fPlayer != null && fPlayer.isMuted()) {
-            event.cancel();
-            String formatMessage = Main.locale.getFormatString("command.mute.local-message", player)
-                    .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))
-                    .replace("<reason>", fPlayer.getMuteReason());
 
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
-        }
+        if(fPlayer == null || !fPlayer.isMuted()) return;
+
+        event.cancel();
+        String formatMessage = Main.locale.getFormatString("command.mute.local-message", player)
+                .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))
+                .replace("<reason>", fPlayer.getMuteReason());
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
     }
 }

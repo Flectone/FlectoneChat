@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,9 +22,9 @@ public class CommandIgnoreList extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage() || fCommand.getFPlayer() == null || fCommand.getPlayer() == null) return true;
 
         List<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 

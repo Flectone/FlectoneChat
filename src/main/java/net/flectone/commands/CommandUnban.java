@@ -1,6 +1,6 @@
 package net.flectone.commands;
 
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -21,7 +21,7 @@ public class CommandUnban extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(1)) return true;
 
@@ -52,7 +52,7 @@ public class CommandUnban extends FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            FPlayerManager.getBannedPlayers()
+            FPlayerManager.getBannedPlayers().parallelStream()
                     .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
         }
 

@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.commands.CommandMark;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -42,11 +44,14 @@ public class PlayerInteractListener implements Listener {
     }
 
     @EventHandler
-    public void playerItemClick(PlayerInteractEvent event) {
+    public void playerItemClick(@NotNull PlayerInteractEvent event) {
 
-        if (FPlayerManager.getPlayer(event.getPlayer()).isAfk()) {
+        FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
+        if (fPlayer == null) return;
+
+        if (fPlayer.isAfk()) {
             CommandAfk.setAfkFalse(event.getPlayer());
-        } else FPlayerManager.getPlayer(event.getPlayer()).setBlock(event.getPlayer().getLocation().getBlock());
+        } else fPlayer.setBlock(event.getPlayer().getLocation().getBlock());
 
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)
                 && Main.config.getBoolean("player.item.sign.enable")
@@ -90,7 +95,6 @@ public class PlayerInteractListener implements Listener {
 
         try {
             markItem = Material.valueOf(Main.config.getString("command.mark.item").toUpperCase());
-
         } catch (IllegalArgumentException | NullPointerException exception) {
             Main.getInstance().getLogger().warning("Item for mark was not found");
             markItem = Material.WOODEN_SWORD;
@@ -110,13 +114,13 @@ public class PlayerInteractListener implements Listener {
 
     }
 
-    private boolean containsColor(String color) {
+    private boolean containsColor(@NotNull String color) {
         return Arrays.asList(CommandMark.chatColorValues).contains(color.toUpperCase());
     }
 
-    private void paintItem(ItemStack itemStack, String playerName, String color) {
+    private void paintItem(@NotNull ItemStack itemStack, @NotNull String playerName, @NotNull String color) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        if(itemMeta == null) return;
+        if (itemMeta == null) return;
 
         List<String> stringList = itemMeta.getLore();
 
@@ -149,7 +153,7 @@ public class PlayerInteractListener implements Listener {
         itemStack.setItemMeta(itemMeta);
     }
 
-    private void decreaseItemAmount(ItemStack itemStack, ReplaceItem replaceItem) {
+    private void decreaseItemAmount(@NotNull ItemStack itemStack, @NotNull ReplaceItem replaceItem) {
         if (itemStack.getAmount() == 1) {
             replaceItem.setItemNull();
         } else {
@@ -157,6 +161,7 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
+    @FunctionalInterface
     private interface ReplaceItem {
         void setItemNull();
     }

@@ -1,12 +1,14 @@
 package net.flectone.integrations.interactivechat;
 
 import com.loohp.interactivechat.api.InteractiveChatAPI;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class FlectoneInteractiveChat {
 
-    public static String mark(String message, UUID sender) {
+    @NotNull
+    public static String mark(@NotNull String message, @NotNull UUID sender) {
         return InteractiveChatAPI.markSender(message, sender);
     }
 }

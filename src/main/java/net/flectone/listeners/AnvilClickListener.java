@@ -8,18 +8,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 public class AnvilClickListener implements Listener {
 
     @EventHandler
-    public void onAnvilClick(InventoryClickEvent event) {
+    public void onAnvilClick(@NotNull InventoryClickEvent event) {
         if (!(event.getClickedInventory() instanceof AnvilInventory)
                 || event.getSlot() != 2
                 || event.getCurrentItem() == null
                 || event.getCurrentItem().getItemMeta() == null
-                || !(event.getWhoClicked() instanceof Player)) return;
+                || !(event.getWhoClicked() instanceof Player player)) return;
 
-        Player player = (Player) event.getWhoClicked();
         String command = "anvil";
 
         ItemStack itemStack = event.getCurrentItem();

@@ -10,6 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,8 @@ public class ChatBubbleTicker extends FBukkitRunnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if(fPlayer == null) return;
+
             List<Entity> entities = fPlayer.getChatBubbleEntities();
 
             Material currentBlock = player.getLocation().getBlock().getType();
@@ -34,13 +38,13 @@ public class ChatBubbleTicker extends FBukkitRunnable {
             if (fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
 
             String message = fPlayer.getListChatBubbles().get(0);
-            spawnMessageBubble(fPlayer.getPlayer(), message);
+            spawnMessageBubble(player, message);
 
             fPlayer.removeChatBubble();
         });
     }
 
-    private void spawnMessageBubble(Player player, String message) {
+    private void spawnMessageBubble(@NotNull Player player, @NotNull String message) {
         List<String> messageStrings = divideText(message, Main.config.getInt("chat.bubble.max-per-line"));
         String color = Main.locale.getFormatString("chat.bubble.color", null);
         int readSpeed = Main.config.getInt("chat.bubble.read-speed");
@@ -50,11 +54,12 @@ public class ChatBubbleTicker extends FBukkitRunnable {
         Entity lastVehicle = spawnStringBubble(player, "", player.getLocation(), duration);
 
         for (int x = messageStrings.size() - 1; x > -1; x--) {
+            if(lastVehicle == null) return;
             lastVehicle = spawnStringBubble(lastVehicle, color + messageStrings.get(x), player.getLocation(), duration);
         }
     }
 
-    private List<String> divideText(String text, int maxCharactersPerLine) {
+    private List<String> divideText(@NotNull String text, int maxCharactersPerLine) {
         List<String> lines = new ArrayList<>();
         StringBuilder line = new StringBuilder();
 
@@ -77,11 +82,12 @@ public class ChatBubbleTicker extends FBukkitRunnable {
 
     // Thanks, @atesin, for chat bubbles implementation
     // https://github.com/atesin/LightChatBubbles
-    private AreaEffectCloud spawnStringBubble(Entity vehicle, String message, Location location, int duration) {
+    @Nullable
+    private AreaEffectCloud spawnStringBubble(@NotNull Entity vehicle, @NotNull String message, @NotNull Location location, int duration) {
         location.setDirection(new Vector(0, -1, 0));
 
         World world = location.getWorld();
-        if(world == null) return null;
+        if (world == null) return null;
 
         AreaEffectCloud nameTag = (AreaEffectCloud) world.spawnEntity(location, EntityType.AREA_EFFECT_CLOUD);
         nameTag.setParticle(Particle.TOWN_AURA);

@@ -1,6 +1,6 @@
 package net.flectone.commands;
 
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -22,11 +22,10 @@ public class CommandIgnore extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
-
-        if (fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isConsoleMessage()
+                || fCommand.isInsufficientArgs(1)) return true;
 
         if (fCommand.isSelfCommand()) {
             fCommand.sendMeMessage("command.ignore.myself");
@@ -41,7 +40,7 @@ public class CommandIgnore extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD() || fCommand.getFPlayer() == null) return true;
 
         ArrayList<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
 

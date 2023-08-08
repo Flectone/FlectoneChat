@@ -5,6 +5,8 @@ import net.flectone.utils.ObjectUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FDamager {
 
@@ -15,11 +17,11 @@ public class FDamager {
     private Entity finalEntityDamager;
     private Material finalBlockDamager;
     private String damagerTranslateName;
+    private ItemStack killerItem;
 
-    public FDamager() {
-    }
+    public FDamager() {}
 
-    public void replaceDamager(Entity damager) {
+    public void replaceDamager(@Nullable Entity damager) {
         killer = damager;
         time = ObjectUtil.getCurrentTime();
     }
@@ -28,26 +30,27 @@ public class FDamager {
         return killer;
     }
 
-    public void setKiller(Entity killer) {
+    public void setKiller(@Nullable Entity killer) {
         this.killer = killer;
     }
 
-    private ItemStack killerItem;
+    @Nullable
+    public ItemStack getKillerItem() {
+        return killerItem;
+    }
 
-    public void setKillerItem(ItemStack itemStack) {
+    public void setKillerItem(@NotNull ItemStack itemStack) {
         this.killerItem = itemStack;
         this.killerItemName = NMSUtil.getMinecraftName(itemStack);
         this.killerItemAsJson = NMSUtil.getItemAsJson(itemStack);
     }
 
-    public ItemStack getKillerItem() {
-        return killerItem;
-    }
-
+    @Nullable
     public String getKillerItemName() {
         return killerItemName;
     }
 
+    @Nullable
     public String getKillerItemAsJson() {
         return killerItemAsJson;
     }
@@ -66,20 +69,19 @@ public class FDamager {
         this.damagerTranslateName = NMSUtil.getMinecraftName(new ItemStack(finalBlockDamager));
     }
 
+    @Nullable
     public String getDamagerTranslateName() {
         return damagerTranslateName;
     }
 
+    @Nullable
     public Material getFinalBlockDamager() {
         return finalBlockDamager;
     }
 
+    @Nullable
     public Entity getFinalEntity() {
         return finalEntityDamager;
-    }
-
-    public boolean isFinalEntity() {
-        return finalEntityDamager != null;
     }
 
     public boolean isFinalBlock() {

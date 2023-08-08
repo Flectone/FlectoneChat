@@ -1,12 +1,13 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -33,7 +34,7 @@ public class CommandMark extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isConsoleMessage()) return true;
 
@@ -49,9 +50,7 @@ public class CommandMark extends FTabCompleter {
             return true;
         }
 
-        if (fCommand.isHaveCD()) return true;
-
-        if (fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
         int range = Main.config.getInt("command.mark.range");
 
@@ -84,9 +83,8 @@ public class CommandMark extends FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            for (String color : chatColorValues) {
-                isStartsWith(strings[0], color);
-            }
+            Arrays.stream(chatColorValues).parallel()
+                    .forEach(color -> isStartsWith(strings[0], color));
         }
 
         Collections.sort(wordsList);
@@ -94,7 +92,8 @@ public class CommandMark extends FTabCompleter {
         return wordsList;
     }
 
-    private Entity getEntityInLineOfSightVectorMath(Player player, int range) {
+    @Nullable
+    private Entity getEntityInLineOfSightVectorMath(@NotNull Player player, int range) {
         RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getLocation().getDirection(), range, 0.35, entity -> {
             // ignoring executor
             if (player.equals(entity)) return false;
@@ -105,13 +104,16 @@ public class CommandMark extends FTabCompleter {
         return (rayTraceResult != null) ? rayTraceResult.getHitEntity() : null;
     }
 
-    private void spawnMarkEntity(Location location, String color) {
+    private void spawnMarkEntity(@NotNull Location location, @NotNull String color) {
         location.setX(Math.floor(location.getX()) + 0.5);
         location.setY(Math.floor(location.getY()) + 0.25);
         location.setZ(Math.floor(location.getZ()) + 0.5);
         location.setDirection(new Vector(0, 1, 0));
 
-        MagmaCube markBlockEntity = (MagmaCube) location.getWorld().spawnEntity(location, EntityType.MAGMA_CUBE);
+        World world = location.getWorld();
+        if(world == null) return;
+
+        MagmaCube markBlockEntity = (MagmaCube) world.spawnEntity(location, EntityType.MAGMA_CUBE);
 
         FEntity.addToTeam(markBlockEntity, color);
 

@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.utils.ObjectUtil;
@@ -22,7 +22,7 @@ public class CommandStream extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (strings.length < 1 || !strings[0].equalsIgnoreCase("start") && !strings[0].equalsIgnoreCase("end")) {
             fCommand.sendUsageMessage();
@@ -35,7 +35,7 @@ public class CommandStream extends FTabCompleter {
         }
 
         if (!fCommand.isConsole()) {
-            if (!fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("end")) {
+            if (fCommand.getFPlayer() != null && !fCommand.getFPlayer().isStreaming() && strings[0].equalsIgnoreCase("end")) {
                 fCommand.sendMeMessage("command.stream.end.not");
                 return true;
             }
@@ -52,27 +52,31 @@ public class CommandStream extends FTabCompleter {
                 return true;
             }
 
-            if (fCommand.isHaveCD()) return true;
-
-            if (fCommand.isMuted()) return true;
+            if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
             fCommand.getFPlayer().setStreaming(true);
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (String string : Main.locale.getStringList("command.stream.start.message")) {
 
-            string = string
-                    .replace("<player>", fCommand.getSenderName())
-                    .replace("<links>", ObjectUtil.toString(strings, 1, "\n") + " ");
+        Main.locale.getStringList("command.stream.start.message").parallelStream()
+                .forEachOrdered(string -> {
 
-            stringBuilder.append(string);
-            stringBuilder.append("\n");
-        }
+                    string = string
+                            .replace("<player>", fCommand.getSenderName())
+                            .replace("<links>", ObjectUtil.toString(strings, 1, "\n") + " ");
+
+                    stringBuilder.append(string);
+                    stringBuilder.append("\n");
+
+                });
 
         FDiscordSRV.sendModerationMessage(stringBuilder.toString());
 
         fCommand.sendGlobalMessage(stringBuilder.toString());
+
+        if(fCommand.getFPlayer() == null) return true;
+
         fCommand.getFPlayer().setDisplayName();
 
         return true;
@@ -83,11 +87,16 @@ public class CommandStream extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isStartsWith(strings[0], "start");
-            isStartsWith(strings[0], "end");
-        } else if (strings.length == 2 && strings[0].equalsIgnoreCase("start")) {
-            isStartsWith(strings[1], "https://flectone.net");
+        switch (strings.length) {
+            case 1 -> {
+                isStartsWith(strings[0], "start");
+                isStartsWith(strings[0], "end");
+            }
+            default -> {
+                if (!strings[0].equalsIgnoreCase("start")) break;
+
+                isStartsWith(strings[1], "https://flectone.net");
+            }
         }
 
         Collections.sort(wordsList);

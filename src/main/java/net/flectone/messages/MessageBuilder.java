@@ -1,16 +1,17 @@
 package net.flectone.messages;
 
 import net.flectone.Main;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.utils.ObjectUtil;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.NMSUtil;
+import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,7 +36,7 @@ public class MessageBuilder {
     private final ItemStack itemStack;
     private final String command;
 
-    public MessageBuilder(String command, String text, ItemStack itemStack, boolean clickable) {
+    public MessageBuilder(@NotNull String command, @NotNull String text, @Nullable ItemStack itemStack, boolean clickable) {
         this.itemStack = itemStack;
         this.command = command;
 
@@ -58,7 +59,7 @@ public class MessageBuilder {
                         String playerName = word.replaceFirst(pingPrefix, "");
 
                         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
-                        if (fPlayer != null && fPlayer.isOnline()) {
+                        if (fPlayer != null && fPlayer.isOnline() && fPlayer.getPlayer() != null) {
                             Player player = fPlayer.getPlayer();
 
                             word = Main.locale.getString("chat.ping.message")
@@ -109,6 +110,7 @@ public class MessageBuilder {
                 });
     }
 
+    @NotNull
     public String getMessage() {
         return messageHashMap.values().parallelStream()
                 .map(wordParams -> {
@@ -122,7 +124,8 @@ public class MessageBuilder {
                 .collect(Collectors.joining(" "));
     }
 
-    public BaseComponent[] build(String format, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    public BaseComponent[] build(@NotNull String format, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
@@ -138,7 +141,8 @@ public class MessageBuilder {
         return componentBuilder.create();
     }
 
-    private BaseComponent[] buildMessage(String lastColor, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    private BaseComponent[] buildMessage(@NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         for (Map.Entry<Integer, WordParams> entry : messageHashMap.entrySet()) {
@@ -193,14 +197,16 @@ public class MessageBuilder {
         return componentBuilder.create();
     }
 
-    private TextComponent createUrlComponent(String text, String url, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    private TextComponent createUrlComponent(@NotNull String text, @NotNull String url, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         TextComponent wordComponent = new TextComponent(componentFromText(text));
         wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.hover-message", recipient, sender))));
         return wordComponent;
     }
 
-    private BaseComponent[] createItemComponent(ItemStack itemStack, String lastColor, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    private BaseComponent[] createItemComponent(@NotNull ItemStack itemStack, @NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder itemBuilder = new ComponentBuilder();
 
         TranslatableComponent item;
@@ -221,32 +227,35 @@ public class MessageBuilder {
                 .create();
     }
 
+    @NotNull
     public BaseComponent[] create() {
         return componentBuilder.create();
     }
 
-    private BaseComponent[] componentFromText(String text) {
+    @NotNull
+    private BaseComponent[] componentFromText(@NotNull String text) {
         return TextComponent.fromLegacyText(text);
     }
 
-    private TextComponent createClickableComponent(String text, String playerName, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    private TextComponent createClickableComponent(@NotNull String text, @NotNull String playerName, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         TextComponent textComponent = new TextComponent(componentFromText(text));
         return createClickableComponent(textComponent, playerName, recipient, sender);
     }
 
-    private TextComponent createClickableComponent(TextComponent textComponent, String playerName, CommandSender recipient, CommandSender sender) {
+    @NotNull
+    private TextComponent createClickableComponent(@NotNull TextComponent textComponent, @NotNull String playerName, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         String suggestCommand = "/msg " + playerName + " ";
         String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
                 .replace("<player>", playerName);
-
-        if (sender instanceof ConsoleCommandSender) return textComponent;
 
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
         return textComponent;
     }
 
-    private String replacePattern(String word) {
+    @NotNull
+    private String replacePattern(@NotNull String word) {
         String wordLowerCased = word.toLowerCase();
 
         Map.Entry<String, String> pattern = patternMap.entrySet()

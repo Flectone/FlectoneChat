@@ -3,6 +3,7 @@ package net.flectone.integrations.vault;
 import net.flectone.Main;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.Nullable;
 
 public class FVault {
 
@@ -23,6 +24,7 @@ public class FVault {
         registered = true;
     }
 
+    @Nullable
     public static Chat getProvider() {
         return provider;
     }

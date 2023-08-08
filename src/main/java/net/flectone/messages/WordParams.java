@@ -1,5 +1,8 @@
 package net.flectone.messages;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class WordParams {
 
 
@@ -15,6 +18,7 @@ public class WordParams {
     private String text;
     private boolean isFormatted;
 
+    @Nullable
     public String getPlayerPingName() {
         return playerPingName;
     }
@@ -44,6 +48,7 @@ public class WordParams {
         isItem = item;
     }
 
+    @Nullable
     public String getUrl() {
         return url;
     }
@@ -65,19 +70,21 @@ public class WordParams {
         isHide = hide;
     }
 
+    @Nullable
     public String getHideMessage() {
         return hideMessage;
     }
 
-    public void setHideMessage(String hideMessage) {
+    public void setHideMessage(@NotNull String hideMessage) {
         this.hideMessage = hideMessage;
     }
 
+    @NotNull
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(@NotNull String text) {
         this.text = text;
     }
 

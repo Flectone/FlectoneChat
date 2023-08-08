@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
@@ -23,7 +23,7 @@ public class CommandUnmute extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         if (fCommand.isInsufficientArgs(1)) return true;
 
@@ -58,8 +58,7 @@ public class CommandUnmute extends FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            FPlayerManager.getPlayers().parallelStream()
-                    .filter(FPlayer::isMuted)
+            FPlayerManager.getMutedPlayers().parallelStream()
                     .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
         }
 

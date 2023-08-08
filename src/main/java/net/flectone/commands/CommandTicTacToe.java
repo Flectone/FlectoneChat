@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.actions.TicTacToe;
@@ -28,9 +28,9 @@ public class CommandTicTacToe extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage() || fCommand.isInsufficientArgs(1)) {
+        if (fCommand.isConsoleMessage() || fCommand.isInsufficientArgs(1) || fCommand.getFPlayer() == null || fCommand.getPlayer() == null) {
             return true;
         }
 
@@ -42,7 +42,7 @@ public class CommandTicTacToe extends FTabCompleter {
 
         FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
-        if (((secondFPlayer == null || !secondFPlayer.isOnline()) && ticTacToe == null) || fCommand.getFPlayer() == secondFPlayer) {
+        if (((secondFPlayer == null || secondFPlayer.getPlayer() == null || !secondFPlayer.isOnline()) && ticTacToe == null) || fCommand.getFPlayer() == secondFPlayer) {
             fCommand.sendMeMessage("command.null-player");
             return true;
         }
@@ -78,6 +78,8 @@ public class CommandTicTacToe extends FTabCompleter {
 
         secondFPlayer = ticTacToe.getSecondFPlayer(fCommand.getFPlayer().getUUID());
 
+        if (secondFPlayer == null || secondFPlayer.getPlayer() == null) return true;
+
         if (!secondFPlayer.isOnline()) {
             fCommand.sendMeMessage("command.null-player");
             ticTacToe.setEnded(true);
@@ -89,7 +91,6 @@ public class CommandTicTacToe extends FTabCompleter {
             sendMessages(fCommand.getFPlayer(), secondFPlayer, ticTacToe);
             return true;
         }
-
 
         if (ticTacToe.isBusy(Integer.parseInt(strings[1])) || !ticTacToe.isNextPlayer(secondFPlayer.getUUID())) {
             fCommand.sendMeMessage("command.tic-tac-toe.game.wrong");
@@ -120,12 +121,12 @@ public class CommandTicTacToe extends FTabCompleter {
         return true;
     }
 
-    private void sendMessages(FPlayer firstFPlayer, FPlayer secondFPlayer, TicTacToe ticTacToe) {
+    private void sendMessages(@NotNull FPlayer firstFPlayer, @NotNull FPlayer secondFPlayer, @NotNull TicTacToe ticTacToe) {
         firstFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(firstFPlayer));
         secondFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(secondFPlayer));
     }
 
-    private int getValidSize(String[] strings) {
+    private int getValidSize(@NotNull String[] strings) {
         return strings.length > 1 && StringUtils.isNumeric(strings[1]) && Integer.parseInt(strings[1]) < 10 ? Integer.parseInt(strings[1]) : 3;
     }
 
@@ -134,11 +135,12 @@ public class CommandTicTacToe extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isOnlinePlayer(strings[0]);
-        } else if (strings.length == 2) {
-            for (int x = 3; x < 10; x++) {
-                isStartsWith(strings[1], String.valueOf(x));
+        switch (strings.length) {
+            case 1 -> isOnlinePlayer(strings[0]);
+            case 2 -> {
+                for (int x = 3; x < 10; x++) {
+                    isStartsWith(strings[1], String.valueOf(x));
+                }
             }
         }
 

@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -19,38 +19,42 @@ public class CommandAfk extends FTabCompleter {
         super.commandName = "afk";
     }
 
-    public static void setAfkFalse(Player player) {
+    public static void setAfkFalse(@NotNull Player player) {
         FPlayer afkPlayer = FPlayerManager.getPlayer(player);
+        if(afkPlayer == null) return;
         afkPlayer.setBlock(player.getLocation().getBlock());
+
         CommandAfk.sendMessage(afkPlayer, false);
     }
 
-    public static void sendMessage(FPlayer afkFPlayer, boolean isAfk) {
-        FCommands fCommands = new FCommands(afkFPlayer.getPlayer(), "afk", "afk", new String[]{});
-        sendMessage(fCommands, isAfk);
+    public static void sendMessage(@NotNull FPlayer afkFPlayer, boolean isAfk) {
+        if(afkFPlayer.getPlayer() == null) return;
+        FCommand fCommand = new FCommand(afkFPlayer.getPlayer(), "afk", "afk", new String[]{});
+        setAfkAndSendMessage(fCommand, isAfk);
     }
 
-    public static void sendMessage(FCommands fCommands, boolean isAfk) {
-        FPlayer fPlayer = fCommands.getFPlayer();
+    private static void setAfkAndSendMessage(@NotNull FCommand fCommand, boolean isAfk) {
+        FPlayer fPlayer = fCommand.getFPlayer();
+        if(fPlayer == null) return;
         fPlayer.setAfk(isAfk);
 
-        String formatString = isAfk ? Main.locale.getFormatString("command.afk.suffix", fPlayer.getPlayer()) : "";
+        String afkSuffix = isAfk
+                ? Main.locale.getFormatString("command.afk.suffix", fPlayer.getPlayer())
+                : "";
 
-        fPlayer.setAfkSuffix(formatString);
+        fPlayer.setAfkSuffix(afkSuffix);
 
-        fCommands.sendMeMessage("command.afk." + isAfk + "-message");
+        fCommand.sendMeMessage("command.afk." + isAfk + "-message");
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage()) return true;
+        if (fCommand.isConsoleMessage() || fCommand.isHaveCD() || fCommand.getFPlayer() == null) return true;
 
-        if (fCommand.isHaveCD()) return true;
-
-        sendMessage(fCommand, !fCommand.getFPlayer().isAfk());
+        setAfkAndSendMessage(fCommand, !fCommand.getFPlayer().isAfk());
         fCommand.getFPlayer().setDisplayName();
 
         return true;

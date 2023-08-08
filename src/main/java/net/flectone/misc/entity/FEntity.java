@@ -7,6 +7,7 @@ import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -14,11 +15,11 @@ public class FEntity {
 
     private static final HashMap<String, Team> noCollisionTeamMap = new HashMap<>();
 
-    public static void addToTeam(Entity entity, String color) {
-        if (entity instanceof Player) {
-
-            Player player = (Player) entity;
-            FPlayerManager.getPlayer(player).setTeamColor(color);
+    public static void addToTeam(@NotNull Entity entity, @NotNull String color) {
+        if (entity instanceof Player player) {
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if (fPlayer == null) return;
+            fPlayer.setTeamColor(color);
             return;
         }
 
@@ -41,12 +42,12 @@ public class FEntity {
         team.addEntry(entity.getUniqueId().toString());
     }
 
-    public static void removeFromTeam(Entity entity, String color) {
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
-            FPlayerManager.getScoreBoard()
-                    .getTeam(player.getName())
-                    .setColor(ChatColor.WHITE);
+    public static void removeFromTeam(@NotNull Entity entity, @NotNull String color) {
+        if (entity instanceof Player player) {
+            Team team = FPlayerManager.getScoreBoard().getTeam(player.getName());
+            if (team == null) return;
+
+            team.setColor(ChatColor.WHITE);
             return;
         }
 
@@ -54,13 +55,13 @@ public class FEntity {
         team.removeEntry(entity.getUniqueId().toString());
     }
 
-    public static void removePlayerFromTeam(FPlayer fPlayer) {
+    public static void removePlayerFromTeam(@NotNull FPlayer fPlayer) {
         Team team = FPlayerManager.getScoreBoard().getTeam(fPlayer.getRealName());
         if (team == null) return;
         team.removeEntry(fPlayer.getRealName());
     }
 
-    public static void removeBugEntities(Player player) {
+    public static void removeBugEntities(@NotNull Player player) {
         player.getWorld().getNearbyEntities(player.getLocation(), 20, 20, 20, Entity::isGlowing).forEach(entity -> {
             if (entity instanceof MagmaCube
                     && entity.getLocation().getDirection().equals(new Vector(0, 1, 0))) entity.remove();

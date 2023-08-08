@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.Main;
-import net.flectone.misc.commands.FCommands;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
@@ -31,7 +31,7 @@ public class CommandBanlist extends FTabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
-        FCommands fCommand = new FCommands(commandSender, command.getName(), s, strings);
+        FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
         Set<FPlayer> bannedPlayers = FPlayerManager.getBannedPlayers();
 
@@ -40,9 +40,7 @@ public class CommandBanlist extends FTabCompleter {
         int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perPage);
 
         if (strings.length != 0 &&
-                (!StringUtils.isNumeric(strings[0])
-                        || Integer.parseInt(strings[0]) < 1
-                        || Integer.parseInt(strings[0]) > lastPage)) {
+                (!StringUtils.isNumeric(strings[0]) || Integer.parseInt(strings[0]) < 1 || Integer.parseInt(strings[0]) > lastPage)) {
 
             fCommand.sendMeMessage("command.banlist.page-not-exist");
             return true;
@@ -65,11 +63,9 @@ public class CommandBanlist extends FTabCompleter {
         String unbanButton = Main.locale.getFormatString("command.banlist.unban-button", commandSender);
 
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
-
         page = Math.min(lastPage, page);
 
         bannedPlayers.stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(fPlayer -> {
-
             String playerBanFormat = "command.banlist.player-ban";
             if (fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
 
@@ -101,14 +97,14 @@ public class CommandBanlist extends FTabCompleter {
             String button = null;
 
             switch (part) {
-                case "<prev-page>":
+                case "<prev-page>" -> {
                     pageNumber--;
                     button = Main.locale.getFormatString("command.banlist.prev-page", commandSender);
-                    break;
-                case "<next-page>":
+                }
+                case "<next-page>" -> {
                     pageNumber++;
                     button = Main.locale.getFormatString("command.banlist.next-page", commandSender);
-                    break;
+                }
             }
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + part));

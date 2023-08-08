@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,25 +56,25 @@ public class FPlayer {
     private FDamager lastFDamager = new FDamager();
     private boolean isUpdated;
 
-    public FPlayer(OfflinePlayer offlinePlayer) {
+    public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
         this.name = offlinePlayer.getName();
         this.uuid = offlinePlayer.getUniqueId().toString();
     }
 
-    public FPlayer(Player player) {
+    public FPlayer(@NotNull Player player) {
         this.player = player;
         this.offlinePlayer = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId().toString();
     }
 
-    public void initialize(Player player) {
+    public void initialize(@NotNull Player player) {
         setPlayer(player);
         player.setScoreboard(FPlayerManager.getScoreBoard());
         setTeam(getPlayerTeam());
         setBlock(this.player.getLocation().getBlock());
-        getVaultPrefixSuffix();
+        setVaultPrefixSuffix();
         setWorldPrefix(player.getWorld());
         setStreamer();
         setDisplayName();
@@ -81,30 +82,33 @@ public class FPlayer {
     }
 
     public boolean isOnline() {
-        if(player != null && FSuperVanish.isVanished(player)) return false;
+        if (player != null && FSuperVanish.isVanished(player)) return false;
 
         return this.offlinePlayer.isOnline();
     }
 
     public void setStreamer() {
-        if(player == null) return;
+        if (player == null) return;
         this.isStreamer = player.hasPermission("flectonechat.stream");
         if (isStreamer) setStreaming(false);
         else this.streamPrefix = "";
     }
 
+    @Nullable
     public Player getPlayer() {
         return this.player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(@NotNull Player player) {
         this.player = player;
     }
 
+    @NotNull
     public OfflinePlayer getOfflinePlayer() {
         return this.offlinePlayer;
     }
 
+    @NotNull
     public String getUUID() {
         return this.uuid;
     }
@@ -113,7 +117,7 @@ public class FPlayer {
         return !block.equals(this.block);
     }
 
-    public void setBlock(Block block) {
+    public void setBlock(@Nullable Block block) {
         this.block = block;
         this.lastTimeMoved = ObjectUtil.getCurrentTime();
     }
@@ -160,6 +164,7 @@ public class FPlayer {
         isAfk = afk;
     }
 
+    @NotNull
     public String getAfkSuffix() {
         return isAfk ? Main.locale.getString("command.afk.suffix") : "";
     }
@@ -168,11 +173,12 @@ public class FPlayer {
         this.afkSuffix = afkSuffix;
     }
 
+    @NotNull
     public String getStreamPrefix() {
         return streamPrefix;
     }
 
-    public void mute(int time, String reason) {
+    public void mute(int time, @NotNull String reason) {
         setMuteTime(time + ObjectUtil.getCurrentTime());
         setMuteReason(reason);
         setUpdated(true);
@@ -191,7 +197,7 @@ public class FPlayer {
         return this.muteReason != null ? muteReason : "";
     }
 
-    public void setMuteReason(String muteReason) {
+    public void setMuteReason(@NotNull String muteReason) {
         this.muteReason = muteReason;
     }
 
@@ -220,11 +226,11 @@ public class FPlayer {
         return tempBanReason != null ? tempBanReason : "";
     }
 
-    public void setTempBanReason(String tempBanReason) {
+    public void setTempBanReason(@NotNull String tempBanReason) {
         this.tempBanReason = tempBanReason;
     }
 
-    public void tempban(int time, String reason) {
+    public void tempban(int time, @NotNull String reason) {
         setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
         setTempBanReason(reason);
         setUpdated(true);
@@ -248,34 +254,36 @@ public class FPlayer {
         FPlayerManager.getBannedPlayers().remove(this);
     }
 
+    @NotNull
     public ArrayList<String> getIgnoreList() {
         return ignoreList;
     }
 
-    public void setIgnoreList(ArrayList<String> ignoreList) {
+    public void setIgnoreList(@NotNull ArrayList<String> ignoreList) {
         this.ignoreList = ignoreList;
     }
 
-    public boolean isIgnored(Player player) {
+    public boolean isIgnored(@Nullable Player player) {
         if (player == null || this.player == player) return false;
 
         return isIgnored(player.getUniqueId().toString());
     }
 
-    public boolean isIgnored(OfflinePlayer offlinePlayer) {
+    public boolean isIgnored(@Nullable OfflinePlayer offlinePlayer) {
         if (offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
 
         return isIgnored(offlinePlayer.getUniqueId().toString());
     }
 
-    public boolean isIgnored(String uuid) {
+    public boolean isIgnored(@NotNull String uuid) {
         return this.ignoreList.contains(uuid);
     }
 
-    public void setColors(String firstColor, String secondColor) {
+    public void setColors(@NotNull String firstColor, @NotNull String secondColor) {
         this.colors = new String[]{firstColor, secondColor};
     }
 
+    @NotNull
     public String[] getColors() {
         if (this.colors.length != 0) return this.colors;
 
@@ -286,10 +294,11 @@ public class FPlayer {
         return this.colors;
     }
 
-    public void setTeam(Team team) {
+    public void setTeam(@NotNull Team team) {
         this.team = team;
     }
 
+    @NotNull
     public Team getPlayerTeam() {
         Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(this.name);
         Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(this.name);
@@ -304,23 +313,25 @@ public class FPlayer {
         return team;
     }
 
-    public void setTeamColor(String teamColor) {
+    public void setTeamColor(@NotNull String teamColor) {
         this.team.setColor(ChatColor.valueOf(teamColor));
     }
 
+    @Nullable
     public Player getLastWriter() {
         return this.lastWriter;
     }
 
-    public void setLastWriter(Player lastWriter) {
+    public void setLastWriter(@NotNull Player lastWriter) {
         this.lastWriter = lastWriter;
     }
 
+    @NotNull
     public List<Inventory> getInventoryList() {
         return inventoryList;
     }
 
-    public void setInventoryList(List<Inventory> inventoryList) {
+    public void setInventoryList(@NotNull List<Inventory> inventoryList) {
         this.inventoryList = inventoryList;
     }
 
@@ -343,22 +354,25 @@ public class FPlayer {
         this.streamPrefix = streamFormatPrefix.isEmpty() ? "" : Main.locale.getFormatString(streamFormatPrefix, getPlayer());
     }
 
+    @NotNull
     private String getStreamFormatPrefix() {
         return isStreaming ? "command.stream.online-prefix" :
                 Main.config.getBoolean("command.stream.offline-prefix.enable") ? "command.stream.offline-prefix" : "";
     }
 
-    public void getVaultPrefixSuffix() {
+    public void setVaultPrefixSuffix() {
         if (FVault.registered) {
             Chat provider = FVault.getProvider();
+            if(provider == null) return;
 
             this.vaultPrefix = provider.getPlayerPrefix(player);
             this.vaultSuffix = provider.getPlayerSuffix(player);
         }
     }
 
-    private String getName(String formatName) {
-        getVaultPrefixSuffix();
+    @NotNull
+    private String getName(@NotNull String formatName) {
+        setVaultPrefixSuffix();
 
         String name = Main.config.getString("player." + formatName)
                 .replace("<vault_prefix>", this.vaultPrefix)
@@ -372,14 +386,17 @@ public class FPlayer {
 
     }
 
+    @NotNull
     public String getDisplayName() {
         return getName("display-name");
     }
 
+    @NotNull
     public String getTabName() {
         return getName("tab-name");
     }
 
+    @NotNull
     public String getRealName() {
         return this.name;
     }
@@ -389,7 +406,7 @@ public class FPlayer {
 
         String prefix = "";
         String suffix = "";
-        if(Main.config.getBoolean("player.name-tag.enable")){
+        if (Main.config.getBoolean("player.name-tag.enable")) {
             String[] strings = getDisplayName().split(this.name);
             prefix = strings.length > 0 ? strings[0] : "";
             suffix = strings.length > 1 ? strings[1] : "";
@@ -410,6 +427,7 @@ public class FPlayer {
         }
     }
 
+    @NotNull
     public String getWorldPrefix() {
         return worldPrefix;
     }
@@ -433,15 +451,16 @@ public class FPlayer {
         setDisplayName();
     }
 
+    @NotNull
     public HashMap<String, Mail> getMails() {
         return mails;
     }
 
-    public void addMail(String uuid, Mail mail) {
+    public void addMail(@NotNull String uuid, @NotNull Mail mail) {
         mails.put(uuid, mail);
     }
 
-    public void removeMail(String uuid) {
+    public void removeMail(@NotNull String uuid) {
         mails.get(uuid).setRemoved(true);
     }
 
@@ -453,15 +472,16 @@ public class FPlayer {
         isUpdated = updated;
     }
 
+    @NotNull
     public String getChat() {
         return chat;
     }
 
-    public void setChat(String chat) {
+    public void setChat(@NotNull String chat) {
         this.chat = chat;
     }
 
-    public void addChatBubble(String message) {
+    public void addChatBubble(@NotNull String message) {
         listChatBubbles.add(message);
     }
 
@@ -469,6 +489,7 @@ public class FPlayer {
         if (!listChatBubbles.isEmpty()) listChatBubbles.remove(0);
     }
 
+    @NotNull
     public List<Entity> getChatBubbleEntities() {
         return player.getPassengers().parallelStream()
                 .filter(entity -> entity instanceof AreaEffectCloud)
@@ -480,23 +501,25 @@ public class FPlayer {
         listChatBubbles.clear();
     }
 
+    @NotNull
     public List<String> getListChatBubbles() {
         return listChatBubbles;
     }
 
+    @Nullable
     public FDamager getLastFDamager() {
         return lastFDamager;
     }
 
-    public void setLastDamager(Entity lastDamager) {
+    public void setLastDamager(@Nullable Entity lastDamager) {
         this.lastFDamager.replaceDamager(lastDamager);
     }
 
-    public void resetLastDamager(){
-       this.lastFDamager = new FDamager();
+    public void resetLastDamager() {
+        this.lastFDamager = new FDamager();
     }
 
-    public boolean isDeathByObject(){
+    public boolean isDeathByObject() {
         return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
     }
 }

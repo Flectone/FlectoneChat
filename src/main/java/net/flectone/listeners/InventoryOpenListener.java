@@ -1,13 +1,12 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,13 +22,14 @@ import java.util.UUID;
 public class InventoryOpenListener implements Listener {
 
     @EventHandler
-    public void inventoryOpen(InventoryOpenEvent event) {
+    public void inventoryOpen(@NotNull InventoryOpenEvent event) {
 
         FPlayer fPlayer = FPlayerManager.getPlayer((OfflinePlayer) event.getPlayer());
+        if (fPlayer == null) return;
 
         List<Inventory> inventoryList = fPlayer.getInventoryList();
-        if (inventoryList == null
-                || !inventoryList.contains(event.getInventory())) return;
+
+        if (!inventoryList.contains(event.getInventory())) return;
 
         List<String> ignoreList = fPlayer.getIgnoreList();
 
@@ -69,9 +70,9 @@ public class InventoryOpenListener implements Listener {
         }
     }
 
-    private ItemStack createArrowItem(ItemStack arrow, String arrowName, HumanEntity player) {
+    private ItemStack createArrowItem(@NotNull ItemStack arrow, @NotNull String arrowName, @NotNull HumanEntity player) {
         ItemMeta itemMeta = arrow.getItemMeta();
-        itemMeta.setDisplayName(Main.locale.getFormatString("command.ignore-list." + arrowName, (Player) player));
+        itemMeta.setDisplayName(Main.locale.getFormatString("command.ignore-list." + arrowName, player));
         arrow.setItemMeta(itemMeta);
         return arrow;
     }

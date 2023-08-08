@@ -3,6 +3,7 @@ package net.flectone.integrations.voicechats.plasmovoice;
 import net.flectone.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
+import org.jetbrains.annotations.NotNull;
 
 // shitcode until the plasmo devs make a usable api
 
@@ -15,16 +16,16 @@ import org.bukkit.command.CommandException;
 
 public class FlectonePlasmoVoice {
 
-    public static void mute(boolean unmute, String player, String time, String reason) {
+    public static void mute(boolean unmute, @NotNull String player, @NotNull String time, @NotNull String reason) {
         if (unmute) unmute(player);
         executeCommand("vmute " + player + " " + time + " " + reason);
     }
 
-    public static void unmute(String player) {
+    public static void unmute(@NotNull String player) {
         executeCommand("vunmute " + player);
     }
 
-    private static void executeCommand(String command) {
+    private static void executeCommand(@NotNull String command) {
         try {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         } catch (CommandException exception) {

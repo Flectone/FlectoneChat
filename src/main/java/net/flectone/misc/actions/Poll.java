@@ -5,6 +5,7 @@ import net.flectone.managers.PollManager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,12 @@ public class Poll {
     private final List<FPlayer> fPlayerList = new ArrayList<>();
 
     private final String message;
-
+    private final int id;
     private int agree = 0;
-
     private int disagree = 0;
-
     private boolean isExpired = false;
 
-    private final int id;
-
-    public Poll(String message) {
+    public Poll(@NotNull String message) {
         this.message = message;
 
         this.id = PollManager.getPollList().size();
@@ -46,7 +43,7 @@ public class Poll {
         }, 20L * Main.config.getInt("command.poll.time"));
     }
 
-    public int vote(FPlayer fPlayer, String typeVote) {
+    public int vote(@NotNull FPlayer fPlayer, @NotNull String typeVote) {
         if (fPlayerList.contains(fPlayer)) return 0;
 
         fPlayerList.add(fPlayer);
@@ -59,6 +56,7 @@ public class Poll {
         return id;
     }
 
+    @NotNull
     public String getMessage() {
         return message;
     }
