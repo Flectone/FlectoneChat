@@ -90,32 +90,25 @@ public class ObjectUtil {
 
     @NotNull
     public static String formatString(boolean neededPermission, @NotNull String string, @Nullable CommandSender colorSender, @Nullable CommandSender papiSender) {
-        String[] defaultColors = CommandChatcolor.getDefaultColors();
+        String[] colors = null;
 
-        if (colorSender instanceof Player player && FPlayerManager.getPlayer(player) != null) {
+        if (colorSender instanceof Player player) {
+            if (Main.isHavePAPI && papiSender instanceof Player playerPapi
+                    && (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders"))) {
 
-            if (Main.isHavePAPI && papiSender instanceof Player) {
-                if (!neededPermission || papiSender.isOp() || papiSender.hasPermission("flectonechat.placeholders")){
-                    string = PlaceholderAPI.setPlaceholders((Player) papiSender, string);
-                    string = PlaceholderAPI.setRelationalPlaceholders((Player) papiSender, player, string);
-                }
+                string = PlaceholderAPI.setPlaceholders(playerPapi, string);
+                string = PlaceholderAPI.setRelationalPlaceholders(playerPapi, player, string);
             }
 
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
-            if (fPlayer == null) {
-                return translateHexToColor(string
-                        .replace("&&1", defaultColors[0])
-                        .replace("&&2", defaultColors[1]));
-            }
-
-            return translateHexToColor(string
-                    .replace("&&1", fPlayer.getColors()[0])
-                    .replace("&&2", fPlayer.getColors()[1]));
+            colors = fPlayer != null ? fPlayer.getColors() : null;
         }
 
+        colors = colors != null ? colors : CommandChatcolor.getDefaultColors();
+
         return translateHexToColor(string
-                .replace("&&1", defaultColors[0])
-                .replace("&&2", defaultColors[1]));
+                .replace("&&1", colors[0])
+                .replace("&&2", colors[1]));
     }
 
     @NotNull
