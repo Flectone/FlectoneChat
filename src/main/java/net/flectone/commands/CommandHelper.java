@@ -16,11 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommandHelper extends FTabCompleter {
-
-    public CommandHelper() {
-        super.commandName = "helper";
-    }
+public class CommandHelper implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -64,5 +60,11 @@ public class CommandHelper extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "helper";
     }
 }

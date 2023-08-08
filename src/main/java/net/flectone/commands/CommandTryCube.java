@@ -13,11 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class CommandTryCube extends FTabCompleter {
-
-    public CommandTryCube() {
-        super.commandName = "try-cube";
-    }
+public class CommandTryCube implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -83,5 +79,11 @@ public class CommandTryCube extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "try-cube";
     }
 }

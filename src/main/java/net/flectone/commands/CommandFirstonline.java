@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandFirstOnline extends FTabCompleter {
-
-    public CommandFirstOnline() {
-        super.commandName = "firstonline";
-    }
+public class CommandFirstonline implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -58,5 +54,11 @@ public class CommandFirstOnline extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "firstonline";
     }
 }

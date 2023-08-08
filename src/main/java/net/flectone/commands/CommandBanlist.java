@@ -22,11 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class CommandBanlist extends FTabCompleter {
-
-    public CommandBanlist() {
-        super.commandName = "banlist";
-    }
+public class CommandBanlist implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -142,5 +138,11 @@ public class CommandBanlist extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "banlist";
     }
 }

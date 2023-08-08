@@ -23,13 +23,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMark extends FTabCompleter {
+public class CommandMark implements FTabCompleter {
 
     public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
-
-    public CommandMark() {
-        super.commandName = "mark";
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -121,5 +117,11 @@ public class CommandMark extends FTabCompleter {
             markBlockEntity.remove();
             FEntity.removeFromTeam(markBlockEntity, color);
         }, 40);
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "mark";
     }
 }

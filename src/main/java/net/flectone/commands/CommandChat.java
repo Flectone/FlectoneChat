@@ -10,11 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandChat extends FTabCompleter {
-
-    public CommandChat() {
-        super.commandName = "chat";
-    }
+public class CommandChat implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -68,5 +64,11 @@ public class CommandChat extends FTabCompleter {
         }
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "try";
     }
 }

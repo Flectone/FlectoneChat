@@ -22,11 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class CommandMutelist extends FTabCompleter {
-
-    public CommandMutelist() {
-        super.commandName = "mutelist";
-    }
+public class CommandMutelist implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -143,5 +139,11 @@ public class CommandMutelist extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "mutelist";
     }
 }

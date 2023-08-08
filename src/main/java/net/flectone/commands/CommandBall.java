@@ -13,11 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class CommandBall extends FTabCompleter {
-
-    public CommandBall() {
-        super.commandName = "ball";
-    }
+public class CommandBall implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -54,5 +50,11 @@ public class CommandBall extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "ball";
     }
 }

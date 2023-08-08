@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandIgnoreList extends FTabCompleter {
-
-    public CommandIgnoreList() {
-        super.commandName = "ignore-list";
-    }
+public class CommandIgnoreList implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -57,5 +53,11 @@ public class CommandIgnoreList extends FTabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "ignore-list";
     }
 }

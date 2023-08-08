@@ -13,11 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandIgnore extends FTabCompleter {
-
-    public CommandIgnore() {
-        super.commandName = "ignore";
-    }
+public class CommandIgnore implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -68,5 +64,11 @@ public class CommandIgnore extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "ignore";
     }
 }

@@ -16,11 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMail extends FTabCompleter {
-
-    public CommandMail() {
-        super.commandName = "mail";
-    }
+public class CommandMail implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -82,5 +78,11 @@ public class CommandMail extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "mail";
     }
 }

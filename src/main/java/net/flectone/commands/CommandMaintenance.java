@@ -15,11 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CommandMaintenance extends FTabCompleter {
-
-    public CommandMaintenance() {
-        super.commandName = "maintenance";
-    }
+public class CommandMaintenance implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -83,5 +79,11 @@ public class CommandMaintenance extends FTabCompleter {
         }
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "maintenance";
     }
 }

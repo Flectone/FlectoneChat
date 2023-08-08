@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandAfk extends FTabCompleter {
-
-    public CommandAfk() {
-        super.commandName = "afk";
-    }
+public class CommandAfk implements FTabCompleter {
 
     public static void setAfkFalse(@NotNull Player player) {
         FPlayer afkPlayer = FPlayerManager.getPlayer(player);
@@ -64,5 +60,11 @@ public class CommandAfk extends FTabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "afk";
     }
 }

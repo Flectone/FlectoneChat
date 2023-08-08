@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandStream extends FTabCompleter {
-
-    public CommandStream() {
-        super.commandName = "stream";
-    }
+public class CommandStream implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -102,5 +98,11 @@ public class CommandStream extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "stream";
     }
 }

@@ -20,11 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public class CommandPoll extends FTabCompleter {
-
-    public CommandPoll() {
-        super.commandName = "poll";
-    }
+public class CommandPoll implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -132,5 +128,11 @@ public class CommandPoll extends FTabCompleter {
 
         Collections.sort(wordsList);
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "poll";
     }
 }

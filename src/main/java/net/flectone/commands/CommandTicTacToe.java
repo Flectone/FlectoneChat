@@ -19,11 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandTicTacToe extends FTabCompleter {
-
-    public CommandTicTacToe() {
-        super.commandName = "tic-tac-toe";
-    }
+public class CommandTicTacToe implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -147,5 +143,11 @@ public class CommandTicTacToe extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "tic-tac-toe";
     }
 }

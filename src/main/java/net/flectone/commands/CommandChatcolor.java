@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandChatcolor extends FTabCompleter {
-
-    public CommandChatcolor() {
-        super.commandName = "chatcolor";
-    }
+public class CommandChatcolor implements FTabCompleter {
 
     @NotNull
     public static String[] getDefaultColors() {
@@ -87,5 +83,11 @@ public class CommandChatcolor extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "chatcolor";
     }
 }

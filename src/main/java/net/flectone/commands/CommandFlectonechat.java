@@ -19,11 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandFlectonechat extends FTabCompleter {
-
-    public CommandFlectonechat() {
-        super.commandName = "flectonechat";
-    }
+public class CommandFlectonechat implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -95,25 +91,23 @@ public class CommandFlectonechat extends FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isStartsWith(strings[0], "reload");
-            isStartsWith(strings[0], "config");
-            isStartsWith(strings[0], "locale");
-        } else if (strings.length == 2) {
-
-            if (strings[0].equalsIgnoreCase("config")) {
-                addKeysFile(Main.config, strings[1]);
+        switch (strings.length) {
+            case 1 -> {
+                isStartsWith(strings[0], "reload");
+                isStartsWith(strings[0], "config");
+                isStartsWith(strings[0], "locale");
             }
-            if (strings[0].equalsIgnoreCase("locale")) {
-                addKeysFile(Main.locale, strings[1]);
+            case 2 -> {
+                switch (strings[0].toLowerCase()) {
+                    case "config", "locale" -> addKeysFile(Main.config, strings[1]);
+                }
             }
-
-        } else if (strings.length == 3) {
-            isStartsWith(strings[2], "set");
-        } else if (strings.length == 4) {
-            isStartsWith(strings[3], "string");
-            isStartsWith(strings[3], "integer");
-            isStartsWith(strings[3], "boolean");
+            case 3 -> isStartsWith(strings[2], "set");
+            case 4 -> {
+                isStartsWith(strings[3], "string");
+                isStartsWith(strings[3], "integer");
+                isStartsWith(strings[3], "boolean");
+            }
         }
 
         Collections.sort(wordsList);
@@ -127,5 +121,11 @@ public class CommandFlectonechat extends FTabCompleter {
             case "boolean" -> Boolean.parseBoolean(arg);
             default -> arg;
         };
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "flectonechat";
     }
 }

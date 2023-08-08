@@ -13,11 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandReply extends FTabCompleter {
-
-    public CommandReply() {
-        super.commandName = "reply";
-    }
+public class CommandReply implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -70,5 +66,11 @@ public class CommandReply extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "reply";
     }
 }

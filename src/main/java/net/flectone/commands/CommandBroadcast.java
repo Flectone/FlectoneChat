@@ -14,11 +14,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-public class CommandBroadcast extends FTabCompleter {
-
-    public CommandBroadcast() {
-        super.commandName = "broadcast";
-    }
+public class CommandBroadcast implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -49,5 +45,11 @@ public class CommandBroadcast extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "broadcast";
     }
 }

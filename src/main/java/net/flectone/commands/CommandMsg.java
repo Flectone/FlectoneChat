@@ -16,11 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandMsg extends FTabCompleter {
-
-    public CommandMsg() {
-        super.commandName = "msg";
-    }
+public class CommandMsg implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -84,4 +80,9 @@ public class CommandMsg extends FTabCompleter {
         return wordsList;
     }
 
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "msg";
+    }
 }

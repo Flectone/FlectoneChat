@@ -12,11 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandUnban extends FTabCompleter {
-
-    public CommandUnban() {
-        super.commandName = "unban";
-    }
+public class CommandUnban implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -59,5 +55,11 @@ public class CommandUnban extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "unban";
     }
 }

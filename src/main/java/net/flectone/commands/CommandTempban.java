@@ -21,11 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CommandTempban extends FTabCompleter {
-
-    public CommandTempban() {
-        super.commandName = "tempban";
-    }
+public class CommandTempban implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -103,5 +99,11 @@ public class CommandTempban extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "tempban";
     }
 }

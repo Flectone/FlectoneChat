@@ -16,11 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommandMailClear extends FTabCompleter {
-
-    public CommandMailClear() {
-        super.commandName = "mail-clear";
-    }
+public class CommandMailClear implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -102,5 +98,11 @@ public class CommandMailClear extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "mail-clear";
     }
 }

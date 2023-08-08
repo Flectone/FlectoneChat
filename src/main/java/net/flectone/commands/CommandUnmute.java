@@ -14,11 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandUnmute extends FTabCompleter {
-
-    public CommandUnmute() {
-        super.commandName = "unmute";
-    }
+public class CommandUnmute implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -65,5 +61,11 @@ public class CommandUnmute extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "unmute";
     }
 }

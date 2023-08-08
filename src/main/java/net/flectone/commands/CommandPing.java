@@ -14,11 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandPing extends FTabCompleter {
-
-    public CommandPing() {
-        super.commandName = "ping";
-    }
+public class CommandPing implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -74,5 +70,11 @@ public class CommandPing extends FTabCompleter {
         Collections.sort(wordsList);
 
         return wordsList;
+    }
+
+    @NotNull
+    @Override
+    public String getCommandName() {
+        return "ping";
     }
 }
