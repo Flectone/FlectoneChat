@@ -94,6 +94,14 @@ advancement:
   message:
     enable: true
 
+    task:
+      visible: true
+    goal:
+      visible: true
+    challenge:
+      visible: true
+
+
 player:
   display-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
   tab-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"

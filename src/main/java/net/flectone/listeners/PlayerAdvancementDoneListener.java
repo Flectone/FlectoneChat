@@ -66,7 +66,10 @@ public class PlayerAdvancementDoneListener implements Listener {
         FAdvancement fAdvancement = new FAdvancement(event.getAdvancement());
         FAdvancementType fAdvancementType = fAdvancement.getType();
 
-        if (fAdvancementType == FAdvancementType.UNKNOWN || fAdvancement.isHidden() || !fAdvancement.announceToChat())
+        if (fAdvancementType == FAdvancementType.UNKNOWN
+                || fAdvancement.isHidden()
+                || !fAdvancement.announceToChat()
+                || !Main.config.getBoolean("advancement.message." + fAdvancementType + ".visible"))
             return;
 
         String formatMessage = Main.locale.getString("advancement." + fAdvancementType + ".name");
