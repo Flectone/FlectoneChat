@@ -16,9 +16,10 @@ import java.util.*;
 
 public class FPlayerManager {
 
-    private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
-    private static final Set<FPlayer> bannedPlayers = new HashSet<>();
-    private static final Set<FPlayer> mutedPlayers = new HashSet<>();
+    private static final Collection<FPlayer> PLAYERS = new ArrayList<>();
+    private static final Set<FPlayer> BANNED_PLAYERS = new HashSet<>();
+    private static final Set<FPlayer> MUTED_PLAYERS = new HashSet<>();
+
     private static Scoreboard scoreBoard;
 
     public static void setScoreBoard() {
@@ -33,17 +34,17 @@ public class FPlayerManager {
 
     @NotNull
     public static Collection<FPlayer> getPlayers() {
-        return fPlayerHashMap.values();
+        return PLAYERS;
     }
 
     @NotNull
     public static Set<FPlayer> getBannedPlayers() {
-        return bannedPlayers;
+        return BANNED_PLAYERS;
     }
 
     @NotNull
     public static Set<FPlayer> getMutedPlayers() {
-        return mutedPlayers;
+        return MUTED_PLAYERS;
     }
 
     public static void loadPlayers() {
@@ -82,7 +83,7 @@ public class FPlayerManager {
     }
 
     public static void uploadPlayers() {
-        fPlayerHashMap.values().stream()
+        PLAYERS.stream()
                 .filter(FPlayer::isUpdated)
                 .forEach(fPlayer -> {
                     Main.getDatabase().uploadDatabase(fPlayer);
@@ -91,41 +92,40 @@ public class FPlayerManager {
     }
 
     public static void removePlayersFromTeams() {
-        fPlayerHashMap.values().forEach(FEntity::removePlayerFromTeam);
+        PLAYERS.forEach(FEntity::removePlayerFromTeam);
     }
 
     public static void addPlayer(@NotNull OfflinePlayer offlinePlayer) {
-        String uuid = offlinePlayer.getUniqueId().toString();
-        if (fPlayerHashMap.containsKey(uuid)) return;
-
         FPlayer fPlayer = new FPlayer(offlinePlayer);
-        fPlayerHashMap.put(uuid, fPlayer);
+        if (!PLAYERS.contains(fPlayer))
+            PLAYERS.add(fPlayer);
     }
 
 
     public static FPlayer addPlayer(@NotNull Player player) {
-        String uuid = player.getUniqueId().toString();
-        if (fPlayerHashMap.containsKey(uuid)) {
-            FPlayer fPlayer = getPlayer(uuid);
+        FPlayer newPlayer = new FPlayer(player);
+
+        if (PLAYERS.contains(newPlayer)) {
+
+            FPlayer fPlayer = getPlayer(player);
             if (fPlayer == null) return null;
 
             fPlayer.initialize(player);
             return fPlayer;
         }
 
-        FPlayer fPlayer = new FPlayer(player);
-        fPlayerHashMap.put(uuid, fPlayer);
-        fPlayer.initialize(player);
-        Main.getDatabase().setPlayer(fPlayer.getUUID());
-        return fPlayer;
+        PLAYERS.add(newPlayer);
+        newPlayer.initialize(player);
+        Main.getDatabase().setPlayer(newPlayer.getUUID());
+        return newPlayer;
     }
 
     @Nullable
     public static FPlayer getPlayerFromName(@NotNull String name) {
-        return fPlayerHashMap.values()
-                .parallelStream()
+        return PLAYERS.parallelStream()
                 .filter(fPlayer -> fPlayer.getRealName().equals(name))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElse(null);
     }
 
     @Nullable
@@ -140,7 +140,10 @@ public class FPlayerManager {
 
     @Nullable
     public static FPlayer getPlayer(@NotNull String uuid) {
-        return fPlayerHashMap.get(uuid);
+        return PLAYERS.stream()
+                .filter(player -> player.getUUID().equals(uuid))
+                .findFirst()
+                .orElse(null);
     }
 
     @Nullable
@@ -149,7 +152,7 @@ public class FPlayerManager {
     }
 
     public static void removePlayer(@NotNull String uuid) {
-        fPlayerHashMap.remove(uuid);
+        PLAYERS.remove(getPlayer(uuid));
     }
 
     public static void removePlayer(@NotNull UUID uuid) {
@@ -159,5 +162,4 @@ public class FPlayerManager {
     public static void removePlayer(@NotNull Player player) {
         removePlayer(player.getUniqueId());
     }
-
 }
