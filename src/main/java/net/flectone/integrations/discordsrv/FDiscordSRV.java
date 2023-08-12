@@ -99,6 +99,8 @@ public class FDiscordSRV implements Listener {
                 .replace("<due_to>", "")
                 .replace("<by_item>", "");
 
+        deathMessage = deathMessage.length() > 255 ? deathMessage.substring(0, 255) : deathMessage;
+
         String channelName = DiscordSRV.getPlugin().getOptionalChannel("deaths");
         MessageFormat messageFormat = DiscordSRV.getPlugin().getMessageFromConfiguration("MinecraftPlayerDeathMessage");
         if (messageFormat == null) return;
@@ -171,6 +173,7 @@ public class FDiscordSRV implements Listener {
                 .replace("<player>", player.getName())
                 .replace("<advancement>", advancementTitle);
         lastAdvancement = PlaceholderUtil.replacePlaceholdersToDiscord(lastAdvancement);
+        lastAdvancement = lastAdvancement.length() > 255 ? lastAdvancement.substring(0, 255) : lastAdvancement;
 
         String finalAchievementName = StringUtils.isNotBlank(advancementTitle) ? advancementTitle : "";
         String avatarUrl = DiscordSRV.getAvatarUrl(player);
