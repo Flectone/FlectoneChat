@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -13,11 +12,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
+
 public class CommandChatcolor implements FTabCompleter {
 
     @NotNull
     public static String[] getDefaultColors() {
-        return new String[]{Main.config.getString("color.first"), Main.config.getString("color.second")};
+        return new String[]{
+                config.getString("color.first"),
+                config.getString("color.second")
+        };
     }
 
     @Override
@@ -60,7 +65,7 @@ public class CommandChatcolor implements FTabCompleter {
 
         if (fPlayer.isOnline() && fPlayer.getPlayer() != null) {
             fPlayer.setDisplayName();
-            fPlayer.getPlayer().sendMessage(Main.locale.getFormatString("command.chatcolor.message", fPlayer.getPlayer()));
+            fPlayer.getPlayer().sendMessage(locale.getFormatString("command.chatcolor.message", fPlayer.getPlayer()));
         }
     }
 

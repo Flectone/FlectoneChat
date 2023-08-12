@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class FPlayerManager {
 
     private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
@@ -22,7 +25,7 @@ public class FPlayerManager {
     private static Scoreboard scoreBoard;
 
     public static void setScoreBoard() {
-        scoreBoard = Main.config.getBoolean("scoreboard.custom") ?
+        scoreBoard = config.getBoolean("scoreboard.custom") ?
                 Bukkit.getScoreboardManager().getNewScoreboard() : Bukkit.getScoreboardManager().getMainScoreboard();
     }
 
@@ -73,7 +76,7 @@ public class FPlayerManager {
 
                     String reason = banEntry.getReason() != null
                             ? banEntry.getReason()
-                            : Main.locale.getString("command.tempban.default-reason");
+                            : locale.getString("command.tempban.default-reason");
 
                     fPlayer.tempban(-1, reason);
 

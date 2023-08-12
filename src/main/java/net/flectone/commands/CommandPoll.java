@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
+import net.flectone.managers.PollManager;
+import net.flectone.misc.actions.Poll;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.misc.actions.Poll;
-import net.flectone.managers.PollManager;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -19,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
 
 public class CommandPoll implements FTabCompleter {
 
@@ -38,7 +40,7 @@ public class CommandPoll implements FTabCompleter {
 
         if (strings[0].equalsIgnoreCase("create")) {
 
-            if (!commandSender.hasPermission(Main.config.getString("command.poll.permission"))
+            if (!commandSender.hasPermission(config.getString("command.poll.permission"))
                     && !commandSender.isOp()) {
                 fCommand.sendMeMessage("command.poll.permission-message");
                 return true;
@@ -46,7 +48,7 @@ public class CommandPoll implements FTabCompleter {
 
             Poll poll = new Poll(ObjectUtil.toString(strings, 1));
 
-            String formatString = Main.locale.getString("command.poll.message")
+            String formatString = locale.getString("command.poll.message")
                     .replace("<id>", String.valueOf(poll.getId()));
 
             fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, poll.getMessage(), null, false);
@@ -93,7 +95,7 @@ public class CommandPoll implements FTabCompleter {
     }
 
     private TextComponent createVoteComponent(String voteType, int id) {
-        String agreeString = Main.locale.getFormatString("command.poll.format." + voteType, null);
+        String agreeString = locale.getFormatString("command.poll.format." + voteType, null);
         TextComponent voteComponent = new TextComponent(TextComponent.fromLegacyText(agreeString));
         voteComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/poll vote " + id + " " + voteType));
         return voteComponent;
@@ -108,7 +110,7 @@ public class CommandPoll implements FTabCompleter {
             case 1 -> {
                 isStartsWith(strings[0], "vote");
 
-                if (commandSender.hasPermission(Main.config.getString("command.poll.permission")) || commandSender.isOp())
+                if (commandSender.hasPermission(config.getString("command.poll.permission")) || commandSender.isOp())
                     isStartsWith(strings[0], "create");
             }
             case 2 -> {

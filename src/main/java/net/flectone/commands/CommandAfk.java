@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandAfk implements FTabCompleter {
 
@@ -35,7 +36,7 @@ public class CommandAfk implements FTabCompleter {
         fPlayer.setAfk(isAfk);
 
         String afkSuffix = isAfk
-                ? Main.locale.getFormatString("command.afk.suffix", fPlayer.getPlayer())
+                ? locale.getFormatString("command.afk.suffix", fPlayer.getPlayer())
                 : "";
 
         fPlayer.setAfkSuffix(afkSuffix);

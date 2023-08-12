@@ -4,7 +4,6 @@ import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.integrations.interactivechat.FlectoneInteractiveChat;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.managers.FileManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -22,11 +21,13 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
+
 public class FCommand {
 
     public static final HashMap<String, Integer> commandsCDMap = new HashMap<>();
     public final static String[] formatTimeList = {"s", "m", "h", "d", "w", "y"};
-    private final FileManager locale = Main.locale;
     private final String command;
     private final String[] args;
     private final CommandSender sender;
@@ -73,7 +74,7 @@ public class FCommand {
     }
 
     private boolean isCDEnabled() {
-        return Main.config.getBoolean("cool-down.enable") && Main.config.getBoolean("cool-down." + command + ".enable");
+        return config.getBoolean("cool-down.enable") && config.getBoolean("cool-down." + command + ".enable");
     }
 
     private boolean isCDExpired() {
@@ -92,13 +93,13 @@ public class FCommand {
         isHaveCD = commandsCDMap.get(player.getUniqueId() + command) != null
                 && commandsCDMap.get(player.getUniqueId() + command) > ObjectUtil.getCurrentTime()
                 && !player.isOp()
-                && !player.hasPermission(Main.config.getString("cool-down." + command + ".permission"));
+                && !player.hasPermission(config.getString("cool-down." + command + ".permission"));
 
         return isHaveCD;
     }
 
     private int getCDTime() {
-        return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : Main.config.getInt("cool-down." + command + ".time") + ObjectUtil.getCurrentTime();
+        return hasCD() ? commandsCDMap.get(player.getUniqueId() + command) : config.getInt("cool-down." + command + ".time") + ObjectUtil.getCurrentTime();
     }
 
     public boolean isMuted() {
@@ -218,11 +219,11 @@ public class FCommand {
 
     @NotNull
     private Set<Player> getFilteredPlayers() {
-        if (!Main.config.getString("command." + command + ".global").isEmpty()
-                && !Main.config.getBoolean("command." + command + ".global")
+        if (!config.getString("command." + command + ".global").isEmpty()
+                && !config.getBoolean("command." + command + ".global")
                 && !isConsole) {
 
-            int localRange = Main.config.getInt("chat.local.range");
+            int localRange = config.getInt("chat.local.range");
 
             Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange).parallelStream()
                     .filter(entity -> entity instanceof Player && !FPlayerManager.getPlayer((Player) entity).isIgnored(player))
@@ -284,7 +285,7 @@ public class FCommand {
     }
 
     private void sendTellUtil(@NotNull MessageBuilder messageBuilder, @NotNull String typeMessage, @NotNull CommandSender firstPlayer, @NotNull CommandSender secondPlayer, @NotNull CommandSender sender) {
-        String getFormatString1 = Main.locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
+        String getFormatString1 = locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
                 .replace("<player>", secondPlayer.getName());
 
         BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);

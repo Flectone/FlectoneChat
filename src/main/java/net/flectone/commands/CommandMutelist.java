@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -22,6 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class CommandMutelist implements FTabCompleter {
 
     @Override
@@ -31,7 +33,7 @@ public class CommandMutelist implements FTabCompleter {
 
         Set<FPlayer> mutedPlayers = FPlayerManager.getMutedPlayers();
 
-        int perPage = Main.config.getInt("command.mutelist.per-page");
+        int perPage = config.getInt("command.mutelist.per-page");
 
         int lastPage = (int) Math.ceil((double) mutedPlayers.size() / perPage);
 
@@ -53,12 +55,12 @@ public class CommandMutelist implements FTabCompleter {
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        String title = Main.locale.getFormatString("command.mutelist.title", commandSender)
+        String title = locale.getFormatString("command.mutelist.title", commandSender)
                 .replace("<count>", String.valueOf(mutedPlayers.size()));
 
         componentBuilder.append(TextComponent.fromLegacyText(title)).append("\n\n");
 
-        String unmuteButton = Main.locale.getFormatString("command.mutelist.unmute-button", commandSender);
+        String unmuteButton = locale.getFormatString("command.mutelist.unmute-button", commandSender);
 
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
 
@@ -66,13 +68,13 @@ public class CommandMutelist implements FTabCompleter {
 
         mutedPlayers.stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(fPlayer -> {
 
-            String playerMuteFormat = Main.locale.getFormatString("command.mutelist.player-mute", commandSender)
+            String playerMuteFormat = locale.getFormatString("command.mutelist.player-mute", commandSender)
                     .replace("<unmute>", unmuteButton)
                     .replace("<player>", fPlayer.getRealName())
                     .replace("<reason>", fPlayer.getMuteReason())
                     .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()));
 
-            String unbanHover = Main.locale.getFormatString("command.mutelist.unmute-hover", commandSender)
+            String unbanHover = locale.getFormatString("command.mutelist.unmute-hover", commandSender)
                     .replace("<player>", fPlayer.getRealName());
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(playerMuteFormat));
@@ -82,7 +84,7 @@ public class CommandMutelist implements FTabCompleter {
             componentBuilder.append(textComponent).append("\n\n");
         });
 
-        String pageLine = Main.locale.getFormatString("command.mutelist.page-line", commandSender)
+        String pageLine = locale.getFormatString("command.mutelist.page-line", commandSender)
                 .replace("<page>", String.valueOf(page))
                 .replace("<last-page>", String.valueOf(lastPage));
 
@@ -96,11 +98,11 @@ public class CommandMutelist implements FTabCompleter {
             switch (part) {
                 case "<prev-page>" -> {
                     pageNumber--;
-                    button = Main.locale.getFormatString("command.mutelist.prev-page", commandSender);
+                    button = locale.getFormatString("command.mutelist.prev-page", commandSender);
                 }
                 case "<next-page>" -> {
                     pageNumber++;
-                    button = Main.locale.getFormatString("command.mutelist.next-page", commandSender);
+                    button = locale.getFormatString("command.mutelist.next-page", commandSender);
                 }
             }
 
@@ -126,7 +128,7 @@ public class CommandMutelist implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            int perPage = Main.config.getInt("command.mutelist.per-page");
+            int perPage = config.getInt("command.mutelist.per-page");
 
             int lastPage = (int) Math.ceil((double) FPlayerManager.getMutedPlayers().size() / perPage);
 

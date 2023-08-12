@@ -20,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class PlayerInteractListener implements Listener {
 
     private static final Map<Material, String> COLOR_MAP = new HashMap<>();
@@ -54,7 +57,7 @@ public class PlayerInteractListener implements Listener {
         } else fPlayer.setBlock(event.getPlayer().getLocation().getBlock());
 
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)
-                && Main.config.getBoolean("player.item.sign.enable")
+                && config.getBoolean("player.item.sign.enable")
                 && event.getClickedBlock() != null
                 && event.getClickedBlock().getType().equals(Material.ANVIL)) {
 
@@ -78,7 +81,7 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        if (!Main.config.getBoolean("command.mark.enable")) return;
+        if (!config.getBoolean("command.mark.enable")) return;
         if (!event.getPlayer().hasPermission("flectonechat.mark")) return;
 
         if (event.getItem() == null) return;
@@ -94,9 +97,9 @@ public class PlayerInteractListener implements Listener {
         Material markItem;
 
         try {
-            markItem = Material.valueOf(Main.config.getString("command.mark.item").toUpperCase());
+            markItem = Material.valueOf(config.getString("command.mark.item").toUpperCase());
         } catch (IllegalArgumentException | NullPointerException exception) {
-            Main.getInstance().getLogger().warning("Item for mark was not found");
+            Main.warning("Item for mark was not found");
             markItem = Material.WOODEN_SWORD;
         }
 
@@ -128,7 +131,7 @@ public class PlayerInteractListener implements Listener {
             stringList = new ArrayList<>();
         }
 
-        String formatString = Main.locale.getString("player.item.sign")
+        String formatString = locale.getString("player.item.sign")
                 .replace("<player>", playerName);
 
         formatString = ObjectUtil.translateHexToColor(formatString);

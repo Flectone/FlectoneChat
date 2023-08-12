@@ -1,6 +1,5 @@
 package net.flectone.listeners;
 
-import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.entity.FPlayer;
 import org.bukkit.Bukkit;
@@ -18,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class InventoryOpenListener implements Listener {
 
@@ -72,7 +73,7 @@ public class InventoryOpenListener implements Listener {
 
     private ItemStack createArrowItem(@NotNull ItemStack arrow, @NotNull String arrowName, @NotNull HumanEntity player) {
         ItemMeta itemMeta = arrow.getItemMeta();
-        itemMeta.setDisplayName(Main.locale.getFormatString("command.ignore-list." + arrowName, player));
+        itemMeta.setDisplayName(locale.getFormatString("command.ignore-list." + arrowName, player));
         arrow.setItemMeta(itemMeta);
         return arrow;
     }

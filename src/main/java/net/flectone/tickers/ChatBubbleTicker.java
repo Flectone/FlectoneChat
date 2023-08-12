@@ -1,9 +1,8 @@
 package net.flectone.tickers;
 
-import net.flectone.Main;
-import net.flectone.misc.runnables.FBukkitRunnable;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.runnables.FBukkitRunnable;
 import org.bukkit.*;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -15,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class ChatBubbleTicker extends FBukkitRunnable {
 
@@ -45,9 +47,9 @@ public class ChatBubbleTicker extends FBukkitRunnable {
     }
 
     private void spawnMessageBubble(@NotNull Player player, @NotNull String message) {
-        List<String> messageStrings = divideText(message, Main.config.getInt("chat.bubble.max-per-line"));
-        String color = Main.locale.getFormatString("chat.bubble.color", null);
-        int readSpeed = Main.config.getInt("chat.bubble.read-speed");
+        List<String> messageStrings = divideText(message, config.getInt("chat.bubble.max-per-line"));
+        String color = locale.getFormatString("chat.bubble.color", null);
+        int readSpeed = config.getInt("chat.bubble.read-speed");
 
         int duration = (message.length() + 8 * messageStrings.size()) * 1200 / readSpeed;
 

@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandTry implements FTabCompleter {
 
@@ -28,7 +29,7 @@ public class CommandTry implements FTabCompleter {
         int randomPer = random.nextInt(100);
         randomPer += 1;
 
-        String formatString = Main.locale.getString("command.try." + (randomPer >= 50) + "-message")
+        String formatString = locale.getString("command.try." + (randomPer >= 50) + "-message")
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<percent>", String.valueOf(randomPer));
 

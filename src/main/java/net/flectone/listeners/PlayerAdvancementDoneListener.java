@@ -23,6 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class PlayerAdvancementDoneListener implements Listener {
 
     private static PlayerAdvancementDoneListener instance;
@@ -42,7 +45,7 @@ public class PlayerAdvancementDoneListener implements Listener {
     }
 
     public static void reload() {
-        boolean isEnable = Main.config.getBoolean("advancement.message.enable");
+        boolean isEnable = config.getBoolean("advancement.message.enable");
         if (isEnable) register();
         else unregister();
 
@@ -71,10 +74,10 @@ public class PlayerAdvancementDoneListener implements Listener {
         if (fAdvancementType == FAdvancementType.UNKNOWN
                 || fAdvancement.isHidden()
                 || !fAdvancement.announceToChat()
-                || !Main.config.getBoolean("advancement.message." + fAdvancementType + ".visible"))
+                || !config.getBoolean("advancement.message." + fAdvancementType + ".visible"))
             return;
 
-        String formatMessage = Main.locale.getString("advancement." + fAdvancementType + ".name");
+        String formatMessage = locale.getString("advancement." + fAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
         FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
@@ -101,7 +104,7 @@ public class PlayerAdvancementDoneListener implements Listener {
                 case "<player>" -> mainBuilder.append(createClickableComponent(mainColor, sender, recipient));
                 case "<advancement>" -> {
                     TranslatableComponent translatableComponent = new TranslatableComponent(fAdvancement.getTranslateKey());
-                    String hover = Main.locale.getFormatString("advancement." + fAdvancement.getType() + ".hover", recipient, sender);
+                    String hover = locale.getFormatString("advancement." + fAdvancement.getType() + ".hover", recipient, sender);
                     String hoverColor = "";
                     ComponentBuilder hoverBuilder = new ComponentBuilder();
                     for (String hoverPlaceholder : ObjectUtil.splitLine(hover, new ArrayList<>(List.of("<name>", "<description>")))) {
@@ -140,7 +143,7 @@ public class PlayerAdvancementDoneListener implements Listener {
     private TextComponent createClickableComponent(@NotNull String chatColor, @NotNull CommandSender sender, @NotNull CommandSender recipient) {
         String playerName = sender.getName();
         String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
+        String showText = locale.getFormatString("player.hover-message", recipient, sender)
                 .replace("<player>", playerName);
 
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + playerName));

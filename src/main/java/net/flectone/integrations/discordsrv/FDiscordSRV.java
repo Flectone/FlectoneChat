@@ -15,9 +15,8 @@ import github.scarsz.discordsrv.util.DiscordUtil;
 import github.scarsz.discordsrv.util.MessageUtil;
 import github.scarsz.discordsrv.util.PlaceholderUtil;
 import github.scarsz.discordsrv.util.TimeUtil;
-import net.flectone.Main;
-import net.flectone.utils.ObjectUtil;
 import net.flectone.misc.advancement.FAdvancement;
+import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -29,6 +28,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.function.BiFunction;
+
+import static net.flectone.managers.FileManager.locale;
 
 /*
 
@@ -78,12 +79,12 @@ public class FDiscordSRV implements Listener {
                 .replace("<block>", finalBlock.name());
 
         if (killer != null) {
-            String dueToMessage = Main.locale.getFormatString("death.due-to", null);
+            String dueToMessage = locale.getFormatString("death.due-to", null);
             message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
         }
 
         if (killerItem != null) {
-            String byItemMessage = Main.locale.getFormatString("death.by-item", null);
+            String byItemMessage = locale.getFormatString("death.by-item", null);
 
             String itemName = killerItem.getItemMeta() != null && !killerItem.getItemMeta().getDisplayName().isEmpty()
                     ? killerItem.getItemMeta().getDisplayName()

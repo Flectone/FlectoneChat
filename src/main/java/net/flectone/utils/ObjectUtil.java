@@ -21,6 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class ObjectUtil {
 
     @NotNull
@@ -32,10 +35,10 @@ public class ObjectUtil {
         int minutes = (timeInSeconds / 60) % 60;
         int seconds = timeInSeconds % 60;
 
-        String finalString = (days > 0 ? " " + days + Main.locale.getString("command.online.format.day") : "")
-                + (hours > 0 ? " " + hours + Main.locale.getString("command.online.format.hour") : "")
-                + (minutes > 0 ? " " + minutes + Main.locale.getString("command.online.format.minute") : "")
-                + (seconds > 0 ? " " + seconds + Main.locale.getString("command.online.format.second") : "");
+        String finalString = (days > 0 ? " " + days + locale.getString("command.online.format.day") : "")
+                + (hours > 0 ? " " + hours + locale.getString("command.online.format.hour") : "")
+                + (minutes > 0 ? " " + minutes + locale.getString("command.online.format.minute") : "")
+                + (seconds > 0 ? " " + seconds + locale.getString("command.online.format.second") : "");
 
         return finalString.substring(1);
     }
@@ -121,9 +124,9 @@ public class ObjectUtil {
     }
 
     public static void playSound(@Nullable Player player, @NotNull String command) {
-        if (player == null || !Main.config.getBoolean("sound." + command + ".enable")) return;
+        if (player == null || !config.getBoolean("sound." + command + ".enable")) return;
 
-        String soundName = Main.config.getString("sound." + command + ".type");
+        String soundName = config.getString("sound." + command + ".type");
 
         try {
             player.playSound(player.getLocation(), Sound.valueOf(soundName), 1, 1);

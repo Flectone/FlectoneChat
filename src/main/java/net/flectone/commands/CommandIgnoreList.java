@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.Bukkit;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandIgnoreList implements FTabCompleter {
 
@@ -33,7 +34,7 @@ public class CommandIgnoreList implements FTabCompleter {
 
         List<Inventory> inventoryList = new ArrayList<>();
 
-        String inventoryTitle = Main.locale.getFormatString("command.ignore-list.name", commandSender);
+        String inventoryTitle = locale.getFormatString("command.ignore-list.name", commandSender);
 
         int inventorySize = 9 * 3;
         int numInventories = (ignoreList.size() - 1) / inventorySize + 1;

@@ -1,9 +1,8 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
+import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandStream implements FTabCompleter {
 
@@ -55,7 +56,7 @@ public class CommandStream implements FTabCompleter {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        Main.locale.getStringList("command.stream.start.message").parallelStream()
+        locale.getStringList("command.stream.start.message").parallelStream()
                 .forEachOrdered(string -> {
 
                     string = string

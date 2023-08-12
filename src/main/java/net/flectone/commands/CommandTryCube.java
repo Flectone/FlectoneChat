@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
 
 public class CommandTryCube implements FTabCompleter {
 
@@ -29,7 +31,7 @@ public class CommandTryCube implements FTabCompleter {
 
         int amount = Integer.parseInt(strings[0]);
 
-        if (amount > Main.config.getInt("command.try-cube.max-amount") || amount == 0) {
+        if (amount > config.getInt("command.try-cube.max-amount") || amount == 0) {
             fCommand.sendMeMessage("command.try-cube.too-much");
             return true;
         }
@@ -44,19 +46,19 @@ public class CommandTryCube implements FTabCompleter {
         while (amount-- != 0) {
             int cubeType = random.nextInt(6) + 1;
             values += cubeType;
-            stringBuilder.append(Main.locale.getString("command.try-cube.format." + cubeType)).append(" ");
+            stringBuilder.append(locale.getString("command.try-cube.format." + cubeType)).append(" ");
         }
 
         if (amount == 6 && values == 21 && stringBuilder.toString().equals("⚀ ⚁ ⚂ ⚃ ⚄ ⚅ ")) {
 
-            String formatString = Main.locale.getString("command.try-cube.lucky-message")
+            String formatString = locale.getString("command.try-cube.lucky-message")
                     .replace("<player>", fCommand.getSenderName());
 
             fCommand.sendGlobalMessage(formatString);
             return true;
         }
 
-        String formatString = Main.locale.getString("command.try-cube." + (values >= Integer.parseInt(strings[0]) * 3.5) + "-message")
+        String formatString = locale.getString("command.try-cube." + (values >= Integer.parseInt(strings[0]) * 3.5) + "-message")
                 .replace("<cube>", stringBuilder.toString())
                 .replace("<player>", fCommand.getSenderName());
 
@@ -71,7 +73,7 @@ public class CommandTryCube implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            for (int x = 1; x <= Main.config.getInt("command.try-cube.max-amount"); x++) {
+            for (int x = 1; x <= config.getInt("command.try-cube.max-amount"); x++) {
                 isStartsWith(strings[0], String.valueOf(x));
             }
         }

@@ -1,9 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

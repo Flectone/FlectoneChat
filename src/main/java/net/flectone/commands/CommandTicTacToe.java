@@ -1,11 +1,10 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.misc.actions.TicTacToe;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.actions.TicTacToe;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -18,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandTicTacToe implements FTabCompleter {
 
@@ -54,14 +55,14 @@ public class CommandTicTacToe implements FTabCompleter {
             int size = getValidSize(strings);
             ticTacToe = new TicTacToe(size, firstPlayer, secondPlayer);
 
-            String sendMessage = Main.locale.getFormatString("command.tic-tac-toe.send-message", fCommand.getPlayer())
+            String sendMessage = locale.getFormatString("command.tic-tac-toe.send-message", fCommand.getPlayer())
                     .replace("<player>", secondFPlayer.getRealName());
 
             fCommand.getPlayer().sendMessage(sendMessage);
 
-            String getMessage = Main.locale.getFormatString("command.tic-tac-toe.get-message", secondFPlayer.getPlayer())
+            String getMessage = locale.getFormatString("command.tic-tac-toe.get-message", secondFPlayer.getPlayer())
                     .replace("<player>", fCommand.getFPlayer().getRealName());
-            String hoverMessage = Main.locale.getFormatString("command.tic-tac-toe.hover-message", secondFPlayer.getPlayer());
+            String hoverMessage = locale.getFormatString("command.tic-tac-toe.hover-message", secondFPlayer.getPlayer());
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(getMessage));
             textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ttt " + ticTacToe.getUuid() + " yes"));
@@ -97,13 +98,13 @@ public class CommandTicTacToe implements FTabCompleter {
 
         String message = null;
         if (ticTacToe.hasWinningTrio()) {
-            message = Main.locale.getString("command.tic-tac-toe.game.win")
+            message = locale.getString("command.tic-tac-toe.game.win")
                     .replace("<player>", fCommand.getSenderName());
 
             ticTacToe.setEnded(true);
 
         } else if (ticTacToe.checkDraw()) {
-            message = Main.locale.getString("command.tic-tac-toe.game.draw");
+            message = locale.getString("command.tic-tac-toe.game.draw");
             ticTacToe.setEnded(true);
         }
 

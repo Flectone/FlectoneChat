@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -11,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandMe implements FTabCompleter {
 
@@ -23,7 +24,7 @@ public class CommandMe implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
-        String formatString = Main.locale.getString("command.me.message")
+        String formatString = locale.getString("command.me.message")
                 .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));

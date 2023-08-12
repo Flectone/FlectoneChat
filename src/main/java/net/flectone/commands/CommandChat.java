@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.command.Command;
@@ -9,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import static net.flectone.managers.FileManager.config;
 
 public class CommandChat implements FTabCompleter {
 
@@ -32,7 +33,7 @@ public class CommandChat implements FTabCompleter {
 
         boolean isSwitch = chatParam.equals("switch");
 
-        if (isSwitch && !Main.config.getBoolean("chat.global.enable")) {
+        if (isSwitch && !config.getBoolean("chat.global.enable")) {
             fCommand.sendMeMessage("command.disabled");
             return true;
         }
@@ -55,12 +56,15 @@ public class CommandChat implements FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isStartsWith(strings[0], "switch");
-            isStartsWith(strings[0], "hide");
-        } else if (strings.length == 2) {
-            isStartsWith(strings[1], "local");
-            isStartsWith(strings[1], "global");
+        switch (strings.length) {
+            case 1 -> {
+                isStartsWith(strings[0], "switch");
+                isStartsWith(strings[0], "hide");
+            }
+            case 2 -> {
+                isStartsWith(strings[1], "local");
+                isStartsWith(strings[1], "global");
+            }
         }
 
         return wordsList;

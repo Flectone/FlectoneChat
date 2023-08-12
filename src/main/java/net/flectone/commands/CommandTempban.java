@@ -1,11 +1,10 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -20,6 +19,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
 
 public class CommandTempban implements FTabCompleter {
 
@@ -55,16 +57,16 @@ public class CommandTempban implements FTabCompleter {
 
         if (fCommand.isHaveCD()) return true;
 
-        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : Main.locale.getString("command.tempban.default-reason");
+        String reason = strings.length > 2 ? ObjectUtil.toString(strings, 2) : locale.getString("command.tempban.default-reason");
 
         String globalStringMessage = time == -1 ? "command.ban.global-message" : "command.tempban.global-message";
 
-        String globalMessage = Main.locale.getString(globalStringMessage)
+        String globalMessage = locale.getString(globalStringMessage)
                 .replace("<player>", bannedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        boolean announceModeration = Main.config.getBoolean("command.tempban.announce");
+        boolean announceModeration = config.getBoolean("command.tempban.announce");
 
         if (announceModeration) FDiscordSRV.sendModerationMessage(globalMessage);
 

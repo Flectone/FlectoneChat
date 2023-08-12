@@ -1,6 +1,5 @@
 package net.flectone;
 
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.expansions.FExpansion;
 import net.flectone.integrations.luckperms.FLuckPerms;
@@ -12,6 +11,7 @@ import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.tickers.PlayerPingTicker;
@@ -23,9 +23,6 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.util.List;
-
 public final class Main extends JavaPlugin {
 
     public static boolean isHavePAPI = false;
@@ -33,8 +30,6 @@ public final class Main extends JavaPlugin {
     public static boolean isHavePlasmoVoice = false;
 
     public static boolean isHaveInteractiveChat = false;
-    public static FileManager config;
-    public static FileManager locale;
     private static Main instance;
     private Database database;
 
@@ -60,9 +55,7 @@ public final class Main extends JavaPlugin {
 
         instance = this;
 
-        config = new FileManager("config.yml");
-        locale = new FileManager("language/" + config.getString("language") + ".yml");
-        loadIcons();
+        FileManager.initialize();
         FPlayerManager.setScoreBoard();
 
         this.database = new SQLite(this);
@@ -96,19 +89,6 @@ public final class Main extends JavaPlugin {
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });
-    }
-
-    private void loadIcons() {
-        String path = Main.getInstance().getDataFolder() + File.separator + "icons" + File.separator;
-
-        List<String> iconNames = Main.config.getStringList("server.icon.names");
-        iconNames.add("maintenance");
-
-        for (String iconName : iconNames) {
-            if (new File(path + iconName + ".png").exists()) continue;
-
-            Main.getInstance().saveResource("icons" + File.separator + iconName + ".png", false);
-        }
     }
 
     private void hookPlugins() {

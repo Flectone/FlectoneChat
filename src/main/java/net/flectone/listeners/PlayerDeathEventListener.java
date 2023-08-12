@@ -36,6 +36,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class PlayerDeathEventListener implements Listener {
 
     private static PlayerDeathEventListener instance;
@@ -60,7 +63,7 @@ public class PlayerDeathEventListener implements Listener {
     }
 
     public static void reload() {
-        if (Main.config.getBoolean("death.message.enable")) register();
+        if (config.getBoolean("death.message.enable")) register();
         else unregister();
     }
 
@@ -102,10 +105,10 @@ public class PlayerDeathEventListener implements Listener {
 
         if (FSuperVanish.isVanished(player) || lastDamageEvent == null) return;
 
-        String formatMessage = Main.locale.getString(getDeathConfigMessage(lastDamageEvent));
+        String formatMessage = locale.getString(getDeathConfigMessage(lastDamageEvent));
         if (formatMessage.isEmpty()) return;
 
-        if (!Main.config.getBoolean("death.message.visible")) {
+        if (!config.getBoolean("death.message.visible")) {
             event.setDeathMessage("");
             return;
         }
@@ -236,7 +239,7 @@ public class PlayerDeathEventListener implements Listener {
                             || fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType())) {
                         break;
                     }
-                    String formatDueToMessage = Main.locale.getFormatString("death.due-to", recipient, sender);
+                    String formatDueToMessage = locale.getFormatString("death.due-to", recipient, sender);
                     String dueToColor = "";
                     ComponentBuilder dueToBuilder = new ComponentBuilder();
                     for (String dueToPlaceholder : ObjectUtil.splitLine(formatDueToMessage, new ArrayList<>(List.of("<killer>")))) {
@@ -259,7 +262,7 @@ public class PlayerDeathEventListener implements Listener {
                 }
                 case "<by_item>" -> {
                     if (fDamager.getKillerItemName() == null) break;
-                    String formatMessage = Main.locale.getFormatString("death.by-item", recipient, sender);
+                    String formatMessage = locale.getFormatString("death.by-item", recipient, sender);
                     String byItemColor = "";
                     ComponentBuilder byItemBuilder = new ComponentBuilder();
                     for (String byItemPlaceholder : ObjectUtil.splitLine(formatMessage, new ArrayList<>(List.of("<item>")))) {
@@ -294,7 +297,7 @@ public class PlayerDeathEventListener implements Listener {
     private TranslatableComponent createTranslatableEntityComponent(@NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull Entity entity) {
         TranslatableComponent hoverComponent = new TranslatableComponent(NMSUtil.getMinecraftName(entity));
 
-        String formatHoverMessage = Main.locale.getFormatString("entity.hover-message", recipient, sender)
+        String formatHoverMessage = locale.getFormatString("entity.hover-message", recipient, sender)
                 .replace("<uuid>", entity.getUniqueId().toString());
 
         ComponentBuilder hoverBuilder = new ComponentBuilder();
@@ -325,7 +328,7 @@ public class PlayerDeathEventListener implements Listener {
     private TextComponent createClickableComponent(@NotNull String chatColor, @NotNull CommandSender sender, @NotNull CommandSender recipient) {
         String playerName = sender.getName();
         String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
+        String showText = locale.getFormatString("player.hover-message", recipient, sender)
                 .replace("<player>", playerName);
 
         TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + playerName));
@@ -347,7 +350,7 @@ public class PlayerDeathEventListener implements Listener {
 
             message += damager instanceof Player
                     ? "player"
-                    : Main.config.getBoolean("death.message.mob-default")
+                    : config.getBoolean("death.message.mob-default")
                     ? "default"
                     : damager.getType().name().toLowerCase();
 

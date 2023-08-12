@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -14,6 +13,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.locale;
+
 public class CommandBroadcast implements FTabCompleter {
 
     @Override
@@ -25,7 +26,7 @@ public class CommandBroadcast implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
-        String formatString = Main.locale.getString("command.broadcast.message")
+        String formatString = locale.getString("command.broadcast.message")
                 .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, ObjectUtil.toString(strings), null, false);

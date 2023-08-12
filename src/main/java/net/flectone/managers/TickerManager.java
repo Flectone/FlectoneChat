@@ -1,12 +1,13 @@
 package net.flectone.managers;
 
-import net.flectone.Main;
 import net.flectone.misc.runnables.FBukkitRunnable;
 import net.flectone.tickers.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.config;
 
 public class TickerManager {
 
@@ -24,19 +25,19 @@ public class TickerManager {
     public static void start() {
         addTicker(new DatabaseTicker());
 
-        if (Main.config.getBoolean("chat.bubble.enable")) {
+        if (config.getBoolean("chat.bubble.enable")) {
             addTicker(new ChatBubbleTicker());
         }
 
-        if (Main.config.getBoolean("command.afk.timeout.enable")) {
+        if (config.getBoolean("command.afk.timeout.enable")) {
             addTicker(new AfkTicker());
         }
 
-        if (Main.config.getBoolean("tab.update.enable")) {
+        if (config.getBoolean("tab.update.enable")) {
             addTicker(new TabTicker());
         }
 
-        if (Main.config.getBoolean("tab.player-ping.enable")) {
+        if (config.getBoolean("tab.player-ping.enable")) {
             PlayerPingTicker.registerPingObjective();
             addTicker(new PlayerPingTicker());
         } else PlayerPingTicker.unregisterPingObjective();

@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -15,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandMsg implements FTabCompleter {
 
@@ -43,7 +44,7 @@ public class CommandMsg implements FTabCompleter {
 
         if (!fCommand.isConsole()) {
             if (fCommand.getSenderName().equalsIgnoreCase(playerName)) {
-                commandSender.sendMessage(Main.locale.getFormatString("command.msg.myself", commandSender) + message);
+                commandSender.sendMessage(locale.getFormatString("command.msg.myself", commandSender) + message);
                 return true;
             }
 

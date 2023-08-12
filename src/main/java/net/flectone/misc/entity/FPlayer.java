@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class FPlayer {
 
     private final OfflinePlayer offlinePlayer;
@@ -166,7 +169,7 @@ public class FPlayer {
 
     @NotNull
     public String getAfkSuffix() {
-        return isAfk ? Main.locale.getString("command.afk.suffix") : "";
+        return isAfk ? locale.getString("command.afk.suffix") : "";
     }
 
     public void setAfkSuffix(String afkSuffix) {
@@ -240,7 +243,7 @@ public class FPlayer {
 
         String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
-        String localMessage = Main.locale.getFormatString(localStringMessage, player)
+        String localMessage = locale.getFormatString(localStringMessage, player)
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
@@ -305,7 +308,7 @@ public class FPlayer {
 
         if (!team.hasEntry(this.name)) team.addEntry(this.name);
 
-        team.setOption(Team.Option.NAME_TAG_VISIBILITY, Main.config.getBoolean("player.name-visible")
+        team.setOption(Team.Option.NAME_TAG_VISIBILITY, config.getBoolean("player.name-visible")
                 ? Team.OptionStatus.ALWAYS : Team.OptionStatus.NEVER);
 
         team.setColor(ChatColor.WHITE);
@@ -351,13 +354,16 @@ public class FPlayer {
         this.isStreaming = streaming;
 
         String streamFormatPrefix = getStreamFormatPrefix();
-        this.streamPrefix = streamFormatPrefix.isEmpty() ? "" : Main.locale.getFormatString(streamFormatPrefix, getPlayer());
+        this.streamPrefix = streamFormatPrefix.isEmpty() ? "" : locale.getFormatString(streamFormatPrefix, getPlayer());
     }
 
     @NotNull
     private String getStreamFormatPrefix() {
-        return isStreaming ? "command.stream.online-prefix" :
-                Main.config.getBoolean("command.stream.offline-prefix.enable") ? "command.stream.offline-prefix" : "";
+        return isStreaming
+                ? "command.stream.online-prefix"
+                : config.getBoolean("command.stream.offline-prefix.enable")
+                    ? "command.stream.offline-prefix"
+                    : "";
     }
 
     public void setVaultPrefixSuffix() {
@@ -374,7 +380,7 @@ public class FPlayer {
     private String getName(@NotNull String formatName) {
         setVaultPrefixSuffix();
 
-        String name = Main.config.getString("player." + formatName)
+        String name = config.getString("player." + formatName)
                 .replace("<vault_prefix>", this.vaultPrefix)
                 .replace("<world_prefix>", this.worldPrefix)
                 .replace("<stream_prefix>", this.streamPrefix)
@@ -406,7 +412,7 @@ public class FPlayer {
 
         String prefix = "";
         String suffix = "";
-        if (Main.config.getBoolean("player.name-tag.enable")) {
+        if (config.getBoolean("player.name-tag.enable")) {
             String[] strings = getDisplayName().split(this.name);
             prefix = strings.length > 0 ? strings[0] : "";
             suffix = strings.length > 1 ? strings[1] : "";
@@ -419,11 +425,11 @@ public class FPlayer {
     public void setPlayerListHeaderFooter() {
         setDisplayName();
 
-        if (Main.config.getBoolean("tab.header-message.enable")) {
-            player.setPlayerListHeader(Main.locale.getFormatString("tab.header.message", player));
+        if (config.getBoolean("tab.header-message.enable")) {
+            player.setPlayerListHeader(locale.getFormatString("tab.header.message", player));
         }
-        if (Main.config.getBoolean("tab.footer-message.enable")) {
-            player.setPlayerListFooter(Main.locale.getFormatString("tab.footer.message", player));
+        if (config.getBoolean("tab.footer-message.enable")) {
+            player.setPlayerListFooter(locale.getFormatString("tab.footer.message", player));
         }
     }
 
@@ -435,14 +441,14 @@ public class FPlayer {
     public void setWorldPrefix(World world) {
         if (Main.getInstance().getConfig().getBoolean("player.world.prefix.enable")) {
 
-            String worldType = Main.config.getString("player.world.mode").equals("type")
+            String worldType = config.getString("player.world.mode").equals("type")
                     ? world.getEnvironment().toString().toLowerCase()
                     : world.getName().toLowerCase();
 
-            this.worldPrefix = Main.locale.getString("player.world.prefix." + worldType);
+            this.worldPrefix = locale.getString("player.world.prefix." + worldType);
             if (this.worldPrefix.isEmpty()) {
                 Main.warning("The prefix for " + worldType + " could not be determined");
-                this.worldPrefix = Main.locale.getString("player.world.prefix.normal");
+                this.worldPrefix = locale.getString("player.world.prefix.normal");
             }
 
             this.worldPrefix = ObjectUtil.formatString(this.worldPrefix, player);

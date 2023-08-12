@@ -4,14 +4,15 @@ import de.maxhenkel.voicechat.api.VoicechatApi;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
-import net.flectone.Main;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static net.flectone.managers.FileManager.locale;
 
 public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
 
@@ -55,7 +56,7 @@ public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
         if(fPlayer == null || !fPlayer.isMuted()) return;
 
         event.cancel();
-        String formatMessage = Main.locale.getFormatString("command.mute.local-message", player)
+        String formatMessage = locale.getFormatString("command.mute.local-message", player)
                 .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))
                 .replace("<reason>", fPlayer.getMuteReason());
 

@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -13,6 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static net.flectone.managers.FileManager.locale;
+
 public class CommandBall implements FTabCompleter {
 
     @Override
@@ -24,12 +25,12 @@ public class CommandBall implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
-        List<String> answers = Main.locale.getStringList("command.ball.format");
+        List<String> answers = locale.getStringList("command.ball.format");
 
         Random random = new Random();
         int randomPer = random.nextInt(0, answers.size());
 
-        String formatString = Main.locale.getString("command.ball.message")
+        String formatString = locale.getString("command.ball.message")
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<answer>", answers.get(randomPer));
 

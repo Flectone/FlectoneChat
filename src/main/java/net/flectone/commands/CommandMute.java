@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class CommandMute implements FTabCompleter {
 
     @Override
@@ -57,14 +60,14 @@ public class CommandMute implements FTabCompleter {
 
         String reason = strings.length > 2
                 ? ObjectUtil.toString(strings, 2)
-                : Main.locale.getString("command.mute.default-reason");
+                : locale.getString("command.mute.default-reason");
 
-        String formatString = Main.locale.getString("command.mute.global-message")
+        String formatString = locale.getString("command.mute.global-message")
                 .replace("<player>", mutedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        boolean announceModeration = Main.config.getBoolean("command.mute.announce");
+        boolean announceModeration = config.getBoolean("command.mute.announce");
 
         if (announceModeration) FDiscordSRV.sendModerationMessage(formatString);
 

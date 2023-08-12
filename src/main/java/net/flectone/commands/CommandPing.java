@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
@@ -13,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.config;
 
 public class CommandPing implements FTabCompleter {
 
@@ -35,13 +36,13 @@ public class CommandPing implements FTabCompleter {
         if (fCommand.isHaveCD()) return true;
 
         int currentPing = fPlayer.getPlayer().getPing();
-        int badPing = Main.config.getInt("command.ping.bad.count");
-        int mediumPing = Main.config.getInt("command.ping.medium.count");
+        int badPing = config.getInt("command.ping.bad.count");
+        int mediumPing = config.getInt("command.ping.medium.count");
         String pingColor;
 
-        if (currentPing > badPing) pingColor = Main.config.getFormatString("command.ping.bad.color", commandSender);
-        else if (currentPing > mediumPing) pingColor = Main.config.getFormatString("command.ping.medium.color", commandSender);
-        else pingColor = Main.config.getFormatString("command.ping.good.color", commandSender);
+        if (currentPing > badPing) pingColor = config.getFormatString("command.ping.bad.color", commandSender);
+        else if (currentPing > mediumPing) pingColor = config.getFormatString("command.ping.medium.color", commandSender);
+        else pingColor = config.getFormatString("command.ping.good.color", commandSender);
 
         pingColor += currentPing;
 

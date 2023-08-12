@@ -1,14 +1,13 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.listeners.PlayerAdvancementDoneListener;
 import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.messages.MessageBuilder;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,6 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
 
 public class CommandFlectonechat implements FTabCompleter {
 
@@ -40,7 +42,7 @@ public class CommandFlectonechat implements FTabCompleter {
                 return true;
             }
 
-            if (!Main.config.getKeys().contains(strings[1]) && !Main.locale.getKeys().contains(strings[1])) {
+            if (!config.getKeys(true).contains(strings[1]) && !locale.getKeys(true).contains(strings[1])) {
                 fCommand.sendMeMessage("command.flectonechat.wrong-line");
                 return true;
             }
@@ -54,19 +56,17 @@ public class CommandFlectonechat implements FTabCompleter {
 
             switch (strings[0]) {
                 case "config" -> {
-                    Main.config.setObject(strings[1], object);
-                    Main.config.saveFile();
-                    Main.locale.setFileConfiguration(new FileManager("language/" + Main.config.getString("language") + ".yml"));
+                    config.set(strings[1], object);
+                    config.save();
                 }
                 case "locale" -> {
-                    Main.locale.setObject(strings[1], object);
-                    Main.locale.saveFile();
+                    locale.set(strings[1], object);
+                    locale.save();
                 }
             }
         }
 
-        Main.config = new FileManager("config.yml");
-        Main.locale = new FileManager("language/" + Main.config.getString("language") + ".yml");
+        FileManager.initialize();
 
         TickerManager.clear();
         FPlayerManager.uploadPlayers();
@@ -99,7 +99,8 @@ public class CommandFlectonechat implements FTabCompleter {
             }
             case 2 -> {
                 switch (strings[0].toLowerCase()) {
-                    case "config", "locale" -> addKeysFile(Main.config, strings[1]);
+                    case "config" -> addKeysFile(config, strings[1]);
+                    case "locale" -> addKeysFile(locale, strings[1]);
                 }
             }
             case 3 -> isStartsWith(strings[2], "set");

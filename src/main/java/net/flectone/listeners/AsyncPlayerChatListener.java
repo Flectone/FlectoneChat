@@ -1,9 +1,8 @@
 package net.flectone.listeners;
 
-import net.flectone.Main;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.managers.FPlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -20,6 +19,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
+
 public class AsyncPlayerChatListener implements Listener {
 
     private String noRecipientsMessage = "";
@@ -31,10 +33,10 @@ public class AsyncPlayerChatListener implements Listener {
         if(fPlayer == null) return;
 
         String fPlayerChat = fPlayer.getChat();
-        String globalPrefix = Main.locale.getString("chat.global.prefix");
+        String globalPrefix = locale.getString("chat.global.prefix");
         String message = event.getMessage();
 
-        String chatType = Main.config.getBoolean("chat.global.enable")
+        String chatType = config.getBoolean("chat.global.enable")
                 && (fPlayerChat.contains("global")
                 || message.startsWith(globalPrefix) && !message.equals(globalPrefix) && !fPlayerChat.equals("onlylocal"))
                 ? "global" : "local";
@@ -45,21 +47,21 @@ public class AsyncPlayerChatListener implements Listener {
         removeRecipients(recipients, player, reversedChatType);
 
         if (chatType.equals("local")) {
-            int localRange = Main.config.getInt("chat.local.range");
+            int localRange = config.getInt("chat.local.range");
 
             recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
                     || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            if (Main.config.getBoolean("chat.local.no-recipients.enable") &&
+            if (config.getBoolean("chat.local.no-recipients.enable") &&
                     recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
-                noRecipientsMessage = Main.locale.getFormatString("chat.local.no-recipients", player);
+                noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
             }
 
-            if (Main.config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
+            if (config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
-            if (Main.config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
-            if (Main.config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
+            if (config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
+            if (config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
             message = message
                     .replaceFirst(globalPrefix + " ", "").replaceFirst(globalPrefix, "");
         }
@@ -70,7 +72,7 @@ public class AsyncPlayerChatListener implements Listener {
 
     public void createMessage(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String message, @NotNull String chatType, @Nullable ItemStack itemStack) {
 
-        if (chatType.equals("local") && Main.config.getBoolean("chat.local.admin-see.enable")) {
+        if (chatType.equals("local") && config.getBoolean("chat.local.admin-see.enable")) {
             Bukkit.getOnlinePlayers().parallelStream()
                     .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see"))
                     .forEach(recipients::add);
@@ -88,7 +90,7 @@ public class AsyncPlayerChatListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if(fPlayer == null) return;
 
-        String configMessage = Main.locale.getString("chat." + chatType + ".message")
+        String configMessage = locale.getString("chat." + chatType + ".message")
                 .replace("<player>", fPlayer.getDisplayName());
 
         fCommand.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
@@ -107,12 +109,12 @@ public class AsyncPlayerChatListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if(fPlayer == null) return;
 
-        String chatType = Main.config.getBoolean("chat.global.enable")
+        String chatType = config.getBoolean("chat.global.enable")
                 && fPlayer.getChat().contains("global")
                 ? "global" : "local";
         String reversedChatType = chatType.equals("global") ? "local" : "global";
 
-        int localRange = Main.config.getInt("chat.local.range");
+        int localRange = config.getInt("chat.local.range");
         Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), localRange, localRange, localRange)
                 .parallelStream()
                 .filter(entity -> entity instanceof Player)

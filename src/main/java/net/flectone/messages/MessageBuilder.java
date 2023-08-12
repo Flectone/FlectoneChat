@@ -1,6 +1,5 @@
 package net.flectone.messages;
 
-import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.NMSUtil;
@@ -22,6 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
+
 public class MessageBuilder {
 
     private static final Pattern urlPattern = Pattern.compile("((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w:#@%/;$()~_?+-=\\\\.&]*)", Pattern.CASE_INSENSITIVE);
@@ -40,7 +42,7 @@ public class MessageBuilder {
         this.itemStack = itemStack;
         this.command = command;
 
-        String pingPrefix = Main.locale.getString("chat.ping.prefix");
+        String pingPrefix = locale.getString("chat.ping.prefix");
 
         AtomicInteger index = new AtomicInteger();
 
@@ -62,7 +64,7 @@ public class MessageBuilder {
                         if (fPlayer != null && fPlayer.isOnline() && fPlayer.getPlayer() != null) {
                             Player player = fPlayer.getPlayer();
 
-                            word = Main.locale.getString("chat.ping.message")
+                            word = locale.getString("chat.ping.message")
                                     .replace("<player>", player.getName())
                                     .replace("<prefix>", pingPrefix);
 
@@ -80,7 +82,7 @@ public class MessageBuilder {
                         wordParams.setHideMessage(word);
                         wordParams.setHide(true);
 
-                        word = Main.locale.getString("chat.hide.message")
+                        word = locale.getString("chat.hide.message")
                                 .repeat(word.length());
                     }
 
@@ -88,7 +90,7 @@ public class MessageBuilder {
                     if (urlMatcher.find()) {
                         wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
 
-                        word = Main.locale.getString("chat.url.message")
+                        word = locale.getString("chat.url.message")
                                 .replace("<url>", word);
                     }
 
@@ -101,7 +103,7 @@ public class MessageBuilder {
     public static void loadPatterns() {
         patternMap.clear();
 
-        Main.config.getStringList("chat.patterns")
+        config.getStringList("chat.patterns")
                 .forEach(patternString -> {
                     String[] patternComponents = patternString.split(" , ");
                     if (patternComponents.length < 2) return;
@@ -201,7 +203,7 @@ public class MessageBuilder {
     private TextComponent createUrlComponent(@NotNull String text, @NotNull String url, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         TextComponent wordComponent = new TextComponent(componentFromText(text));
         wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
-        wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(Main.locale.getFormatString("chat.url.hover-message", recipient, sender))));
+        wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(locale.getFormatString("chat.url.hover-message", recipient, sender))));
         return wordComponent;
     }
 
@@ -215,7 +217,7 @@ public class MessageBuilder {
         item = new TranslatableComponent(formattedItemArray[0]);
         item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
 
-        String[] componentsStrings = Main.locale.getFormatString("chat.tooltip.message", recipient, sender).split("<tooltip>");
+        String[] componentsStrings = locale.getFormatString("chat.tooltip.message", recipient, sender).split("<tooltip>");
 
         return itemBuilder
                 .append(componentFromText(lastColor))
@@ -246,7 +248,7 @@ public class MessageBuilder {
     @NotNull
     private TextComponent createClickableComponent(@NotNull TextComponent textComponent, @NotNull String playerName, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         String suggestCommand = "/msg " + playerName + " ";
-        String showText = Main.locale.getFormatString("player.hover-message", recipient, sender)
+        String showText = locale.getFormatString("player.hover-message", recipient, sender)
                 .replace("<player>", playerName);
 
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));

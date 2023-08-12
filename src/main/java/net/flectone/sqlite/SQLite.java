@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
+import static net.flectone.managers.FileManager.config;
 
 public class SQLite extends Database {
     public static boolean isOldVersion = false;
@@ -39,7 +40,7 @@ public class SQLite extends Database {
 
     public SQLite(@NotNull Main instance) {
         super(instance);
-        dbname = plugin.getConfig().getString("SQLite.Filename", Main.config.getString("database"));
+        dbname = plugin.getConfig().getString("SQLite.Filename", config.getString("database"));
     }
 
     @Nullable

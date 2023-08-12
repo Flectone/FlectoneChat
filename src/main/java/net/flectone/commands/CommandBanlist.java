@@ -1,10 +1,9 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -22,6 +21,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class CommandBanlist implements FTabCompleter {
 
     @Override
@@ -31,7 +33,7 @@ public class CommandBanlist implements FTabCompleter {
 
         Set<FPlayer> bannedPlayers = FPlayerManager.getBannedPlayers();
 
-        int perPage = Main.config.getInt("command.banlist.per-page");
+        int perPage = config.getInt("command.banlist.per-page");
 
         int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perPage);
 
@@ -51,12 +53,12 @@ public class CommandBanlist implements FTabCompleter {
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        String title = Main.locale.getFormatString("command.banlist.title", commandSender)
+        String title = locale.getFormatString("command.banlist.title", commandSender)
                 .replace("<count>", String.valueOf(bannedPlayers.size()));
 
         componentBuilder.append(TextComponent.fromLegacyText(title)).append("\n\n");
 
-        String unbanButton = Main.locale.getFormatString("command.banlist.unban-button", commandSender);
+        String unbanButton = locale.getFormatString("command.banlist.unban-button", commandSender);
 
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
         page = Math.min(lastPage, page);
@@ -65,13 +67,13 @@ public class CommandBanlist implements FTabCompleter {
             String playerBanFormat = "command.banlist.player-ban";
             if (fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
 
-            playerBanFormat = Main.locale.getFormatString(playerBanFormat, commandSender)
+            playerBanFormat = locale.getFormatString(playerBanFormat, commandSender)
                     .replace("<unban>", unbanButton)
                     .replace("<player>", fPlayer.getRealName())
                     .replace("<reason>", fPlayer.getBanReason())
                     .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getTempBanTime()));
 
-            String unbanHover = Main.locale.getFormatString("command.banlist.unban-hover", commandSender)
+            String unbanHover = locale.getFormatString("command.banlist.unban-hover", commandSender)
                     .replace("<player>", fPlayer.getRealName());
 
             TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(playerBanFormat));
@@ -81,7 +83,7 @@ public class CommandBanlist implements FTabCompleter {
             componentBuilder.append(textComponent).append("\n\n");
         });
 
-        String pageLine = Main.locale.getFormatString("command.banlist.page-line", commandSender)
+        String pageLine = locale.getFormatString("command.banlist.page-line", commandSender)
                 .replace("<page>", String.valueOf(page))
                 .replace("<last-page>", String.valueOf(lastPage));
 
@@ -95,11 +97,11 @@ public class CommandBanlist implements FTabCompleter {
             switch (part) {
                 case "<prev-page>" -> {
                     pageNumber--;
-                    button = Main.locale.getFormatString("command.banlist.prev-page", commandSender);
+                    button = locale.getFormatString("command.banlist.prev-page", commandSender);
                 }
                 case "<next-page>" -> {
                     pageNumber++;
-                    button = Main.locale.getFormatString("command.banlist.next-page", commandSender);
+                    button = locale.getFormatString("command.banlist.next-page", commandSender);
                 }
             }
 
@@ -125,7 +127,7 @@ public class CommandBanlist implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            int perPage = Main.config.getInt("command.banlist.per-page");
+            int perPage = config.getInt("command.banlist.per-page");
 
             int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perPage);
 

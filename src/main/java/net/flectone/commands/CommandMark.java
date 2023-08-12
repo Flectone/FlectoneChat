@@ -2,8 +2,8 @@ package net.flectone.commands;
 
 import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,9 +23,27 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.config;
+
 public class CommandMark implements FTabCompleter {
 
-    public static final String[] chatColorValues = {"BLACK", "DARK_BLUE", "DARK_GREEN", "DARK_AQUA", "DARK_RED", "DARK_PURPLE", "GOLD", "GRAY", "DARK_GRAY", "BLUE", "GREEN", "AQUA", "RED", "LIGHT_PURPLE", "YELLOW", "WHITE"};
+    public static final String[] chatColorValues = {
+            "BLACK",
+            "DARK_BLUE",
+            "DARK_GREEN",
+            "DARK_AQUA",
+            "DARK_RED",
+            "DARK_PURPLE",
+            "GOLD",
+            "GRAY",
+            "DARK_GRAY",
+            "BLUE",
+            "GREEN",
+            "AQUA",
+            "RED",
+            "LIGHT_PURPLE",
+            "YELLOW",
+            "WHITE"};
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -34,7 +52,7 @@ public class CommandMark implements FTabCompleter {
 
         if (fCommand.isConsoleMessage()) return true;
 
-        if (!Main.config.getBoolean("command.mark.enable")) {
+        if (!config.getBoolean("command.mark.enable")) {
             fCommand.sendMeMessage("command.disabled");
             return true;
         }
@@ -48,7 +66,7 @@ public class CommandMark implements FTabCompleter {
 
         if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
-        int range = Main.config.getInt("command.mark.range");
+        int range = config.getInt("command.mark.range");
 
         Entity entity = getEntityInLineOfSightVectorMath((Player) commandSender, range);
 

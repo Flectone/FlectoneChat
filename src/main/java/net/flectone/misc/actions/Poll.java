@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class Poll {
 
     private final List<FPlayer> fPlayerList = new ArrayList<>();
@@ -29,18 +32,18 @@ public class Poll {
         Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
             isExpired = true;
 
-            String formatMessage = Main.locale.getString("command.poll.over-message")
+            String formatMessage = locale.getString("command.poll.over-message")
                     .replace("<id>", String.valueOf(id))
                     .replace("<message>", message)
-                    .replace("<agree>", Main.locale.getString("command.poll.format.agree"))
+                    .replace("<agree>", locale.getString("command.poll.format.agree"))
                     .replace("<agree_count>", String.valueOf(agree))
-                    .replace("<disagree>", Main.locale.getString("command.poll.format.disagree"))
+                    .replace("<disagree>", locale.getString("command.poll.format.disagree"))
                     .replace("<disagree_count>", String.valueOf(disagree));
 
             Bukkit.getOnlinePlayers().parallelStream()
                     .forEach(player -> player.sendMessage(ObjectUtil.formatString(formatMessage, player)));
 
-        }, 20L * Main.config.getInt("command.poll.time"));
+        }, 20L * config.getInt("command.poll.time"));
     }
 
     public int vote(@NotNull FPlayer fPlayer, @NotNull String typeVote) {

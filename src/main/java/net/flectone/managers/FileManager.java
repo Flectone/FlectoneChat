@@ -1,130 +1,79 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
-import net.flectone.utils.ObjectUtil;
-import org.bukkit.command.CommandSender;
+import net.flectone.misc.files.FYamlConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Set;
 
+public class FileManager {
 
-public class FileManager extends FileConfiguration {
+    private static final String dataFolder = Main.getInstance().getDataFolder().getAbsolutePath() + File.separator;
+    private static final String languagesPath = "language" + File.separator;
+    private static final String iconsPath = "icons" + File.separator;
+    public static FYamlConfiguration config;
+    public static FYamlConfiguration locale;
 
-    private FileConfiguration fileConfiguration;
-    private File file;
+    public static void initialize() {
+        config = load("config.yml", true);
+        loadLocale();
+        loadIcons();
+    }
 
-    public FileManager(String path) {
-        this.file = new File(Main.getInstance().getDataFolder() + File.separator + path);
+    private static void loadLocale() {
+        FYamlConfiguration ruLocale = load(languagesPath + "ru.yml", true);
+        FYamlConfiguration enLocale = load(languagesPath + "en.yml", true);
 
-        if (path.contains("language")) {
-            checkExists("language/ru.yml");
-            checkExists("language/en.yml");
-        } else checkExists(path);
+        locale = switch (config.getString("language")) {
+            case "ru" -> ruLocale;
+            default -> enLocale;
+        };
+    }
 
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
+    private static void loadIcons() {
+        List<String> iconNames = config.getStringList("server.icon.names");
+        iconNames.add("maintenance");
 
-        InputStreamReader defConfigStream = new InputStreamReader(Main.getInstance().getResource(path), StandardCharsets.UTF_8);
+        iconNames.stream().filter(icon -> !new File(dataFolder + iconsPath + icon + ".png").exists())
+                .forEach(icon -> Main.getInstance().saveResource(iconsPath + icon + ".png", false));
+    }
+
+    public static FYamlConfiguration load(String filePath, boolean needMigrate) {
+        File file = new File(dataFolder + filePath);
+
+        if(!file.exists()) Main.getInstance().saveResource(filePath, false);
+
+        FYamlConfiguration fileConfiguration = new FYamlConfiguration(file);
+
+        if (needMigrate) migrate(fileConfiguration, filePath);
+
+        try {
+            fileConfiguration.save(file);
+        } catch (IOException exception) {
+            Main.warning("Failed to save " + filePath + " file");
+            exception.printStackTrace();
+        }
+
+        return fileConfiguration;
+    }
+
+    private static void migrate(FileConfiguration fileConfiguration, String filePath) {
+        InputStream inputStream = Main.getInstance().getResource(filePath);
+
+        if (inputStream == null) return;
+
+        InputStreamReader defConfigStream = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
         YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 
         internalLangConfig.getKeys(true).parallelStream()
                 .filter(string -> !fileConfiguration.contains(string))
                 .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
-
-        try {
-            fileConfiguration.save(file);
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-
-    }
-
-    private void checkExists(String path) {
-        if (!new File(Main.getInstance().getDataFolder() + File.separator + path).exists())
-            Main.getInstance().saveResource(path, false);
-    }
-
-    public void saveFile() {
-        try {
-
-            fileConfiguration.save(file);
-            this.file = new File(file.getPath());
-
-        } catch (IOException error) {
-            Main.getInstance().getLogger().warning(error.getLocalizedMessage());
-        }
-    }
-
-    public Set<String> getKeys() {
-        return fileConfiguration.getKeys(true);
-    }
-
-    @NotNull
-    public List<String> getStringList(@NotNull String path) {
-        return fileConfiguration.getStringList(path);
-    }
-
-
-    public void set(String string, List<String> stringList) {
-        fileConfiguration.set(string, stringList);
-    }
-
-    public void setFileConfiguration(FileConfiguration fileConfiguration) {
-        this.fileConfiguration = fileConfiguration;
-    }
-
-    @NotNull
-    @Override
-    public String getString(@NotNull String string) {
-        string = fileConfiguration.getString(string);
-        if (string == null) string = "";
-        return string;
-    }
-
-    @Override
-    public int getInt(@NotNull String string) {
-        return Integer.parseInt(fileConfiguration.getString(string));
-    }
-
-    @Override
-    public boolean getBoolean(@NotNull String string) {
-        return Boolean.parseBoolean(fileConfiguration.getString(string));
-    }
-
-    public String getFormatString(String string, CommandSender sender, CommandSender papiPlayer) {
-        string = fileConfiguration.getString(string);
-        return ObjectUtil.formatString(string, sender, papiPlayer);
-    }
-
-    public String getFormatString(String string, CommandSender sender) {
-        string = fileConfiguration.getString(string);
-        return ObjectUtil.formatString(string, sender);
-    }
-
-    @Override
-    public @NotNull String saveToString() {
-        return "";
-    }
-
-    @Override
-    public void loadFromString(@NotNull String contents) {
-
-    }
-
-    @NotNull
-    @Override
-    protected String buildHeader() {
-        return "";
-    }
-
-    public void setObject(String path, Object object) {
-        fileConfiguration.set(path, object);
     }
 }

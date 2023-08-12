@@ -1,6 +1,5 @@
 package net.flectone.misc.actions;
 
-import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -15,11 +14,13 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
+import static net.flectone.managers.FileManager.locale;
+
 public class TicTacToe {
 
     private static final HashMap<String, TicTacToe> ticTacToeHashMap = new HashMap<>();
 
-    private static final String mark = Main.locale.getString("command.tic-tac-toe.format.empty");
+    private static final String mark = locale.getString("command.tic-tac-toe.format.empty");
 
     private final String uuid;
 
@@ -74,7 +75,9 @@ public class TicTacToe {
         int row = (number - 1) / marks.length;
         int column = (number - 1) % marks.length;
 
-        String format = player.equals(firstPlayer) ? Main.locale.getString("command.tic-tac-toe.format.first") : Main.locale.getString("command.tic-tac-toe.format.second");
+        String format = player.equals(firstPlayer)
+                ? locale.getString("command.tic-tac-toe.format.first")
+                : locale.getString("command.tic-tac-toe.format.second");
         marks[row][column] = format;
         nextPlayer = player.equals(firstPlayer) ? firstPlayer : secondPlayer;
     }
@@ -105,7 +108,7 @@ public class TicTacToe {
 
         if (!isEnded) {
             componentBuilder.append("\n");
-            String moveMessage = (Main.locale.getFormatString("command.tic-tac-toe.game.move", fPlayer.getPlayer())
+            String moveMessage = (locale.getFormatString("command.tic-tac-toe.game.move", fPlayer.getPlayer())
                     .replace("<player>", getCurrentFPlayer().getRealName()));
 
             componentBuilder
@@ -135,7 +138,7 @@ public class TicTacToe {
     public boolean hasWinningTrio() {
         int rows = marks.length;
         int cols = marks[0].length;
-        String winColor = Main.locale.getString("command.tic-tac-toe.format.win");
+        String winColor = locale.getString("command.tic-tac-toe.format.win");
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols - 2; j++) {

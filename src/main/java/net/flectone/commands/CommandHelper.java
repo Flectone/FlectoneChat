@@ -1,6 +1,5 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -16,6 +15,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static net.flectone.managers.FileManager.locale;
+import static net.flectone.managers.FileManager.config;
+
 public class CommandHelper implements FTabCompleter {
 
     @Override
@@ -26,7 +28,7 @@ public class CommandHelper implements FTabCompleter {
         if (fCommand.isConsoleMessage()
                 || fCommand.isInsufficientArgs(1)) return true;
 
-        String permission = Main.config.getString("command.helper.see.permission");
+        String permission = config.getString("command.helper.see.permission");
 
         Set<Player> playerSet = Bukkit.getOnlinePlayers()
                 .parallelStream()
@@ -38,7 +40,7 @@ public class CommandHelper implements FTabCompleter {
             return true;
         }
 
-        String formatMessage = Main.locale.getString("command.helper.global-message")
+        String formatMessage = locale.getString("command.helper.global-message")
                 .replace("<player>", fCommand.getSenderName());
 
         fCommand.sendGlobalMessage(playerSet, formatMessage, ObjectUtil.toString(strings, 0), null, true);
