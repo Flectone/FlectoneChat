@@ -68,7 +68,7 @@ public class CommandTempban implements FTabCompleter {
 
         boolean announceModeration = config.getBoolean("command.tempban.announce");
 
-        if (announceModeration) FDiscordSRV.sendModerationMessage(globalMessage);
+        if (announceModeration && FDiscordSRV.isEnable()) FDiscordSRV.sendModerationMessage(globalMessage);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())

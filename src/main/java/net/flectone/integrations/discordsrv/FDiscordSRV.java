@@ -15,6 +15,8 @@ import github.scarsz.discordsrv.util.DiscordUtil;
 import github.scarsz.discordsrv.util.MessageUtil;
 import github.scarsz.discordsrv.util.PlaceholderUtil;
 import github.scarsz.discordsrv.util.TimeUtil;
+import net.flectone.Main;
+import net.flectone.integrations.HookInterface;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
@@ -54,22 +56,11 @@ License along with this program.  If not, see
 
  */
 
-public class FDiscordSRV implements Listener {
+public class FDiscordSRV implements Listener, HookInterface {
 
     private static boolean isEnable = false;
 
-    public FDiscordSRV() {
-        isEnable = true;
-    }
-
-    public static void register() {
-        FDiscordSRV fDiscordSRV = new FDiscordSRV();
-        DiscordSRV.api.subscribe(fDiscordSRV);
-    }
-
     public static void sendDeathMessage(@NotNull Player player, @NotNull String message, @Nullable Entity finalEntity, @Nullable Material finalBlock, @Nullable Entity killer, @Nullable ItemStack killerItem) {
-        if (!isEnable) return;
-
         message = message.replace("<player>", player.getName());
         if (finalEntity != null) message = message
                 .replace("<killer>", finalEntity.getName())
@@ -145,8 +136,6 @@ public class FDiscordSRV implements Listener {
     }
 
     public static void sendModerationMessage(@NotNull String message) {
-        if (!isEnable) return;
-
         message = ObjectUtil.formatString(message, null);
         message = PlaceholderUtil.replacePlaceholdersToDiscord(message);
 
@@ -161,8 +150,6 @@ public class FDiscordSRV implements Listener {
     }
 
     public static void sendAdvancementMessage(@NotNull Player player, @NotNull FAdvancement fAdvancement, @NotNull String lastAdvancement) {
-        if (!isEnable) return;
-
         String channelName = DiscordSRV.getPlugin().getOptionalChannel("awards");
 
         MessageFormat messageFormat = DiscordSRV.getPlugin().getMessageFromConfiguration("MinecraftPlayerAchievementMessage");
@@ -230,4 +217,14 @@ public class FDiscordSRV implements Listener {
         event.setMessage(message);
     }
 
+    public static boolean isEnable() {
+        return isEnable;
+    }
+
+    @Override
+    public void hook() {
+        DiscordSRV.api.subscribe(this);
+        isEnable = true;
+        Main.info("\uD83D\uDD12 DiscordSRV detected and hooked");
+    }
 }

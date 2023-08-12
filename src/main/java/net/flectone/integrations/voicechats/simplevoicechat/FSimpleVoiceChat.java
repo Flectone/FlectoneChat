@@ -1,9 +1,12 @@
 package net.flectone.integrations.voicechats.simplevoicechat;
 
+import de.maxhenkel.voicechat.api.BukkitVoicechatService;
 import de.maxhenkel.voicechat.api.VoicechatApi;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
+import net.flectone.Main;
+import net.flectone.integrations.HookInterface;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -14,7 +17,18 @@ import org.jetbrains.annotations.NotNull;
 
 import static net.flectone.managers.FileManager.locale;
 
-public class FlectoneVoiceChatPlugin implements VoicechatPlugin {
+public class FSimpleVoiceChat implements HookInterface, VoicechatPlugin {
+
+    @Override
+    public void hook() {
+        BukkitVoicechatService service = Main.getInstance().getServer().getServicesManager().load(BukkitVoicechatService.class);
+
+        if (service == null) return;
+
+        service.registerPlugin(this);
+
+        Main.info("\uD83D\uDD12 SimpleVoiceChat detected and hooked");
+    }
 
     public static VoicechatApi voicechatApi;
 

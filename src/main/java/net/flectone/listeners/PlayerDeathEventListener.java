@@ -196,12 +196,14 @@ public class PlayerDeathEventListener implements Listener {
                     recipient.spigot().sendMessage(createDeathComponent(finalPlaceholders, recipient, player, fDamager));
                 });
 
-        FDiscordSRV.sendDeathMessage(player,
-                formatMessage,
-                fDamager.getFinalEntity(),
-                fDamager.getFinalBlockDamager(),
-                fDamager.getKiller(),
-                fDamager.getKillerItem());
+        if(FDiscordSRV.isEnable()) {
+            FDiscordSRV.sendDeathMessage(player,
+                    formatMessage,
+                    fDamager.getFinalEntity(),
+                    fDamager.getFinalBlockDamager(),
+                    fDamager.getKiller(),
+                    fDamager.getKillerItem());
+        }
 
         event.setDeathMessage("");
         fPlayer.resetLastDamager();

@@ -367,9 +367,8 @@ public class FPlayer {
     }
 
     public void setVaultPrefixSuffix() {
-        if (FVault.registered) {
+        if (FVault.isEnable()) {
             Chat provider = FVault.getProvider();
-            if(provider == null) return;
 
             this.vaultPrefix = provider.getPlayerPrefix(player);
             this.vaultSuffix = provider.getPlayerSuffix(player);

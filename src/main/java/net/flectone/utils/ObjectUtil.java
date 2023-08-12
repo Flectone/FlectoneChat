@@ -3,6 +3,7 @@ package net.flectone.utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
+import net.flectone.integrations.expansions.FPlaceholderAPI;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.messages.MessageBuilder;
@@ -96,8 +97,8 @@ public class ObjectUtil {
         String[] colors = null;
 
         if (recipient instanceof Player playerRecipient) {
-            if (Main.isHavePAPI && sender instanceof Player playerSender
-                    && (!neededPermission || sender.isOp() || sender.hasPermission("flectonechat.placeholders"))) {
+            if (FPlaceholderAPI.isEnable() && sender instanceof Player playerSender
+                    && (!neededPermission || sender.hasPermission("flectonechat.placeholders"))) {
 
                 string = PlaceholderAPI.setPlaceholders(playerSender, string);
                 string = PlaceholderAPI.setRelationalPlaceholders(playerSender, playerRecipient, string);

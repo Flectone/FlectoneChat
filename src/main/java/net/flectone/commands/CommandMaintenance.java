@@ -60,7 +60,9 @@ public class CommandMaintenance implements FTabCompleter {
 
         String maintenanceMessage = "command.maintenance.turned-" + strings[0].toLowerCase() + ".message";
 
-        FDiscordSRV.sendModerationMessage(locale.getString(maintenanceMessage));
+        if (FDiscordSRV.isEnable()) {
+            FDiscordSRV.sendModerationMessage(locale.getString(maintenanceMessage));
+        }
 
         fCommand.sendMeMessage(maintenanceMessage);
         config.set("command.maintenance.enable", haveMaintenance);

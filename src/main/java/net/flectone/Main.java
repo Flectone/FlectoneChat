@@ -1,15 +1,10 @@
 package net.flectone;
 
-import net.flectone.integrations.discordsrv.FDiscordSRV;
-import net.flectone.integrations.expansions.FExpansion;
-import net.flectone.integrations.luckperms.FLuckPerms;
-import net.flectone.integrations.supervanish.FSuperVanish;
-import net.flectone.integrations.vault.FVault;
-import net.flectone.integrations.voicechats.simplevoicechat.RegisterSimpleVoiceChat;
 import net.flectone.listeners.PlayerAdvancementDoneListener;
 import net.flectone.listeners.PlayerDeathEventListener;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
+import net.flectone.managers.HookManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.sqlite.Database;
@@ -25,11 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
-    public static boolean isHavePAPI = false;
-
-    public static boolean isHavePlasmoVoice = false;
-
-    public static boolean isHaveInteractiveChat = false;
     private static Main instance;
     private Database database;
 
@@ -65,7 +55,7 @@ public final class Main extends JavaPlugin {
         FPlayerManager.loadBanList();
 
         registerClasses();
-        hookPlugins();
+        HookManager.hookPlugins();
 
         TickerManager.start();
         PlayerDeathEventListener.reload();
@@ -89,49 +79,6 @@ public final class Main extends JavaPlugin {
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });
-    }
-
-    private void hookPlugins() {
-        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-            FVault.register();
-            getLogger().info("\uD83D\uDD12 Vault detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("voicechat") != null) {
-            new RegisterSimpleVoiceChat();
-            getLogger().info("\uD83D\uDD12 SimpleVoiceChat detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("plasmovoice") != null) {
-            isHavePlasmoVoice = true;
-            getLogger().info("\uD83D\uDD12 PlasmoVoice detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("InteractiveChat") != null) {
-            isHaveInteractiveChat = true;
-            getLogger().info("\uD83D\uDD12 InteractiveChat detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
-            new FLuckPerms(this);
-            getLogger().info("\uD83D\uDD12 LuckPerms detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("SuperVanish") != null) {
-            Bukkit.getPluginManager().registerEvents(new FSuperVanish(), this);
-            getLogger().info("\uD83D\uDD12 SuperVanish detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("DiscordSRV") != null) {
-            FDiscordSRV.register();
-            getLogger().info("\uD83D\uDD12 DiscordSRV detected and hooked");
-        }
-
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            isHavePAPI = true;
-            getLogger().info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
-            new FExpansion().register();
-        }
     }
 
     @Override

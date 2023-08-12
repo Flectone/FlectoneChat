@@ -1,16 +1,22 @@
 package net.flectone.integrations.expansions;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.flectone.misc.entity.FPlayer;
+import net.flectone.Main;
+import net.flectone.integrations.HookInterface;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FExpansion extends PlaceholderExpansion {
+public class FPlaceholderAPI extends PlaceholderExpansion implements HookInterface {
 
-    public FExpansion() {}
+    private static boolean isEnable;
+
+    public static boolean isEnable() {
+        return isEnable;
+    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -48,5 +54,12 @@ public class FExpansion extends PlaceholderExpansion {
             case "player_tab_name" -> fPlayer.getTabName();
             default -> null;
         };
+    }
+
+    @Override
+    public void hook() {
+        register();
+        isEnable = true;
+        Main.info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
     }
 }

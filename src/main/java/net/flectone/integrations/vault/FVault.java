@@ -1,17 +1,28 @@
 package net.flectone.integrations.vault;
 
 import net.flectone.Main;
+import net.flectone.integrations.HookInterface;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-public class FVault {
+public class FVault implements HookInterface {
 
-    public static boolean registered = false;
+    private static boolean isEnable = false;
 
     private static Chat provider;
 
-    public static void register() {
+    @NotNull
+    public static Chat getProvider() {
+        return provider;
+    }
+
+    public static boolean isEnable() {
+        return isEnable;
+    }
+
+    @Override
+    public void hook() {
         RegisteredServiceProvider<Chat> chatProvider = Main.getInstance().getServer().getServicesManager()
                 .getRegistration(net.milkbowl.vault.chat.Chat.class);
 
@@ -21,12 +32,8 @@ public class FVault {
         }
 
         provider = chatProvider.getProvider();
-        registered = true;
-    }
+        isEnable = true;
 
-    @Nullable
-    public static Chat getProvider() {
-        return provider;
+        Main.info("\uD83D\uDD12 Vault detected and hooked");
     }
-
 }

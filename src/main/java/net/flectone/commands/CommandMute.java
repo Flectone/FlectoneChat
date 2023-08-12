@@ -1,12 +1,11 @@
 package net.flectone.commands;
 
-import net.flectone.Main;
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
-import net.flectone.integrations.voicechats.plasmovoice.FlectonePlasmoVoice;
+import net.flectone.integrations.voicechats.plasmovoice.FPlasmoVoice;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -22,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandMute implements FTabCompleter {
 
@@ -69,7 +68,7 @@ public class CommandMute implements FTabCompleter {
 
         boolean announceModeration = config.getBoolean("command.mute.announce");
 
-        if (announceModeration) FDiscordSRV.sendModerationMessage(formatString);
+        if (announceModeration && FDiscordSRV.isEnable()) FDiscordSRV.sendModerationMessage(formatString);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
@@ -79,8 +78,8 @@ public class CommandMute implements FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, formatString, false);
 
-        if (Main.isHavePlasmoVoice) {
-            FlectonePlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
+        if (FPlasmoVoice.isEnable()) {
+            FPlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
         }
 
         mutedFPlayer.mute(time, reason);

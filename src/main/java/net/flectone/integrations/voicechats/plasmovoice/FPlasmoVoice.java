@@ -1,6 +1,7 @@
 package net.flectone.integrations.voicechats.plasmovoice;
 
 import net.flectone.Main;
+import net.flectone.integrations.HookInterface;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,9 @@ import org.jetbrains.annotations.NotNull;
 // and offer nothing new. You're much better off turning to the first Simple Voice Chat plugin, which works much
 // more reliably and is easier to use.
 
-public class FlectonePlasmoVoice {
+public class FPlasmoVoice implements HookInterface {
+
+    private static boolean isEnable;
 
     public static void mute(boolean unmute, @NotNull String player, @NotNull String time, @NotNull String reason) {
         if (unmute) unmute(player);
@@ -31,5 +34,15 @@ public class FlectonePlasmoVoice {
         } catch (CommandException exception) {
             Main.warning("Failed to connect to Plasmo Voice");
         }
+    }
+
+    public static boolean isEnable() {
+        return isEnable;
+    }
+
+    @Override
+    public void hook() {
+        isEnable = true;
+        Main.info("\uD83D\uDD12 PlasmoVoice detected and hooked");
     }
 }

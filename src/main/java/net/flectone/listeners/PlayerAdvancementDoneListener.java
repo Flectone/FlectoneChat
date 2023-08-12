@@ -80,7 +80,9 @@ public class PlayerAdvancementDoneListener implements Listener {
         String formatMessage = locale.getString("advancement." + fAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
-        FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
+        if (FDiscordSRV.isEnable()) {
+            FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
+        }
 
         Bukkit.getOnlinePlayers().parallelStream()
                 .filter(recipient -> {
