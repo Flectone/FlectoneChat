@@ -11,6 +11,8 @@ import java.util.List;
 
 public class CommandClearChat implements FTabCompleter {
 
+    private static final String clearedString = " \n".repeat(100);
+
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
@@ -18,9 +20,7 @@ public class CommandClearChat implements FTabCompleter {
 
         if (fCommand.isHaveCD()) return true;
 
-        String string = " \n".repeat(100);
-
-        commandSender.sendMessage(string);
+        commandSender.sendMessage(clearedString);
         fCommand.sendMeMessage("command.clear-chat.message");
 
         return true;
