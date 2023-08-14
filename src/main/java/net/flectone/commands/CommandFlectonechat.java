@@ -8,6 +8,7 @@ import net.flectone.managers.TickerManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.files.FYamlConfiguration;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandFlectonechat implements FTabCompleter {
 
@@ -28,7 +29,7 @@ public class CommandFlectonechat implements FTabCompleter {
 
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (strings.length < 1 || !strings[0].equals("reload") && strings.length < 5) {
+        if (strings.length < 1 || !strings[0].equals("reload") && strings.length < 4) {
             fCommand.sendUsageMessage();
             return true;
         }
@@ -37,33 +38,28 @@ public class CommandFlectonechat implements FTabCompleter {
 
         if (!strings[0].equals("reload")) {
 
-            if (!strings[2].equals("set") || !strings[3].equals("boolean") && !strings[3].equals("integer") && !strings[3].equals("string")) {
+            FYamlConfiguration file = getFile(strings[0]);
+            if (file == null || !strings[2].equals("set")) {
                 fCommand.sendUsageMessage();
                 return true;
             }
 
-            if (!config.getKeys(true).contains(strings[1]) && !locale.getKeys(true).contains(strings[1])) {
+            Object object = file.get(strings[1]);
+
+            if (object == null) {
                 fCommand.sendMeMessage("command.flectonechat.wrong-line");
                 return true;
             }
 
-            Object object;
-            if (strings.length > 5) {
-                object = ObjectUtil.toString(strings, 4);
-            } else {
-                object = getObject(strings[3], strings[4]);
-            }
+            object = strings.length > 4
+                    ? ObjectUtil.toString(strings, 3)
+                    : getObject(object, strings[3]);
 
-            switch (strings[0]) {
-                case "config" -> {
-                    config.set(strings[1], object);
-                    config.save();
-                }
-                case "locale" -> {
-                    locale.set(strings[1], object);
-                    locale.save();
-                }
-            }
+            if (object instanceof String objectString)
+                object = objectString.replace("\\n", System.lineSeparator());
+
+            file.set(strings[1], object);
+            file.save();
         }
 
         FileManager.initialize();
@@ -98,32 +94,27 @@ public class CommandFlectonechat implements FTabCompleter {
                 isStartsWith(strings[0], "locale");
             }
             case 2 -> {
-                switch (strings[0].toLowerCase()) {
-                    case "config" -> isFileKey(config, strings[1]);
-                    case "locale" -> isFileKey(locale, strings[1]);
-                }
+                FYamlConfiguration file = getFile(strings[0]);
+                if (file == null) break;
+
+                isFileKey(file, strings[1]);
             }
             case 3 -> isStartsWith(strings[2], "set");
             case 4 -> {
-                isStartsWith(strings[3], "string");
-                isStartsWith(strings[3], "integer");
-                isStartsWith(strings[3], "boolean");
-            }
-            case 5 -> {
+                FYamlConfiguration file = getFile(strings[0]);
+                if (file == null) break;
 
-                Object param = switch (strings[0]) {
-                    case "config" -> config.get(strings[1]);
-                    default -> locale.get(strings[1]);
-                };
+                Object object = file.get(strings[1]);
+                if (object == null) break;
 
-                if(param == null) break;
-                if(param instanceof Boolean) {
-                    isStartsWith(strings[4], "true");
-                    isStartsWith(strings[4], "false");
+                if(object instanceof Boolean) {
+                    isStartsWith(strings[3], "true");
+                    isStartsWith(strings[3], "false");
                     break;
                 }
 
-                isStartsWith(strings[4], String.valueOf(param));
+                isStartsWith(strings[3], String.valueOf(object));
+
             }
         }
 
@@ -132,12 +123,21 @@ public class CommandFlectonechat implements FTabCompleter {
         return wordsList;
     }
 
-    private Object getObject(String objectName, String arg) {
-        return switch (objectName.toLowerCase()) {
-            case "integer" -> Integer.valueOf(arg);
-            case "boolean" -> Boolean.parseBoolean(arg);
-            default -> arg;
+    @Nullable
+    private FYamlConfiguration getFile(String name){
+        return switch (name.toLowerCase()) {
+            case "config" -> config;
+            case "locale" -> locale;
+            default -> null;
         };
+    }
+
+    @NotNull
+    private Object getObject(@NotNull Object object, @NotNull String value) {
+        if (object instanceof Integer) return Integer.parseInt(value);
+        if (object instanceof Boolean) return Boolean.parseBoolean(value);
+
+        return value;
     }
 
     @NotNull
