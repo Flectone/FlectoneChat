@@ -2,6 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,10 @@ public class CommandClearChat implements FTabCompleter {
 
         if (fCommand.isHaveCD()) return true;
 
+        if (commandSender.hasPermission("flectonechat.clear-chat.other") && strings.length == 1) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(clearedString));
+        }
+
         commandSender.sendMessage(clearedString);
         fCommand.sendMeMessage("command.clear-chat.message");
 
@@ -29,6 +34,14 @@ public class CommandClearChat implements FTabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
+
+        if (!commandSender.hasPermission("flectonechat.clear-chat.other")) return wordsList;
+
+        if (strings.length == 1) {
+            isStartsWith(strings[0], "all");
+        }
+
         return wordsList;
     }
 
