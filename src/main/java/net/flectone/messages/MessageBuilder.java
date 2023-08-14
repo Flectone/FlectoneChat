@@ -2,10 +2,13 @@ package net.flectone.messages;
 
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.components.FComponent;
+import net.flectone.misc.components.FLocaleComponent;
+import net.flectone.misc.components.FPlayerComponent;
+import net.flectone.misc.components.FURLComponent;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -133,14 +136,14 @@ public class MessageBuilder {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
-        componentBuilder.append(FComponent.createPlayer(recipient, sender, formats[0]).get());
+        componentBuilder.append(new FPlayerComponent(recipient, sender, formats[0]).get());
 
         String color = ChatColor.getLastColors(formats[0]);
 
         componentBuilder.append(buildMessage(color, recipient, sender), ComponentBuilder.FormatRetention.NONE);
 
         if (formats.length > 1)
-            componentBuilder.append(TextComponent.fromLegacyText(color + formats[1]), ComponentBuilder.FormatRetention.NONE);
+            componentBuilder.append(FComponent.fromLegacyText(color + formats[1]), ComponentBuilder.FormatRetention.NONE);
 
         return componentBuilder.create();
     }
@@ -174,11 +177,11 @@ public class MessageBuilder {
             }
 
             if (wordParams.isClickable()) {
-                wordComponent = FComponent.createPlayer(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), word);
+                wordComponent = new FPlayerComponent(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), word);
             }
 
             if (wordParams.isUrl()) {
-                wordComponent = FComponent.createURL(recipient, sender, word, wordParams.getUrl());
+                wordComponent = new FURLComponent(recipient, sender, word, wordParams.getUrl());
             }
 
             if (wordParams.isHide()) {
@@ -197,19 +200,14 @@ public class MessageBuilder {
     private BaseComponent[] createItemComponent(@NotNull ItemStack itemStack, @NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder itemBuilder = new ComponentBuilder();
 
-        String[] formattedItemArray = NMSUtil.getFormattedStringItem(itemStack);
-
-        FComponent byItemComponent = new FComponent(new TranslatableComponent(formattedItemArray[0]))
-                .addHoverItem(formattedItemArray[1]);
-
         String[] componentsStrings = locale.getFormatString("chat.tooltip.message", recipient, sender).split("<tooltip>");
-        BaseComponent[] color = TextComponent.fromLegacyText(lastColor);
+        BaseComponent[] color = FComponent.fromLegacyText(lastColor);
 
         return itemBuilder
                 .append(color)
-                .append(TextComponent.fromLegacyText(componentsStrings[0]))
-                .append(byItemComponent.get())
-                .append(TextComponent.fromLegacyText(componentsStrings[1]))
+                .append(FComponent.fromLegacyText(componentsStrings[0]))
+                .append(new FLocaleComponent(itemStack).get())
+                .append(FComponent.fromLegacyText(componentsStrings[1]))
                 .append(color)
                 .append(" ")
                 .create();

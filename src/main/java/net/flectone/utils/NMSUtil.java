@@ -42,6 +42,12 @@ public class NMSUtil {
         }
     }
 
+    public static String getCorrectlyName(ItemStack itemStack) {
+        return itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty()
+                ? getMinecraftName(itemStack)
+                : itemStack.getItemMeta().getDisplayName();
+    }
+
     public static String getMinecraftName(ItemStack is) {
         try {
             if (version >= 1.18) {
@@ -126,14 +132,6 @@ public class NMSUtil {
         } catch (Exception ex) {
             return 0;
         }
-    }
-
-    public static String[] getFormattedStringItem(ItemStack itemStack) {
-
-        String itemName = NMSUtil.getMinecraftName(itemStack);
-        itemName = itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty() ? itemName : itemStack.getItemMeta().getDisplayName();
-
-        return new String[]{itemName, getItemAsJson(itemStack)};
     }
 
     public static String getItemAsJson(ItemStack is) {

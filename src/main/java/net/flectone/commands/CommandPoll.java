@@ -4,7 +4,7 @@ import net.flectone.managers.PollManager;
 import net.flectone.misc.actions.Poll;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.misc.components.FComponent;
+import net.flectone.misc.components.FVoteComponent;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -57,9 +57,9 @@ public class CommandPoll implements FTabCompleter {
             ComponentBuilder componentBuilder = new ComponentBuilder();
 
             componentBuilder
-                    .append(FComponent.createVote( "agree", voteId).get())
+                    .append(new FVoteComponent( "agree", voteId).get())
                     .append(" ", ComponentBuilder.FormatRetention.NONE)
-                    .append(FComponent.createVote("disagree", voteId).get());
+                    .append(new FVoteComponent("disagree", voteId).get());
 
             Bukkit.getOnlinePlayers().parallelStream()
                     .forEach(player -> player.spigot().sendMessage(componentBuilder.create()));

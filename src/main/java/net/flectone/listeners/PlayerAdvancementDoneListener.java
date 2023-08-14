@@ -6,7 +6,7 @@ import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.misc.advancement.FAdvancementType;
-import net.flectone.misc.components.FComponent;
+import net.flectone.misc.components.FAdvancementComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -91,7 +91,7 @@ public class PlayerAdvancementDoneListener implements Listener {
                 .forEach(recipient -> {
                     String string = ObjectUtil.formatString(formatMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
-                    recipient.spigot().sendMessage(FComponent.createAdvancementComponent(finalPlaceholders, recipient, player, fAdvancement));
+                    recipient.spigot().sendMessage(new FAdvancementComponent(finalPlaceholders, recipient, player, fAdvancement).get());
                 });
     }
 }

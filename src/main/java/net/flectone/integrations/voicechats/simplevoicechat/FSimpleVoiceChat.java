@@ -8,10 +8,10 @@ import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.components.FComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -74,6 +74,6 @@ public class FSimpleVoiceChat implements HookInterface, VoicechatPlugin {
                 .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))
                 .replace("<reason>", fPlayer.getMuteReason());
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
     }
 }

@@ -4,7 +4,7 @@ import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.misc.components.FComponent;
+import net.flectone.misc.components.FDeathComponent;
 import net.flectone.misc.entity.FDamager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -189,7 +189,7 @@ public class PlayerDeathEventListener implements Listener {
                     String string = ObjectUtil.formatString(formatMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
 
-                    recipient.spigot().sendMessage(FComponent.createDeathComponent(finalPlaceholders, recipient, player, fDamager));
+                    recipient.spigot().sendMessage(new FDeathComponent(finalPlaceholders, recipient, player, fDamager).get());
                 });
 
         if(FDiscordSRV.isEnable()) {

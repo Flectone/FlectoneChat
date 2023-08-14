@@ -6,7 +6,6 @@ import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,7 +111,7 @@ public class TicTacToe {
                     .replace("<player>", getCurrentFPlayer().getRealName()));
 
             componentBuilder
-                    .append(TextComponent.fromLegacyText(moveMessage))
+                    .append(FComponent.fromLegacyText(moveMessage))
                     .append("\n");
         }
 

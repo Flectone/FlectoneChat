@@ -1,9 +1,9 @@
 package net.flectone.listeners;
 
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.components.FComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +27,7 @@ public class PlayerInteractAtEntityListener implements Listener {
         String formatMessage = locale.getFormatString("player.right-click-message", player)
                 .replace("<player>", fPlayer.getDisplayName());
 
-        event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(formatMessage));
+        event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
 
     }
 }

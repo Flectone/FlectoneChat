@@ -4,10 +4,10 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.components.FComponent;
+import net.flectone.misc.components.FListComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,7 +53,7 @@ public class CommandBanlist implements FTabCompleter {
         String title = locale.getFormatString("command.banlist.title", commandSender)
                 .replace("<count>", String.valueOf(bannedPlayers.size()));
 
-        componentBuilder.append(TextComponent.fromLegacyText(title)).append("\n\n");
+        componentBuilder.append(FComponent.fromLegacyText(title)).append("\n\n");
 
         String unbanButton = locale.getFormatString("command.banlist.unban-button", commandSender);
 
@@ -82,7 +82,7 @@ public class CommandBanlist implements FTabCompleter {
                     .append("\n\n");
         });
 
-        componentBuilder.append(FComponent.createListComponents("banlist", commandSender, page, lastPage));
+        componentBuilder.append(new FListComponent("banlist", commandSender, page, lastPage).get());
 
         commandSender.spigot().sendMessage(componentBuilder.create());
 
