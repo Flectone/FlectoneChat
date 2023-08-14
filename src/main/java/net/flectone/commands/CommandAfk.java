@@ -60,6 +60,7 @@ public class CommandAfk implements FTabCompleter {
     @Nullable
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        wordsList.clear();
         return wordsList;
     }
 

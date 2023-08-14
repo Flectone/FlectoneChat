@@ -74,15 +74,21 @@ public class CommandChatcolor implements FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            isStartsWith(strings[0], "default");
-            isStartsWith(strings[0], "#1abaf0");
-            isStartsWith(strings[0], "&b");
-        } else if (strings.length == 2) {
-            isStartsWith(strings[1], "#77d7f7");
-            isStartsWith(strings[1], "&f");
-        } else if (strings.length == 3 && commandSender.hasPermission("flectonechat.chatcolor.other")) {
-            isOfflinePlayer(strings[2]);
+        switch (strings.length) {
+            case 1 -> {
+                isStartsWith(strings[0], "default");
+                isStartsWith(strings[0], "#1abaf0");
+                isStartsWith(strings[0], "&b");
+            }
+            case 2 -> {
+                isStartsWith(strings[1], "#77d7f7");
+                isStartsWith(strings[1], "&f");
+            }
+            case 3 -> {
+                if(!commandSender.hasPermission("flectonechat.chatcolor.other")) break;
+                isOfflinePlayer(strings[2]);
+
+            }
         }
 
         Collections.sort(wordsList);
