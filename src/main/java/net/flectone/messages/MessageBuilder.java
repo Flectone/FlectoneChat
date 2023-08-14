@@ -42,9 +42,12 @@ public class MessageBuilder {
     private final ItemStack itemStack;
     private final String command;
 
+    private final boolean clickable;
+
     public MessageBuilder(@NotNull String command, @NotNull String text, @Nullable ItemStack itemStack, boolean clickable) {
         this.itemStack = itemStack;
         this.command = command;
+        this.clickable = clickable;
 
         String pingPrefix = locale.getString("chat.ping.prefix");
 
@@ -136,7 +139,12 @@ public class MessageBuilder {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
-        componentBuilder.append(new FPlayerComponent(recipient, sender, formats[0]).get());
+
+        FComponent fComponent = this.clickable && sender instanceof Player
+                ? new FPlayerComponent(recipient, sender, formats[0])
+                : new FComponent(formats[0]);
+
+        componentBuilder.append(fComponent.get());
 
         String color = ChatColor.getLastColors(formats[0]);
 
