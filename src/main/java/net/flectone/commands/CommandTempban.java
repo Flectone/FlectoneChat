@@ -95,7 +95,7 @@ public class CommandTempban implements FTabCompleter {
                 isStartsWith(strings[1], "permanent");
                 isStartsWith(strings[1], "0");
             }
-            case 3 -> isStartsWith(strings[2], "(reason)");
+            case 3 -> isTabCompleteMessage(strings[2], "tab-complete.reason");
         }
 
         Collections.sort(wordsList);

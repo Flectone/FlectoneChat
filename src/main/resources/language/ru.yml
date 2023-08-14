@@ -92,6 +92,7 @@ chat:
 
 tab-complete:
   message: "(сообщение)"
+  reason: "(причина)"
 
 command:
   null-player: "#ff4e4e⁉ Этот игрок не существует"

@@ -95,7 +95,7 @@ public class CommandMute implements FTabCompleter {
         switch (strings.length){
             case 1 -> isOfflinePlayer(strings[0]);
             case 2 -> isFormatString(strings[1]);
-            case 3 -> isStartsWith(strings[2], "(reason)");
+            case 3 -> isTabCompleteMessage(strings[2], "tab-complete.reason");
         }
 
         Collections.sort(wordsList);

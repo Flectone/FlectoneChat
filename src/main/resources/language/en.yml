@@ -92,6 +92,7 @@ chat:
 
 tab-complete:
   message: "(message)"
+  reason: "(reason)"
 
 command:
   null-player: "#ff4e4e⁉ This player does not exist"
