@@ -210,7 +210,7 @@ command:
     empty: "#4eff52☺ Нет игроков в муте"
     page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
     title: "&&2════ В муте: <count> ════"
-    player-mute: "<unmute> &&1<player> - <reason> - <time> left"
+    player-mute: "<unmute> &&1<player> - <reason> - <time> осталось"
     page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
 
     prev-page: "&&2←"
@@ -223,7 +223,7 @@ command:
     empty: "#4eff52☺ Нет заблокированных игроков"
     page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
     title: "&&2════ Заблокированных: <count> ════"
-    player-ban: "<unban> &&1<player> - <reason> - <time> left"
+    player-ban: "<unban> &&1<player> - <reason> - <time> осталось"
     player-ban-permanently: "<unban> &&1<player> - <reason> - навсегда"
     page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
 
