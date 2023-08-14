@@ -73,9 +73,7 @@ public class CommandTryCube implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            for (int x = 1; x <= config.getInt("command.try-cube.max-amount"); x++) {
-                isStartsWith(strings[0], String.valueOf(x));
-            }
+            isDigitInArray(strings[0], "", 1, config.getInt("command.try-cube.max-amount") + 1);
         }
 
         Collections.sort(wordsList);

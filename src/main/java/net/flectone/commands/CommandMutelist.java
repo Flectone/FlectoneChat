@@ -100,10 +100,7 @@ public class CommandMutelist implements FTabCompleter {
 
             int lastPage = (int) Math.ceil((double) FPlayerManager.getMutedPlayers().size() / perPage);
 
-            for (int x = 0; x < lastPage; x++) {
-                isStartsWith(strings[0], String.valueOf(x + 1));
-            }
-
+            isDigitInArray(strings[0], "", 1, lastPage + 1);
         }
 
         Collections.sort(wordsList);

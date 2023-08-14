@@ -44,15 +44,15 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
     }
 
     default void isFormatString(@NotNull String arg) {
-        Arrays.stream(FCommand.formatTimeList).parallel()
+        Arrays.stream(FCommand.formatTimeList)
                 .forEach(format -> {
                     if (arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))) {
                         isStartsWith(arg, arg + format);
-                    } else {
-                        for (int x = 1; x < 10; x++) {
-                            isStartsWith(arg, x + format);
-                        }
+                        return;
                     }
+
+                    isDigitInArray(arg, format, 1, 10);
+
                 });
     }
 

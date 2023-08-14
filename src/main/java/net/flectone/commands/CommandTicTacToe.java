@@ -132,11 +132,7 @@ public class CommandTicTacToe implements FTabCompleter {
 
         switch (strings.length) {
             case 1 -> isOnlinePlayer(strings[0]);
-            case 2 -> {
-                for (int x = 3; x < 10; x++) {
-                    isStartsWith(strings[1], String.valueOf(x));
-                }
-            }
+            case 2 -> isDigitInArray(strings[1], "", 3, 10);
         }
 
         Collections.sort(wordsList);
