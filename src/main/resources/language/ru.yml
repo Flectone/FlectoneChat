@@ -90,6 +90,9 @@ chat:
     prefix: "!"
     message: "<player>&&2 » <message>"
 
+tab-complete:
+  message: "(сообщение)"
+
 command:
   null-player: "#ff4e4e⁉ Этот игрок не существует"
   not-support-console: "#ff4e4e⁉ Данная команда невозможна в консоли"

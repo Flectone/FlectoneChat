@@ -2,6 +2,7 @@ package net.flectone.misc.commands;
 
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.FileManager;
 import net.flectone.misc.files.FYamlConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -25,7 +26,7 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
         }
     }
 
-    default void addKeysFile(@NotNull FYamlConfiguration file, @NotNull String arg) {
+    default void isFileKey(@NotNull FYamlConfiguration file, @NotNull String arg) {
         file.getKeys(true).parallelStream()
                 .filter(key -> !file.getString(key).contains("root='FYamlConfiguration'"))
                 .forEachOrdered(key -> isStartsWith(arg, key));
@@ -53,5 +54,9 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
                         }
                     }
                 });
+    }
+
+    default void isTabCompleteMessage(@NotNull String arg) {
+        isStartsWith(arg, FileManager.locale.getString("tab-complete.message"));
     }
 }

@@ -73,7 +73,7 @@ public class CommandMsg implements FTabCompleter {
 
         switch (strings.length){
             case 1 -> isOfflinePlayer(strings[0]);
-            case 2 -> isStartsWith(strings[1], "(message)");
+            case 2 -> isTabCompleteMessage(strings[1]);
         }
 
         Collections.sort(wordsList);

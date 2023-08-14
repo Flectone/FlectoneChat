@@ -45,7 +45,7 @@ public class CommandBall implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            isStartsWith(strings[0], "(message)");
+            isTabCompleteMessage(strings[0]);
         }
 
         Collections.sort(wordsList);

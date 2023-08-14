@@ -109,7 +109,7 @@ public class CommandPoll implements FTabCompleter {
                     isStartsWith(strings[0], "create");
             }
             case 2 -> {
-                if (strings[0].equalsIgnoreCase("create")) isStartsWith(strings[1], "(message)");
+                if (strings[0].equalsIgnoreCase("create")) isTabCompleteMessage(strings[1]);
                 else PollManager.getPollList()
                             .parallelStream()
                             .filter(poll -> !poll.isExpired())

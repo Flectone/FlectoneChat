@@ -99,8 +99,8 @@ public class CommandFlectonechat implements FTabCompleter {
             }
             case 2 -> {
                 switch (strings[0].toLowerCase()) {
-                    case "config" -> addKeysFile(config, strings[1]);
-                    case "locale" -> addKeysFile(locale, strings[1]);
+                    case "config" -> isFileKey(config, strings[1]);
+                    case "locale" -> isFileKey(locale, strings[1]);
                 }
             }
             case 3 -> isStartsWith(strings[2], "set");
