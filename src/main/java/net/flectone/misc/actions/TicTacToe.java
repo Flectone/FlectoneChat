@@ -1,10 +1,10 @@
 package net.flectone.misc.actions;
 
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.components.FComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
@@ -122,11 +122,10 @@ public class TicTacToe {
         for (String[] row : marks) {
             for (String mark : row) {
                 k++;
-                TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(ObjectUtil.formatString(mark, fPlayer.getPlayer())));
-                if (!isNext)
-                    textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ttt " + uuid + " " + k));
+                FComponent textComponent = new FComponent(ObjectUtil.formatString(mark, fPlayer.getPlayer()));
+                if (!isNext) textComponent.addRunCommand("/ttt " + uuid + " " + k);
 
-                componentBuilder.append(textComponent);
+                componentBuilder.append(textComponent.get());
             }
             componentBuilder.append("\n");
         }

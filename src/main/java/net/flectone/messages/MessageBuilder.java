@@ -1,6 +1,7 @@
 package net.flectone.messages;
 
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.components.FComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;
@@ -47,57 +48,58 @@ public class MessageBuilder {
         AtomicInteger index = new AtomicInteger();
 
         Arrays.stream(text.split(" ")).parallel().map(word -> {
-                    WordParams wordParams = new WordParams();
+            WordParams wordParams = new WordParams();
 
-                    word = replacePattern(word);
+            word = replacePattern(word);
 
-                    if (itemStack != null && word.equalsIgnoreCase("%item%")) {
-                        wordParams.setItem(true);
-                        wordParams.setText("\uD83D\uDD32");
-                        return wordParams;
-                    }
+            if (itemStack != null && word.equalsIgnoreCase("%item%")) {
+                wordParams.setItem(true);
+                wordParams.setText("\uD83D\uDD32");
+                return wordParams;
+            }
 
-                    if (word.startsWith(pingPrefix)) {
-                        String playerName = word.replaceFirst(pingPrefix, "");
+            if (word.startsWith(pingPrefix)) {
+                String playerName = word.replaceFirst(pingPrefix, "");
 
-                        FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
-                        if (fPlayer != null && fPlayer.isOnline() && fPlayer.getPlayer() != null) {
-                            Player player = fPlayer.getPlayer();
+                FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
+                if (fPlayer != null && fPlayer.isOnline() && fPlayer.getPlayer() != null) {
+                    Player player = fPlayer.getPlayer();
 
-                            word = locale.getString("chat.ping.message")
-                                    .replace("<player>", player.getName())
-                                    .replace("<prefix>", pingPrefix);
+                    word = locale.getString("chat.ping.message")
+                            .replace("<player>", player.getName())
+                            .replace("<prefix>", pingPrefix);
 
-                            wordParams.setClickable(clickable, player.getName());
-                            wordParams.setPlayerPing(true);
+                    wordParams.setClickable(clickable, player.getName());
+                    wordParams.setPlayerPing(true);
 
-                            if (command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
+                    if (command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
 
-                        }
-                    }
+                }
+            }
 
-                    if (word.startsWith("||") && word.endsWith("||") && !word.replace("||", "").isEmpty()) {
-                        word = word.replace("||", "");
+            if (word.startsWith("||") && word.endsWith("||") && !word.replace("||", "").isEmpty()) {
+                word = word.replace("||", "");
 
-                        wordParams.setHideMessage(word);
-                        wordParams.setHide(true);
+                wordParams.setHideMessage(word);
+                wordParams.setHide(true);
 
-                        word = locale.getString("chat.hide.message")
-                                .repeat(word.length());
-                    }
+                word = locale.getString("chat.hide.message")
+                        .repeat(word.length());
+            }
 
-                    Matcher urlMatcher = urlPattern.matcher(word);
-                    if (urlMatcher.find()) {
-                        wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
+            Matcher urlMatcher = urlPattern.matcher(word);
+            if (urlMatcher.find()) {
+                wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
 
-                        word = locale.getString("chat.url.message")
-                                .replace("<url>", word);
-                    }
+                word = locale.getString("chat.url.message")
+                        .replace("<url>", word);
+            }
 
-                    wordParams.setText(word);
-                    return wordParams;
-                })
-                .forEachOrdered(wordParams -> messageHashMap.put(index.getAndIncrement(), wordParams));
+            wordParams.setText(word);
+            return wordParams;
+
+        })
+        .forEachOrdered(wordParams -> messageHashMap.put(index.getAndIncrement(), wordParams));
     }
 
     public static void loadPatterns() {
@@ -131,7 +133,7 @@ public class MessageBuilder {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
-        componentBuilder.append(createClickableComponent(formats[0], sender.getName(), recipient, sender));
+        componentBuilder.append(FComponent.createPlayer(recipient, sender, formats[0]).get());
 
         String color = ChatColor.getLastColors(formats[0]);
 
@@ -160,7 +162,8 @@ public class MessageBuilder {
                 wordParams.setText(word);
             }
 
-            TextComponent wordComponent = new TextComponent(componentFromText(lastColor + word));
+            word = ObjectUtil.formatString(lastColor + word, recipient, sender);
+            FComponent wordComponent = new FComponent(word);
 
             if (!wordParams.isEdited() || wordParams.isFormatted())
                 lastColor = ChatColor.getLastColors(lastColor + word);
@@ -170,29 +173,20 @@ public class MessageBuilder {
                 continue;
             }
 
-            if (wordParams.isPlayerPing()) {
-                String playerPingMessage = ObjectUtil.formatString(word, recipient, sender);
-                wordComponent = new TextComponent(componentFromText(playerPingMessage));
-            }
-
             if (wordParams.isClickable()) {
-                createClickableComponent(wordComponent, wordParams.getPlayerPingName(), recipient, sender);
+                wordComponent = FComponent.createPlayer(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), word);
             }
 
             if (wordParams.isUrl()) {
-                word = ObjectUtil.formatString(word, recipient, sender);
-                wordComponent = createUrlComponent(ObjectUtil.formatString(word, recipient, sender), wordParams.getUrl(), recipient, sender);
+                wordComponent = FComponent.createURL(recipient, sender, word, wordParams.getUrl());
             }
 
             if (wordParams.isHide()) {
-                ClickEvent clickEvent = wordComponent.getClickEvent();
-                wordComponent = new TextComponent(TextComponent.fromLegacyText(ObjectUtil.formatString(word, recipient, sender)));
-                wordComponent.setClickEvent(clickEvent);
-                wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(lastColor + wordParams.getHideMessage())));
+                wordComponent.addHoverText(lastColor + wordParams.getHideMessage());
             }
 
             componentBuilder
-                    .append(wordComponent, ComponentBuilder.FormatRetention.NONE)
+                    .append(wordComponent.get(), ComponentBuilder.FormatRetention.NONE)
                     .append(" ");
         }
 
@@ -200,31 +194,23 @@ public class MessageBuilder {
     }
 
     @NotNull
-    private TextComponent createUrlComponent(@NotNull String text, @NotNull String url, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
-        TextComponent wordComponent = new TextComponent(componentFromText(text));
-        wordComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
-        wordComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(locale.getFormatString("chat.url.hover-message", recipient, sender))));
-        return wordComponent;
-    }
-
-    @NotNull
     private BaseComponent[] createItemComponent(@NotNull ItemStack itemStack, @NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder itemBuilder = new ComponentBuilder();
 
-        TranslatableComponent item;
-
         String[] formattedItemArray = NMSUtil.getFormattedStringItem(itemStack);
-        item = new TranslatableComponent(formattedItemArray[0]);
-        item.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(formattedItemArray[1])}));
+
+        FComponent byItemComponent = new FComponent(new TranslatableComponent(formattedItemArray[0]))
+                .addHoverItem(formattedItemArray[1]);
 
         String[] componentsStrings = locale.getFormatString("chat.tooltip.message", recipient, sender).split("<tooltip>");
+        BaseComponent[] color = TextComponent.fromLegacyText(lastColor);
 
         return itemBuilder
-                .append(componentFromText(lastColor))
-                .append(componentFromText(componentsStrings[0]))
-                .append(item)
-                .append(componentFromText(componentsStrings[1]))
-                .append(componentFromText(lastColor))
+                .append(color)
+                .append(TextComponent.fromLegacyText(componentsStrings[0]))
+                .append(byItemComponent.get())
+                .append(TextComponent.fromLegacyText(componentsStrings[1]))
+                .append(color)
                 .append(" ")
                 .create();
     }
@@ -232,28 +218,6 @@ public class MessageBuilder {
     @NotNull
     public BaseComponent[] create() {
         return componentBuilder.create();
-    }
-
-    @NotNull
-    private BaseComponent[] componentFromText(@NotNull String text) {
-        return TextComponent.fromLegacyText(text);
-    }
-
-    @NotNull
-    private TextComponent createClickableComponent(@NotNull String text, @NotNull String playerName, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
-        TextComponent textComponent = new TextComponent(componentFromText(text));
-        return createClickableComponent(textComponent, playerName, recipient, sender);
-    }
-
-    @NotNull
-    private TextComponent createClickableComponent(@NotNull TextComponent textComponent, @NotNull String playerName, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
-        String suggestCommand = "/msg " + playerName + " ";
-        String showText = locale.getFormatString("player.hover-message", recipient, sender)
-                .replace("<player>", playerName);
-
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
-        return textComponent;
     }
 
     @NotNull

@@ -4,11 +4,9 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.actions.TicTacToe;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.components.FComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -64,11 +62,11 @@ public class CommandTicTacToe implements FTabCompleter {
                     .replace("<player>", fCommand.getFPlayer().getRealName());
             String hoverMessage = locale.getFormatString("command.tic-tac-toe.hover-message", secondFPlayer.getPlayer());
 
-            TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(getMessage));
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ttt " + ticTacToe.getUuid() + " yes"));
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(hoverMessage)));
+            FComponent textComponent = new FComponent(getMessage)
+                    .addRunCommand("/ttt " + ticTacToe.getUuid() + " yes")
+                    .addHoverText(hoverMessage);
 
-            secondFPlayer.getPlayer().spigot().sendMessage(textComponent);
+            secondFPlayer.getPlayer().spigot().sendMessage(textComponent.get());
 
             return true;
         }

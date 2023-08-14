@@ -1,23 +1,20 @@
 package net.flectone.listeners;
 
 import net.flectone.Main;
-import net.flectone.misc.entity.FDamager;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.utils.NMSUtil;
+import net.flectone.misc.components.FComponent;
+import net.flectone.misc.entity.FDamager;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
-import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Bed;
 import org.bukkit.block.data.type.RespawnAnchor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -34,10 +31,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class PlayerDeathEventListener implements Listener {
 
@@ -193,7 +189,7 @@ public class PlayerDeathEventListener implements Listener {
                     String string = ObjectUtil.formatString(formatMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
 
-                    recipient.spigot().sendMessage(createDeathComponent(finalPlaceholders, recipient, player, fDamager));
+                    recipient.spigot().sendMessage(FComponent.createDeathComponent(finalPlaceholders, recipient, player, fDamager));
                 });
 
         if(FDiscordSRV.isEnable()) {
@@ -207,136 +203,6 @@ public class PlayerDeathEventListener implements Listener {
 
         event.setDeathMessage("");
         fPlayer.resetLastDamager();
-    }
-
-    @NotNull
-    private BaseComponent[] createDeathComponent(@NotNull ArrayList<String> placeholders, @NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull FDamager fDamager) {
-        String mainColor = "";
-        ComponentBuilder mainBuilder = new ComponentBuilder();
-
-        for (String mainPlaceholder : placeholders) {
-            switch (mainPlaceholder) {
-                case "<player>" -> mainBuilder.append(createClickableComponent(mainColor, sender, recipient));
-                case "<projectile>", "<killer>" -> {
-                    if (fDamager.getFinalEntity() == null) break;
-                    Entity entity = fDamager.getFinalEntity();
-                    if (entity instanceof Player) {
-                        mainBuilder.append(createClickableComponent(mainColor, entity, recipient));
-                        break;
-                    }
-                    mainBuilder
-                            .append(TextComponent.fromLegacyText(mainColor))
-                            .append(createTranslatableEntityComponent(recipient, sender, entity))
-                            .append(TextComponent.fromLegacyText(mainColor));
-                }
-                case "<block>" -> {
-                    if (!fDamager.isFinalBlock()) break;
-                    mainBuilder
-                            .append(TextComponent.fromLegacyText(mainColor))
-                            .append(new TranslatableComponent(fDamager.getDamagerTranslateName()))
-                            .append(TextComponent.fromLegacyText(mainColor));
-                }
-                case "<due_to>" -> {
-                    if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())
-                            || fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType())) {
-                        break;
-                    }
-                    String formatDueToMessage = locale.getFormatString("death.due-to", recipient, sender);
-                    String dueToColor = "";
-                    ComponentBuilder dueToBuilder = new ComponentBuilder();
-                    for (String dueToPlaceholder : ObjectUtil.splitLine(formatDueToMessage, new ArrayList<>(List.of("<killer>")))) {
-                        if (dueToPlaceholder.equals("<killer>")) {
-                            Entity killer = fDamager.getKiller();
-                            if (killer instanceof Player) {
-                                dueToBuilder.append(createClickableComponent(dueToColor, killer, recipient), ComponentBuilder.FormatRetention.NONE);
-
-                            } else dueToBuilder
-                                    .append(TextComponent.fromLegacyText(dueToColor))
-                                    .append(createTranslatableEntityComponent(recipient, sender, killer))
-                                    .append(TextComponent.fromLegacyText(dueToColor));
-                        } else {
-                            dueToBuilder.append(TextComponent.fromLegacyText(dueToColor + dueToPlaceholder), ComponentBuilder.FormatRetention.NONE);
-                        }
-
-                        dueToColor = ChatColor.getLastColors(dueToColor + dueToBuilder.getCurrentComponent().toString());
-                    }
-                    mainBuilder.append(dueToBuilder.create(), ComponentBuilder.FormatRetention.NONE);
-                }
-                case "<by_item>" -> {
-                    if (fDamager.getKillerItemName() == null) break;
-                    String formatMessage = locale.getFormatString("death.by-item", recipient, sender);
-                    String byItemColor = "";
-                    ComponentBuilder byItemBuilder = new ComponentBuilder();
-                    for (String byItemPlaceholder : ObjectUtil.splitLine(formatMessage, new ArrayList<>(List.of("<item>")))) {
-                        if (byItemPlaceholder.equals("<item>")) {
-                            TranslatableComponent translatableComponent = new TranslatableComponent(fDamager.getKillerItemName());
-                            translatableComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{
-                                    new TextComponent(fDamager.getKillerItemAsJson())}));
-
-                            byItemBuilder
-                                    .append(TextComponent.fromLegacyText(byItemColor))
-                                    .append(translatableComponent)
-                                    .append(TextComponent.fromLegacyText(byItemColor));
-                        } else {
-                            TextComponent textComponent1 = new TextComponent(TextComponent.fromLegacyText(byItemColor + byItemPlaceholder));
-                            byItemBuilder.append(textComponent1, ComponentBuilder.FormatRetention.NONE);
-                        }
-                        byItemColor = ChatColor.getLastColors(byItemColor + byItemBuilder.getCurrentComponent().toString());
-                    }
-                    mainBuilder.append(byItemBuilder.create(), ComponentBuilder.FormatRetention.NONE);
-                }
-                default ->
-                        mainBuilder.append(TextComponent.fromLegacyText(mainColor + mainPlaceholder), ComponentBuilder.FormatRetention.NONE);
-            }
-
-            mainColor = ChatColor.getLastColors(mainColor + mainBuilder.getCurrentComponent().toString());
-        }
-
-        return mainBuilder.create();
-    }
-
-    @NotNull
-    private TranslatableComponent createTranslatableEntityComponent(@NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull Entity entity) {
-        TranslatableComponent hoverComponent = new TranslatableComponent(NMSUtil.getMinecraftName(entity));
-
-        String formatHoverMessage = locale.getFormatString("entity.hover-message", recipient, sender)
-                .replace("<uuid>", entity.getUniqueId().toString());
-
-        ComponentBuilder hoverBuilder = new ComponentBuilder();
-
-        String hoverColor = "";
-        for (String hoverPlaceholder : ObjectUtil.splitLine(formatHoverMessage, new ArrayList<>(List.of("<name>", "<type>")))) {
-            switch (hoverPlaceholder) {
-                case "<name>" ->
-                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor))
-                        .append(new TranslatableComponent(NMSUtil.getMinecraftName(entity)))
-                        .append(TextComponent.fromLegacyText(hoverColor));
-                case "<type>" ->
-                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor))
-                        .append(new TranslatableComponent(NMSUtil.getMinecraftType(entity)))
-                        .append(TextComponent.fromLegacyText(hoverColor));
-                default ->
-                        hoverBuilder.append(TextComponent.fromLegacyText(hoverColor + hoverPlaceholder), ComponentBuilder.FormatRetention.NONE);
-            }
-
-            hoverColor = ChatColor.getLastColors(hoverColor + hoverBuilder.getCurrentComponent().toString());
-        }
-
-        hoverComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverBuilder.create()));
-        return hoverComponent;
-    }
-
-    @NotNull
-    private TextComponent createClickableComponent(@NotNull String chatColor, @NotNull CommandSender sender, @NotNull CommandSender recipient) {
-        String playerName = sender.getName();
-        String suggestCommand = "/msg " + playerName + " ";
-        String showText = locale.getFormatString("player.hover-message", recipient, sender)
-                .replace("<player>", playerName);
-
-        TextComponent textComponent = new TextComponent(TextComponent.fromLegacyText(chatColor + playerName));
-        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCommand));
-        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(showText)));
-        return textComponent;
     }
 
     @NotNull

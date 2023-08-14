@@ -4,10 +4,9 @@ import net.flectone.managers.PollManager;
 import net.flectone.misc.actions.Poll;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.components.FComponent;
 import net.flectone.utils.ObjectUtil;
-import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -19,8 +18,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandPoll implements FTabCompleter {
 
@@ -53,11 +52,14 @@ public class CommandPoll implements FTabCompleter {
 
             fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, poll.getMessage(), null, false);
 
+            String voteId = String.valueOf(poll.getId());
+
             ComponentBuilder componentBuilder = new ComponentBuilder();
+
             componentBuilder
-                    .append(createVoteComponent("agree", poll.getId()))
+                    .append(FComponent.createVote( "agree", voteId).get())
                     .append(" ", ComponentBuilder.FormatRetention.NONE)
-                    .append(createVoteComponent("disagree", poll.getId()));
+                    .append(FComponent.createVote("disagree", voteId).get());
 
             Bukkit.getOnlinePlayers().parallelStream()
                     .forEach(player -> player.spigot().sendMessage(componentBuilder.create()));
@@ -92,13 +94,6 @@ public class CommandPoll implements FTabCompleter {
 
         fCommand.sendMeMessage("command.poll." + strings[2].toLowerCase() + "-message", replaceStrings, toStrings);
         return true;
-    }
-
-    private TextComponent createVoteComponent(String voteType, int id) {
-        String agreeString = locale.getFormatString("command.poll.format." + voteType, null);
-        TextComponent voteComponent = new TextComponent(TextComponent.fromLegacyText(agreeString));
-        voteComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/poll vote " + id + " " + voteType));
-        return voteComponent;
     }
 
     @Nullable
