@@ -1,6 +1,5 @@
 package net.flectone.misc.files;
 
-import net.flectone.Main;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -43,12 +42,7 @@ public class FYamlConfiguration extends YamlConfiguration {
     @Override
     public String getString(@NotNull String path) {
         String string = super.getString(path);
-
-        if(string == null) {
-            string = "";
-            Main.warning("Failed to get string: " + string);
-        }
-        return string;
+        return string != null ? string : "";
     }
 
     /**
