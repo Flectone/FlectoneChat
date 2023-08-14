@@ -12,6 +12,12 @@ import org.bukkit.Bukkit;
 
 public class HookManager {
 
+    public static boolean enabledDiscordSRV = false;
+    public static boolean enabledInteractiveChat = false;
+    public static boolean enabledPlaceholderAPI = false;
+    public static boolean enabledPlasmoVoice = false;
+    public static boolean enabledVault = false;
+
     public static void hookPlugins() {
         if (isEnabled("DiscordSRV")) new FDiscordSRV().hook();
         if (isEnabled("PlaceholderAPI")) new FPlaceholderAPI().hook();

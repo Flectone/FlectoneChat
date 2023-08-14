@@ -3,17 +3,12 @@ package net.flectone.integrations.interactivechat;
 import com.loohp.interactivechat.api.InteractiveChatAPI;
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
+import net.flectone.managers.HookManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class FInteractiveChat implements HookInterface {
-
-    private static boolean isEnable;
-
-    public static boolean isEnable() {
-        return isEnable;
-    }
 
     @NotNull
     public static String mark(@NotNull String message, @NotNull UUID sender) {
@@ -22,7 +17,7 @@ public class FInteractiveChat implements HookInterface {
 
     @Override
     public void hook() {
-        isEnable = true;
+        HookManager.enabledInteractiveChat = true;
         Main.info("\uD83D\uDD12 InteractiveChat detected and hooked");
     }
 }

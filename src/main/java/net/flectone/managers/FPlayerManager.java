@@ -127,7 +127,7 @@ public class FPlayerManager {
     public static FPlayer getPlayerFromName(@NotNull String name) {
         return fPlayerHashMap.values()
                 .parallelStream()
-                .filter(fPlayer -> fPlayer.getRealName().equals(name))
+                .filter(fPlayer -> fPlayer != null && fPlayer.getRealName().equals(name))
                 .findFirst().orElse(null);
     }
 

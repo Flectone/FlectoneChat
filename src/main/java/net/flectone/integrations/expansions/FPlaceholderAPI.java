@@ -4,6 +4,7 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.OfflinePlayer;
@@ -11,12 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FPlaceholderAPI extends PlaceholderExpansion implements HookInterface {
-
-    private static boolean isEnable;
-
-    public static boolean isEnable() {
-        return isEnable;
-    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -59,7 +54,7 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements HookInterfa
     @Override
     public void hook() {
         register();
-        isEnable = true;
+        HookManager.enabledPlaceholderAPI = true;
         Main.info("\uD83D\uDD12 PlaceholderAPI detected and hooked");
     }
 }

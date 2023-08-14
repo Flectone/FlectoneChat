@@ -3,10 +3,10 @@ package net.flectone.utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
-import net.flectone.integrations.expansions.FPlaceholderAPI;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.messages.MessageBuilder;
+import net.flectone.misc.entity.FPlayer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -22,8 +22,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class ObjectUtil {
 
@@ -97,7 +97,7 @@ public class ObjectUtil {
         String[] colors = null;
 
         if (recipient instanceof Player playerRecipient) {
-            if (FPlaceholderAPI.isEnable() && sender instanceof Player playerSender
+            if (HookManager.enabledPlaceholderAPI && sender instanceof Player playerSender
                     && (!neededPermission || sender.hasPermission("flectonechat.placeholders"))) {
 
                 string = PlaceholderAPI.setPlaceholders(playerSender, string);

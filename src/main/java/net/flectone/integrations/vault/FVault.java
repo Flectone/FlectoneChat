@@ -2,23 +2,18 @@ package net.flectone.integrations.vault;
 
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
+import net.flectone.managers.HookManager;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class FVault implements HookInterface {
 
-    private static boolean isEnable = false;
-
     private static Chat provider;
 
     @NotNull
     public static Chat getProvider() {
         return provider;
-    }
-
-    public static boolean isEnable() {
-        return isEnable;
     }
 
     @Override
@@ -32,7 +27,7 @@ public class FVault implements HookInterface {
         }
 
         provider = chatProvider.getProvider();
-        isEnable = true;
+        HookManager.enabledVault = true;
 
         Main.info("\uD83D\uDD12 Vault detected and hooked");
     }

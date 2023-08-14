@@ -17,6 +17,7 @@ import github.scarsz.discordsrv.util.PlaceholderUtil;
 import github.scarsz.discordsrv.util.TimeUtil;
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
@@ -57,8 +58,6 @@ License along with this program.  If not, see
  */
 
 public class FDiscordSRV implements Listener, HookInterface {
-
-    private static boolean isEnable = false;
 
     public static void sendDeathMessage(@NotNull Player player, @NotNull String message, @Nullable Entity finalEntity, @Nullable Material finalBlock, @Nullable Entity killer, @Nullable ItemStack killerItem) {
         message = message.replace("<player>", player.getName());
@@ -217,14 +216,10 @@ public class FDiscordSRV implements Listener, HookInterface {
         event.setMessage(message);
     }
 
-    public static boolean isEnable() {
-        return isEnable;
-    }
-
     @Override
     public void hook() {
         DiscordSRV.api.subscribe(this);
-        isEnable = true;
+        HookManager.enabledDiscordSRV = true;
         Main.info("\uD83D\uDD12 DiscordSRV detected and hooked");
     }
 }

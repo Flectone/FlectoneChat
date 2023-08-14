@@ -3,6 +3,7 @@ package net.flectone.commands;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.voicechats.plasmovoice.FPlasmoVoice;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
@@ -68,7 +69,7 @@ public class CommandMute implements FTabCompleter {
 
         boolean announceModeration = config.getBoolean("command.mute.announce");
 
-        if (announceModeration && FDiscordSRV.isEnable()) FDiscordSRV.sendModerationMessage(formatString);
+        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendModerationMessage(formatString);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
@@ -78,7 +79,7 @@ public class CommandMute implements FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, formatString, false);
 
-        if (FPlasmoVoice.isEnable()) {
+        if (HookManager.enabledPlasmoVoice) {
             FPlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
         }
 

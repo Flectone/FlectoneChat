@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.components.FDeathComponent;
 import net.flectone.misc.entity.FDamager;
 import net.flectone.misc.entity.FPlayer;
@@ -192,7 +193,7 @@ public class PlayerDeathEventListener implements Listener {
                     recipient.spigot().sendMessage(new FDeathComponent(finalPlaceholders, recipient, player, fDamager).get());
                 });
 
-        if(FDiscordSRV.isEnable()) {
+        if(HookManager.enabledDiscordSRV) {
             FDiscordSRV.sendDeathMessage(player,
                     formatMessage,
                     fDamager.getFinalEntity(),

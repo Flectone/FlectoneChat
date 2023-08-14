@@ -2,6 +2,7 @@ package net.flectone.integrations.voicechats.plasmovoice;
 
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
+import net.flectone.managers.HookManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandException;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
 // more reliably and is easier to use.
 
 public class FPlasmoVoice implements HookInterface {
-
-    private static boolean isEnable;
 
     public static void mute(boolean unmute, @NotNull String player, @NotNull String time, @NotNull String reason) {
         if (unmute) unmute(player);
@@ -36,13 +35,9 @@ public class FPlasmoVoice implements HookInterface {
         }
     }
 
-    public static boolean isEnable() {
-        return isEnable;
-    }
-
     @Override
     public void hook() {
-        isEnable = true;
+        HookManager.enabledPlasmoVoice = true;
         Main.info("\uD83D\uDD12 PlasmoVoice detected and hooked");
     }
 }

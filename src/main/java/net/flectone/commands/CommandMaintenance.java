@@ -1,6 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.integrations.discordsrv.FDiscordSRV;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import org.bukkit.Bukkit;
@@ -14,8 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandMaintenance implements FTabCompleter {
 
@@ -60,7 +61,7 @@ public class CommandMaintenance implements FTabCompleter {
 
         String maintenanceMessage = "command.maintenance.turned-" + strings[0].toLowerCase() + ".message";
 
-        if (FDiscordSRV.isEnable()) {
+        if (HookManager.enabledDiscordSRV) {
             FDiscordSRV.sendModerationMessage(locale.getString(maintenanceMessage));
         }
 

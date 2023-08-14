@@ -2,6 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.integrations.voicechats.plasmovoice.FPlasmoVoice;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
@@ -36,7 +37,7 @@ public class CommandUnmute implements FTabCompleter {
 
         if (fCommand.isHaveCD()) return true;
 
-        if (FPlasmoVoice.isEnable()) {
+        if (HookManager.enabledPlasmoVoice) {
             FPlasmoVoice.unmute(fPlayer.getRealName());
         }
 

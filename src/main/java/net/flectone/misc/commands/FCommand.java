@@ -3,6 +3,7 @@ package net.flectone.misc.commands;
 import net.flectone.commands.CommandAfk;
 import net.flectone.integrations.interactivechat.FInteractiveChat;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -192,7 +193,7 @@ public class FCommand {
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
 
-        if (FInteractiveChat.isEnable()) {
+        if (HookManager.enabledInteractiveChat) {
             message = FInteractiveChat.mark(message, player.getUniqueId());
         }
 
@@ -208,7 +209,7 @@ public class FCommand {
         String bubbleMessage = messageBuilder.getMessage();
 
         if (command.contains("chat") && getFPlayer() != null) {
-            if (FInteractiveChat.isEnable()) {
+            if (HookManager.enabledInteractiveChat) {
                 bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
             }
 
@@ -271,7 +272,7 @@ public class FCommand {
 
         ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getInventory().getItemInMainHand() : null;
 
-        if (FInteractiveChat.isEnable()) {
+        if (HookManager.enabledInteractiveChat) {
             message = FInteractiveChat.mark(message, player.getUniqueId());
         }
 

@@ -109,6 +109,22 @@ public class CommandFlectonechat implements FTabCompleter {
                 isStartsWith(strings[3], "integer");
                 isStartsWith(strings[3], "boolean");
             }
+            case 5 -> {
+
+                Object param = switch (strings[0]) {
+                    case "config" -> config.get(strings[1]);
+                    default -> locale.get(strings[1]);
+                };
+
+                if(param == null) break;
+                if(param instanceof Boolean) {
+                    isStartsWith(strings[4], "true");
+                    isStartsWith(strings[4], "false");
+                    break;
+                }
+
+                isStartsWith(strings[4], String.valueOf(param));
+            }
         }
 
         Collections.sort(wordsList);

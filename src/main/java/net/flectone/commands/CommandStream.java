@@ -1,6 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.integrations.discordsrv.FDiscordSRV;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.utils.ObjectUtil;
@@ -68,7 +69,7 @@ public class CommandStream implements FTabCompleter {
 
                 });
 
-        if (FDiscordSRV.isEnable()) {
+        if (HookManager.enabledDiscordSRV) {
             FDiscordSRV.sendModerationMessage(stringBuilder.toString());
         }
 

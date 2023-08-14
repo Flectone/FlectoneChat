@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.misc.advancement.FAdvancementType;
 import net.flectone.misc.components.FAdvancementComponent;
@@ -78,7 +79,7 @@ public class PlayerAdvancementDoneListener implements Listener {
         String formatMessage = locale.getString("advancement." + fAdvancementType + ".name");
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
-        if (FDiscordSRV.isEnable()) {
+        if (HookManager.enabledDiscordSRV) {
             FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
         }
 

@@ -4,6 +4,7 @@ import net.flectone.Main;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.actions.Mail;
 import net.flectone.utils.ObjectUtil;
 import net.milkbowl.vault.chat.Chat;
@@ -61,8 +62,10 @@ public class FPlayer {
 
     public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
-        this.name = offlinePlayer.getName();
         this.uuid = offlinePlayer.getUniqueId().toString();
+
+        String offlinePlayerName = offlinePlayer.getName();
+        this.name = offlinePlayerName != null ? offlinePlayerName : "";
     }
 
     public FPlayer(@NotNull Player player) {
@@ -367,7 +370,7 @@ public class FPlayer {
     }
 
     public void setVaultPrefixSuffix() {
-        if (FVault.isEnable()) {
+        if (HookManager.enabledVault) {
             Chat provider = FVault.getProvider();
 
             this.vaultPrefix = provider.getPlayerPrefix(player);

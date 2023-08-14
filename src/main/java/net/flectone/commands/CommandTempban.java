@@ -2,6 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
@@ -20,8 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandTempban implements FTabCompleter {
 
@@ -68,7 +69,7 @@ public class CommandTempban implements FTabCompleter {
 
         boolean announceModeration = config.getBoolean("command.tempban.announce");
 
-        if (announceModeration && FDiscordSRV.isEnable()) FDiscordSRV.sendModerationMessage(globalMessage);
+        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendModerationMessage(globalMessage);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
