@@ -47,14 +47,15 @@ public class AsyncPlayerChatListener implements Listener {
         removeRecipients(recipients, player, reversedChatType);
 
         if (chatType.equals("local")) {
-            int localRange = config.getInt("chat.local.range");
+            if(config.getBoolean("chat.global.enable")) {
+                int localRange = config.getInt("chat.local.range");
+                recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
+                        || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
-                    || player.getLocation().distance(recipient.getLocation()) > localRange));
-
-            if (config.getBoolean("chat.local.no-recipients.enable") &&
-                    recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
-                noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
+                if (config.getBoolean("chat.local.no-recipients.enable") &&
+                        recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
+                    noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
+                }
             }
 
             if (config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
