@@ -1,6 +1,8 @@
 package net.flectone.listeners;
 
+import net.flectone.integrations.interactivechat.FInteractiveChat;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
 import org.bukkit.Bukkit;
@@ -56,11 +58,14 @@ public class AsyncPlayerChatListener implements Listener {
                         recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
                     noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
                 }
-            }
+
+            } else if(HookManager.enabledInteractiveChat) message = FInteractiveChat.checkMention(event);
 
             if (config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
 
         } else {
+            if(HookManager.enabledInteractiveChat) message = FInteractiveChat.checkMention(event);
+
             if (config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
             if (config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
             message = message
