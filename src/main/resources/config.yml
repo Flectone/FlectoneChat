@@ -131,25 +131,85 @@ player:
       enable: true
 
 command:
-  poll:
-    time: 50
-    permission: "flectonechat.pollcreate"
-
-  maintenance:
-    permission: "flectonechat.maintenance"
-    enable: false
-
-  stream:
-    global: true
-    offline-prefix:
-      enable: true
-
   afk:
+    enable: true
     timeout:
       enable: true
       time: 3000
 
+  ball:
+    enable: true
+    global: true
+
+  banlist:
+    enable: true
+    per-page: 4
+
+  broadcast:
+    enable: true
+
+  chat:
+    enable: true
+
+  chatcolor:
+    enable: true
+
+  clear-chat:
+    enable: true
+
+  firstonline:
+    enable: true
+
+  flectonechat:
+    enable: true
+
+  helper:
+    enable: true
+    see:
+      permission: "flectonechat.helpersee"
+
+  ignore:
+    enable: true
+
+  ignore-list:
+    enable: true
+
+  last-online:
+    enable: true
+
+  mail:
+    enable: true
+
+  mail-clear:
+    enable: true
+
+  maintenance:
+    enable: true
+    permission: "flectonechat.maintenance"
+    turn-on: false
+
+  mark:
+    enable: true
+    item: "WOODEN_SWORD"
+    range: 30
+
+  me:
+    enable: true
+    global: true
+
+  msg:
+    enable: true
+
+  mute:
+    enable: true
+    announce: true
+
+  mutelist:
+    enable: true
+    per-page: 4
+
   ping:
+    enable: true
     bad:
       color: "#ff4e4e"
       count: 200
@@ -159,13 +219,27 @@ command:
     good:
       color: "#4eff52"
 
-  mark:
+  poll:
     enable: true
-    item: "WOODEN_SWORD"
-    range: 30
+    time: 50
+    permission: "flectonechat.pollcreate"
 
-  me:
+  reply:
+    enable: true
+
+  stream:
+    enable: true
     global: true
+
+    offline-prefix:
+      enable: true
+
+  tempban:
+    enable: true
+    announce: true
+
+  tic-tac-toe:
+    enable: true
 
   try:
     global: true
@@ -174,25 +248,11 @@ command:
     global: true
     max-amount: 9
 
-  ball:
-    global: true
+  unban:
+    enable: true
 
-  helper:
-    see:
-      permission: "flectonechat.helpersee"
-
-  mute:
-    announce: true
-
-  mutelist:
-    per-page: 4
-
-  tempban:
-    announce: true
-
-  banlist:
-    per-page: 4
-
+  unmute:
+    enable: true
 
 cool-down:
   enable: false

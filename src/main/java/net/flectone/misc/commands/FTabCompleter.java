@@ -19,6 +19,10 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
 
     String getCommandName();
 
+    default boolean isEnable() {
+        return FileManager.config.getBoolean("command." + getCommandName() + ".enable");
+    }
+
     default void isStartsWith(@NotNull String arg, @NotNull String string) {
         if (string.toLowerCase().startsWith(arg.toLowerCase()) || arg.replace(" ", "").isEmpty()) {
             if (wordsList.contains(string)) return;

@@ -84,7 +84,7 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        if (config.getBoolean("command.maintenance.enable")
+        if (config.getBoolean("command.maintenance.turn-on")
                 && !event.getPlayer().isOp()
                 && !event.getPlayer().hasPermission("flectonechat.maintenance")) {
 

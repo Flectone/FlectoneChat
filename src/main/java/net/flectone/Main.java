@@ -75,6 +75,7 @@ public final class Main extends JavaPlugin {
             PluginCommand pluginCommand = Main.getInstance().getCommand(fTabCompleter.getCommandName());
 
             if (pluginCommand == null) return;
+            if (!fTabCompleter.isEnable()) return;
 
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);

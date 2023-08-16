@@ -20,7 +20,7 @@ public class ServerListPingListener implements Listener {
 
     @EventHandler
     public void updateServerList(@NotNull ServerListPingEvent event) {
-        if (config.getBoolean("command.maintenance.enable")) {
+        if (config.getBoolean("command.maintenance.turn-on")) {
             String motd = locale.getFormatString("server.motd.maintenance", null);
             event.setMotd(motd);
             setIcon(event, "maintenance");

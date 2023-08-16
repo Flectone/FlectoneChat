@@ -32,7 +32,7 @@ public class CommandMaintenance implements FTabCompleter {
             return true;
         }
 
-        boolean haveMaintenance = config.getBoolean("command.maintenance.enable");
+        boolean haveMaintenance = config.getBoolean("command.maintenance.turn-on");
 
         if (haveMaintenance && strings[0].equalsIgnoreCase("on")) {
             fCommand.sendMeMessage("command.maintenance.turned-on.already");
@@ -66,7 +66,7 @@ public class CommandMaintenance implements FTabCompleter {
         }
 
         fCommand.sendMeMessage(maintenanceMessage);
-        config.set("command.maintenance.enable", haveMaintenance);
+        config.set("command.maintenance.turn-on", haveMaintenance);
         config.save();
 
         return true;
