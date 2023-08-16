@@ -39,7 +39,7 @@ public class FDeathComponent extends FComponent {
                 }
                 case "<due_to>" -> {
                     if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())
-                            || fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType())) {
+                            || (fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType()))) {
                         break;
                     }
                     String formatDueToMessage = locale.getFormatString("death.due-to", recipient, sender);
