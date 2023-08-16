@@ -40,7 +40,8 @@ public class FileManager {
         List<String> iconNames = config.getStringList("server.icon.names");
         iconNames.add("maintenance");
 
-        iconNames.stream().filter(icon -> !new File(dataFolder + iconsPath + icon + ".png").exists())
+        iconNames.stream().filter(icon -> !new File(dataFolder + iconsPath + icon + ".png").exists()
+                        && Main.getInstance().getResource(iconsPath + icon + ".png") != null)
                 .forEach(icon -> Main.getInstance().saveResource(iconsPath + icon + ".png", false));
     }
 
