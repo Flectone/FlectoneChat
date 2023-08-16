@@ -52,11 +52,6 @@ public class CommandMark implements FTabCompleter {
 
         if (fCommand.isConsoleMessage()) return true;
 
-        if (!config.getBoolean("command.mark.enable")) {
-            fCommand.sendMeMessage("command.disabled");
-            return true;
-        }
-
         String color = (strings.length > 0) ? strings[0].toUpperCase() : "WHITE";
 
         if (!Arrays.asList(chatColorValues).contains(color)) {
