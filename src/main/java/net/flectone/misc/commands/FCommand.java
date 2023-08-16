@@ -193,7 +193,7 @@ public class FCommand {
 
         Bukkit.getConsoleSender().sendMessage(ObjectUtil.formatString(format, null).replace("<message>", message));
 
-        if (HookManager.enabledInteractiveChat) {
+        if (HookManager.enabledInteractiveChat && !isConsole) {
             message = FInteractiveChat.mark(message, player.getUniqueId());
         }
 
