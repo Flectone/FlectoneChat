@@ -96,7 +96,7 @@ public class FPlayer {
     public void setStreamer() {
         if (player == null) return;
         this.isStreamer = player.hasPermission("flectonechat.stream");
-        if (isStreamer) setStreaming(false);
+        if (isStreamer) setStreaming(isStreaming);
         else this.streamPrefix = "";
     }
 
