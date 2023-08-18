@@ -37,7 +37,14 @@ tab:
 
 player:
   right-click-message: "&&1-⏴ <player> &&1⏵-"
-  hover-message: "&&1Нажми, чтобы написать &&2<player>"
+
+  hover:
+    # название vault группы
+    default:
+      text: "&&1Нажми, чтобы написать &&2<player>"
+      # виды: suggest, run
+      command-type: "suggest"
+      command: "/msg <player> "
 
   item:
     sign: "&o#<player>"

@@ -37,7 +37,14 @@ tab:
 
 player:
   right-click-message: "&&1-⏴ <player> &&1⏵-"
-  hover-message: "&&1Click to write to &&2<player>"
+
+  hover:
+    # vault group name
+    default:
+      text: "&&1Click to write to &&2<player>"
+      # type: suggest, run
+      command-type: "suggest"
+      command: "/msg <player> "
 
   item:
     sign: "&o#<player>"
