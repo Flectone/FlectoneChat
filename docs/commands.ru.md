@@ -35,7 +35,7 @@
 
 Открыть меню со списком игнорируемых игроков
 
-Использование: `/ignore-list <player>`\
+Использование: `/ignore-list`\
 Разрешение: `flectonechat.ignore` (default)
 
 ## /me
@@ -153,7 +153,7 @@
 
 Размутить игрока
 
-Использование: `/mute <player> <time> <reason>`\
+Использование: `/unmute <player>`\
 Разрешение: `flectonechat.mute` (op)
 
 ## /mutelist
@@ -167,9 +167,9 @@
 
 Отправить сообщение всем с разрешением `flectonechat.helpersee`
 
-Использование: `/mute <player> <time> <reason>`\
-Разрешение: `flectonechat.helper` (default)  helpers'
-Разрешение: `flectonechat.helpersee` (op)
+Использование: `/helper <message>`\
+Разрешение: `flectonechat.helper` (default)\
+Разрешение для хэлперов: `flectonechat.helpersee` (op)
 
 ## /maintenance
 
@@ -197,7 +197,7 @@
 Использование: `/ball <message>`\
 Разрешение: `flectonechat.ball` (default)
 
-## tic-tac-toe
+## /tic-tac-toe
 
 Играть в крестики-нолики с игроком прямо в чате
 
@@ -243,7 +243,7 @@
 
 Список забаненных игроков
 
-Использование: `/banlist <page>`
+Использование: `/banlist <page>`\
 Разрешение: `flectonechat.banlist` (op)
 
 ## /broadcast
