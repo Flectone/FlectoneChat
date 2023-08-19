@@ -11,7 +11,7 @@
 
 | name     | description              | type | default |
 |----------|--------------------------|------|---------|
-| `custom` | Enable custom scoreboard | bool | `true`  |
+| `custom` | Enable custom scoreboard | bool | `false` |
 
 ## Color
 
@@ -65,10 +65,10 @@
 *   `server.online`
     *   `server.online.count`
 
-| name     | description                                    | type | default |
-|----------|------------------------------------------------|------|---------|
-| `enable` | Enable custom max online players (only visual) | bool | `true`  |
-| `digit`  | Max players count                              | int  | `69`    |
+| name     | description                             | type | default |
+|----------|-----------------------------------------|------|---------|
+| `enable` | Enable custom max players (only visual) | bool | `true`  |
+| `digit`  | Max players count                       | int  | `69`    |
 
 *   `server.icon`
 
@@ -115,17 +115,33 @@
 |-----------|------------------------------------------------------------------|------|---------|
 | `cleared` | Remove global prefix for other plugins support (DiscordSRV etc.) | bool | `true`  |
 
+### `chat.bubble`
+
+| name           | description                                                             | type   | default |
+|----------------|-------------------------------------------------------------------------|--------|---------|
+| `enable`       | Enable chat bubbles                                                     | bool   | `true`  |
+| `max-per-line` | Maximum number of characters in a line. overflow is moved to a new line | number | `35`    |
+| `read-speed`   | Read speed. affect the duration of bubbles                              | number | `800`   |
+
+duration formula (ticks)
+```java
+duration = (messageLength + 8 * BubblesCount) * 1200 / readSpeed;
+```
+
 ### `chat.patterns`
 
-check [Chat features](features/chat.md#patterns) to learn about patterns
+checkout [Chat features](features/chat.md#patterns) to learn about patterns
 
 ## Death
 
 ### `death.message`
 
-| name           | description                          | type   | default   |
-| -------------- | ------------------------------------ | ------ | --------- |
-| `enable`       | Enable custom death messages         | bool   | `true`    |
+| name           | description                                                                                                                                    | type   | default   |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------ | --------- |
+| `enable`       | Enable custom death messages                                                                                                                   | bool   | `true`    |
+| `visible`      | if disabled, custom death messages will not be shown                                                                                           | bool   | `true`    |
+| `mob-default`  | if enabled, then death from any mob will be located on the "death.mob.default", otherwise it will be necessary to register for each separately | bool   | `true`    |
+<!-- 184 chars in a line lets gooooooo -->
 
 ## Player
 
@@ -139,9 +155,9 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 ### `player.world`
 
-| name   | description                                                                              | type | default |
-|--------|------------------------------------------------------------------------------------------|------|---------|
-| `mode` | World detecting mode. [More info here](https://chat.flectone.net/features/worldprefixes) | bool | `true`  |
+| name   | description                                                    | type | default |
+|--------|----------------------------------------------------------------|------|---------|
+| `mode` | World detecting mode. [More info here](features/worldprefixes.md) | bool | `true`  |
 
 *   `player.world.prefix`
 
@@ -159,9 +175,9 @@ check [Chat features](features/chat.md#patterns) to learn about patterns
 
 *   `player.item.sign`
 
-| name     | description         | type | default |
-|----------|---------------------|------|---------|
-| `enable` | Enable item signing | bool | `true`  |
+| name     | description                                    | type | default |
+|----------|------------------------------------------------|------|---------|
+| `enable` | Enable [item signing](features/itemsigning.md) | bool | `true`  |
 
 ### `player.join`
 

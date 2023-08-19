@@ -35,7 +35,7 @@ Permission: `flectonechat.ignore` (default)
 
 Open menu with list of ignored players
 
-Usage: `/ignore-list <player>`\
+Usage: `/ignore-list`\
 Permission: `flectonechat.ignore` (default)
 
 ## /me
@@ -153,7 +153,7 @@ Permission: `flectonechat.mute` (op)
 
 Unmute a player
 
-Usage: `/mute <player> <time> <reason>`\
+Usage: `/unmute <player>`\
 Permission: `flectonechat.mute` (op)
 
 ## /mutelist
@@ -197,7 +197,7 @@ Ask crystal ball for any answer
 Usage: `/ball <message>`\
 Permission: `flectonechat.ball` (default)
 
-## tic-tac-toe
+## /tic-tac-toe
 
 Play tic-tac-toe with player right in chat
 
@@ -243,7 +243,7 @@ Permission: `flectonechat.ban` (op)
 
 List banned players
 
-Usage: `/banlist <page>`
+Usage: `/banlist <page>`\
 Permission: `flectonechat.banlist` (op)
 
 ## /broadcast
