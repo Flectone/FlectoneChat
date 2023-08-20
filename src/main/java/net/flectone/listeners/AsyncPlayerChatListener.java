@@ -30,6 +30,8 @@ public class AsyncPlayerChatListener implements Listener {
 
     @EventHandler
     public void chat(@NotNull AsyncPlayerChatEvent event) {
+        if (event.isCancelled()) return;
+
         Player player = event.getPlayer();
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if(fPlayer == null) return;
