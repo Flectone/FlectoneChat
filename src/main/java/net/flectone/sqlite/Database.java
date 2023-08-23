@@ -2,21 +2,20 @@ package net.flectone.sqlite;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.actions.Mail;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.actions.Mail;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -46,74 +45,6 @@ public abstract class Database {
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
-    }
-
-    private void loadOldConfigs() {
-        Main.info("\uD83D\uDCCA Migrating old configs to database");
-        ArrayList<FPlayer> fPlayers = new ArrayList<>();
-
-        File themeFile = new File(plugin.getDataFolder(), "themes.yml");
-        if (themeFile.exists()) {
-            FileConfiguration themesConfiguration = YamlConfiguration.loadConfiguration(themeFile);
-            for (String uuid : themesConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
-                List<String> stringList = themesConfiguration.getStringList(uuid);
-                if (fPlayer == null || stringList.size() < 2) continue;
-
-                fPlayer.setColors(stringList.get(0), stringList.get(1));
-                fPlayers.add(fPlayer);
-            }
-        }
-
-        File muteFile = new File(plugin.getDataFolder(), "mutes.yml");
-        if (muteFile.exists()) {
-            FileConfiguration muteConfiguration = YamlConfiguration.loadConfiguration(muteFile);
-            for (String uuid : muteConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
-                List<String> stringList = muteConfiguration.getStringList(uuid);
-                if (fPlayer == null || stringList.size() < 2) continue;
-
-                fPlayer.setMuteReason(stringList.get(0));
-                fPlayer.setMuteTime(Integer.parseInt(stringList.get(1)));
-                fPlayers.add(fPlayer);
-            }
-        }
-
-        File ignoreFile = new File(plugin.getDataFolder(), "ignores.yml");
-        if (ignoreFile.exists()) {
-            FileConfiguration ignoreConfiguration = YamlConfiguration.loadConfiguration(ignoreFile);
-            for (String uuid : ignoreConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
-                List<UUID> stringList = ignoreConfiguration.getStringList(uuid).stream().map(UUID::fromString).toList();
-                if (fPlayer == null || stringList.isEmpty()) continue;
-
-                fPlayer.setIgnoreList(new ArrayList<>(stringList));
-                fPlayers.add(fPlayer);
-            }
-        }
-
-        File mailFile = new File(plugin.getDataFolder(), "mails.yml");
-        if (mailFile.exists()) {
-            FileConfiguration mailConfiguration = YamlConfiguration.loadConfiguration(mailFile);
-            for (String uuid : mailConfiguration.getKeys(true)) {
-                if (!uuid.contains(".")) continue;
-                String[] uuids = uuid.split("\\.");
-                FPlayer firstFPlayer = FPlayerManager.getPlayer(UUID.fromString(uuids[0]));
-                FPlayer secondFPlayer = FPlayerManager.getPlayer(UUID.fromString(uuids[1]));
-
-                if (firstFPlayer == null || secondFPlayer == null) continue;
-
-                List<String> stringList = mailConfiguration.getStringList(uuid);
-                for (String message : stringList) {
-                    Mail mail = new Mail(secondFPlayer.getUUID(), firstFPlayer.getUUID(), message);
-                    firstFPlayer.addMail(mail.getUUID(), mail);
-                }
-                fPlayers.add(firstFPlayer);
-            }
-        }
-
-        fPlayers.forEach(this::uploadDatabase);
-        Main.info("\uD83D\uDCCA Migration of old configs to database is finished");
     }
 
     public void setPlayer(@NotNull UUID uuid) {
@@ -189,8 +120,6 @@ public abstract class Database {
         }
 
         Main.info("\uD83D\uDCCA Database loaded successfully");
-
-        if (SQLite.isOldVersion) loadOldConfigs();
     }
 
     public void uploadDatabase(FPlayer fPlayer) {
