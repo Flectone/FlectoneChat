@@ -7,6 +7,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.actions.Mail;
 import net.flectone.utils.ObjectUtil;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -294,8 +295,8 @@ public class FPlayer {
     public String[] getColors() {
         if (this.colors.length != 0) return this.colors;
 
-        String firstColor = Main.getInstance().getConfig().getString("color.first");
-        String secondColor = Main.getInstance().getConfig().getString("color.second");
+        String firstColor = config.getString("color.first");
+        String secondColor = config.getString("color.second");
         setColors(firstColor, secondColor);
 
         return this.colors;
@@ -530,5 +531,11 @@ public class FPlayer {
 
     public boolean isDeathByObject() {
         return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
+    }
+
+    public void spigotMessage(BaseComponent[] baseComponents) {
+        if(this.player == null) return;
+
+        this.player.spigot().sendMessage(baseComponents);
     }
 }

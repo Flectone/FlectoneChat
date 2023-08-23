@@ -126,8 +126,8 @@ public class CommandTicTacToe implements FTabCompleter {
     }
 
     private void sendMessages(@NotNull FPlayer firstFPlayer, @NotNull FPlayer secondFPlayer, @NotNull TicTacToe ticTacToe) {
-        firstFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(firstFPlayer));
-        secondFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(secondFPlayer));
+        firstFPlayer.spigotMessage(ticTacToe.build(firstFPlayer));
+        secondFPlayer.spigotMessage(ticTacToe.build(secondFPlayer));
     }
 
     private int getValidSize(@NotNull String[] strings) {
