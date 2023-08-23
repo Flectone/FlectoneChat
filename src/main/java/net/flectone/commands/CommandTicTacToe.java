@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static net.flectone.managers.FileManager.locale;
 
@@ -47,8 +48,16 @@ public class CommandTicTacToe implements FTabCompleter {
         if (ticTacToe == null) {
             boolean isFirstPlayer = Math.random() > 0.5;
 
-            String firstPlayer = isFirstPlayer ? fCommand.getFPlayer().getUUID() : secondFPlayer.getUUID();
-            String secondPlayer = isFirstPlayer ? secondFPlayer.getUUID() : fCommand.getFPlayer().getUUID();
+            UUID firstPlayer;
+            UUID secondPlayer;
+
+            if (isFirstPlayer) {
+                firstPlayer = fCommand.getFPlayer().getUUID();
+                secondPlayer = secondFPlayer.getUUID();
+            } else {
+                firstPlayer = secondFPlayer.getUUID();
+                secondPlayer = fCommand.getFPlayer().getUUID();
+            }
 
             int size = getValidSize(strings);
             ticTacToe = new TicTacToe(size, firstPlayer, secondPlayer);

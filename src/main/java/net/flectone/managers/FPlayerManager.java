@@ -19,7 +19,7 @@ import static net.flectone.managers.FileManager.config;
 
 public class FPlayerManager {
 
-    private static final HashMap<String, FPlayer> fPlayerHashMap = new HashMap<>();
+    private static final HashMap<UUID, FPlayer> fPlayerHashMap = new HashMap<>();
     private static final Set<FPlayer> bannedPlayers = new HashSet<>();
     private static final Set<FPlayer> mutedPlayers = new HashSet<>();
     private static Scoreboard scoreBoard;
@@ -98,7 +98,7 @@ public class FPlayerManager {
     }
 
     public static void addPlayer(@NotNull OfflinePlayer offlinePlayer) {
-        String uuid = offlinePlayer.getUniqueId().toString();
+        UUID uuid = offlinePlayer.getUniqueId();
         if (fPlayerHashMap.containsKey(uuid)) return;
 
         FPlayer fPlayer = new FPlayer(offlinePlayer);
@@ -107,7 +107,7 @@ public class FPlayerManager {
 
 
     public static FPlayer addPlayer(@NotNull Player player) {
-        String uuid = player.getUniqueId().toString();
+        UUID uuid = player.getUniqueId();
         if (fPlayerHashMap.containsKey(uuid)) {
             FPlayer fPlayer = getPlayer(uuid);
             if (fPlayer == null) return null;
@@ -142,21 +142,13 @@ public class FPlayerManager {
     }
 
     @Nullable
-    public static FPlayer getPlayer(@NotNull String uuid) {
+    public static FPlayer getPlayer(@NotNull UUID uuid) {
         return fPlayerHashMap.get(uuid);
     }
 
-    @Nullable
-    public static FPlayer getPlayer(@NotNull UUID uuid) {
-        return getPlayer(uuid.toString());
-    }
-
-    public static void removePlayer(@NotNull String uuid) {
-        fPlayerHashMap.remove(uuid);
-    }
 
     public static void removePlayer(@NotNull UUID uuid) {
-        removePlayer(uuid.toString());
+        fPlayerHashMap.remove(uuid);
     }
 
     public static void removePlayer(@NotNull Player player) {

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static net.flectone.managers.FileManager.locale;
 
@@ -23,7 +24,7 @@ public class CommandIgnoreList implements FTabCompleter {
 
         if (fCommand.isConsoleMessage() || fCommand.getFPlayer() == null || fCommand.getPlayer() == null) return true;
 
-        List<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
+        List<UUID> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
         if (ignoreList.isEmpty()) {
             fCommand.sendMeMessage("command.ignore-list.empty");

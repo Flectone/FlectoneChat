@@ -16,10 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -44,7 +41,7 @@ public abstract class Database {
             close(ps, rs);
 
             Arrays.stream(Bukkit.getOfflinePlayers())
-                    .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId().toString()));
+                    .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId()));
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -59,7 +56,7 @@ public abstract class Database {
         if (themeFile.exists()) {
             FileConfiguration themesConfiguration = YamlConfiguration.loadConfiguration(themeFile);
             for (String uuid : themesConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
+                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
                 List<String> stringList = themesConfiguration.getStringList(uuid);
                 if (fPlayer == null || stringList.size() < 2) continue;
 
@@ -72,7 +69,7 @@ public abstract class Database {
         if (muteFile.exists()) {
             FileConfiguration muteConfiguration = YamlConfiguration.loadConfiguration(muteFile);
             for (String uuid : muteConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
+                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
                 List<String> stringList = muteConfiguration.getStringList(uuid);
                 if (fPlayer == null || stringList.size() < 2) continue;
 
@@ -86,8 +83,8 @@ public abstract class Database {
         if (ignoreFile.exists()) {
             FileConfiguration ignoreConfiguration = YamlConfiguration.loadConfiguration(ignoreFile);
             for (String uuid : ignoreConfiguration.getKeys(true)) {
-                FPlayer fPlayer = FPlayerManager.getPlayer(uuid);
-                List<String> stringList = ignoreConfiguration.getStringList(uuid);
+                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(uuid));
+                List<UUID> stringList = ignoreConfiguration.getStringList(uuid).stream().map(UUID::fromString).toList();
                 if (fPlayer == null || stringList.isEmpty()) continue;
 
                 fPlayer.setIgnoreList(new ArrayList<>(stringList));
@@ -101,8 +98,8 @@ public abstract class Database {
             for (String uuid : mailConfiguration.getKeys(true)) {
                 if (!uuid.contains(".")) continue;
                 String[] uuids = uuid.split("\\.");
-                FPlayer firstFPlayer = FPlayerManager.getPlayer(uuids[0]);
-                FPlayer secondFPlayer = FPlayerManager.getPlayer(uuids[1]);
+                FPlayer firstFPlayer = FPlayerManager.getPlayer(UUID.fromString(uuids[0]));
+                FPlayer secondFPlayer = FPlayerManager.getPlayer(UUID.fromString(uuids[1]));
 
                 if (firstFPlayer == null || secondFPlayer == null) continue;
 
@@ -119,11 +116,11 @@ public abstract class Database {
         Main.info("\uD83D\uDCCA Migration of old configs to database is finished");
     }
 
-    public void setPlayer(@NotNull String uuid) {
+    public void setPlayer(@NotNull UUID uuid) {
         try (Connection conn = getSQLConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
 
-            ps.setString(1, uuid);
+            ps.setString(1, uuid.toString());
 
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -141,7 +138,7 @@ public abstract class Database {
 
             while (resultSet.next()) {
 
-                FPlayer fPlayer = FPlayerManager.getPlayer(resultSet.getString("uuid"));
+                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(resultSet.getString("uuid")));
                 if (fPlayer == null) continue;
 
                 String color = resultSet.getString("colors");
@@ -151,7 +148,11 @@ public abstract class Database {
 
                 String ignoreList = resultSet.getString("ignore_list");
 
-                ArrayList<String> arrayList = ignoreList == null ? new ArrayList<>() : new ArrayList<>(Arrays.asList(ignoreList.split(",")));
+                ArrayList<UUID> arrayList = ignoreList == null
+                        ? new ArrayList<>()
+                        : new ArrayList<>(Arrays.stream(ignoreList.split(","))
+                        .map(UUID::fromString).collect(Collectors.toList()));
+
                 fPlayer.setIgnoreList(arrayList);
                 fPlayer.setMuteTime(resultSet.getInt("mute_time"));
                 fPlayer.setMuteReason(resultSet.getString("mute_reason"));
@@ -177,8 +178,8 @@ public abstract class Database {
 
                     ResultSet resultMail = ps2.executeQuery();
 
-                    fPlayer.addMail(uuid, new Mail(resultMail.getString("sender"),
-                            resultMail.getString("receiver"),
+                    fPlayer.addMail(UUID.fromString(uuid), new Mail(UUID.fromString(resultMail.getString("sender")),
+                            UUID.fromString(resultMail.getString("receiver")),
                             resultMail.getString("message")));
                 }
             }
@@ -226,7 +227,7 @@ public abstract class Database {
             ps1.setString(5, colors[0] + "," + colors[1]);
 
             StringBuilder ignoreListString = new StringBuilder();
-            for (String ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
+            for (UUID ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
             ps1.setString(6, ignoreListString.length() == 0 ? null : ignoreListString.toString());
 
             if (!fPlayer.getMails().isEmpty() && !fPlayer.getMails().isEmpty()) {
@@ -234,7 +235,7 @@ public abstract class Database {
                     if (mail.isRemoved()) {
                         try {
                             PreparedStatement ps2 = conn.prepareStatement("DELETE FROM mails WHERE uuid = ?");
-                            ps2.setString(1, uuid);
+                            ps2.setString(1, uuid.toString());
                             ps2.executeUpdate();
                         } catch (SQLException e) {
                             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
@@ -244,9 +245,9 @@ public abstract class Database {
 
                     try {
                         PreparedStatement ps2 = conn.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
-                        ps2.setString(1, mail.getUUID());
-                        ps2.setString(2, mail.getSender());
-                        ps2.setString(3, mail.getReceiver());
+                        ps2.setString(1, mail.getUUID().toString());
+                        ps2.setString(2, mail.getSender().toString());
+                        ps2.setString(3, mail.getReceiver().toString());
                         ps2.setString(4, mail.getMessage());
                         ps2.executeUpdate();
                     } catch (SQLException e) {
@@ -257,14 +258,14 @@ public abstract class Database {
 
             String mails = fPlayer.getMails().entrySet().stream()
                     .filter(entry -> !entry.getValue().isRemoved())
-                    .map(Map.Entry::getKey)
+                    .map(entry -> entry.getKey().toString())
                     .collect(Collectors.joining(","));
 
             mails = mails.isEmpty() ? null : mails;
 
             ps1.setString(7, mails);
             ps1.setString(8, fPlayer.getChat());
-            ps1.setString(9, fPlayer.getUUID());
+            ps1.setString(9, fPlayer.getUUID().toString());
             ps1.executeUpdate();
 
         } catch (SQLException ex) {

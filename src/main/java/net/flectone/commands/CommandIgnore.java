@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class CommandIgnore implements FTabCompleter {
 
@@ -38,7 +39,7 @@ public class CommandIgnore implements FTabCompleter {
 
         if (fCommand.isHaveCD() || fCommand.getFPlayer() == null) return true;
 
-        ArrayList<String> ignoreList = fCommand.getFPlayer().getIgnoreList();
+        ArrayList<UUID> ignoreList = fCommand.getFPlayer().getIgnoreList();
 
         boolean isIgnored = fCommand.getFPlayer().isIgnored(ignoredFPlayer.getUUID());
         fCommand.sendMeMessage("command.ignore." + !isIgnored + "-message", "<player>", ignoredFPlayer.getRealName());

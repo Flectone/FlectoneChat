@@ -25,17 +25,17 @@ public class TicTacToe {
 
     private final String[][] marks;
 
-    private final String firstPlayer;
+    private final UUID firstPlayer;
 
-    private final String secondPlayer;
+    private final UUID secondPlayer;
 
-    private String nextPlayer;
+    private UUID nextPlayer;
 
     private boolean isEnded;
 
     private boolean isAccepted = false;
 
-    public TicTacToe(int size, @NotNull String firstPlayer, @NotNull String secondPlayer) {
+    public TicTacToe(int size, @NotNull UUID firstPlayer, @NotNull UUID secondPlayer) {
         this.uuid = UUID.randomUUID().toString();
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
@@ -70,7 +70,7 @@ public class TicTacToe {
         isAccepted = accepted;
     }
 
-    public void setMark(@NotNull String player, int number) {
+    public void setMark(@NotNull UUID player, int number) {
         int row = (number - 1) / marks.length;
         int column = (number - 1) % marks.length;
 
@@ -82,7 +82,7 @@ public class TicTacToe {
     }
 
     @Nullable
-    public FPlayer getSecondFPlayer(@NotNull String player) {
+    public FPlayer getSecondFPlayer(@NotNull UUID player) {
         return FPlayerManager.getPlayer(player.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
@@ -92,7 +92,7 @@ public class TicTacToe {
         return !marks[row][column].equals(mark);
     }
 
-    public boolean isNextPlayer(@NotNull String player) {
+    public boolean isNextPlayer(@NotNull UUID player) {
         return nextPlayer.equals(player);
     }
 

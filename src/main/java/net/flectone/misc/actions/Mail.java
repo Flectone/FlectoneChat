@@ -6,31 +6,31 @@ import java.util.UUID;
 
 public class Mail {
 
-    private final String uuid;
-    private final String sender;
-    private final String receiver;
+    private final UUID uuid;
+    private final UUID sender;
+    private final UUID receiver;
     private final String message;
     private boolean isRemoved = false;
 
-    public Mail(@NotNull String sender, @NotNull String receiver, @NotNull String message) {
-        this.uuid = UUID.randomUUID().toString();
+    public Mail(@NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
+        this.uuid = UUID.randomUUID();
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
     }
 
     @NotNull
-    public String getUUID() {
+    public UUID getUUID() {
         return uuid;
     }
 
     @NotNull
-    public String getSender() {
+    public UUID getSender() {
         return sender;
     }
 
     @NotNull
-    public String getReceiver() {
+    public UUID getReceiver() {
         return receiver;
     }
 

@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -33,7 +34,7 @@ public class PlayerJoinListener implements Listener {
             fCommand.sendGlobalMessage(string);
         }
 
-        HashMap<String, Mail> mails = fPlayer.getMails();
+        HashMap<UUID, Mail> mails = fPlayer.getMails();
         if (mails.isEmpty()) return;
 
         mails.values().parallelStream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
@@ -66,6 +67,7 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
 
         FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
+        if (fPlayer == null) return;
         sendJoinMessage(fPlayer, player, fPlayer.isOnline());
     }
 

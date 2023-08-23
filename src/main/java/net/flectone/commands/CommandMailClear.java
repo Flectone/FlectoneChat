@@ -11,10 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandMailClear implements FTabCompleter {
 
@@ -33,7 +30,7 @@ public class CommandMailClear implements FTabCompleter {
             return true;
         }
 
-        HashMap<String, Mail> mailsList = fPlayer.getMails();
+        HashMap<UUID, Mail> mailsList = fPlayer.getMails();
 
         if (fPlayer.isOnline() || mailsList.isEmpty()) {
             fCommand.sendMeMessage("command.mail-clear.empty");
@@ -49,8 +46,8 @@ public class CommandMailClear implements FTabCompleter {
 
         int number = Integer.parseInt(strings[1]);
 
-        Map.Entry<String, Mail> entry = mailsList.entrySet().parallelStream()
-                .filter(stringMailEntry -> !stringMailEntry.getValue().isRemoved())
+        Map.Entry<UUID, Mail> entry = mailsList.entrySet().parallelStream()
+                .filter(mailEntry -> !mailEntry.getValue().isRemoved())
                 .skip(number - 1)
                 .findFirst()
                 .orElse(null);
@@ -84,7 +81,7 @@ public class CommandMailClear implements FTabCompleter {
 
                 if (fPlayer == null) break;
 
-                HashMap<String, Mail> mailsList = fPlayer.getMails();
+                HashMap<UUID, Mail> mailsList = fPlayer.getMails();
 
                 if (mailsList.isEmpty()) break;
 

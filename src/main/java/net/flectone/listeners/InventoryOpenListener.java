@@ -32,7 +32,7 @@ public class InventoryOpenListener implements Listener {
 
         if (!inventoryList.contains(event.getInventory())) return;
 
-        List<String> ignoreList = fPlayer.getIgnoreList();
+        List<UUID> ignoreList = fPlayer.getIgnoreList();
 
         int indexItem = 0;
         int numberInventory = 0;
@@ -49,7 +49,7 @@ public class InventoryOpenListener implements Listener {
 
             SkullMeta skullMeta = (SkullMeta) blockForHead.getItemMeta();
 
-            String playerName = Bukkit.getOfflinePlayer(UUID.fromString(ignoreList.get(y))).getName();
+            String playerName = Bukkit.getOfflinePlayer(ignoreList.get(y)).getName();
 
             skullMeta.setDisplayName("§e" + playerName);
             skullMeta.setLocalizedName(playerName);

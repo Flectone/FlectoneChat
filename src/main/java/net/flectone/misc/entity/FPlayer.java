@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static net.flectone.managers.FileManager.locale;
@@ -32,8 +33,8 @@ public class FPlayer {
 
     private final OfflinePlayer offlinePlayer;
     private final String name;
-    private final String uuid;
-    private final HashMap<String, Mail> mails = new HashMap<>();
+    private final UUID uuid;
+    private final HashMap<UUID, Mail> mails = new HashMap<>();
     private final List<String> listChatBubbles = new ArrayList<>();
     private Player player;
     private Block block;
@@ -42,7 +43,7 @@ public class FPlayer {
     private boolean isStreaming = false;
     private boolean isStreamer = false;
     private String[] colors = new String[]{};
-    private ArrayList<String> ignoreList = new ArrayList<>();
+    private ArrayList<UUID> ignoreList = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
     private String muteReason;
     private int muteTime;
@@ -62,7 +63,7 @@ public class FPlayer {
 
     public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
-        this.uuid = offlinePlayer.getUniqueId().toString();
+        this.uuid = offlinePlayer.getUniqueId();
 
         String offlinePlayerName = offlinePlayer.getName();
         this.name = offlinePlayerName != null ? offlinePlayerName : "";
@@ -72,7 +73,7 @@ public class FPlayer {
         this.player = player;
         this.offlinePlayer = player;
         this.name = player.getName();
-        this.uuid = player.getUniqueId().toString();
+        this.uuid = player.getUniqueId();
     }
 
     public void initialize(@NotNull Player player) {
@@ -115,7 +116,7 @@ public class FPlayer {
     }
 
     @NotNull
-    public String getUUID() {
+    public UUID getUUID() {
         return this.uuid;
     }
 
@@ -261,27 +262,27 @@ public class FPlayer {
     }
 
     @NotNull
-    public ArrayList<String> getIgnoreList() {
+    public ArrayList<UUID> getIgnoreList() {
         return ignoreList;
     }
 
-    public void setIgnoreList(@NotNull ArrayList<String> ignoreList) {
+    public void setIgnoreList(@NotNull ArrayList<UUID> ignoreList) {
         this.ignoreList = ignoreList;
     }
 
     public boolean isIgnored(@Nullable Player player) {
         if (player == null || this.player == player) return false;
 
-        return isIgnored(player.getUniqueId().toString());
+        return isIgnored(player.getUniqueId());
     }
 
     public boolean isIgnored(@Nullable OfflinePlayer offlinePlayer) {
         if (offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
 
-        return isIgnored(offlinePlayer.getUniqueId().toString());
+        return isIgnored(offlinePlayer.getUniqueId());
     }
 
-    public boolean isIgnored(@NotNull String uuid) {
+    public boolean isIgnored(@NotNull UUID uuid) {
         return this.ignoreList.contains(uuid);
     }
 
@@ -460,15 +461,15 @@ public class FPlayer {
     }
 
     @NotNull
-    public HashMap<String, Mail> getMails() {
+    public HashMap<UUID, Mail> getMails() {
         return mails;
     }
 
-    public void addMail(@NotNull String uuid, @NotNull Mail mail) {
+    public void addMail(@NotNull UUID uuid, @NotNull Mail mail) {
         mails.put(uuid, mail);
     }
 
-    public void removeMail(@NotNull String uuid) {
+    public void removeMail(@NotNull UUID uuid) {
         mails.get(uuid).setRemoved(true);
     }
 
