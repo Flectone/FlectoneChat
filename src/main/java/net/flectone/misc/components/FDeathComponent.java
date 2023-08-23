@@ -28,7 +28,7 @@ public class FDeathComponent extends FComponent {
                     if (fDamager.getFinalEntity() == null) break;
                     Entity entity = fDamager.getFinalEntity();
                     if (entity instanceof Player) {
-                        mainBuilder.append(new FPlayerComponent(recipient, sender, mainColor + sender.getName()).get());
+                        mainBuilder.append(new FPlayerComponent(recipient, entity, mainColor + entity.getName()).get());
                         break;
                     }
                     mainBuilder.append(new FColorComponent(new FEntityComponent(recipient, sender, entity), mainColor).get());
