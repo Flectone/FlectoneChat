@@ -24,7 +24,7 @@ public class PlayerInteractAtEntityListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if (fPlayer == null) return;
 
-        String formatMessage = locale.getFormatString("player.right-click-message", player)
+        String formatMessage = locale.getFormatString("player.right-click-message", event.getPlayer(), player)
                 .replace("<player>", fPlayer.getDisplayName());
 
         event.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
