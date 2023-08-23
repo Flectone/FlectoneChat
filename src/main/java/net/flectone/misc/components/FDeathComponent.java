@@ -71,8 +71,7 @@ public class FDeathComponent extends FComponent {
                     for (String byItemPlaceholder : ObjectUtil.splitLine(formatMessage, new ArrayList<>(List.of("<item>")))) {
                         if (byItemPlaceholder.equals("<item>")) {
 
-                            FComponent byItemComponent = new FLocaleComponent(fDamager.getKillerItemName())
-                                    .addHoverItem(fDamager.getKillerItemAsJson());
+                            FComponent byItemComponent = new FLocaleComponent(fDamager.getKillerItem());
 
                             byItemBuilder.append(new FColorComponent(byItemComponent, byItemColor).get());
 
