@@ -36,12 +36,14 @@ public class ObjectUtil {
         int minutes = (timeInSeconds / 60) % 60;
         int seconds = timeInSeconds % 60;
 
-        String finalString = (days > 0 ? " " + days + locale.getString("command.online.format.day") : "")
-                + (hours > 0 ? " " + hours + locale.getString("command.online.format.hour") : "")
-                + (minutes > 0 ? " " + minutes + locale.getString("command.online.format.minute") : "")
-                + (seconds > 0 ? " " + seconds + locale.getString("command.online.format.second") : "");
+        StringBuilder stringBuilder = new StringBuilder();
 
-        return finalString.substring(1);
+        if (days > 0) stringBuilder.append(" ").append(days).append(locale.getString("command.online.format.day"));
+        if (hours > 0) stringBuilder.append(" ").append(hours).append(locale.getString("command.online.format.hour"));
+        if (minutes > 0) stringBuilder.append(" ").append(minutes).append(locale.getString("command.online.format.minute"));
+        if (seconds > 0) stringBuilder.append(" ").append(seconds).append(locale.getString("command.online.format.second"));
+
+        return stringBuilder.substring(1);
     }
 
     @NotNull
