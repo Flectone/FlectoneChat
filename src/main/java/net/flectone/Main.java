@@ -63,7 +63,7 @@ public final class Main extends JavaPlugin {
 
         info("✔ Plugin enabled");
 
-        new Thread(WebUtil::checkNewerVersion).start();
+        Bukkit.getScheduler().runTaskAsynchronously(this, WebUtil::checkNewerVersion);
     }
 
     private void registerClasses() {
