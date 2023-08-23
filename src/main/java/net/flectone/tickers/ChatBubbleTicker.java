@@ -26,7 +26,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().forEach(player -> {
+        Bukkit.getOnlinePlayers().stream().filter(player -> !player.isInsideVehicle()).forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
             if(fPlayer == null) return;
 
