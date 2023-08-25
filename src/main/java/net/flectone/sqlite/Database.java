@@ -161,7 +161,7 @@ public abstract class Database {
                 }
             }
 
-            ChatInfo chatInfo = new ChatInfo();
+            ChatInfo chatInfo = new ChatInfo(fPlayer.getUUID().toString());
 
             String chat = playerResult.getString("chat");
             chatInfo.setChatType(chat == null ? "local" : chat);
@@ -467,7 +467,34 @@ public abstract class Database {
                     deleteRow("mails", "uuid", mail.getUUID().toString());
                 }
                 case "chats" -> {
-                    Bukkit.broadcastMessage("а нихуя щас не делается");
+
+                    ChatInfo chatInfo = (ChatInfo) playerInfo;
+
+                    PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET enable_advancements=?," +
+                            "enable_deaths=?,enable_joins=?,enable_quits=?,enable_command_me=?,enable_command_try=?," +
+                            "enable_command_try_cube=?,enable_command_ball=?,enable_command_tempban=?,enable_command_mute=?," +
+                            "enable_command_warn=?,enable_command_msg=?,enable_command_reply=?,enable_command_mail=?," +
+                            "enable_command_tic_tac_toe=? WHERE uuid=?");
+
+                    preparedStatement.setString(1, chatInfo.getOptionString(("advancement")));
+                    preparedStatement.setString(2, chatInfo.getOptionString(("death")));
+                    preparedStatement.setString(3, chatInfo.getOptionString(("join")));
+                    preparedStatement.setString(4, chatInfo.getOptionString(("quit")));
+                    preparedStatement.setString(5, chatInfo.getOptionString(("me")));
+                    preparedStatement.setString(6, chatInfo.getOptionString(("try")));
+                    preparedStatement.setString(7, chatInfo.getOptionString(("try-cube")));
+                    preparedStatement.setString(8, chatInfo.getOptionString(("ball")));
+                    preparedStatement.setString(9, chatInfo.getOptionString(("tempban")));
+                    preparedStatement.setString(10, chatInfo.getOptionString(("mute")));
+                    preparedStatement.setString(11, chatInfo.getOptionString(("warn")));
+                    preparedStatement.setString(12, chatInfo.getOptionString(("msg")));
+                    preparedStatement.setString(13, chatInfo.getOptionString(("reply")));
+                    preparedStatement.setString(14, chatInfo.getOptionString(("mail")));
+                    preparedStatement.setString(15, chatInfo.getOptionString(("tic-tac-toe")));
+                    preparedStatement.setString(16, chatInfo.getPlayer());
+
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
                 }
             }
 

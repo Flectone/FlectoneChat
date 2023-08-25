@@ -130,10 +130,50 @@ command:
   clear-chat:
     message: "&&1💬 Чат очищен"
 
-  chat:
+  switch-chat:
     usage: "&&1⚑ Использование: &&2/<command> switch/hide local/global"
     switch-message: "&&1💬 Ты переключил чат на <chat>"
     hide-message: "&&1💬 Ты скрыл <chat> чат"
+
+  chat-settings:
+    hover-text: "&&1Нажми, чтобы изменить отображение &&2<component>"
+    format:
+      local: "&&2Локальный"
+      global: "&&2Глобальный"
+      onlylocal: "&&2Скрыт глобальный"
+      onlyglobal: "&&2Скрыт локальный"
+      advancement: "&&2Достижения"
+      death: "&&2Смерти"
+      join: "&&2Подключения"
+      quit: "&&2Отключения"
+      me: "&&2/me"
+      try: "&&2/try"
+      try-cube: "&&2/try-cube"
+      ball: "&&2/ball"
+      tempban: "&&2/tempban"
+      mute: "&&2/mute"
+      warn: "&&2/warn"
+      msg: "&&2/msg"
+      reply: "&&2/reply"
+      mail: "&&2/mail"
+      tic-tac-toe: "&&2/tic-tac-toe"
+
+    color:
+      false: "#ff4e4e[❌] "
+      true: "#4eff52[✔] "
+
+    message-changed: "&&1⚙ Вы изменили настройки, сохранить их #4eff52[✔]&&1?"
+
+    message:
+      - " "
+      - "&&1════ Настройки чата ════"
+      - "&&1Типы чата: \n <local> \n <global> \n <onlylocal> \n <onlyglobal>"
+      - "&&1------------------------"
+      - "&&1Действия игроков: \n <advancement> \n <death> \n <join> \n <quit>"
+      - "&&1------------------------"
+      - "&&1Оповещения команд: \n <me> \n <try> \n <try-cube> \n <ball> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
+      - "&&1------------------------"
+      - "&&1Обязательно сохраняйте настройки с помощью /chat-settings save"
 
   tic-tac-toe:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"

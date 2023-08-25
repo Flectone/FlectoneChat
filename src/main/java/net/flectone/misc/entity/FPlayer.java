@@ -528,6 +528,12 @@ public class FPlayer {
         return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
     }
 
+    public void spigotMessage(BaseComponent baseComponent) {
+        if(this.player == null) return;
+
+        this.player.spigot().sendMessage(baseComponent);
+    }
+
     public void spigotMessage(BaseComponent[] baseComponents) {
         if(this.player == null) return;
 
