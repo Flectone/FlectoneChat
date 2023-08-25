@@ -5,7 +5,9 @@ import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
-import net.flectone.misc.actions.Mail;
+import net.flectone.misc.entity.info.Mail;
+import net.flectone.misc.entity.info.ChatInfo;
+import net.flectone.misc.entity.info.ModInfo;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
@@ -47,9 +49,9 @@ public class FPlayer {
     private String[] colors = new String[]{};
     private ArrayList<UUID> ignoreList = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
-    private DatabasePlayer muteInfo = null;
-    private DatabasePlayer banInfo = null;
-    private PlayerChatInfo chatInfo = null;
+    private ModInfo muteInfo = null;
+    private ModInfo banInfo = null;
+    private ChatInfo chatInfo = null;
     private int numberLastInventory;
     private int lastTimeMoved;
     private String streamPrefix = "";
@@ -59,7 +61,6 @@ public class FPlayer {
     private Player lastWriter;
     private String worldPrefix = "";
     private FDamager lastFDamager = new FDamager();
-    private boolean isUpdated;
 
     public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
@@ -85,30 +86,57 @@ public class FPlayer {
         setWorldPrefix(player.getWorld());
         setStreamer();
         setDisplayName();
-
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            Main.getDatabase().insertPlayer(this.uuid);
-
-            String playerUUID = player.getUniqueId().toString();
-            DatabasePlayer databasePlayer = Main.getDatabase().getPlayer("mutes", playerUUID);
-            if (databasePlayer != null) {
-                this.muteInfo = databasePlayer;
-            }
-
-            databasePlayer = Main.getDatabase().getPlayer("bans", playerUUID);
-            if (databasePlayer != null) {
-                this.banInfo = databasePlayer;
-            }
-
-            Main.getDatabase().initFPlayer(this);
-        });
     }
 
-    public void setChatInfo(PlayerChatInfo chatInfo) {
+    public void loadMuteInfo() {
+        ModInfo modInfo = (ModInfo) Main.getDatabase().getPlayerInfo("mutes", "player", this.uuid.toString());
+        if (modInfo != null) {
+            this.muteInfo = modInfo;
+        }
+    }
+
+    public void loadBanInfo() {
+        ModInfo modInfo = (ModInfo) Main.getDatabase().getPlayerInfo("bans", "player", this.uuid.toString());
+        if (modInfo != null) {
+            this.banInfo = modInfo;
+        }
+    }
+
+    public void synchronizeDatabase() {
+        Main.getDatabase().insertPlayer(this.uuid);
+
+        loadMuteInfo();
+        loadBanInfo();
+
+        if (player == null) return;
+
+        Main.getDatabase().initFPlayer(this);
+
+        if (mails.isEmpty()) return;
+
+        mails.values().forEach(mail -> {
+            String playerName = Bukkit.getOfflinePlayer(mail.getSender()).getName();
+            if (playerName == null) return;
+
+            String localeString = locale.getFormatString("command.mail.get", player)
+                    .replace("<player>", playerName);
+
+            String newLocaleString = localeString.replace("<message>", mail.getMessage());
+            player.sendMessage(newLocaleString);
+
+            Main.getDatabase().updatePlayerInfo("mails", mail);
+        });
+
+        mails.clear();
+
+        Main.getDatabase().updateFPlayer(this, "mails");
+    }
+
+    public void setChatInfo(ChatInfo chatInfo) {
         this.chatInfo = chatInfo;
     }
 
-    public PlayerChatInfo getChatInfo() {
+    public ChatInfo getChatInfo() {
         return chatInfo;
     }
 
@@ -144,7 +172,7 @@ public class FPlayer {
         return this.uuid;
     }
 
-    public DatabasePlayer getMute() {
+    public ModInfo getMute() {
         return this.muteInfo;
     }
 
@@ -164,7 +192,7 @@ public class FPlayer {
     public boolean isMuted() {
         boolean isMuted = muteInfo != null && muteInfo.getDifferenceTime() > 0;
 
-        if (!isMuted) {
+        if (!isMuted && muteInfo != null) {
             unmute();
         }
 
@@ -206,29 +234,27 @@ public class FPlayer {
     public void mute(int time, @NotNull String reason, @Nullable String moderatorUUID) {
         int finalTime = time + ObjectUtil.getCurrentTime();
 
-        DatabasePlayer databasePlayer = new DatabasePlayer(this.uuid.toString(), finalTime, reason, moderatorUUID);
-        this.muteInfo = databasePlayer;
+        this.muteInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            Main.getDatabase().saveModeratorAction("mutes", databasePlayer);
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().updatePlayerInfo("mutes", muteInfo));
     }
 
     public void unmute() {
         this.muteInfo = null;
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().deleteModeratorRow("mutes", this.uuid.toString()));
+                Main.getDatabase().deleteRow("mutes", "player", this.uuid.toString()));
     }
 
     public void tempban(int time, @NotNull String reason, @Nullable String moderatorUUID) {
         int finalTime = time == -1 ? -1 : time + ObjectUtil.getCurrentTime();
 
-        DatabasePlayer databasePlayer = new DatabasePlayer(this.uuid.toString(), finalTime, reason, moderatorUUID);
-        this.banInfo = databasePlayer;
+        ModInfo modInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        this.banInfo = modInfo;
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().saveModeratorAction("bans", databasePlayer));
+                Main.getDatabase().updatePlayerInfo("bans", modInfo));
 
         if (player == null || !offlinePlayer.isOnline()) return;
 
@@ -245,7 +271,7 @@ public class FPlayer {
         this.banInfo = null;
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().deleteModeratorRow("bans", this.uuid.toString()));
+                Main.getDatabase().deleteRow("bans", "player", this.uuid.toString()));
     }
 
     @NotNull
@@ -457,15 +483,7 @@ public class FPlayer {
     }
 
     public void removeMail(@NotNull UUID uuid) {
-        mails.get(uuid).setRemoved(true);
-    }
-
-    public boolean isUpdated() {
-        return isUpdated;
-    }
-
-    public void setUpdated(boolean updated) {
-        isUpdated = updated;
+        mails.remove(uuid);
     }
 
     public void addChatBubble(@NotNull String message) {

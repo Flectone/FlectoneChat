@@ -36,8 +36,9 @@ public class CommandUnmute implements FTabCompleter {
             return;
         }
 
+        fPlayer.loadMuteInfo();
+
         if (fPlayer.getMute() == null || fPlayer.getMute().getTime() < 0) {
-            Bukkit.broadcastMessage(String.valueOf(fPlayer.getMute().getTime()));
             fCommand.sendMeMessage("command.unmute.not-muted");
             return;
         }
@@ -59,7 +60,7 @@ public class CommandUnmute implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            Main.getDatabase().getPlayersModeration("mutes").parallelStream()
+            Main.getDatabase().getPlayerNameList("mutes", "player").parallelStream()
                     .forEach(playerName -> isStartsWith(strings[0], playerName));
         }
 

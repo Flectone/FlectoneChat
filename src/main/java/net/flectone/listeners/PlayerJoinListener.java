@@ -2,21 +2,18 @@ package net.flectone.listeners;
 
 import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
-import net.flectone.misc.actions.Mail;
 import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.DatabasePlayer;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.entity.info.ModInfo;
 import net.flectone.utils.ObjectUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -35,23 +32,6 @@ public class PlayerJoinListener implements Listener {
 
             fCommand.sendGlobalMessage(string);
         }
-
-        HashMap<UUID, Mail> mails = fPlayer.getMails();
-        if (mails.isEmpty()) return;
-
-        mails.values().parallelStream().filter(mail -> !mail.isRemoved()).forEach(mail -> {
-            FPlayer mailFPlayer = FPlayerManager.getPlayer(mail.getSender());
-            if (mailFPlayer == null) return;
-
-            String playerName = mailFPlayer.getRealName();
-
-            String localeString = locale.getFormatString("command.mail.get", player)
-                    .replace("<player>", playerName);
-
-            String newLocaleString = localeString.replace("<message>", mail.getMessage());
-            player.sendMessage(newLocaleString);
-            mail.setRemoved(true);
-        });
     }
 
     public static void sendJoinMessage(@NotNull Player player) {
@@ -69,7 +49,8 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
 
         FPlayer fPlayer = FPlayerManager.createFPlayer(event.getPlayer());
-        if (fPlayer == null) return;
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), fPlayer::synchronizeDatabase);
+
         sendJoinMessage(fPlayer, player, fPlayer.isOnline());
     }
 
@@ -77,15 +58,16 @@ public class PlayerJoinListener implements Listener {
     public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
         if(!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
 
-        DatabasePlayer databasePlayer = Main.getDatabase().getPlayer("bans", event.getPlayer().getUniqueId().toString());
+        ModInfo modInfo = (ModInfo) Main.getDatabase()
+                .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
 
-        if (databasePlayer != null) {
-            String localString = databasePlayer.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
+        if (modInfo != null) {
+            String localString = modInfo.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
             String formatMessage = locale.getFormatString(localString, event.getPlayer())
-                    .replace("<time>", ObjectUtil.convertTimeToString(databasePlayer.getDifferenceTime()))
-                    .replace("<reason>", databasePlayer.getReason())
-                    .replace("<moderator>", databasePlayer.getModerator());
+                    .replace("<time>", ObjectUtil.convertTimeToString(modInfo.getDifferenceTime()))
+                    .replace("<reason>", modInfo.getReason())
+                    .replace("<moderator>", modInfo.getModerator());
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
             return;
         }

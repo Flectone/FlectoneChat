@@ -26,7 +26,7 @@ public class SQLite extends Database {
             "'enable_quits' int(11)," +
             "'enable_command_me' int(11)," +
             "'enable_command_try' int(11)," +
-            "'enable_command_try-cube' int(11)," +
+            "'enable_command_try_cube' int(11)," +
             "'enable_command_ball' int(11)," +
             "'enable_command_tempban' int(11)," +
             "'enable_command_mute' int(11)," +
@@ -34,7 +34,7 @@ public class SQLite extends Database {
             "'enable_command_msg' int(11)," +
             "'enable_command_reply' int(11)," +
             "'enable_command_mail' int(11)," +
-            "'enable_command_tic-tac-toe' int(11)," +
+            "'enable_command_tic_tac_toe' int(11)," +
             "PRIMARY KEY (`uuid`)" +
             ");";
     public final String SQLiteCreateTokensMails = "CREATE TABLE IF NOT EXISTS mails (" +

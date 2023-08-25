@@ -76,15 +76,15 @@ public class CommandMute implements FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, formatString, false);
 
-        if (HookManager.enabledPlasmoVoice) {
-            FPlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
-        }
-
         String moderator = (commandSender instanceof Player player)
                 ? player.getUniqueId().toString()
                 : null;
 
         mutedFPlayer.mute(time, reason, moderator);
+
+        if (HookManager.enabledPlasmoVoice) {
+            FPlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
+        }
 
         return true;
     }

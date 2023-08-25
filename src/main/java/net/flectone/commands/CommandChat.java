@@ -43,7 +43,6 @@ public class CommandChat implements FTabCompleter {
         String fPlayerChat = isSwitch ? chat : chat.equals("global") ? "onlylocal" : "onlyglobal";
 
         fCommand.getFPlayer().getChatInfo().setChatType(fPlayerChat);
-        fCommand.getFPlayer().setUpdated(true);
 
         String localeString = isSwitch ? "command.chat.switch-message" : "command.chat.hide-message";
         fCommand.sendMeMessage(localeString, "<chat>", chat);

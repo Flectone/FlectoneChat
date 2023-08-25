@@ -1,4 +1,4 @@
-package net.flectone.misc.actions;
+package net.flectone.misc.entity.info;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -10,14 +10,18 @@ public class Mail {
     private final UUID sender;
     private final UUID receiver;
     private final String message;
-    private boolean isRemoved = false;
 
-    public Mail(@NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
-        this.uuid = UUID.randomUUID();
+    public Mail(@NotNull UUID uuid, @NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
+        this.uuid = uuid;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
     }
+
+    public Mail(@NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
+        this(UUID.randomUUID(), sender, receiver, message);
+    }
+
 
     @NotNull
     public UUID getUUID() {
@@ -37,13 +41,5 @@ public class Mail {
     @NotNull
     public String getMessage() {
         return message;
-    }
-
-    public boolean isRemoved() {
-        return isRemoved;
-    }
-
-    public void setRemoved(boolean removed) {
-        isRemoved = removed;
     }
 }

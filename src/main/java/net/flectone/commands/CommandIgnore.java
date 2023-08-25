@@ -51,7 +51,7 @@ public class CommandIgnore implements FTabCompleter {
 
         fCommand.getFPlayer().setIgnoreList(ignoreList);
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().saveIgnoreList(fCommand.getFPlayer()));
+                Main.getDatabase().updateFPlayer(fCommand.getFPlayer(), "ignore_list"));
 
         return true;
     }

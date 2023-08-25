@@ -1,9 +1,9 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
-import net.flectone.misc.entity.DatabasePlayer;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.entity.info.ModInfo;
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -44,9 +44,12 @@ public class FPlayerManager {
             Main.getDatabase().insertPlayer(offlinePlayer.getUniqueId());
         }
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            createFPlayer(player);
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                createFPlayer(player).synchronizeDatabase();
+            }
+        });
+
     }
 
     public static void loadBanList() {
@@ -69,18 +72,16 @@ public class FPlayerManager {
                     ? banEntry.getReason()
                     : locale.getString("command.tempban.default-reason");
 
-            DatabasePlayer databasePlayer = new DatabasePlayer(offlinePlayer.getUniqueId().toString(), -1, reason, source);
+            ModInfo modInfo = new ModInfo(offlinePlayer.getUniqueId().toString(), -1, reason, source);
             Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                    Main.getDatabase().saveModeratorAction("bans", databasePlayer));
+                    Main.getDatabase().updatePlayerInfo("bans", modInfo));
 
             banList.pardon(offlinePlayer.getName());
         });
     }
 
     public static void clearPlayers() {
-        onlineFPlayers.values().forEach(fPlayer -> {
-            FEntity.removePlayerFromTeam(fPlayer);
-        });
+        onlineFPlayers.values().forEach(FEntity::removePlayerFromTeam);
 
         onlineFPlayers.clear();
     }

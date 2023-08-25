@@ -31,7 +31,7 @@ public class CommandMutelist implements FTabCompleter {
     private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        int countMutes = Main.getDatabase().getCount("mutes");
+        int countMutes = Main.getDatabase().getCountRow("mutes");
 
         int perPage = config.getInt("command.mutelist.per-page");
 
@@ -66,7 +66,7 @@ public class CommandMutelist implements FTabCompleter {
 
         page = Math.min(lastPage, page);
 
-        Main.getDatabase().getPlayers("mutes", perPage, (page - 1) * perPage).forEach(fPlayer -> {
+        Main.getDatabase().getModInfoList("mutes", perPage, (page - 1) * perPage).forEach(fPlayer -> {
 
             String playerMuteFormat = locale.getFormatString("command.mutelist.player-mute", commandSender)
                     .replace("<unmute>", unmuteButton)
@@ -100,7 +100,7 @@ public class CommandMutelist implements FTabCompleter {
         if (strings.length == 1) {
             int perPage = config.getInt("command.mutelist.per-page");
 
-            int lastPage = (int) Math.ceil((double) Main.getDatabase().getCount("mutes") / perPage);
+            int lastPage = (int) Math.ceil((double) Main.getDatabase().getCountRow("mutes") / perPage);
 
             isDigitInArray(strings[0], "", 1, lastPage + 1);
         }

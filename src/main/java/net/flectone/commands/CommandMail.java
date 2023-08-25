@@ -1,15 +1,15 @@
 package net.flectone.commands;
 
-import net.flectone.misc.commands.FCommand;
-import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.misc.actions.Mail;
+import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.entity.info.Mail;
+import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,12 +35,12 @@ public class CommandMail implements FTabCompleter {
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if (fCommand.isIgnored((Player) commandSender, fPlayer.getOfflinePlayer())) {
+        if (fCommand.getFPlayer().isIgnored(fPlayer.getUUID())) {
             fCommand.sendMeMessage("command.you_ignore");
             return true;
         }
 
-        if (fCommand.isIgnored(fPlayer.getOfflinePlayer(), (Player) commandSender)) {
+        if (fPlayer.isIgnored(fCommand.getFPlayer().getUUID())) {
             fCommand.sendMeMessage("command.he_ignore");
             return true;
         }
@@ -53,9 +53,10 @@ public class CommandMail implements FTabCompleter {
         }
 
         Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
-        mail.setRemoved(false);
         fPlayer.addMail(mail.getUUID(), mail);
-        fPlayer.setUpdated(true);
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().updateFPlayer(fPlayer, "mails"));
 
         String[] replaceString = {"<player>", "<message>"};
         String[] replaceTo = {fPlayer.getRealName(), message};

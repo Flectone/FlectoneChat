@@ -4,7 +4,7 @@ import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
-import net.flectone.misc.entity.DatabasePlayer;
+import net.flectone.misc.entity.info.ModInfo;
 import net.flectone.misc.entity.FPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -37,9 +37,10 @@ public class CommandUnban implements FTabCompleter {
             return;
         }
 
-        DatabasePlayer databasePlayer = Main.getDatabase().getPlayer("bans", fPlayer.getUUID().toString());
+        ModInfo modInfo = (ModInfo) Main.getDatabase()
+                .getPlayerInfo("bans", "player", fPlayer.getUUID().toString());
 
-        if (databasePlayer == null) {
+        if (modInfo == null) {
             fCommand.sendMeMessage("command.unban.not-banned");
             return;
         }
@@ -57,7 +58,7 @@ public class CommandUnban implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            Main.getDatabase().getPlayersModeration("bans").parallelStream()
+            Main.getDatabase().getPlayerNameList("bans", "player").parallelStream()
                     .forEach(playerName -> isStartsWith(strings[0], playerName));
         }
 

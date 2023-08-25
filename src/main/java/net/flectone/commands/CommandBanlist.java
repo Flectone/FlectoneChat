@@ -31,7 +31,7 @@ public class CommandBanlist implements FTabCompleter {
     private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        int bansCount = Main.getDatabase().getCount("bans");
+        int bansCount = Main.getDatabase().getCountRow("bans");
 
         int perPage = config.getInt("command.banlist.per-page");
 
@@ -63,7 +63,7 @@ public class CommandBanlist implements FTabCompleter {
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
         page = Math.min(lastPage, page);
 
-        Main.getDatabase().getPlayers("bans", perPage, (page - 1) * perPage).forEach(dPlayer -> {
+        Main.getDatabase().getModInfoList("bans", perPage, (page - 1) * perPage).forEach(dPlayer -> {
             String playerBanFormat = "command.banlist.player-ban";
             if (dPlayer.getTime() == -1) playerBanFormat += "-permanently";
 
@@ -100,7 +100,7 @@ public class CommandBanlist implements FTabCompleter {
             if (strings.length == 1) {
                 int perPage = config.getInt("command.banlist.per-page");
 
-                int lastPage = (int) Math.ceil((double) Main.getDatabase().getCount("bans") / perPage);
+                int lastPage = (int) Math.ceil((double) Main.getDatabase().getCountRow("bans") / perPage);
 
                 isDigitInArray(strings[0], "", 1, lastPage + 1);
             }

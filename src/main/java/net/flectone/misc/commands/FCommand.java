@@ -9,7 +9,6 @@ import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -296,10 +295,6 @@ public class FCommand {
         if (isPlayer(firstPlayer) && isPlayer(secondPlayer)) {
             FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
         }
-    }
-
-    public boolean isIgnored(@NotNull OfflinePlayer firstPlayer, @NotNull OfflinePlayer secondPlayer) {
-        return FPlayerManager.getPlayer(firstPlayer).isIgnored(secondPlayer);
     }
 
     public boolean isStringTime(String string) {

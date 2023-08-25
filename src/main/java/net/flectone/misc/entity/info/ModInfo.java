@@ -1,4 +1,4 @@
-package net.flectone.misc.entity;
+package net.flectone.misc.entity.info;
 
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class DatabasePlayer {
+public class ModInfo {
 
     private final String player;
     private final int time;
@@ -16,7 +16,7 @@ public class DatabasePlayer {
     private final String playerName;
     private final String moderatorName;
 
-    public DatabasePlayer(String player, int time, String reason, String moderator) {
+    public ModInfo(String player, int time, String reason, String moderator) {
         this.player = player;
         this.time = time;
         this.reason = reason;

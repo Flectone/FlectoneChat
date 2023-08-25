@@ -65,7 +65,7 @@ public class CommandChatcolor implements FTabCompleter {
         fPlayer.setColors(strings[0], strings[1]);
 
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().saveColors(fPlayer));
+                Main.getDatabase().updateFPlayer(fPlayer, "colors"));
 
         if (fPlayer.isOnline() && fPlayer.getPlayer() != null) {
             fPlayer.setDisplayName();

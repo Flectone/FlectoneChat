@@ -1,7 +1,7 @@
 package net.flectone.commands;
 
 import net.flectone.managers.FPlayerManager;
-import net.flectone.misc.actions.Mail;
+import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
@@ -48,7 +48,7 @@ public class CommandMailClear implements FTabCompleter {
         int number = Integer.parseInt(strings[1]);
 
         Map.Entry<UUID, Mail> entry = mailsList.entrySet().parallelStream()
-                .filter(mailEntry -> !mailEntry.getValue().isRemoved() && mailEntry.getValue().getSender().equals(fCommand.getFPlayer().getUUID()))
+                .filter(mailEntry -> mailEntry.getValue().getSender().equals(fCommand.getFPlayer().getUUID()))
                 .skip(number - 1)
                 .findFirst()
                 .orElse(null);
@@ -62,7 +62,6 @@ public class CommandMailClear implements FTabCompleter {
         String[] replaceTo = {fPlayer.getRealName(), entry.getValue().getMessage()};
 
         fPlayer.removeMail(entry.getKey());
-        fPlayer.setUpdated(true);
 
         fCommand.sendMeMessage("command.mail-clear.message", replaceString, replaceTo);
 
@@ -89,7 +88,7 @@ public class CommandMailClear implements FTabCompleter {
 
                 int[] counter = {1};
                 mailsList.entrySet().parallelStream()
-                        .filter(entry -> !entry.getValue().isRemoved() && entry.getValue().getSender().equals(sender.getUniqueId()))
+                        .filter(entry -> entry.getValue().getSender().equals(sender.getUniqueId()))
                         .forEach(entry -> isStartsWith(strings[1], String.valueOf(counter[0]++)));
             }
         }
