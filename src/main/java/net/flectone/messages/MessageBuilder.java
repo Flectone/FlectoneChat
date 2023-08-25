@@ -164,7 +164,7 @@ public class MessageBuilder {
             String word = entry.getValue().getText();
             WordParams wordParams = entry.getValue();
 
-            if ((sender.isOp() || sender.hasPermission("flectonechat.formatting")) && !wordParams.isEdited()) {
+            if (sender.hasPermission("flectonechat.formatting") && !wordParams.isEdited()) {
                 String color1 = ChatColor.getLastColors(word);
                 word = ObjectUtil.formatString(true, word, recipient, sender);
                 String color2 = ChatColor.getLastColors(word);
@@ -173,8 +173,7 @@ public class MessageBuilder {
                 wordParams.setText(word);
             }
 
-            word = ObjectUtil.formatString(lastColor + word, recipient, sender);
-            FComponent wordComponent = new FComponent(word);
+            FComponent wordComponent = new FComponent(lastColor + word);
 
             if (!wordParams.isEdited() || wordParams.isFormatted())
                 lastColor = ChatColor.getLastColors(lastColor + word);
@@ -185,14 +184,15 @@ public class MessageBuilder {
             }
 
             if (wordParams.isClickable()) {
-                wordComponent = new FPlayerComponent(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), word);
+                wordComponent = new FPlayerComponent(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), ObjectUtil.formatString(lastColor + word, recipient, sender));
             }
 
             if (wordParams.isUrl()) {
-                wordComponent = new FURLComponent(recipient, sender, word, wordParams.getUrl());
+                wordComponent = new FURLComponent(recipient, sender, ObjectUtil.formatString(lastColor + word, recipient, sender), wordParams.getUrl());
             }
 
             if (wordParams.isHide()) {
+                wordComponent = new FComponent(ObjectUtil.formatString(lastColor + word, recipient, sender));
                 wordComponent.addHoverText(lastColor + wordParams.getHideMessage());
             }
 
