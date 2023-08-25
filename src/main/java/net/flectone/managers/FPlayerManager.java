@@ -13,10 +13,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -101,13 +98,22 @@ public class FPlayerManager {
         OfflinePlayer offlinePlayer = Arrays.stream(Bukkit.getOfflinePlayers())
                 .parallel()
                 .filter(player -> player.getName() != null && player.getName().equals(name))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElseGet(() -> {
+                    List<OfflinePlayer> offlinePlayerList = Arrays.stream(Bukkit.getOfflinePlayers())
+                            .parallel()
+                            .filter(player -> player.getName() != null && player.getName().equalsIgnoreCase(name))
+                            .toList();
 
-        return offlinePlayer != null
-                ? FPlayerManager.getPlayers().parallelStream()
-                    .filter(player -> player != null && player.getOfflinePlayer().equals(offlinePlayer))
-                    .findFirst().orElse(new FPlayer(offlinePlayer))
-                : null;
+                    if (offlinePlayerList.size() == 1) return offlinePlayerList.get(0);
+                    return null;
+                });
+
+        if (offlinePlayer == null) return null;
+
+        return FPlayerManager.getPlayers().parallelStream()
+                .filter(player -> player != null && player.getOfflinePlayer().equals(offlinePlayer))
+                .findFirst().orElse(new FPlayer(offlinePlayer));
     }
 
     @Nullable
