@@ -154,7 +154,10 @@ command:
   broadcast:
     enable: true
 
-  chat:
+  switch-chat:
+    enable: true
+
+  chat-settings:
     enable: true
 
   chatcolor:
@@ -248,6 +251,7 @@ command:
     enable: true
 
   try:
+    enable: true
     global: true
 
   try-cube:
@@ -282,10 +286,14 @@ cool-down:
     enable: true
     time: 5
     permission: "flectonechat.clear-chat.cooldown.immune"
-  chat:
+  switch-chat:
     enable: true
     time: 5
-    permission: "flectonechat.chat.cooldown.immune"
+    permission: "flectonechat.switch-chat.cooldown.immune"
+  chat-settings:
+    enable: true
+    time: 5
+    permission: "flectonechat.chat-settings.cooldown.immune"
   localchat:
     enable: true
     time: 5
@@ -403,7 +411,10 @@ sound:
   clear-chat:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
-  chat:
+  switch-chat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  chat-settings:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
   localchat:

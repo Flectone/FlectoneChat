@@ -24,7 +24,7 @@ public class PlayerQuitListener implements Listener {
         String string = locale.getString("player.quit.message")
                 .replace("<player>", player.getName());
 
-        fCommand.sendGlobalMessage(string);
+        fCommand.sendGlobalMessage(string, "", null, true);
     }
 
     @EventHandler

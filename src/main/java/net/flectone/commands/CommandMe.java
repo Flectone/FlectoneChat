@@ -24,10 +24,15 @@ public class CommandMe implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         String formatString = locale.getString("command.me.message")
                 .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
+        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings), null, true);
 
         return true;
     }

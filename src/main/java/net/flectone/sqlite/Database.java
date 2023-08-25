@@ -2,10 +2,12 @@ package net.flectone.sqlite;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
+import net.flectone.managers.FileManager;
 import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ChatInfo;
 import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.files.FYamlConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -161,55 +163,55 @@ public abstract class Database {
                 }
             }
 
-            ChatInfo chatInfo = new ChatInfo();
+            ChatInfo chatInfo = new ChatInfo(fPlayer.getUUID().toString());
 
             String chat = playerResult.getString("chat");
             chatInfo.setChatType(chat == null ? "local" : chat);
 
             String option = playerResult.getString("enable_advancements");
-            chatInfo.setOption("advancement", parseBoolean(option));
+            chatInfo.setOption("advancement", parseBoolean("advancement.message.enable", option));
 
             option = playerResult.getString("enable_deaths");
-            chatInfo.setOption("death", parseBoolean(option));
+            chatInfo.setOption("death", parseBoolean("death.message.enable", option));
 
             option = playerResult.getString("enable_joins");
-            chatInfo.setOption("join", parseBoolean(option));
+            chatInfo.setOption("join", parseBoolean("player.join.message.enable", option));
 
             option = playerResult.getString("enable_quits");
-            chatInfo.setOption("quit", parseBoolean(option));
+            chatInfo.setOption("quit", parseBoolean("player.quit.message.enable", option));
 
             option = playerResult.getString("enable_command_me");
-            chatInfo.setOption("me", parseBoolean(option));
+            chatInfo.setOption("me", parseBoolean("command.me.enable", option));
 
             option = playerResult.getString("enable_command_try");
-            chatInfo.setOption("try", parseBoolean(option));
+            chatInfo.setOption("try", parseBoolean("command.try.enable", option));
 
             option = playerResult.getString("enable_command_try_cube");
-            chatInfo.setOption("try-cube", parseBoolean(option));
+            chatInfo.setOption("try-cube", parseBoolean("command.try-cube.enable", option));
 
             option = playerResult.getString("enable_command_ball");
-            chatInfo.setOption("ball", parseBoolean(option));
+            chatInfo.setOption("ball", parseBoolean("command.ball.enable", option));
 
             option = playerResult.getString("enable_command_tempban");
-            chatInfo.setOption("tempban", parseBoolean(option));
+            chatInfo.setOption("tempban", parseBoolean("command.tempban.enable", option));
 
             option = playerResult.getString("enable_command_mute");
-            chatInfo.setOption("mute", parseBoolean(option));
+            chatInfo.setOption("mute", parseBoolean("command.mute.enable", option));
 
             option = playerResult.getString("enable_command_warn");
-            chatInfo.setOption("warn", parseBoolean(option));
+            chatInfo.setOption("warn", parseBoolean("command.warn.enable", option));
 
             option = playerResult.getString("enable_command_msg");
-            chatInfo.setOption("msg", parseBoolean(option));
+            chatInfo.setOption("msg", parseBoolean("command.msg.enable", option));
 
             option = playerResult.getString("enable_command_reply");
-            chatInfo.setOption("reply", parseBoolean(option));
+            chatInfo.setOption("reply", parseBoolean("command.reply.enable", option));
 
             option = playerResult.getString("enable_command_mail");
-            chatInfo.setOption("mail", parseBoolean(option));
+            chatInfo.setOption("mail", parseBoolean("command.mail.enable", option));
 
             option = playerResult.getString("enable_command_tic_tac_toe");
-            chatInfo.setOption("tic-tac-toe", parseBoolean(option));
+            chatInfo.setOption("tic-tac-toe", parseBoolean("command.tic-tac-toe.enable", option));
 
             fPlayer.setChatInfo(chatInfo);
 
@@ -286,8 +288,16 @@ public abstract class Database {
         statement.close();
     }
 
-    private boolean parseBoolean(String option) {
-        return option == null || Boolean.parseBoolean(option);
+    private boolean parseBoolean(String configString, String option) {
+        FYamlConfiguration config = FileManager.config;
+
+        boolean bool = true;
+
+        if (!config.getString(configString).isEmpty()) {
+            bool = config.getBoolean(configString);
+        }
+
+        return bool && (option == null || Boolean.parseBoolean(option));
     }
 
     public int getCountRow(String table) {
@@ -467,7 +477,34 @@ public abstract class Database {
                     deleteRow("mails", "uuid", mail.getUUID().toString());
                 }
                 case "chats" -> {
-                    Bukkit.broadcastMessage("а нихуя щас не делается");
+
+                    ChatInfo chatInfo = (ChatInfo) playerInfo;
+
+                    PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET enable_advancements=?," +
+                            "enable_deaths=?,enable_joins=?,enable_quits=?,enable_command_me=?,enable_command_try=?," +
+                            "enable_command_try_cube=?,enable_command_ball=?,enable_command_tempban=?,enable_command_mute=?," +
+                            "enable_command_warn=?,enable_command_msg=?,enable_command_reply=?,enable_command_mail=?," +
+                            "enable_command_tic_tac_toe=? WHERE uuid=?");
+
+                    preparedStatement.setString(1, chatInfo.getOptionString(("advancement")));
+                    preparedStatement.setString(2, chatInfo.getOptionString(("death")));
+                    preparedStatement.setString(3, chatInfo.getOptionString(("join")));
+                    preparedStatement.setString(4, chatInfo.getOptionString(("quit")));
+                    preparedStatement.setString(5, chatInfo.getOptionString(("me")));
+                    preparedStatement.setString(6, chatInfo.getOptionString(("try")));
+                    preparedStatement.setString(7, chatInfo.getOptionString(("try-cube")));
+                    preparedStatement.setString(8, chatInfo.getOptionString(("ball")));
+                    preparedStatement.setString(9, chatInfo.getOptionString(("tempban")));
+                    preparedStatement.setString(10, chatInfo.getOptionString(("mute")));
+                    preparedStatement.setString(11, chatInfo.getOptionString(("warn")));
+                    preparedStatement.setString(12, chatInfo.getOptionString(("msg")));
+                    preparedStatement.setString(13, chatInfo.getOptionString(("reply")));
+                    preparedStatement.setString(14, chatInfo.getOptionString(("mail")));
+                    preparedStatement.setString(15, chatInfo.getOptionString(("tic-tac-toe")));
+                    preparedStatement.setString(16, chatInfo.getPlayer());
+
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
                 }
             }
 

@@ -25,6 +25,11 @@ public class CommandTry implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         Random random = new Random();
         int randomPer = random.nextInt(100);
         randomPer += 1;
@@ -33,7 +38,7 @@ public class CommandTry implements FTabCompleter {
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<percent>", String.valueOf(randomPer));
 
-        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
+        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings), null, true);
 
         return true;
     }

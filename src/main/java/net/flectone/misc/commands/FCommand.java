@@ -1,5 +1,6 @@
 package net.flectone.misc.commands;
 
+import net.flectone.Main;
 import net.flectone.commands.CommandAfk;
 import net.flectone.integrations.interactivechat.FInteractiveChat;
 import net.flectone.managers.FPlayerManager;
@@ -16,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static net.flectone.managers.FileManager.config;
@@ -136,8 +137,14 @@ public class FCommand {
         return isConsole;
     }
 
+    public boolean isDisabled() {
+        FPlayer fPlayer = getFPlayer();
+        return fPlayer != null && !fPlayer.getChatInfo().getOption(command);
+    }
+
     @Nullable
     public FPlayer getFPlayer() {
+        if (player == null) return null;
         return FPlayerManager.getPlayer(player.getUniqueId());
     }
 
@@ -154,41 +161,19 @@ public class FCommand {
         return isInsufficientArgs;
     }
 
-    public boolean isSelfCommand() {
-        if (isConsole) return false;
-
-        return args[0].equalsIgnoreCase(player.getName());
-    }
-
     public void sendUsageMessage() {
         sendMeMessage("command." + command + ".usage", "<command>", alias);
     }
 
-    public void sendGlobalMessage(@NotNull String message) {
-        sendGlobalMessage(message, true);
+    public void sendGlobalMessage(@NotNull String format, String message, ItemStack itemStack, boolean clickable) {
+        sendGlobalMessage(getFilteredListRecipient(), format, message, itemStack, clickable);
     }
 
-    public void sendGlobalMessage(@NotNull String format, @NotNull String message) {
-        sendGlobalMessage(format, message, true);
+    public void sendFilterGlobalMessage(@NotNull Collection<Player> set, @NotNull String format, String message, ItemStack itemStack, boolean clickable) {
+        sendGlobalMessage(getFilteredListRecipient(set), format, message, itemStack, clickable);
     }
 
-    public void sendGlobalMessage(@NotNull String format, @NotNull String message, boolean clickable) {
-        sendGlobalMessage(getFilteredPlayers(), format, message, null, clickable);
-    }
-
-    public void sendGlobalMessage(@NotNull String message, boolean clickable) {
-        sendGlobalMessage(getFilteredPlayers(), message, clickable);
-    }
-
-    public void sendGlobalMessage(@NotNull Set<Player> set, @NotNull String message, boolean clickable) {
-        sendGlobalMessage(set, message, null, clickable);
-    }
-
-    public void sendGlobalMessage(@NotNull Set<Player> set, @NotNull String message, ItemStack item, boolean clickable) {
-        sendGlobalMessage(set, message, "", item, clickable);
-    }
-
-    public void sendGlobalMessage(@NotNull Set<Player> recipientsSet, @NotNull String format, String message, ItemStack itemStack, boolean clickable) {
+    public void sendGlobalMessage(@NotNull Collection<Player> recipientsSet, @NotNull String format, String message, ItemStack itemStack, boolean clickable) {
 
         itemStack = message.contains("%item%") ? itemStack == null ? player.getInventory().getItemInMainHand() : itemStack : null;
 
@@ -218,27 +203,44 @@ public class FCommand {
         }
     }
 
+    public void sendConsoleMessage(String message) {
+        Bukkit.getConsoleSender().sendMessage(message);
+    }
+
     @NotNull
-    private Set<Player> getFilteredPlayers() {
+    public Collection<Player> getFilteredListRecipient() {
+        return getFilteredListRecipient((Collection<Player>) Bukkit.getOnlinePlayers());
+    }
+
+    @NotNull
+    public Collection<Player> getFilteredListRecipient(Collection<Player> playerSet) {
         if (!config.getString("command." + command + ".global").isEmpty()
                 && !config.getBoolean("command." + command + ".global")
                 && !isConsole) {
 
             int localRange = config.getInt("chat.local.range");
 
-            Set<Player> playerSet = player.getNearbyEntities(localRange, localRange, localRange).parallelStream()
-                    .filter(entity -> entity instanceof Player && !FPlayerManager.getPlayer((Player) entity).isIgnored(player))
+            Collection<Player> finalPlayerSet = playerSet;
+            playerSet = player.getNearbyEntities(localRange, localRange, localRange).parallelStream()
+                    .filter(entity -> entity instanceof Player player && finalPlayerSet.contains(player))
                     .map(entity -> (Player) entity)
                     .collect(Collectors.toSet());
-
-            playerSet.add(player);
-
-            return playerSet;
         }
 
-        return Bukkit.getOnlinePlayers().parallelStream()
-                .filter(onlinePlayer -> !FPlayerManager.getPlayer(onlinePlayer).isIgnored(player))
+        playerSet = playerSet.parallelStream()
+                .filter(player -> {
+                    FPlayer fPlayer = FPlayerManager.getPlayer(player);
+                    if (fPlayer == null) return true;
+
+                    if (fPlayer.getChatInfo().getOptionsList().contains(command)) {
+                        if (!fPlayer.getChatInfo().getOption(command)) return false;
+                    }
+
+                    return !fPlayer.isIgnored(getPlayer());
+                })
                 .collect(Collectors.toSet());
+
+        return playerSet;
     }
 
     public void sendMeMessage(@NotNull String localeString) {
@@ -265,10 +267,6 @@ public class FCommand {
         sender.sendMessage(formatString);
     }
 
-    private boolean isPlayer(@NotNull CommandSender sender) {
-        return sender instanceof Player;
-    }
-
     public void sendTellMessage(@NotNull CommandSender firstPlayer, @NotNull CommandSender secondPlayer, @NotNull String message) {
 
         ItemStack itemStack = firstPlayer instanceof Player ? ((Player) firstPlayer).getInventory().getItemInMainHand() : null;
@@ -292,9 +290,14 @@ public class FCommand {
         BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);
         firstPlayer.spigot().sendMessage(baseComponents1);
 
-        if (isPlayer(firstPlayer) && isPlayer(secondPlayer)) {
-            FPlayerManager.getPlayer((Player) firstPlayer).setLastWriter((Player) secondPlayer);
+        if (firstPlayer instanceof Player first && secondPlayer instanceof Player second) {
+            FPlayerManager.getPlayer(first).setLastWriter(second);
         }
+    }
+
+    public void dispatchCommand(String command) {
+        Bukkit.getScheduler().runTask(Main.getInstance(), () ->
+                Bukkit.dispatchCommand(sender, command));
     }
 
     public boolean isStringTime(String string) {

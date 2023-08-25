@@ -25,6 +25,11 @@ public class CommandBall implements FTabCompleter {
                 || fCommand.isHaveCD()
                 || fCommand.isMuted()) return true;
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         List<String> answers = locale.getStringList("command.ball.format");
 
         Random random = new Random();
@@ -34,7 +39,7 @@ public class CommandBall implements FTabCompleter {
                 .replace("<player>", fCommand.getSenderName())
                 .replace("<answer>", answers.get(randomPer));
 
-        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings));
+        fCommand.sendGlobalMessage(formatString, ObjectUtil.toString(strings), null, true);
 
         return true;
     }

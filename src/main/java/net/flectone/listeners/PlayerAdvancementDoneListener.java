@@ -3,12 +3,11 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.misc.advancement.FAdvancementType;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.components.FAdvancementComponent;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
@@ -76,23 +75,28 @@ public class PlayerAdvancementDoneListener implements Listener {
                 || !config.getBoolean("advancement.message." + fAdvancementType + ".visible"))
             return;
 
-        String formatMessage = locale.getString("advancement." + fAdvancementType + ".name");
+        String configMessage = locale.getString("advancement." + fAdvancementType + ".name");
+
+        String formatMessage = ObjectUtil.formatString(configMessage, null)
+                .replace("<player>", player.getName())
+                .replace("<advancement>", fAdvancement.getTitle());
+
         ArrayList<String> placeholders = new ArrayList<>(List.of("<player>", "<advancement>"));
 
         if (HookManager.enabledDiscordSRV) {
             FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
         }
 
-        Bukkit.getOnlinePlayers().parallelStream()
-                .filter(recipient -> {
-                    FPlayer fPlayer = FPlayerManager.getPlayer(recipient);
+        FCommand fCommand = new FCommand(player, "advancement", "death", new String[]{});
+        fCommand.sendConsoleMessage(formatMessage);
 
-                    return fPlayer != null && !fPlayer.isIgnored(player);
-                })
+        fCommand.getFilteredListRecipient().parallelStream()
                 .forEach(recipient -> {
-                    String string = ObjectUtil.formatString(formatMessage, recipient, player);
+                    String string = ObjectUtil.formatString(configMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
                     recipient.spigot().sendMessage(new FAdvancementComponent(finalPlaceholders, recipient, player, fAdvancement).get());
                 });
+
+
     }
 }

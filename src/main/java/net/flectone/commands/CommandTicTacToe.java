@@ -45,6 +45,11 @@ public class CommandTicTacToe implements FTabCompleter {
 
         if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         if (ticTacToe == null) {
             boolean isFirstPlayer = Math.random() > 0.5;
 

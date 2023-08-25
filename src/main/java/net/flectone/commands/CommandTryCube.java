@@ -38,6 +38,11 @@ public class CommandTryCube implements FTabCompleter {
 
         if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
         int values = 0;
 
@@ -49,20 +54,16 @@ public class CommandTryCube implements FTabCompleter {
             stringBuilder.append(locale.getString("command.try-cube.format." + cubeType)).append(" ");
         }
 
-        if (amount == 6 && values == 21 && stringBuilder.toString().equals("⚀ ⚁ ⚂ ⚃ ⚄ ⚅ ")) {
-
-            String formatString = locale.getString("command.try-cube.lucky-message")
-                    .replace("<player>", fCommand.getSenderName());
-
-            fCommand.sendGlobalMessage(formatString);
-            return true;
-        }
-
         String formatString = locale.getString("command.try-cube." + (values >= Integer.parseInt(strings[0]) * 3.5) + "-message")
                 .replace("<cube>", stringBuilder.toString())
                 .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(formatString);
+        if (amount == 6 && values == 21 && stringBuilder.toString().equals("⚀ ⚁ ⚂ ⚃ ⚄ ⚅ ")) {
+            formatString = locale.getString("command.try-cube.lucky-message")
+                    .replace("<player>", fCommand.getSenderName());
+        }
+
+        fCommand.sendGlobalMessage(formatString, "", null, true);
 
         return true;
     }

@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import static net.flectone.managers.FileManager.config;
@@ -50,7 +49,7 @@ public class CommandPoll implements FTabCompleter {
             String formatString = locale.getString("command.poll.message")
                     .replace("<id>", String.valueOf(poll.getId()));
 
-            fCommand.sendGlobalMessage(new HashSet<>(Bukkit.getOnlinePlayers()), formatString, poll.getMessage(), null, false);
+            fCommand.sendGlobalMessage(formatString, poll.getMessage(), null, false);
 
             String voteId = String.valueOf(poll.getId());
 

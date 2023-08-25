@@ -1,5 +1,6 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
@@ -21,49 +22,65 @@ public class CommandMsg implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                command(commandSender, command, s, strings));
 
+        return true;
+    }
+
+    private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isInsufficientArgs(2)) return true;
+        if (fCommand.isInsufficientArgs(2)) return;
 
         String playerName = strings[0];
         FPlayer secondFPlayer = FPlayerManager.getPlayerFromName(playerName);
         if (secondFPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
-            return true;
+            return;
         }
 
-        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return;
+
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return;
+        }
 
         String message = ObjectUtil.toString(strings, 1);
 
         if (!secondFPlayer.isOnline()) {
             Bukkit.dispatchCommand(commandSender, "mail " + playerName + " " + message);
-            return true;
+            return;
+        }
+
+        if (!secondFPlayer.getChatInfo().getOption("msg")) {
+            fCommand.sendMeMessage("command.he-disabled");
+            return;
         }
 
         if (!fCommand.isConsole()) {
             if (fCommand.getSenderName().equalsIgnoreCase(playerName)) {
                 commandSender.sendMessage(locale.getFormatString("command.msg.myself", commandSender) + message);
-                return true;
+                return;
             }
 
             if (fCommand.getFPlayer() != null && fCommand.getFPlayer().isIgnored(secondFPlayer.getPlayer())) {
                 fCommand.sendMeMessage("command.you_ignore");
-                return true;
+                return;
             }
 
             if (secondFPlayer.isIgnored((Player) commandSender)) {
                 fCommand.sendMeMessage("command.he_ignore");
-                return true;
+                return;
             }
         }
 
-        if(secondFPlayer.getPlayer() == null) return true;
+        if(secondFPlayer.getPlayer() == null) return;
 
         fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), message);
 
-        return true;
+        return;
     }
 
     @Nullable

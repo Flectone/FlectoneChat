@@ -26,7 +26,7 @@ public class CommandIgnore implements FTabCompleter {
         if (fCommand.isConsoleMessage()
                 || fCommand.isInsufficientArgs(1)) return true;
 
-        if (fCommand.isSelfCommand()) {
+        if (strings[0].equalsIgnoreCase(commandSender.getName())) {
             fCommand.sendMeMessage("command.ignore.myself");
             return true;
         }

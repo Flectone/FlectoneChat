@@ -77,7 +77,7 @@ public class CommandTempban implements FTabCompleter {
                 .filter(player -> player.hasPermission("flectonechat.ban") || player.equals(bannedFPlayer.getPlayer()))
                 .collect(Collectors.toSet());
 
-        fCommand.sendGlobalMessage(receivers, globalMessage, false);
+        fCommand.sendFilterGlobalMessage(receivers, globalMessage, "", null, false);
 
         String moderator = (commandSender instanceof Player player)
                 ? player.getUniqueId().toString()

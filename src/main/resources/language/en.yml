@@ -108,6 +108,8 @@ command:
   you-ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
   he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
   disabled: "#ff4e4e⁉ This command disabled on server"
+  you-disabled: "#ff4e4e⁉ Display of this command is disabled, check /chat-settings"
+  he-disabled: "#ff4e4e⁉ He disabled this option via /chat-settings"
   long-number: "#ff4e4e⁉ The number you entered is too large"
 
   poll:
@@ -130,10 +132,53 @@ command:
   clear-chat:
     message: "&&1💬 Chat is cleared"
 
-  chat:
+  switch-chat:
     usage: "&&1⚑ Usage: &&2/<command> switch/hide local/global"
     switch-message: "&&1💬 You switched chat to <chat>"
     hide-message: "&&1💬 You hid <chat> chat"
+
+  chat-settings:
+    usage: "&&1⚑ Usage: &&2/<command>"
+    hover-text: "&&1Click to change &&2<component> &&1display"
+    not-available: "#ff4e4e⁉ Cannot change this setting"
+
+    format:
+      local: "&&2Local"
+      global: "&&2Global"
+      onlylocal: "&&2Hidden global"
+      onlyglobal: "&&2Hidden local"
+      advancement: "&&2Advancements"
+      death: "&&2Deaths"
+      join: "&&2Joins"
+      quit: "&&2Quits"
+      me: "&&2/me"
+      try: "&&2/try"
+      try-cube: "&&2/try-cube"
+      ball: "&&2/ball"
+      tempban: "&&2/tempban"
+      mute: "&&2/mute"
+      warn: "&&2/warn"
+      msg: "&&2/msg"
+      reply: "&&2/reply"
+      mail: "&&2/mail"
+      tic-tac-toe: "&&2/tic-tac-toe"
+
+    color:
+      false: "#ff4e4e[❌] "
+      true: "#4eff52[✔] "
+
+    message-changed: "&&1⚙ Did you change the settings, save them #4eff52[✔]&&1?"
+
+    message:
+      - " "
+      - "&&1════ Chat settings ════"
+      - "&&1Types of chat: \n <local> \n <global> \n <onlylocal> \n <onlyglobal>"
+      - "&&1------------------------"
+      - "&&1Players actions: \n <advancement> \n <death> \n <join> \n <quit>"
+      - "&&1------------------------"
+      - "&&1Command alerts: \n <me> \n <try> \n <try-cube> \n <ball> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
+      - "&&1------------------------"
+      - "&&1Be sure to save your settings with /chat-settings save"
 
   tic-tac-toe:
     usage: "&&1⚑ Usage: &&2/<command> (player)"

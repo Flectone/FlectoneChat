@@ -11,7 +11,7 @@ import java.util.List;
 
 import static net.flectone.managers.FileManager.config;
 
-public class CommandChat implements FTabCompleter {
+public class CommandSwitchChat implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -30,7 +30,6 @@ public class CommandChat implements FTabCompleter {
             return true;
         }
 
-
         boolean isSwitch = chatParam.equals("switch");
 
         if (isSwitch && !config.getBoolean("chat.global.enable")) {
@@ -44,7 +43,7 @@ public class CommandChat implements FTabCompleter {
 
         fCommand.getFPlayer().getChatInfo().setChatType(fPlayerChat);
 
-        String localeString = isSwitch ? "command.chat.switch-message" : "command.chat.hide-message";
+        String localeString = isSwitch ? "command.switch-chat.switch-message" : "command.switch-chat.hide-message";
         fCommand.sendMeMessage(localeString, "<chat>", chat);
 
         return true;
@@ -72,6 +71,6 @@ public class CommandChat implements FTabCompleter {
     @NotNull
     @Override
     public String getCommandName() {
-        return "chat";
+        return "switch-chat";
     }
 }

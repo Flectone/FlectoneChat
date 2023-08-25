@@ -108,11 +108,10 @@ public class FPlayer {
         loadMuteInfo();
         loadBanInfo();
 
-        if (player == null) return;
 
         Main.getDatabase().initFPlayer(this);
 
-        if (mails.isEmpty()) return;
+        if (mails.isEmpty() || player == null) return;
 
         mails.values().forEach(mail -> {
             String playerName = Bukkit.getOfflinePlayer(mail.getSender()).getName();
@@ -526,6 +525,12 @@ public class FPlayer {
 
     public boolean isDeathByObject() {
         return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
+    }
+
+    public void spigotMessage(BaseComponent baseComponent) {
+        if(this.player == null) return;
+
+        this.player.spigot().sendMessage(baseComponent);
     }
 
     public void spigotMessage(BaseComponent[] baseComponents) {

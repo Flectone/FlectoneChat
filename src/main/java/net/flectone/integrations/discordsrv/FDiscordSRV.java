@@ -21,18 +21,12 @@ import net.flectone.managers.HookManager;
 import net.flectone.misc.advancement.FAdvancement;
 import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.function.BiFunction;
-
-import static net.flectone.managers.FileManager.locale;
 
 /*
 
@@ -59,44 +53,15 @@ License along with this program.  If not, see
 
 public class FDiscordSRV implements Listener, HookInterface {
 
-    public static void sendDeathMessage(@NotNull Player player, @NotNull String message, @Nullable Entity finalEntity, @Nullable Material finalBlock, @Nullable Entity killer, @Nullable ItemStack killerItem) {
-        message = message.replace("<player>", player.getName());
-        if (finalEntity != null) message = message
-                .replace("<killer>", finalEntity.getName())
-                .replace("<projectile>", finalEntity.getName());
+    public static void sendDeathMessage(@NotNull Player player, @NotNull String message) {
 
-        if (finalBlock != null) message = message
-                .replace("<block>", finalBlock.name());
-
-        if (killer != null) {
-            String dueToMessage = locale.getFormatString("death.due-to", null);
-            message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
-        }
-
-        if (killerItem != null) {
-            String byItemMessage = locale.getFormatString("death.by-item", null);
-
-            String itemName = killerItem.getItemMeta() != null && !killerItem.getItemMeta().getDisplayName().isEmpty()
-                    ? killerItem.getItemMeta().getDisplayName()
-                    : killerItem.getType().name();
-
-            message = message.replace("<by_item>", byItemMessage.replace("<item>", itemName));
-        }
-
-        String deathMessage = ObjectUtil.formatString(message, null)
-                .replace("<killer>", "")
-                .replace("<projectile>", "")
-                .replace("<block>", "")
-                .replace("<due_to>", "")
-                .replace("<by_item>", "");
-
-        deathMessage = deathMessage.length() > 255 ? deathMessage.substring(0, 255) : deathMessage;
+        message = message.length() > 255 ? message.substring(0, 255) : message;
 
         String channelName = DiscordSRV.getPlugin().getOptionalChannel("deaths");
         MessageFormat messageFormat = DiscordSRV.getPlugin().getMessageFromConfiguration("MinecraftPlayerDeathMessage");
         if (messageFormat == null) return;
 
-        String finalDeathMessage = StringUtils.isNotBlank(deathMessage) ? deathMessage : "";
+        String finalDeathMessage = StringUtils.isNotBlank(message) ? message : "";
         String avatarUrl = DiscordSRV.getAvatarUrl(player);
         String botAvatarUrl = DiscordUtil.getJda().getSelfUser().getEffectiveAvatarUrl();
         String botName = DiscordSRV.getPlugin().getMainGuild() != null ? DiscordSRV.getPlugin().getMainGuild().getSelfMember().getEffectiveName() : DiscordUtil.getJda().getSelfUser().getName();
@@ -156,10 +121,8 @@ public class FDiscordSRV implements Listener, HookInterface {
 
         String advancementTitle = fAdvancement.getTitle();
 
-        lastAdvancement = ObjectUtil.formatString(lastAdvancement, null)
-                .replace("<player>", player.getName())
-                .replace("<advancement>", advancementTitle);
         lastAdvancement = PlaceholderUtil.replacePlaceholdersToDiscord(lastAdvancement);
+        
         lastAdvancement = lastAdvancement.length() > 255 ? lastAdvancement.substring(0, 255) : lastAdvancement;
 
         String finalAchievementName = StringUtils.isNotBlank(advancementTitle) ? advancementTitle : "";

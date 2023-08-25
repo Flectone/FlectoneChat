@@ -100,7 +100,7 @@ public class AsyncPlayerChatListener implements Listener {
         String configMessage = locale.getString("chat." + chatType + ".message")
                 .replace("<player>", fPlayer.getDisplayName());
 
-        fCommand.sendGlobalMessage(recipients, configMessage, message, itemStack, true);
+        fCommand.sendFilterGlobalMessage(recipients, configMessage, message, itemStack, true);
     }
 
     @EventHandler

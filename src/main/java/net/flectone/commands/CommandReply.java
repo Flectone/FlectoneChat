@@ -27,10 +27,20 @@ public class CommandReply implements FTabCompleter {
             return true;
         }
 
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return true;
+        }
+
         FPlayer secondFPlayer = FPlayerManager.getPlayer(fCommand.getFPlayer().getLastWriter());
 
         if (secondFPlayer == null || secondFPlayer.getPlayer() == null || !secondFPlayer.isOnline()) {
             fCommand.sendMeMessage("command.reply.no-receiver");
+            return true;
+        }
+
+        if (!secondFPlayer.getChatInfo().getOption("reply")) {
+            fCommand.sendMeMessage("command.he-disabled");
             return true;
         }
 

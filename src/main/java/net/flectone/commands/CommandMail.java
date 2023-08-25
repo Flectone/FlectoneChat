@@ -20,50 +20,64 @@ public class CommandMail implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                command(commandSender, command, s, strings));
+        return true;
+    }
 
+    private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isConsoleMessage() || fCommand.isInsufficientArgs(2) || fCommand.getFPlayer() == null) return true;
+        if (fCommand.isConsoleMessage() || fCommand.isInsufficientArgs(2) || fCommand.getFPlayer() == null) return;
 
         String playerName = strings[0];
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
 
         if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
-            return true;
+            return;
+        }
+
+        if (fCommand.isDisabled()) {
+            fCommand.sendMeMessage("command.you-disabled");
+            return;
+        }
+
+        fPlayer.synchronizeDatabase();
+
+        if (!fPlayer.getChatInfo().getOption("mail")) {
+            fCommand.sendMeMessage("command.he-disabled");
+            return;
         }
 
         String message = ObjectUtil.toString(strings, 1);
 
         if (fCommand.getFPlayer().isIgnored(fPlayer.getUUID())) {
             fCommand.sendMeMessage("command.you_ignore");
-            return true;
+            return;
         }
 
         if (fPlayer.isIgnored(fCommand.getFPlayer().getUUID())) {
             fCommand.sendMeMessage("command.he_ignore");
-            return true;
+            return;
         }
 
-        if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
+        if (fCommand.isHaveCD() || fCommand.isMuted()) return;
 
         if (fPlayer.isOnline()) {
-            Bukkit.dispatchCommand(commandSender, "tell " + playerName + " " + message);
-            return true;
+            fCommand.dispatchCommand("tell " + playerName + " " + message);
+            return;
         }
 
         Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
         fPlayer.addMail(mail.getUUID(), mail);
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
-                Main.getDatabase().updateFPlayer(fPlayer, "mails"));
+        Main.getDatabase().updateFPlayer(fPlayer, "mails");
 
         String[] replaceString = {"<player>", "<message>"};
         String[] replaceTo = {fPlayer.getRealName(), message};
 
         fCommand.sendMeMessage("command.mail.send", replaceString, replaceTo);
-
-        return true;
     }
 
     @Nullable

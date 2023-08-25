@@ -43,7 +43,7 @@ public class CommandHelper implements FTabCompleter {
         String formatMessage = locale.getString("command.helper.global-message")
                 .replace("<player>", fCommand.getSenderName());
 
-        fCommand.sendGlobalMessage(playerSet, formatMessage, ObjectUtil.toString(strings, 0), null, true);
+        fCommand.sendFilterGlobalMessage(playerSet, formatMessage, ObjectUtil.toString(strings, 0), null, true);
 
         fCommand.sendMeMessage("command.helper.local-message");
 

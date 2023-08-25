@@ -22,16 +22,17 @@ public class PlayerJoinListener implements Listener {
 
     public static void sendJoinMessage(@NotNull FPlayer fPlayer, @NotNull Player player, boolean isOnline) {
         boolean isEnable = config.getBoolean("player.join.message.enable");
-        if (isEnable && isOnline) {
-            FCommand fCommand = new FCommand(player, "join", "join", new String[]{});
 
-            String string = player.hasPlayedBefore()
-                    ? locale.getString("player.join.message")
-                    : locale.getString("player.join.first-time.message");
-            string = string.replace("<player>", player.getName());
+        if(!isEnable || !isOnline) return;
 
-            fCommand.sendGlobalMessage(string);
-        }
+        FCommand fCommand = new FCommand(player, "join", "join", new String[]{});
+
+        String string = player.hasPlayedBefore()
+                ? locale.getString("player.join.message")
+                : locale.getString("player.join.first-time.message");
+        string = string.replace("<player>", player.getName());
+
+        fCommand.sendGlobalMessage(string, "", null, true);
     }
 
     public static void sendJoinMessage(@NotNull Player player) {
@@ -49,9 +50,11 @@ public class PlayerJoinListener implements Listener {
         event.setJoinMessage(null);
 
         FPlayer fPlayer = FPlayerManager.createFPlayer(event.getPlayer());
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), fPlayer::synchronizeDatabase);
 
-        sendJoinMessage(fPlayer, player, fPlayer.isOnline());
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            fPlayer.synchronizeDatabase();
+            sendJoinMessage(fPlayer, player, fPlayer.isOnline());
+        });
     }
 
     @EventHandler

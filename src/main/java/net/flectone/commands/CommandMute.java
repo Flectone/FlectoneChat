@@ -74,7 +74,7 @@ public class CommandMute implements FTabCompleter {
                 .filter(player -> player.hasPermission("flectonechat.mute") || player.equals(mutedFPlayer.getPlayer()))
                 .collect(Collectors.toSet());
 
-        fCommand.sendGlobalMessage(receivers, formatString, false);
+        fCommand.sendFilterGlobalMessage(receivers, formatString, "", null, false);
 
         String moderator = (commandSender instanceof Player player)
                 ? player.getUniqueId().toString()

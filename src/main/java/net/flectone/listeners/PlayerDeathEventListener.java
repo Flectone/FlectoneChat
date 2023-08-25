@@ -5,6 +5,7 @@ import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.components.FDeathComponent;
 import net.flectone.misc.entity.FDamager;
 import net.flectone.misc.entity.FPlayer;
@@ -102,8 +103,8 @@ public class PlayerDeathEventListener implements Listener {
 
         if (FSuperVanish.isVanished(player) || lastDamageEvent == null) return;
 
-        String formatMessage = locale.getString(getDeathConfigMessage(lastDamageEvent));
-        if (formatMessage.isEmpty()) return;
+        String configMessage = locale.getString(getDeathConfigMessage(lastDamageEvent));
+        if (configMessage.isEmpty()) return;
 
         if (!config.getBoolean("death.message.visible")) {
             event.setDeathMessage("");
@@ -181,29 +182,63 @@ public class PlayerDeathEventListener implements Listener {
             }
         }
 
-        Bukkit.getOnlinePlayers().parallelStream()
-                .filter(recipient -> {
-                    FPlayer recipientFPlayer = FPlayerManager.getPlayer(recipient);
-                    return recipientFPlayer != null && !recipientFPlayer.isIgnored(player);
-                })
+        String formatMessage = formatMessage(configMessage, player, fDamager);
+
+        FCommand fCommand = new FCommand(player, "death", "death", new String[]{});
+        fCommand.sendConsoleMessage(formatMessage);
+
+        fCommand.getFilteredListRecipient().parallelStream()
                 .forEach(recipient -> {
-                    String string = ObjectUtil.formatString(formatMessage, recipient, player);
+                    String string = ObjectUtil.formatString(configMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
 
                     recipient.spigot().sendMessage(new FDeathComponent(finalPlaceholders, recipient, player, fDamager).get());
                 });
 
+
         if(HookManager.enabledDiscordSRV) {
-            FDiscordSRV.sendDeathMessage(player,
-                    formatMessage,
-                    fDamager.getFinalEntity(),
-                    fDamager.getFinalBlockDamager(),
-                    fDamager.getKiller(),
-                    fDamager.getKillerItem());
+            FDiscordSRV.sendDeathMessage(player, formatMessage);
         }
 
         event.setDeathMessage("");
         fPlayer.resetLastDamager();
+    }
+
+    private String formatMessage(String message, Player player, FDamager fDamager) {
+        Entity finalEntity = fDamager.getFinalEntity();
+        Material finalBlock = fDamager.getFinalBlockDamager();
+        Entity killer = fDamager.getKiller();
+        ItemStack killerItem = fDamager.getKillerItem();
+
+        message = message.replace("<player>", player.getName());
+        if (finalEntity != null) message = message
+                .replace("<killer>", finalEntity.getName())
+                .replace("<projectile>", finalEntity.getName());
+
+        if (finalBlock != null) message = message
+                .replace("<block>", finalBlock.name());
+
+        if (killer != null) {
+            String dueToMessage = locale.getFormatString("death.due-to", null);
+            message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
+        }
+
+        if (killerItem != null) {
+            String byItemMessage = locale.getFormatString("death.by-item", null);
+
+            String itemName = killerItem.getItemMeta() != null && !killerItem.getItemMeta().getDisplayName().isEmpty()
+                    ? killerItem.getItemMeta().getDisplayName()
+                    : killerItem.getType().name();
+
+            message = message.replace("<by_item>", byItemMessage.replace("<item>", itemName));
+        }
+
+        return ObjectUtil.formatString(message, null)
+                .replace("<killer>", "")
+                .replace("<projectile>", "")
+                .replace("<block>", "")
+                .replace("<due_to>", "")
+                .replace("<by_item>", "");
     }
 
     @NotNull
