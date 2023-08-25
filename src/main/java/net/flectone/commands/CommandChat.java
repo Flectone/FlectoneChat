@@ -72,6 +72,6 @@ public class CommandChat implements FTabCompleter {
     @NotNull
     @Override
     public String getCommandName() {
-        return "try";
+        return "chat";
     }
 }
