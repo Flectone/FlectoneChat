@@ -1,9 +1,11 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +63,9 @@ public class CommandChatcolor implements FTabCompleter {
 
     private void setColors(@NotNull FPlayer fPlayer, @NotNull String[] strings) {
         fPlayer.setColors(strings[0], strings[1]);
-        fPlayer.setUpdated(true);
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().saveColors(fPlayer));
 
         if (fPlayer.isOnline() && fPlayer.getPlayer() != null) {
             fPlayer.setDisplayName();

@@ -2,7 +2,6 @@ package net.flectone.managers;
 
 import net.flectone.Main;
 import net.flectone.misc.files.FYamlConfiguration;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -22,6 +21,7 @@ public class FileManager {
 
     public static void initialize() {
         config = load("config.yml", true);
+
         loadLocale();
         loadIcons();
     }
@@ -64,7 +64,7 @@ public class FileManager {
         return fileConfiguration;
     }
 
-    private static void migrate(FileConfiguration fileConfiguration, String filePath) {
+    private static void migrate(FYamlConfiguration fileConfiguration, String filePath) {
         InputStream inputStream = Main.getInstance().getResource(filePath);
 
         if (inputStream == null) return;

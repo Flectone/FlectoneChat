@@ -1,14 +1,14 @@
 package net.flectone.commands;
 
-import net.flectone.managers.FPlayerManager;
+import net.flectone.Main;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.components.FComponent;
 import net.flectone.misc.components.FListComponent;
-import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -25,33 +24,37 @@ public class CommandBanlist implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> command(commandSender, command, s, strings));
+        return true;
+    }
 
+    private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        Set<FPlayer> bannedPlayers = FPlayerManager.getBannedPlayers();
+        int bansCount = Main.getDatabase().getCount("bans");
 
         int perPage = config.getInt("command.banlist.per-page");
 
-        int lastPage = (int) Math.ceil((double) bannedPlayers.size() / perPage);
+        int lastPage = (int) Math.ceil((double) bansCount / perPage);
 
         if (strings.length != 0 &&
                 (!StringUtils.isNumeric(strings[0]) || Integer.parseInt(strings[0]) < 1 || Integer.parseInt(strings[0]) > lastPage)) {
 
             fCommand.sendMeMessage("command.banlist.page-not-exist");
-            return true;
+            return;
         }
 
-        if (bannedPlayers.isEmpty()) {
+        if (bansCount == 0) {
             fCommand.sendMeMessage("command.banlist.empty");
-            return true;
+            return;
         }
 
-        if (fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return;
 
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String title = locale.getFormatString("command.banlist.title", commandSender)
-                .replace("<count>", String.valueOf(bannedPlayers.size()));
+                .replace("<count>", String.valueOf(bansCount));
 
         componentBuilder.append(FComponent.fromLegacyText(title)).append("\n\n");
 
@@ -60,22 +63,23 @@ public class CommandBanlist implements FTabCompleter {
         int page = strings.length > 0 ? Math.max(1, Integer.parseInt(strings[0])) : 1;
         page = Math.min(lastPage, page);
 
-        bannedPlayers.stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(fPlayer -> {
+        Main.getDatabase().getPlayers("bans", perPage, (page - 1) * perPage).forEach(dPlayer -> {
             String playerBanFormat = "command.banlist.player-ban";
-            if (fPlayer.isPermanentlyBanned()) playerBanFormat += "-permanently";
+            if (dPlayer.getTime() == -1) playerBanFormat += "-permanently";
 
             playerBanFormat = locale.getFormatString(playerBanFormat, commandSender)
                     .replace("<unban>", unbanButton)
-                    .replace("<player>", fPlayer.getRealName())
-                    .replace("<reason>", fPlayer.getBanReason())
-                    .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getTempBanTime()));
+                    .replace("<player>", dPlayer.getPlayerName())
+                    .replace("<reason>", dPlayer.getReason())
+                    .replace("<time>", ObjectUtil.convertTimeToString(dPlayer.getDifferenceTime()))
+                    .replace("<moderator>", dPlayer.getModeratorName());
 
             String unbanHover = locale.getFormatString("command.banlist.unban-hover", commandSender)
-                    .replace("<player>", fPlayer.getRealName());
+                    .replace("<player>", dPlayer.getPlayerName());
 
             FComponent textComponent = new FComponent(playerBanFormat)
                     .addHoverText(unbanHover)
-                    .addRunCommand("/unban " + fPlayer.getRealName());
+                    .addRunCommand("/unban " + dPlayer.getPlayerName());
 
             componentBuilder
                     .append(textComponent.get())
@@ -85,8 +89,6 @@ public class CommandBanlist implements FTabCompleter {
         componentBuilder.append(new FListComponent("banlist", commandSender, page, lastPage).get());
 
         commandSender.spigot().sendMessage(componentBuilder.create());
-
-        return true;
     }
 
     @Nullable
@@ -94,15 +96,17 @@ public class CommandBanlist implements FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        if (strings.length == 1) {
-            int perPage = config.getInt("command.banlist.per-page");
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            if (strings.length == 1) {
+                int perPage = config.getInt("command.banlist.per-page");
 
-            int lastPage = (int) Math.ceil((double) FPlayerManager.getBannedPlayers().size() / perPage);
+                int lastPage = (int) Math.ceil((double) Main.getDatabase().getCount("bans") / perPage);
 
-            isDigitInArray(strings[0], "", 1, lastPage + 1);
-        }
+                isDigitInArray(strings[0], "", 1, lastPage + 1);
+            }
 
-        Collections.sort(wordsList);
+            Collections.sort(wordsList);
+        });
 
         return wordsList;
     }

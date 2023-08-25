@@ -65,7 +65,7 @@ public class CommandFlectonechat implements FTabCompleter {
         FileManager.initialize();
 
         TickerManager.clear();
-        FPlayerManager.uploadPlayers();
+        FPlayerManager.clearPlayers();
 
         Bukkit.getOnlinePlayers().parallelStream().forEach(FPlayerManager::removePlayer);
 

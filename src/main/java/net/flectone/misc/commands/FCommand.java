@@ -103,10 +103,12 @@ public class FCommand {
     }
 
     public boolean isMuted() {
-        if (isConsole || getFPlayer() == null || !getFPlayer().isMuted()) return false;
+        FPlayer fPlayer = getFPlayer();
+        if (isConsole || fPlayer == null || !fPlayer.isMuted()) return false;
 
-        String[] stringsReplace = {"<time>", "<reason>"};
-        String[] stringsTo = {ObjectUtil.convertTimeToString(getFPlayer().getMuteTime()), getFPlayer().getMuteReason()};
+        String[] stringsReplace = {"<time>", "<reason>", "<moderator>"};
+        String[] stringsTo = {ObjectUtil.convertTimeToString(fPlayer.getMute().getDifferenceTime()),
+                fPlayer.getMute().getReason(), fPlayer.getMute().getModeratorName()};
 
         sendMeMessage("command.mute.local-message", stringsReplace, stringsTo);
 

@@ -36,7 +36,7 @@ public class AsyncPlayerChatListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if(fPlayer == null) return;
 
-        String fPlayerChat = fPlayer.getChat();
+        String fPlayerChat = fPlayer.getChatInfo().getChatType();
         String globalPrefix = locale.getString("chat.global.prefix");
         String message = event.getMessage();
 
@@ -118,7 +118,7 @@ public class AsyncPlayerChatListener implements Listener {
         if(fPlayer == null) return;
 
         String chatType = config.getBoolean("chat.global.enable")
-                && fPlayer.getChat().contains("global")
+                && fPlayer.getChatInfo().getChatType().contains("global")
                 ? "global" : "local";
         String reversedChatType = chatType.equals("global") ? "local" : "global";
 
@@ -139,7 +139,7 @@ public class AsyncPlayerChatListener implements Listener {
             FPlayer fPlayer = FPlayerManager.getPlayer(recipient);
             if(fPlayer == null) return false;
 
-            return fPlayer.isIgnored(player) || fPlayer.getChat().equals("only" + reversedChatType);
+            return fPlayer.isIgnored(player) || fPlayer.getChatInfo().getChatType().equals("only" + reversedChatType);
         });
     }
 }

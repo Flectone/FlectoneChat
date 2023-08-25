@@ -84,9 +84,8 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        FPlayerManager.uploadPlayers();
-        FPlayerManager.removePlayersFromTeams();
         PlayerPingTicker.unregisterPingObjective();
+        FPlayerManager.clearPlayers();
         info("✔ Plugin disabled");
     }
 }

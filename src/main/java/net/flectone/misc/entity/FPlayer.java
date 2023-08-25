@@ -9,6 +9,7 @@ import net.flectone.misc.actions.Mail;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -27,8 +28,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class FPlayer {
 
@@ -46,17 +47,15 @@ public class FPlayer {
     private String[] colors = new String[]{};
     private ArrayList<UUID> ignoreList = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
-    private String muteReason;
-    private int muteTime;
-    private String tempBanReason = "";
-    private int tempBanTime;
+    private DatabasePlayer muteInfo = null;
+    private DatabasePlayer banInfo = null;
+    private PlayerChatInfo chatInfo = null;
     private int numberLastInventory;
     private int lastTimeMoved;
     private String streamPrefix = "";
     private String afkSuffix = "";
     private String vaultSuffix = "";
     private String vaultPrefix = "";
-    private String chat = "local";
     private Player lastWriter;
     private String worldPrefix = "";
     private FDamager lastFDamager = new FDamager();
@@ -86,7 +85,31 @@ public class FPlayer {
         setWorldPrefix(player.getWorld());
         setStreamer();
         setDisplayName();
-        setUpdated(true);
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            Main.getDatabase().insertPlayer(this.uuid);
+
+            String playerUUID = player.getUniqueId().toString();
+            DatabasePlayer databasePlayer = Main.getDatabase().getPlayer("mutes", playerUUID);
+            if (databasePlayer != null) {
+                this.muteInfo = databasePlayer;
+            }
+
+            databasePlayer = Main.getDatabase().getPlayer("bans", playerUUID);
+            if (databasePlayer != null) {
+                this.banInfo = databasePlayer;
+            }
+
+            Main.getDatabase().initFPlayer(this);
+        });
+    }
+
+    public void setChatInfo(PlayerChatInfo chatInfo) {
+        this.chatInfo = chatInfo;
+    }
+
+    public PlayerChatInfo getChatInfo() {
+        return chatInfo;
     }
 
     public boolean isOnline() {
@@ -121,6 +144,10 @@ public class FPlayer {
         return this.uuid;
     }
 
+    public DatabasePlayer getMute() {
+        return this.muteInfo;
+    }
+
     public boolean isMoved(Block block) {
         return !block.equals(this.block);
     }
@@ -135,33 +162,23 @@ public class FPlayer {
     }
 
     public boolean isMuted() {
-        boolean isMuted = getMuteTime() > 0;
+        boolean isMuted = muteInfo != null && muteInfo.getDifferenceTime() > 0;
 
         if (!isMuted) {
-            setMuteTime(0);
-            setMuteReason("");
+            unmute();
         }
 
         return isMuted;
     }
 
-    public boolean isTempBanned() {
-        boolean isBanned = getTempBanTime() > 0;
+    public boolean isBanned() {
+        boolean isBanned = banInfo != null && (banInfo.getDifferenceTime() > 0 || banInfo.getTime() == -1);
 
-        if (!isBanned && !isPermanentlyBanned()) {
+        if (isBanned) {
             unban();
-            return false;
         }
 
         return isBanned;
-    }
-
-    public boolean isPermanentlyBanned() {
-        return getRealBanTime() == -1;
-    }
-
-    public boolean isBanned() {
-        return isTempBanned() || isPermanentlyBanned();
     }
 
     public boolean isAfk() {
@@ -186,65 +203,34 @@ public class FPlayer {
         return streamPrefix;
     }
 
-    public void mute(int time, @NotNull String reason) {
-        setMuteTime(time + ObjectUtil.getCurrentTime());
-        setMuteReason(reason);
-        setUpdated(true);
-        FPlayerManager.getMutedPlayers().add(this);
+    public void mute(int time, @NotNull String reason, @Nullable String moderatorUUID) {
+        int finalTime = time + ObjectUtil.getCurrentTime();
+
+        DatabasePlayer databasePlayer = new DatabasePlayer(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        this.muteInfo = databasePlayer;
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+            Main.getDatabase().saveModeratorAction("mutes", databasePlayer);
+        });
     }
 
     public void unmute() {
-        setMuteTime(0);
-        setMuteReason("");
-        setUpdated(true);
-        FPlayerManager.getMutedPlayers().remove(this);
+        this.muteInfo = null;
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().deleteModeratorRow("mutes", this.uuid.toString()));
     }
 
-    @NotNull
-    public String getMuteReason() {
-        return this.muteReason != null ? muteReason : "";
-    }
+    public void tempban(int time, @NotNull String reason, @Nullable String moderatorUUID) {
+        int finalTime = time == -1 ? -1 : time + ObjectUtil.getCurrentTime();
 
-    public void setMuteReason(@NotNull String muteReason) {
-        this.muteReason = muteReason;
-    }
+        DatabasePlayer databasePlayer = new DatabasePlayer(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        this.banInfo = databasePlayer;
 
-    public int getMuteTime() {
-        return this.muteTime - ObjectUtil.getCurrentTime();
-    }
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().saveModeratorAction("bans", databasePlayer));
 
-    public void setMuteTime(int muteTime) {
-        this.muteTime = muteTime;
-    }
-
-    public int getTempBanTime() {
-        return this.tempBanTime - ObjectUtil.getCurrentTime();
-    }
-
-    public void setTempBanTime(int tempBanTime) {
-        this.tempBanTime = tempBanTime;
-    }
-
-    public int getRealBanTime() {
-        return this.tempBanTime;
-    }
-
-    @NotNull
-    public String getBanReason() {
-        return tempBanReason != null ? tempBanReason : "";
-    }
-
-    public void setTempBanReason(@NotNull String tempBanReason) {
-        this.tempBanReason = tempBanReason;
-    }
-
-    public void tempban(int time, @NotNull String reason) {
-        setTempBanTime(time == -1 ? -1 : time + ObjectUtil.getCurrentTime());
-        setTempBanReason(reason);
-        setUpdated(true);
-        FPlayerManager.getBannedPlayers().add(this);
-
-        if (!(player != null && isOnline())) return;
+        if (player == null || !offlinePlayer.isOnline()) return;
 
         String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
@@ -256,10 +242,10 @@ public class FPlayer {
     }
 
     public void unban() {
-        setTempBanTime(0);
-        setTempBanReason("");
-        setUpdated(true);
-        FPlayerManager.getBannedPlayers().remove(this);
+        this.banInfo = null;
+
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+                Main.getDatabase().deleteModeratorRow("bans", this.uuid.toString()));
     }
 
     @NotNull
@@ -480,15 +466,6 @@ public class FPlayer {
 
     public void setUpdated(boolean updated) {
         isUpdated = updated;
-    }
-
-    @NotNull
-    public String getChat() {
-        return chat;
-    }
-
-    public void setChat(@NotNull String chat) {
-        this.chat = chat;
     }
 
     public void addChatBubble(@NotNull String message) {

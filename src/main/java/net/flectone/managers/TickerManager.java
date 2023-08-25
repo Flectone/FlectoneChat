@@ -23,7 +23,6 @@ public class TickerManager {
     }
 
     public static void start() {
-        addTicker(new DatabaseTicker());
 
         if (config.getBoolean("chat.bubble.enable")) {
             addTicker(new ChatBubbleTicker());

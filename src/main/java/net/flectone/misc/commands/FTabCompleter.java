@@ -1,7 +1,6 @@
 package net.flectone.misc.commands;
 
 import net.flectone.integrations.supervanish.FSuperVanish;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.misc.files.FYamlConfiguration;
 import org.apache.commons.lang.StringUtils;
@@ -10,7 +9,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 public interface FTabCompleter extends CommandExecutor, TabCompleter {
@@ -37,8 +39,8 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
     }
 
     default void isOfflinePlayer(@NotNull String arg) {
-        FPlayerManager.getPlayers().parallelStream().filter(Objects::nonNull)
-                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer.getRealName()));
+        Arrays.stream(Bukkit.getOfflinePlayers()).parallel().filter(offlinePlayer -> offlinePlayer.getName() != null)
+                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer.getName()));
     }
 
     default void isOnlinePlayer(@NotNull String arg) {

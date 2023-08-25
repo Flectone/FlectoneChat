@@ -2,17 +2,16 @@ package net.flectone.sqlite;
 
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
-import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.actions.Mail;
+import net.flectone.misc.entity.DatabasePlayer;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.utils.ObjectUtil;
+import net.flectone.misc.entity.PlayerChatInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -39,72 +38,182 @@ public abstract class Database {
             ResultSet rs = ps.executeQuery();
             close(ps, rs);
 
-            Arrays.stream(Bukkit.getOfflinePlayers())
-                    .forEach(offlinePlayer -> setPlayer(offlinePlayer.getUniqueId()));
+            if (SQLite.isOldVersion) migrateDatabase3_9_0();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
         }
     }
 
-    public void setPlayer(@NotNull UUID uuid) {
+    private void migrateDatabase3_9_0() {
+        try (Connection conn = getSQLConnection();
+             PreparedStatement playerStatement = conn.prepareStatement("SELECT * FROM players")) {
+
+            ResultSet playerResultSet = playerStatement.executeQuery();
+
+            while (playerResultSet.next()) {
+
+                String playerUUID = playerResultSet.getString("uuid");
+
+                int muteTime = playerResultSet.getInt("mute_time");
+                String muteReason = playerResultSet.getString("mute_reason");
+                migrateModColumn(conn, "mutes", playerUUID, muteTime, muteReason);
+
+                int banTime = playerResultSet.getInt("tempban_time");
+                String banReason = playerResultSet.getString("tempban_reason");
+                migrateModColumn(conn, "bans", playerUUID, banTime, banReason);
+            }
+
+            close(playerStatement, playerResultSet);
+
+            Statement statement = conn.createStatement();
+
+            addColumn(statement, "players", "warns", "varchar(32)");
+            addColumn(statement, "players", "enable_advancements",  "varchar(11)");
+            addColumn(statement, "players", "enable_deaths",  "varchar(11)");
+            addColumn(statement, "players", "enable_joins",  "varchar(11)");
+            addColumn(statement, "players", "enable_quits",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_me",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_try",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_try_cube",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_ball",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_tempban",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_mute",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_warn",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_msg",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_reply",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_mail",  "varchar(11)");
+            addColumn(statement, "players", "enable_command_tic_tac_toe",  "varchar(11)");
+            dropColumn(statement, "players", "mute_time");
+            dropColumn(statement, "players", "mute_reason");
+            dropColumn(statement, "players", "tempban_time");
+            dropColumn(statement, "players", "tempban_reason");
+
+            statement.close();
+
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
+
+    }
+
+    private void dropColumn(Statement statement, String table, String column) throws SQLException {
+        statement.executeUpdate("ALTER TABLE " + table + " DROP COLUMN " + column);
+    }
+
+    private void addColumn(Statement statement, String table, String column, String type) throws SQLException {
+        statement.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type);
+    }
+
+    private void migrateModColumn(Connection conn, String table, String playerUUID, int time, String reason) throws SQLException{
+        if (reason == null) return;
+
+        PreparedStatement statement = conn.prepareStatement("INSERT OR REPLACE INTO "+ table + " (player, time, reason, moderator) VALUES(?,?,?,?)");
+
+        statement.setString(1, playerUUID);
+        statement.setInt(2, time);
+        statement.setString(3, reason);
+        statement.setString(4, null);
+
+        statement.executeUpdate();
+        statement.close();
+    }
+
+    public void insertPlayer(@NotNull UUID uuid) {
         try (Connection conn = getSQLConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
 
             ps.setString(1, uuid.toString());
 
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
     }
 
+    public ArrayList<DatabasePlayer> getPlayers(String table, int limit, int skip) {
+        ArrayList<DatabasePlayer> databasePlayers = new ArrayList<>();
 
-    public void loadDatabase() {
-        Main.info("\uD83D\uDCCA Start loading database");
         try (Connection conn = getSQLConnection();
-             PreparedStatement ps1 = conn.prepareStatement("SELECT * FROM players")) {
+                PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " LIMIT " + limit + " OFFSET " + skip)) {
 
-            ResultSet resultSet = ps1.executeQuery();
+            ResultSet playerResult = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
+            while (playerResult.next()) {
 
-                FPlayer fPlayer = FPlayerManager.getPlayer(UUID.fromString(resultSet.getString("uuid")));
-                if (fPlayer == null) continue;
+                String playerUUID = playerResult.getString(1);
+                int time = playerResult.getInt(2);
+                String reason = playerResult.getString(3);
+                String moderator = playerResult.getString(4);
 
-                String color = resultSet.getString("colors");
+                databasePlayers.add(new DatabasePlayer(playerUUID, time, reason, moderator));
+            }
 
-                String[] colors = color == null ? CommandChatcolor.getDefaultColors() : color.split(",");
-                fPlayer.setColors(colors[0], colors[1]);
+            close(preparedStatement, playerResult);
 
-                String ignoreList = resultSet.getString("ignore_list");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-                ArrayList<UUID> arrayList = ignoreList == null
-                        ? new ArrayList<>()
-                        : new ArrayList<>(Arrays.stream(ignoreList.split(","))
-                        .map(UUID::fromString).collect(Collectors.toList()));
+        return databasePlayers;
+    }
 
-                fPlayer.setIgnoreList(arrayList);
-                fPlayer.setMuteTime(resultSet.getInt("mute_time"));
-                fPlayer.setMuteReason(resultSet.getString("mute_reason"));
+    public DatabasePlayer getPlayer(String table, String playerUUID) {
+        try (Connection conn = getSQLConnection()) {
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
 
-                if (fPlayer.isMuted()) FPlayerManager.getMutedPlayers().add(fPlayer);
+            preparedStatement.setString(1, playerUUID);
+            ResultSet playerResult = preparedStatement.executeQuery();
 
-                fPlayer.setTempBanTime(resultSet.getInt("tempban_time"));
-                fPlayer.setTempBanReason(resultSet.getString("tempban_reason"));
+            if (!playerResult.next()) return null;
 
-                if (fPlayer.isBanned()) FPlayerManager.getBannedPlayers().add(fPlayer);
+            switch (table) {
+                case "bans", "mutes" -> {
+                    int time = playerResult.getInt(2);
+                    String reason = playerResult.getString(3);
+                    String moderator = playerResult.getString(4);
+                    return new DatabasePlayer(playerUUID, time, reason, moderator);
+                }
+            }
 
-                String chat = resultSet.getString("chat");
-                chat = chat == null ? "local" : chat;
-                fPlayer.setChat(chat);
+            close(preparedStatement, playerResult);
 
-                String mail = resultSet.getString("mails");
-                if (mail == null) continue;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void initFPlayer(@NotNull FPlayer fPlayer) {
+        try {
+            Connection connection = getSQLConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
+            preparedStatement.setString(1, fPlayer.getUUID().toString());
+
+            ResultSet playerResult = preparedStatement.executeQuery();
+            if (!(playerResult.next())) return;
+
+            String color = playerResult.getString("colors");
+            String[] colors = color == null ? CommandChatcolor.getDefaultColors() : color.split(",");
+            fPlayer.setColors(colors[0], colors[1]);
+
+            String ignoreList = playerResult.getString("ignore_list");
+            ArrayList<UUID> arrayList = ignoreList == null
+                    ? new ArrayList<>()
+                    : new ArrayList<>(Arrays.stream(ignoreList.split(","))
+                    .map(UUID::fromString).collect(Collectors.toList()));
+
+            fPlayer.setIgnoreList(arrayList);
+
+            String mail = playerResult.getString("mails");
+            if (mail != null) {
                 String[] mails = mail.split(",");
 
                 for (String uuid : mails) {
-                    PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM mails WHERE uuid = ?");
+                    PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM mails WHERE uuid = ?");
                     ps2.setString(1, uuid);
 
                     ResultSet resultMail = ps2.executeQuery();
@@ -115,90 +224,242 @@ public abstract class Database {
                 }
             }
 
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
-        }
+            PlayerChatInfo playerChatInfo = new PlayerChatInfo();
 
-        Main.info("\uD83D\uDCCA Database loaded successfully");
+            String chat = playerResult.getString("chat");
+            playerChatInfo.setChatType(chat == null ? "local" : chat);
+
+            String option = playerResult.getString("enable_advancements");
+            playerChatInfo.setOption("advancement", parseBoolean(option));
+
+            option = playerResult.getString("enable_deaths");
+            playerChatInfo.setOption("death", parseBoolean(option));
+
+            option = playerResult.getString("enable_joins");
+            playerChatInfo.setOption("join", parseBoolean(option));
+
+            option = playerResult.getString("enable_quits");
+            playerChatInfo.setOption("quit", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_me");
+            playerChatInfo.setOption("me", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_try");
+            playerChatInfo.setOption("try", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_try_cube");
+            playerChatInfo.setOption("try-cube", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_ball");
+            playerChatInfo.setOption("ball", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_tempban");
+            playerChatInfo.setOption("tempban", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_mute");
+            playerChatInfo.setOption("mute", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_warn");
+            playerChatInfo.setOption("warn", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_msg");
+            playerChatInfo.setOption("msg", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_reply");
+            playerChatInfo.setOption("reply", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_mail");
+            playerChatInfo.setOption("mail", parseBoolean(option));
+
+            option = playerResult.getString("enable_command_tic_tac_toe");
+            playerChatInfo.setOption("tic-tac-toe", parseBoolean(option));
+
+            fPlayer.setChatInfo(playerChatInfo);
+
+            close(preparedStatement, playerResult);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void uploadDatabase(FPlayer fPlayer) {
-        try (Connection conn = getSQLConnection();
-             PreparedStatement ps1 = conn.prepareStatement("UPDATE players SET " +
-                     "mute_time = ? ," +
-                     "mute_reason = ? ," +
-                     "tempban_time = ? ," +
-                     "tempban_reason = ?," +
-                     "colors = ? ," +
-                     "ignore_list = ? ," +
-                     "mails = ? ," +
-                     "chat = ?" +
-                     "WHERE uuid = ?")) {
+    private boolean parseBoolean(String option) {
+        return option == null || Boolean.parseBoolean(option);
+    }
 
-            int muteTime = fPlayer.getMuteTime();
-            if (muteTime > 0) ps1.setInt(1, muteTime + ObjectUtil.getCurrentTime());
-            else ps1.setObject(1, null);
+    public void saveModeratorAction(String table, DatabasePlayer databasePlayer) {
+        try {
+            Connection connection = getSQLConnection();
 
-            String muteReason = fPlayer.getMuteReason();
-            muteReason = muteTime > 0 ? muteReason : null;
-            ps1.setString(2, muteReason);
+            PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO "+ table +" (player, time, reason, moderator) VALUES(?,?,?,?)");
 
-            int tempBanTime = fPlayer.getTempBanTime();
-            if (tempBanTime > 0) ps1.setInt(3, tempBanTime + ObjectUtil.getCurrentTime());
-            else if (fPlayer.getRealBanTime() == -1) ps1.setInt(3, -1);
-            else ps1.setObject(3, null);
+            preparedStatement.setString(1, databasePlayer.getPlayer());
+            preparedStatement.setInt(2, databasePlayer.getTime());
+            preparedStatement.setString(3, databasePlayer.getReason());
+            preparedStatement.setString(4, databasePlayer.getModerator());
 
-            String tempBanReason = fPlayer.getBanReason();
-            tempBanReason = fPlayer.isBanned() ? tempBanReason : null;
-            ps1.setString(4, tempBanReason);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
 
-            String[] colors = fPlayer.getColors();
-            ps1.setString(5, colors[0] + "," + colors[1]);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-            StringBuilder ignoreListString = new StringBuilder();
-            for (UUID ignoredPlayer : fPlayer.getIgnoreList()) ignoreListString.append(ignoredPlayer).append(",");
-            ps1.setString(6, ignoreListString.length() == 0 ? null : ignoreListString.toString());
+    public void deleteModeratorRow(String table, String uuid) {
 
-            if (!fPlayer.getMails().isEmpty() && !fPlayer.getMails().isEmpty()) {
-                fPlayer.getMails().forEach((uuid, mail) -> {
-                    if (mail.isRemoved()) {
-                        try {
-                            PreparedStatement ps2 = conn.prepareStatement("DELETE FROM mails WHERE uuid = ?");
-                            ps2.setString(1, uuid.toString());
-                            ps2.executeUpdate();
-                        } catch (SQLException e) {
-                            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
-                        }
-                        return;
-                    }
+        try {
+            Connection connection = getSQLConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + table + " WHERE player = ?");
 
-                    try {
-                        PreparedStatement ps2 = conn.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
-                        ps2.setString(1, mail.getUUID().toString());
-                        ps2.setString(2, mail.getSender().toString());
-                        ps2.setString(3, mail.getReceiver().toString());
-                        ps2.setString(4, mail.getMessage());
-                        ps2.executeUpdate();
-                    } catch (SQLException e) {
-                        plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
-                    }
-                });
+            preparedStatement.setString(1, uuid);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getDatabaseInt(String table, String column, String player) {
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT " + column + " FROM " + table + " WHERE player = ?");
+            preparedStatement.setString(1, player);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    @Nullable
+    public String getDatabaseString(String table, String column, String player) {
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT " + column + " FROM " + table + " WHERE player = ?");
+            preparedStatement.setString(1, player);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return resultSet.getString(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public ResultSet getDatabaseResult(String table, String player) {
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE player = ?");
+            preparedStatement.setString(1, player);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+
+            return resultSet;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int getCount(String table) {
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(1) FROM " + table);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+
+            return resultSet.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public ArrayList<String> getPlayersModeration(String table) {
+        return getPlayers("player", table);
+    }
+
+    public ArrayList<String> getPlayers(String column, String table) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT " + column + " FROM " + table);
+
+            ResultSet playerResult = preparedStatement.executeQuery();
+
+            while (playerResult.next()) {
+
+                String playerUUID = playerResult.getString(column);
+                if (playerUUID == null) continue;
+
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
+                String offlinePlayerName = offlinePlayer.getName();
+                if (offlinePlayerName == null) continue;
+
+                arrayList.add(offlinePlayerName);
             }
 
-            String mails = fPlayer.getMails().entrySet().stream()
-                    .filter(entry -> !entry.getValue().isRemoved())
-                    .map(entry -> entry.getKey().toString())
-                    .collect(Collectors.joining(","));
+            close(preparedStatement, playerResult);
 
-            mails = mails.isEmpty() ? null : mails;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-            ps1.setString(7, mails);
-            ps1.setString(8, fPlayer.getChat());
-            ps1.setString(9, fPlayer.getUUID().toString());
-            ps1.executeUpdate();
+        return arrayList;
+    }
+
+    public void saveColors(FPlayer fPlayer) {
+        Bukkit.broadcastMessage("COLORS " + Thread.currentThread().toString());
+        try (Connection conn = getSQLConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement("UPDATE players SET " +
+                     "colors = ?" +
+                     "WHERE uuid = ?")) {
+
+            preparedStatement.setString(1, fPlayer.getColors()[0] + "," + fPlayer.getColors()[1]);
+            preparedStatement.setString(2, fPlayer.getUUID().toString());
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
 
         } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute SQLite statement: ", ex);
+        }
+    }
+
+    public void saveIgnoreList(FPlayer fPlayer) {
+        Bukkit.broadcastMessage("IGNORELIST " + Thread.currentThread().toString());
+        try (Connection conn = getSQLConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement("UPDATE players SET " +
+                     "ignore_list = ?" +
+                     "WHERE uuid = ?")) {
+
+            StringBuilder ignoreListString = new StringBuilder();
+            for (UUID ignoredPlayer : fPlayer.getIgnoreList())
+                ignoreListString.append(ignoredPlayer).append(",");
+
+            preparedStatement.setString(1, ignoreListString.length() == 0 ? null : ignoreListString.toString());
+            preparedStatement.setString(2, fPlayer.getUUID().toString());
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute SQLite statement: ", ex);
         }
     }
 
@@ -212,11 +473,5 @@ public abstract class Database {
             Main.warning("Failed to close MySQL connection");
             ex.printStackTrace();
         }
-    }
-
-    public void delayedUpdateDatabase() {
-        Main.info("\uD83D\uDCCA Loaded players to database");
-
-        FPlayerManager.uploadPlayers();
     }
 }

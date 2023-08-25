@@ -4,7 +4,6 @@ import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
 import net.flectone.managers.HookManager;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandException;
 import org.jetbrains.annotations.NotNull;
 
 // shitcode until the plasmo devs make a usable api
@@ -28,11 +27,8 @@ public class FPlasmoVoice implements HookInterface {
     }
 
     private static void executeCommand(@NotNull String command) {
-        try {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
-        } catch (CommandException exception) {
-            Main.warning("Failed to connect to Plasmo Voice");
-        }
+        Bukkit.getScheduler().runTask(Main.getInstance(), () ->
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
     }
 
     @Override

@@ -1,12 +1,18 @@
 #  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
 #  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+version: "3.10.0"
+
 language: en
 database: "database"
+
 scoreboard:
   custom: false
 
 color:
+  # &&1
   first: "#1abaf0"
+
+  # &&2
   second: "#77d7f7"
 
 tab:

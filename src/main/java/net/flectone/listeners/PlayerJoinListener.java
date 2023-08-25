@@ -1,8 +1,10 @@
 package net.flectone.listeners;
 
+import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.actions.Mail;
 import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.entity.DatabasePlayer;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
@@ -66,22 +68,24 @@ public class PlayerJoinListener implements Listener {
 
         event.setJoinMessage(null);
 
-        FPlayer fPlayer = FPlayerManager.addPlayer(event.getPlayer());
+        FPlayer fPlayer = FPlayerManager.createFPlayer(event.getPlayer());
         if (fPlayer == null) return;
         sendJoinMessage(fPlayer, player, fPlayer.isOnline());
     }
 
     @EventHandler
     public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
+        if(!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
 
-        FPlayer fPlayer = FPlayerManager.getPlayer(event.getPlayer());
-        if (fPlayer != null && fPlayer.isBanned()) {
-            String localString = fPlayer.isPermanentlyBanned() ? "command.ban.local-message" : "command.tempban.local-message";
-            int bannedTime = fPlayer.isPermanentlyBanned() ? -1 : fPlayer.getTempBanTime();
+        DatabasePlayer databasePlayer = Main.getDatabase().getPlayer("bans", event.getPlayer().getUniqueId().toString());
 
-            String formatMessage = locale.getFormatString(localString, fPlayer.getPlayer())
-                    .replace("<time>", ObjectUtil.convertTimeToString(bannedTime))
-                    .replace("<reason>", fPlayer.getBanReason());
+        if (databasePlayer != null) {
+            String localString = databasePlayer.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
+
+            String formatMessage = locale.getFormatString(localString, event.getPlayer())
+                    .replace("<time>", ObjectUtil.convertTimeToString(databasePlayer.getDifferenceTime()))
+                    .replace("<reason>", databasePlayer.getReason())
+                    .replace("<moderator>", databasePlayer.getModerator());
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
             return;
         }

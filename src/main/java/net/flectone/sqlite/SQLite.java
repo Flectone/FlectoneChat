@@ -6,10 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.logging.Level;
 
 import static net.flectone.managers.FileManager.config;
@@ -18,14 +15,26 @@ public class SQLite extends Database {
     public static boolean isOldVersion = false;
     public final String SQLiteCreateTokensPlayers = "CREATE TABLE IF NOT EXISTS players (" +
             "'uuid' varchar(32) NOT NULL," +
-            "'mute_time' int(11)," +
-            "'mute_reason' varchar(32)," +
-            "'tempban_time' int(11)," +
-            "'tempban_reason' varchar(32)," +
             "'colors' varchar(32)," +
             "'ignore_list' text[]," +
             "'mails' text[]," +
+            "'warns' text[]," +
             "'chat' varchar(32)," +
+            "'enable_advancements' int(11)," +
+            "'enable_deaths' int(11)," +
+            "`enable_joins` int(11)," +
+            "'enable_quits' int(11)," +
+            "'enable_command_me' int(11)," +
+            "'enable_command_try' int(11)," +
+            "'enable_command_try-cube' int(11)," +
+            "'enable_command_ball' int(11)," +
+            "'enable_command_tempban' int(11)," +
+            "'enable_command_mute' int(11)," +
+            "'enable_command_warn' int(11)," +
+            "'enable_command_msg' int(11)," +
+            "'enable_command_reply' int(11)," +
+            "'enable_command_mail' int(11)," +
+            "'enable_command_tic-tac-toe' int(11)," +
             "PRIMARY KEY (`uuid`)" +
             ");";
     public final String SQLiteCreateTokensMails = "CREATE TABLE IF NOT EXISTS mails (" +
@@ -35,8 +44,33 @@ public class SQLite extends Database {
             "`message` varchar(32) NOT NULL," +
             "PRIMARY KEY (`uuid`)" +
             ");";
-    final String dbname;
 
+    public final String SQLiteCreateTokensMutes = "CREATE TABLE IF NOT EXISTS mutes (" +
+            "`player` varchar(32) NOT NULL," +
+            "'time' int(11) NOT NULL," +
+            "'reason' varchar(32) NOT NULL," +
+            "`moderator` varchar(32)," +
+            "PRIMARY KEY (`player`)" +
+            ");";
+
+    public final String SQLiteCreateTokensBans = "CREATE TABLE IF NOT EXISTS bans (" +
+            "`player` varchar(32) NOT NULL," +
+            "'time' int(11) NOT NULL," +
+            "'reason' varchar(32) NOT NULL," +
+            "`moderator` varchar(32)," +
+            "PRIMARY KEY (`player`)" +
+            ");";
+
+    public final String SQLiteCreateTokensWarns = "CREATE TABLE IF NOT EXISTS warns (" +
+            "`uuid` varchar(32) NOT NULL," +
+            "`player` varchar(32) NOT NULL," +
+            "'time' int(11) NOT NULL," +
+            "'reason' varchar(32) NOT NULL," +
+            "`moderator` varchar(32)," +
+            "PRIMARY KEY (`uuid`)" +
+            ");";
+
+    final String dbname;
 
     public SQLite(@NotNull Main instance) {
         super(instance);
@@ -49,7 +83,6 @@ public class SQLite extends Database {
         if (!dataFolder.exists()) {
             try {
                 if (!dataFolder.createNewFile()) Main.warning("Failed to create file " + dbname + ".db");
-                isOldVersion = true;
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "File write error: " + dbname + ".db");
             }
@@ -72,13 +105,27 @@ public class SQLite extends Database {
     public void load() {
         connection = getSQLConnection();
         if (connection == null) return;
+
         try {
             Statement s = connection.createStatement();
 
             s.executeUpdate(SQLiteCreateTokensMails);
+            s.executeUpdate(SQLiteCreateTokensMutes);
+            s.executeUpdate(SQLiteCreateTokensBans);
+            s.executeUpdate(SQLiteCreateTokensWarns);
 
             s.executeUpdate(SQLiteCreateTokensPlayers);
             s.close();
+
+            DatabaseMetaData md = connection.getMetaData();
+
+            ResultSet rs = md.getColumns(null, null, "players", "mute_time");
+            if (rs.next() || !config.getString("version").equals(Main.getInstance().getDescription().getVersion())) {
+                isOldVersion = true;
+            }
+
+            rs.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

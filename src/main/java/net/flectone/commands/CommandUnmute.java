@@ -1,11 +1,13 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.integrations.voicechats.plasmovoice.FPlasmoVoice;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -18,24 +20,29 @@ public class CommandUnmute implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> command(commandSender, command, s, strings));
+        return true;
+    }
 
+    private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isInsufficientArgs(1)) return true;
+        if (fCommand.isInsufficientArgs(1)) return;
 
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
         if (fPlayer == null) {
             fCommand.sendMeMessage("command.null-player");
-            return true;
+            return;
         }
 
-        if (fPlayer.getMuteTime() < 0) {
+        if (fPlayer.getMute() == null || fPlayer.getMute().getTime() < 0) {
+            Bukkit.broadcastMessage(String.valueOf(fPlayer.getMute().getTime()));
             fCommand.sendMeMessage("command.unmute.not-muted");
-            return true;
+            return;
         }
 
-        if (fCommand.isHaveCD()) return true;
+        if (fCommand.isHaveCD()) return;
 
         if (HookManager.enabledPlasmoVoice) {
             FPlasmoVoice.unmute(fPlayer.getRealName());
@@ -44,8 +51,6 @@ public class CommandUnmute implements FTabCompleter {
         fPlayer.unmute();
 
         fCommand.sendMeMessage("command.unmute.message", "<player>", fPlayer.getRealName());
-
-        return true;
     }
 
     @Nullable
@@ -54,8 +59,8 @@ public class CommandUnmute implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            FPlayerManager.getMutedPlayers().parallelStream()
-                    .forEach(fPlayer -> isStartsWith(strings[0], fPlayer.getRealName()));
+            Main.getDatabase().getPlayersModeration("mutes").parallelStream()
+                    .forEach(playerName -> isStartsWith(strings[0], playerName));
         }
 
         Collections.sort(wordsList);

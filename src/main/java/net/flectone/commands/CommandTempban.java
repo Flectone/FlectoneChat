@@ -79,7 +79,11 @@ public class CommandTempban implements FTabCompleter {
 
         fCommand.sendGlobalMessage(receivers, globalMessage, false);
 
-        bannedFPlayer.tempban(time, reason);
+        String moderator = (commandSender instanceof Player player)
+                ? player.getUniqueId().toString()
+                : null;
+
+        bannedFPlayer.tempban(time, reason, moderator);
 
         return true;
     }

@@ -71,8 +71,9 @@ public class FSimpleVoiceChat implements HookInterface, VoicechatPlugin {
 
         event.cancel();
         String formatMessage = locale.getFormatString("command.mute.local-message", player)
-                .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMuteTime()))
-                .replace("<reason>", fPlayer.getMuteReason());
+                .replace("<time>", ObjectUtil.convertTimeToString(fPlayer.getMute().getDifferenceTime()))
+                .replace("<reason>", fPlayer.getMute().getReason())
+                .replace("<moderator>", fPlayer.getMute().getModeratorName());
 
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(formatMessage));
     }

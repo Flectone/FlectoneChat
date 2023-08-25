@@ -16,10 +16,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static net.flectone.managers.FileManager.config;
@@ -83,7 +80,11 @@ public class CommandMute implements FTabCompleter {
             FPlasmoVoice.mute(mutedFPlayer.isMuted(), mutedFPlayer.getRealName(), strings[1], reason);
         }
 
-        mutedFPlayer.mute(time, reason);
+        String moderator = (commandSender instanceof Player player)
+                ? player.getUniqueId().toString()
+                : null;
+
+        mutedFPlayer.mute(time, reason, moderator);
 
         return true;
     }

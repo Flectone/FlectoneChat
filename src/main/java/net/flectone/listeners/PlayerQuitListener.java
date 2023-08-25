@@ -1,6 +1,7 @@
 package net.flectone.listeners;
 
 import net.flectone.integrations.supervanish.FSuperVanish;
+import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FEntity;
 import org.bukkit.entity.Player;
@@ -34,5 +35,7 @@ public class PlayerQuitListener implements Listener {
 
         event.setQuitMessage(null);
         sendQuitMessage(player);
+
+        FPlayerManager.removePlayer(event.getPlayer());
     }
 }
