@@ -78,8 +78,9 @@ public class MessageBuilder {
                     wordParams.setClickable(clickable, player.getName());
                     wordParams.setPlayerPing(true);
 
-                    if (command.equals("globalchat")) ObjectUtil.playSound(player, "chatping");
-
+                    if(!config.getBoolean("chat.global.enable") || command.equals("globalchat")) {
+                        ObjectUtil.playSound(player, "chatping");
+                    }
                 }
             }
 
