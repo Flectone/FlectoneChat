@@ -98,10 +98,9 @@ commands:
     aliases: [ technical-works ]
     permission: flectonechat.maintenance
 
-  chat:
-    usage: /chat switch/hide local/global
-    aliases: [ chat, switch-chat, off-chat ]
-    permission: flectonechat.chat
+  switch-chat:
+    usage: /switch-chat switch/hide local/global
+    permission: flectonechat.switch-chat
 
   ball:
     usage: /ball <message>
@@ -142,6 +141,10 @@ commands:
   poll:
     usage: /poll create/vote
     permission: flectonechat.pollvote
+
+  chat-settings:
+    usage: /chat-settings
+    permission: flectonechat.chat-settings
 
 permissions:
   flectonechat.reload:
@@ -184,7 +187,7 @@ permissions:
     default: true
   flectonechat.maintenance:
     default: op
-  flectonechat.chat:
+  flectonechat.switch-chat:
     default: true
   flectonechat.ball:
     default: true
@@ -202,3 +205,5 @@ permissions:
     default: op
   flectonechat.mutelist:
     default: op
+  flectonechat.chat-settings:
+    default: true
