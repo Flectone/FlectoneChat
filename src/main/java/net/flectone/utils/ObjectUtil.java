@@ -166,4 +166,11 @@ public class ObjectUtil {
 
         return split;
     }
+
+    @NotNull
+    public static String generateSortString(int rank, String playerName) {
+        String paddedRank = String.format("%010d", Integer.MAX_VALUE - rank);
+        String paddedName = String.format("%-16s", playerName);
+        return paddedRank + paddedName;
+    }
 }

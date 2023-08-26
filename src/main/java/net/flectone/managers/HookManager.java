@@ -17,6 +17,7 @@ public class HookManager {
     public static boolean enabledPlaceholderAPI = false;
     public static boolean enabledPlasmoVoice = false;
     public static boolean enabledVault = false;
+    public static boolean enabledLuckPerms = false;
 
     public static void hookPlugins() {
         if (isEnabled("DiscordSRV")) new FDiscordSRV().hook();

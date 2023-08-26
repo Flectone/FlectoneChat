@@ -1,6 +1,7 @@
 package net.flectone.misc.entity;
 
 import net.flectone.Main;
+import net.flectone.integrations.luckperms.FLuckPerms;
 import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
@@ -319,8 +320,17 @@ public class FPlayer {
 
     @NotNull
     public Team getPlayerTeam() {
-        Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(this.name);
-        Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(this.name);
+
+        int rank = 0;
+
+        if (HookManager.enabledVault && HookManager.enabledLuckPerms) {
+            rank = FLuckPerms.getPlayerGroupWeight(player);
+        }
+
+        String sortName = ObjectUtil.generateSortString(rank, player.getName());
+
+        Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(sortName);
+        Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(sortName);
 
         if (!team.hasEntry(this.name)) team.addEntry(this.name);
 
@@ -334,6 +344,10 @@ public class FPlayer {
 
     public void setTeamColor(@NotNull String teamColor) {
         this.team.setColor(ChatColor.valueOf(teamColor));
+    }
+
+    public void removeTeam() {
+        this.team.unregister();
     }
 
     @Nullable

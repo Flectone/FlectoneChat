@@ -44,21 +44,15 @@ public class FEntity {
 
     public static void removeFromTeam(@NotNull Entity entity, @NotNull String color) {
         if (entity instanceof Player player) {
-            Team team = FPlayerManager.getScoreBoard().getTeam(player.getName());
-            if (team == null) return;
+            FPlayer fPlayer = FPlayerManager.getPlayer(player);
+            if (fPlayer == null) return;
 
-            team.setColor(ChatColor.WHITE);
+            fPlayer.setTeamColor("WHITE");
             return;
         }
 
         Team team = noCollisionTeamMap.get(color);
         team.removeEntry(entity.getUniqueId().toString());
-    }
-
-    public static void removePlayerFromTeam(@NotNull FPlayer fPlayer) {
-        Team team = FPlayerManager.getScoreBoard().getTeam(fPlayer.getRealName());
-        if (team == null) return;
-        team.removeEntry(fPlayer.getRealName());
     }
 
     public static void removeBugEntities(@NotNull Player player) {

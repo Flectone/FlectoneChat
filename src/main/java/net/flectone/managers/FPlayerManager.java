@@ -1,7 +1,6 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
-import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
 import org.bukkit.BanEntry;
@@ -81,7 +80,7 @@ public class FPlayerManager {
     }
 
     public static void clearPlayers() {
-        onlineFPlayers.values().forEach(FEntity::removePlayerFromTeam);
+        onlineFPlayers.values().forEach(FPlayer::removeTeam);
 
         onlineFPlayers.clear();
     }
@@ -134,6 +133,7 @@ public class FPlayerManager {
 
 
     public static void removePlayer(@NotNull UUID uuid) {
+        onlineFPlayers.get(uuid).removeTeam();
         onlineFPlayers.remove(uuid);
     }
 
