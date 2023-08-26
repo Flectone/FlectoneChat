@@ -255,6 +255,7 @@ command:
     global: true
 
   try-cube:
+    enable: true
     global: true
     max-amount: 9
 
