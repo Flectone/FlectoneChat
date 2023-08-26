@@ -183,7 +183,7 @@ public class FCommand {
             message = FInteractiveChat.mark(message, player.getUniqueId());
         }
 
-        MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, clickable);
+        MessageBuilder messageBuilder = new MessageBuilder(command, message, sender, itemStack, clickable);
 
         recipientsSet.parallelStream().forEach(recipient -> {
 
@@ -275,7 +275,7 @@ public class FCommand {
             message = FInteractiveChat.mark(message, player.getUniqueId());
         }
 
-        MessageBuilder messageBuilder = new MessageBuilder(command, message, itemStack, true);
+        MessageBuilder messageBuilder = new MessageBuilder(command, message, firstPlayer, itemStack, true);
 
         if (firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 

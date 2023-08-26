@@ -143,7 +143,7 @@ public class ObjectUtil {
     public static String buildFormattedMessage(@NotNull Player player, @NotNull String command, @Nullable String text, @NotNull ItemStack itemStack) {
         if (text == null) return "";
 
-        MessageBuilder messageBuilder = new MessageBuilder(command, text, itemStack, false);
+        MessageBuilder messageBuilder = new MessageBuilder(command, text, player, itemStack, false);
         String message = messageBuilder.getMessage();
 
         if (player.isOp() || player.hasPermission("flectonechat.formatting")) {

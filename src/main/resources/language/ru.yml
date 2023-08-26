@@ -89,6 +89,12 @@ chat:
   bubble:
     color: "#999999"
 
+  cords:
+    message: "&&1Мир:&&2<world> &&1Биом:&&2<biome> &&1X:&&2<block_x> &&1Y:&&2<block_y> &&1Z:&&2<block_z>"
+
+  stats:
+    message: "#ff4e4eХП: <hp>♥ #3de0d8Броня: <armor>🛡 #4eff52Лвл: <exp>⏺ #f0a01fЕда: <food>🍖"
+
   hide:
     message: "&&1█"
 

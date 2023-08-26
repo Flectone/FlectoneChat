@@ -10,6 +10,9 @@ import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +47,7 @@ public class MessageBuilder {
 
     private final boolean clickable;
 
-    public MessageBuilder(@NotNull String command, @NotNull String text, @Nullable ItemStack itemStack, boolean clickable) {
+    public MessageBuilder(@NotNull String command, @NotNull String text, @Nullable CommandSender sender, @Nullable ItemStack itemStack, boolean clickable) {
         this.itemStack = itemStack;
         this.command = command;
         this.clickable = clickable;
@@ -100,6 +103,35 @@ public class MessageBuilder {
 
                 word = locale.getString("chat.url.message")
                         .replace("<url>", word);
+            }
+
+            if (sender instanceof Player player) {
+
+                switch (word) {
+                    case "%cords%" -> {
+                        wordParams.setCords(true);
+
+                        Location location = player.getLocation();
+
+                        word = locale.getString("chat.cords.message")
+                                .replace("<world>", location.getWorld().getEnvironment().name())
+                                .replace("<biome>", location.getBlock().getBiome().name())
+                                .replace("<block_x>", String.valueOf(location.getBlockX()))
+                                .replace("<block_y>", String.valueOf(location.getBlockY()))
+                                .replace("<block_z>", String.valueOf(location.getBlockZ()));
+                    }
+                    case "%stats%" -> {
+                        wordParams.setStats(true);
+
+                        AttributeInstance armor = player.getAttribute(Attribute.GENERIC_ARMOR);
+
+                        word = locale.getString("chat.stats.message")
+                                .replace("<hp>", String.valueOf(player.getHealth()))
+                                .replace("<armor>", String.valueOf(armor != null ? armor.getValue() : 0))
+                                .replace("<exp>", player.getLevel() + ".0")
+                                .replace("<food>", player.getFoodLevel() + ".0");
+                    }
+                }
             }
 
             wordParams.setText(word);
@@ -195,6 +227,10 @@ public class MessageBuilder {
             if (wordParams.isHide()) {
                 wordComponent = new FComponent(ObjectUtil.formatString(lastColor + word, recipient, sender));
                 wordComponent.addHoverText(lastColor + wordParams.getHideMessage());
+            }
+
+            if (wordParams.isCords() || wordParams.isStats()) {
+                wordComponent = new FComponent(ObjectUtil.formatString(lastColor + word, recipient, sender));
             }
 
             componentBuilder

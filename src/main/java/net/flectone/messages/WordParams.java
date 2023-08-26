@@ -5,9 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class WordParams {
 
-
     private boolean isPlayerPing = false;
-
     private String playerPingName;
     private boolean clickable = false;
     private boolean isItem = false;
@@ -17,6 +15,25 @@ public class WordParams {
     private String hideMessage;
     private String text;
     private boolean isFormatted;
+    private boolean isCords;
+
+    private boolean isStats;
+
+    public void setCords(boolean cords) {
+        isCords = cords;
+    }
+
+    public boolean isCords() {
+        return isCords;
+    }
+
+    public void setStats(boolean stats) {
+        isStats = stats;
+    }
+
+    public boolean isStats() {
+        return isStats;
+    }
 
     @Nullable
     public String getPlayerPingName() {
@@ -97,6 +114,6 @@ public class WordParams {
     }
 
     public boolean isEdited() {
-        return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isFormatted();
+        return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isFormatted() || isCords() || isStats();
     }
 }
