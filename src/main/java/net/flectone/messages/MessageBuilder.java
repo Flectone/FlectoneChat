@@ -63,7 +63,9 @@ public class MessageBuilder {
 
             if (itemStack != null && word.equalsIgnoreCase("%item%")) {
                 wordParams.setItem(true);
-                wordParams.setText("\uD83D\uDD32");
+                wordParams.setText(itemStack.getItemMeta() != null && !itemStack.getItemMeta().getDisplayName().isEmpty()
+                        ? net.md_5.bungee.api.ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName()
+                        : itemStack.getType().name());
                 return wordParams;
             }
 

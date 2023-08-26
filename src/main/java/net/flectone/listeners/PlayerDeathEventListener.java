@@ -227,7 +227,7 @@ public class PlayerDeathEventListener implements Listener {
             String byItemMessage = locale.getFormatString("death.by-item", null);
 
             String itemName = killerItem.getItemMeta() != null && !killerItem.getItemMeta().getDisplayName().isEmpty()
-                    ? killerItem.getItemMeta().getDisplayName()
+                    ? net.md_5.bungee.api.ChatColor.ITALIC + killerItem.getItemMeta().getDisplayName()
                     : killerItem.getType().name();
 
             message = message.replace("<by_item>", byItemMessage.replace("<item>", itemName));

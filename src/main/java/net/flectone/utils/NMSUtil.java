@@ -45,7 +45,7 @@ public class NMSUtil {
     public static String getCorrectlyName(ItemStack itemStack) {
         return itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty()
                 ? getMinecraftName(itemStack)
-                : itemStack.getItemMeta().getDisplayName();
+                : net.md_5.bungee.api.ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName();
     }
 
     public static String getMinecraftName(ItemStack is) {
