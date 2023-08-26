@@ -26,23 +26,26 @@ public class ChatBubbleTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getOnlinePlayers().stream().filter(player -> !player.isInsideVehicle()).forEach(player -> {
-            FPlayer fPlayer = FPlayerManager.getPlayer(player);
-            if(fPlayer == null) return;
+        Bukkit.getOnlinePlayers().stream()
+                .filter(player -> !player.isInsideVehicle() || !(player.getVehicle() instanceof AreaEffectCloud))
+                .forEach(player -> {
 
-            List<Entity> entities = fPlayer.getChatBubbleEntities();
+                    FPlayer fPlayer = FPlayerManager.getPlayer(player);
+                    if(fPlayer == null) return;
 
-            Material currentBlock = player.getLocation().getBlock().getType();
-            if (currentBlock.equals(Material.NETHER_PORTAL) || currentBlock.equals(Material.END_PORTAL)) {
-                fPlayer.clearChatBubbles();
-            }
+                    List<Entity> entities = fPlayer.getChatBubbleEntities();
 
-            if (fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
+                    Material currentBlock = player.getLocation().getBlock().getType();
+                    if (currentBlock.equals(Material.NETHER_PORTAL) || currentBlock.equals(Material.END_PORTAL)) {
+                        fPlayer.clearChatBubbles();
+                    }
 
-            String message = fPlayer.getListChatBubbles().get(0);
-            spawnMessageBubble(player, message);
+                    if (fPlayer.getListChatBubbles().isEmpty() || !entities.isEmpty()) return;
 
-            fPlayer.removeChatBubble();
+                    String message = fPlayer.getListChatBubbles().get(0);
+                    spawnMessageBubble(player, message);
+
+                    fPlayer.removeChatBubble();
         });
     }
 
