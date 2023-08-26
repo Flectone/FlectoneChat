@@ -52,7 +52,7 @@ public class CommandAfk implements FTabCompleter {
         if (fCommand.isConsoleMessage() || fCommand.isHaveCD() || fCommand.getFPlayer() == null) return true;
 
         setAfkAndSendMessage(fCommand, !fCommand.getFPlayer().isAfk());
-        fCommand.getFPlayer().setDisplayName();
+        fCommand.getFPlayer().updateName();
 
         return true;
     }

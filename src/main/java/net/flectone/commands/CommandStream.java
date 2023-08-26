@@ -45,7 +45,7 @@ public class CommandStream implements FTabCompleter {
 
             if (strings[0].equalsIgnoreCase("end")) {
                 fCommand.getFPlayer().setStreaming(false);
-                fCommand.getFPlayer().setDisplayName();
+                fCommand.getFPlayer().updateName();
                 fCommand.sendMeMessage("command.stream.end.message");
                 return true;
             }
@@ -77,7 +77,7 @@ public class CommandStream implements FTabCompleter {
 
         if(fCommand.getFPlayer() == null) return true;
 
-        fCommand.getFPlayer().setDisplayName();
+        fCommand.getFPlayer().updateName();
 
         return true;
     }

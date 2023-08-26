@@ -85,7 +85,7 @@ public class FPlayer {
         setVaultPrefixSuffix();
         setWorldPrefix(player.getWorld());
         setStreamer();
-        setDisplayName();
+        updateName();
     }
 
     public void loadMuteInfo() {
@@ -422,7 +422,7 @@ public class FPlayer {
         return this.name;
     }
 
-    public void setDisplayName() {
+    public void updateName() {
         this.player.setPlayerListName(getTabName());
 
         String prefix = "";
@@ -435,17 +435,6 @@ public class FPlayer {
 
         this.team.setPrefix(prefix);
         this.team.setSuffix(suffix);
-    }
-
-    public void setPlayerListHeaderFooter() {
-        setDisplayName();
-
-        if (config.getBoolean("tab.header-message.enable")) {
-            player.setPlayerListHeader(locale.getFormatString("tab.header.message", player));
-        }
-        if (config.getBoolean("tab.footer-message.enable")) {
-            player.setPlayerListFooter(locale.getFormatString("tab.footer.message", player));
-        }
     }
 
     @NotNull
@@ -469,7 +458,7 @@ public class FPlayer {
             this.worldPrefix = ObjectUtil.formatString(this.worldPrefix, player);
         }
 
-        setDisplayName();
+        updateName();
     }
 
     @NotNull

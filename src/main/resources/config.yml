@@ -22,7 +22,9 @@ tab:
     enable: true
   update:
     enable: true
-    rate: 2
+
+    # minecraft ticks (1sec = 20ticks)
+    rate: 40
   player-ping:
     enable: true
 

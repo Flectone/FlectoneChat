@@ -20,7 +20,7 @@ public class FLuckPerms implements HookInterface {
             FPlayer fPlayer = FPlayerManager.getPlayer(((User) event.getTarget()).getUniqueId());
             if (fPlayer == null) return;
             fPlayer.setStreamer();
-            fPlayer.setDisplayName();
+            fPlayer.updateName();
             return;
         }
 
@@ -29,7 +29,7 @@ public class FLuckPerms implements HookInterface {
                     FPlayer fPlayer = FPlayerManager.getPlayer(player);
                     if (fPlayer == null) return;
                     fPlayer.setStreamer();
-                    fPlayer.setDisplayName();
+                    fPlayer.updateName();
                 });
     }
 

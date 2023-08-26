@@ -31,10 +31,23 @@ server:
 
 tab:
   header:
-    message: "\n &&1❤ \n"
+    message:
+      - " "
+      - "&&1❤"
+      - " "
+      - "<next>"
+      - " "
+      - "&&2❤"
+      - " "
   footer:
-    message: "\n &&1FlectoneChat \n"
-
+    message:
+      - " "
+      - "&&1FlectoneChat"
+      - " "
+      - "<next>"
+      - " "
+      - "&&2FlectoneChat"
+      - " "
 player:
   right-click-message: "&&1-⏴ <player> &&1⏵-"
 

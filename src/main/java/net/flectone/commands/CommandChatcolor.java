@@ -68,7 +68,7 @@ public class CommandChatcolor implements FTabCompleter {
                 Main.getDatabase().updateFPlayer(fPlayer, "colors"));
 
         if (fPlayer.isOnline() && fPlayer.getPlayer() != null) {
-            fPlayer.setDisplayName();
+            fPlayer.updateName();
             fPlayer.getPlayer().sendMessage(locale.getFormatString("command.chatcolor.message", fPlayer.getPlayer()));
         }
     }
