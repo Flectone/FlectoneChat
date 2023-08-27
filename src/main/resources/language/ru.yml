@@ -19,6 +19,11 @@
 # Второй цвет &&2
 
 server:
+  brand:
+    message:
+      - "&bFlectoneChat"
+      - "&fFlectoneChat"
+
   motd:
     maintenance: "&cВ настоящее время проводятся технические работы"
     messages:

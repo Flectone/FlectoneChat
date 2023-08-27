@@ -9,6 +9,7 @@ import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.files.FYamlConfiguration;
+import net.flectone.testing.ServerBrand;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -89,6 +90,9 @@ public class CommandFlectonechat implements FTabCompleter {
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
 
+        if (config.getBoolean("server.brand.enable"))
+            ServerBrand.getInstance().updateEveryBrand();
+
         fCommand.sendMeMessage("command.flectonechat.message");
 
         return true;
@@ -150,7 +154,7 @@ public class CommandFlectonechat implements FTabCompleter {
         if (object instanceof Integer) return Integer.parseInt(value);
         if (object instanceof Boolean) return Boolean.parseBoolean(value);
 
-        return value;
+        return value.replace("\\n", System.lineSeparator());
     }
 
     @NotNull

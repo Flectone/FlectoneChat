@@ -29,6 +29,13 @@ tab:
     enable: true
 
 server:
+  brand:
+    enable: true
+
+    update:
+      enable: true
+      rate: 20
+
   motd:
     messages:
       enable: true

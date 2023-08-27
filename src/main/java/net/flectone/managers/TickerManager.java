@@ -41,6 +41,10 @@ public class TickerManager {
             addTicker(new PlayerPingTicker());
         } else PlayerPingTicker.unregisterPingObjective();
 
+        if (config.getBoolean("server.brand.update.enable")) {
+            addTicker(new ServerBrandTicker());
+        }
+
         bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);
     }
 }

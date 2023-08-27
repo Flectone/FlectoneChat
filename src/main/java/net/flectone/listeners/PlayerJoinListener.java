@@ -6,6 +6,7 @@ import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.testing.ServerBrand;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -43,6 +44,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void joinPlayer(@NotNull PlayerJoinEvent event) {
+        if (config.getBoolean("server.brand.enable"))
+            ServerBrand.getInstance().setBrand(event.getPlayer());
+
         Player player = event.getPlayer();
 
         FEntity.removeBugEntities(player);

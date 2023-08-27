@@ -19,6 +19,11 @@
 # Second color &&2
 
 server:
+  brand:
+    message:
+      - "&bFlectoneChat"
+      - "&fFlectoneChat"
+
   motd:
     maintenance: "&cThe server is under maintenance"
     messages:
