@@ -44,6 +44,7 @@ public class FCommand {
         this.command = command;
         this.args = args;
         this.alias = label;
+        sendSpyMessage(ObjectUtil.toString(args));
 
         this.player = (sender instanceof Player) ? ((Player) sender).getPlayer() : null;
         this.isConsole = (this.player == null);
@@ -65,6 +66,20 @@ public class FCommand {
         }
 
         commandsCDMap.put(getCommandKey(), getCDTime());
+    }
+
+    public void sendSpyMessage(String message) {
+        String configString = locale.getString("command.spy.message-spy")
+                .replace("<player>", senderName)
+                .replace("<command>", command)
+                .replace("<message>", message);
+
+        Bukkit.getOnlinePlayers().stream()
+                .filter(player -> {
+                    FPlayer fPlayer = FPlayerManager.getPlayer(player);
+                    if (fPlayer == null) return false;
+                    return fPlayer.isSpies();
+                }).forEach(player -> player.sendMessage(ObjectUtil.formatString(configString, player)));
     }
 
     private void checkAndResetAfk() {

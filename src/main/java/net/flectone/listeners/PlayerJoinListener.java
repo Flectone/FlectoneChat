@@ -27,12 +27,12 @@ public class PlayerJoinListener implements Listener {
 
         if(!isEnable || !isOnline) return;
 
-        FCommand fCommand = new FCommand(player, "join", "join", new String[]{});
-
         String string = player.hasPlayedBefore()
                 ? locale.getString("player.join.message")
                 : locale.getString("player.join.first-time.message");
         string = string.replace("<player>", player.getName());
+
+        FCommand fCommand = new FCommand(player, "join", "join", string.split(" "));
 
         fCommand.sendGlobalMessage(string, "", null, true);
     }

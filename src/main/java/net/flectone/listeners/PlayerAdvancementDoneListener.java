@@ -87,7 +87,7 @@ public class PlayerAdvancementDoneListener implements Listener {
             FDiscordSRV.sendAdvancementMessage(player, fAdvancement, formatMessage);
         }
 
-        FCommand fCommand = new FCommand(player, "advancement", "death", new String[]{});
+        FCommand fCommand = new FCommand(player, "advancement", "death", formatMessage.split(" "));
         fCommand.sendConsoleMessage(formatMessage);
 
         fCommand.getFilteredListRecipient().parallelStream()

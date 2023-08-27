@@ -19,10 +19,10 @@ public class PlayerQuitListener implements Listener {
         boolean isEnable = config.getBoolean("player.quit.message.enable");
         if (!isEnable || FSuperVanish.isVanished(player)) return;
 
-        FCommand fCommand = new FCommand(player, "quit", "quit", new String[]{});
-
         String string = locale.getString("player.quit.message")
                 .replace("<player>", player.getName());
+
+        FCommand fCommand = new FCommand(player, "quit", "quit", string.split(" "));
 
         fCommand.sendGlobalMessage(string, "", null, true);
     }

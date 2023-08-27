@@ -64,9 +64,6 @@ chat:
     set-cancelled: true
     no-recipients:
       enable: true
-    admin-see:
-      enable: false
-      permission: "flectonechat.localchat.admin_see"
 
   global:
     enable: true
@@ -151,6 +148,9 @@ command:
     timeout:
       enable: true
       time: 3000
+
+  spy:
+    enable: true
 
   ball:
     enable: true
@@ -277,6 +277,10 @@ command:
 cool-down:
   enable: false
 
+  spy:
+    enable: false
+    time: 5
+    permission: "flectonechat.spy.cooldown.immune"
   poll:
     enable: false
     time: 5
@@ -406,6 +410,9 @@ cool-down:
     permission: "flectonechat.mutelist.cooldown.immune"
 
 sound:
+  spy:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
   poll:
     enable: true
     type: "BLOCK_NOTE_BLOCK_BELL"

@@ -423,6 +423,11 @@ command:
       message: "&&1★ You have disabled maintenance on the server"
     kicked-message: "&&1★ The server is under maintenance"
 
+  spy:
+    message-spy: "#ff9729[👁] &&2<player> &&1used /<command> ⏵ &&2<message>"
+    message-true: "#ff9729[👁] You #4eff52turned on #ff9729spy mode"
+    message-false: "#ff9729[👁] You #ff4e4eturned off #ff9729spy mode"
+
   flectonechat:
     usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
     wrong-line: "#ff4e4e⁉ Enter the correct line name"

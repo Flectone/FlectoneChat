@@ -40,6 +40,10 @@ commands:
     usage: /chatcolor <first color> <second color>
     permission: flectonechat.chatcolor
 
+  spy:
+    usage: /spy
+    permission: flectonechat.spy
+
   flectonechat:
     usage: /flectonechat reload/config/locale
     aliases: [ fc ]
@@ -207,3 +211,5 @@ permissions:
     default: op
   flectonechat.chat-settings:
     default: true
+  flectonechat.spy:
+    default: op

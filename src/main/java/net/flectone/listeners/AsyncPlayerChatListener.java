@@ -5,7 +5,6 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -79,13 +78,7 @@ public class AsyncPlayerChatListener implements Listener {
 
     public void createMessage(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String message, @NotNull String chatType, @Nullable ItemStack itemStack) {
 
-        if (chatType.equals("local") && config.getBoolean("chat.local.admin-see.enable")) {
-            Bukkit.getOnlinePlayers().parallelStream()
-                    .filter(onlinePlayer -> onlinePlayer.hasPermission("flectonechat.local.admin_see"))
-                    .forEach(recipients::add);
-        }
-
-        FCommand fCommand = new FCommand(player, chatType + "chat", chatType + " chat", new String[]{});
+        FCommand fCommand = new FCommand(player, chatType + "chat", chatType + " chat", message.split(" "));
 
         if (fCommand.isHaveCD() || fCommand.isMuted()) return;
 

@@ -230,6 +230,14 @@ public abstract class Database {
             option = playerResult.getString("enable_command_tic_tac_toe");
             chatInfo.setOption("tic-tac-toe", parseBoolean("command.tic-tac-toe.enable", option));
 
+            if (fPlayer.hasPermission("flectonechat.stream")) {
+                fPlayer.setStreaming(Boolean.parseBoolean(playerResult.getString("stream")));
+            }
+
+            if (fPlayer.hasPermission("flectonechat.spy")) {
+                fPlayer.setSpies(Boolean.parseBoolean(playerResult.getString("spy")));
+            }
+
             fPlayer.setChatInfo(chatInfo);
 
             close(preparedStatement, playerResult);
@@ -278,6 +286,8 @@ public abstract class Database {
             addColumn(statement, "players", "enable_command_reply",  "varchar(11)");
             addColumn(statement, "players", "enable_command_mail",  "varchar(11)");
             addColumn(statement, "players", "enable_command_tic_tac_toe",  "varchar(11)");
+            addColumn(statement, "players", "stream", "varchar(11)");
+            addColumn(statement, "players", "spy", "varchar(11)");
             dropColumn(statement, "players", "mute_time");
             dropColumn(statement, "players", "mute_reason");
             dropColumn(statement, "players", "tempban_time");
@@ -398,6 +408,18 @@ public abstract class Database {
                     conn.prepareStatement("UPDATE players SET " + column + "=? WHERE uuid=?");
 
             switch (column) {
+                case "spy" -> {
+                    preparedStatement.setString(1, String.valueOf(fPlayer.isSpies()));
+                    preparedStatement.setString(2, playerUUID);
+
+                    preparedStatement.executeUpdate();
+                }
+                case "stream" -> {
+                    preparedStatement.setString(1, String.valueOf(fPlayer.isStreaming()));
+                    preparedStatement.setString(2, playerUUID);
+
+                    preparedStatement.executeUpdate();
+                }
                 case "colors" -> {
                     preparedStatement.setString(1, fPlayer.getColors()[0] + "," + fPlayer.getColors()[1]);
                     preparedStatement.setString(2, playerUUID);

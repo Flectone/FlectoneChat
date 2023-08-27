@@ -45,6 +45,7 @@ public class FPlayer {
     private Block block;
     private Team team;
     private boolean isAfk = false;
+    private boolean spies = false;
     private boolean isStreaming = false;
     private boolean isStreamer = false;
     private String[] colors = new String[]{};
@@ -109,7 +110,6 @@ public class FPlayer {
         loadMuteInfo();
         loadBanInfo();
 
-
         Main.getDatabase().initFPlayer(this);
 
         if (mails.isEmpty() || player == null) return;
@@ -160,6 +160,11 @@ public class FPlayer {
 
     public void setPlayer(@NotNull Player player) {
         this.player = player;
+    }
+
+    public boolean hasPermission(@NotNull String permission) {
+        if (player == null) return false;
+        return player.hasPermission(permission);
     }
 
     @NotNull

@@ -184,7 +184,7 @@ public class PlayerDeathEventListener implements Listener {
 
         String formatMessage = formatMessage(configMessage, player, fDamager);
 
-        FCommand fCommand = new FCommand(player, "death", "death", new String[]{});
+        FCommand fCommand = new FCommand(player, "death", "death", formatMessage.split(" "));
         fCommand.sendConsoleMessage(formatMessage);
 
         fCommand.getFilteredListRecipient().parallelStream()

@@ -55,6 +55,7 @@ public class ObjectUtil {
 
     @NotNull
     public static String toString(@NotNull String[] strings) {
+        if (strings.length == 0) return "";
         return toString(strings, 0);
     }
 

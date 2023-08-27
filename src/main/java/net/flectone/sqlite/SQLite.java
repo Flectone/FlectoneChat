@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import static net.flectone.managers.FileManager.config;
 
 public class SQLite extends Database {
-    public static boolean isOldVersion = false;
     public final String SQLiteCreateTokensPlayers = "CREATE TABLE IF NOT EXISTS players (" +
             "'uuid' varchar(32) NOT NULL," +
             "'colors' varchar(32)," +
@@ -20,6 +19,8 @@ public class SQLite extends Database {
             "'mails' text[]," +
             "'warns' text[]," +
             "'chat' varchar(32)," +
+            "'stream' varchar(32)," +
+            "'spy' varchar(32)," +
             "'enable_advancements' int(11)," +
             "'enable_deaths' int(11)," +
             "`enable_joins` int(11)," +
@@ -118,16 +119,17 @@ public class SQLite extends Database {
             s.executeUpdate("PRAGMA JOURNAL_MODE=WAL");
             s.executeUpdate("PRAGMA OPTIMIZE");
             s.executeUpdate("PRAGMA LOCKING_MODE=EXCLUSIVE");
+            s.executeUpdate("PRAGMA SYNCHRONOUS=EXTRA");
+            s.executeUpdate("PRAGMA WAL_CHECKPOINT(TRUNCATE)");
+            s.executeUpdate("PRAGMA WAL_AUTOCHECKPOINT=100");
             s.close();
 
             DatabaseMetaData md = connection.getMetaData();
 
             ResultSet rs = md.getColumns(null, null, "players", "mute_time");
-            if (rs.next() || !config.getString("version").equals(Main.getInstance().getDescription().getVersion())) {
-                isOldVersion = true;
+            if (rs.next()) {
+                Main.isOldVersion = true;
             }
-
-            rs.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
