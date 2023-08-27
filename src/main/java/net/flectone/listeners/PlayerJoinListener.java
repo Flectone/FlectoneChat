@@ -2,14 +2,13 @@ package net.flectone.listeners;
 
 import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
+import net.flectone.misc.brand.ServerBrand;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
-import net.flectone.misc.brand.ServerBrand;
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,8 +49,10 @@ public class PlayerJoinListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!player.hasPlayedBefore())
+        if (!player.hasPlayedBefore()) {
             FTabCompleter.offlinePlayerList.add(player.getName());
+            FPlayerManager.getUsedFPlayers().remove(player.getName());
+        }
 
         FEntity.removeBugEntities(player);
 

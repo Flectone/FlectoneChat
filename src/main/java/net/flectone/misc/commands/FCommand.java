@@ -160,7 +160,7 @@ public class FCommand {
     @Nullable
     public FPlayer getFPlayer() {
         if (player == null) return null;
-        return FPlayerManager.getPlayer(player.getUniqueId());
+        return FPlayerManager.getPlayer(player.getName());
     }
 
     @Nullable
@@ -247,7 +247,7 @@ public class FCommand {
                     FPlayer fPlayer = FPlayerManager.getPlayer(player);
                     if (fPlayer == null) return true;
 
-                    if (fPlayer.getChatInfo().getOptionsList().contains(command)) {
+                    if (fPlayer.getChatInfo() != null && fPlayer.getChatInfo().getOptionsList().contains(command)) {
                         if (!fPlayer.getChatInfo().getOption(command)) return false;
                     }
 
