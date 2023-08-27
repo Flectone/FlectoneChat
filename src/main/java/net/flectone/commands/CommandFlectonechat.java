@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,14 +52,25 @@ public class CommandFlectonechat implements FTabCompleter {
                 return true;
             }
 
-            object = strings.length > 4
-                    ? ObjectUtil.toString(strings, 3)
-                    : getObject(object, strings[3]);
+            Object newObject;
 
-            if (object instanceof String objectString)
-                object = objectString.replace("\\n", System.lineSeparator());
+            if (strings.length > 4) {
+                String string = ObjectUtil.toString(strings, 3)
+                        .replace("\\n", System.lineSeparator());
 
-            file.set(strings[1], object);
+                if (string.startsWith("[") && string.endsWith("]")) {
+                    string = string.substring(1, string.length() - 1);
+                    newObject = new ArrayList<>(List.of(string.split(", ")));
+                } else newObject = string;
+
+            } else newObject = getObject(object, strings[3]);
+
+            if (!newObject.getClass().equals(object.getClass())) {
+                fCommand.sendMeMessage("command.flectonechat.wrong-object");
+                return true;
+            }
+
+            file.set(strings[1], newObject);
             file.save();
         }
 
@@ -113,7 +125,8 @@ public class CommandFlectonechat implements FTabCompleter {
                     break;
                 }
 
-                isStartsWith(strings[3], String.valueOf(object));
+                isStartsWith(strings[3], String.valueOf(object)
+                        .replace(System.lineSeparator(), "\\n"));
 
             }
         }

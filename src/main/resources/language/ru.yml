@@ -420,6 +420,7 @@ command:
   flectonechat:
     usage: "&&1⚑ Использование: &&2/<command> reload/config/locale"
     wrong-line: "#ff4e4e⁉ Введи правильно название строки из файла"
+    wrong-object: "#ff4e4e⁉ Введи правильный объект"
     message: "&&1★ Плагин успешно перезагружен!"
 
 advancement:

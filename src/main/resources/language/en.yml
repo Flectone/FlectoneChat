@@ -421,6 +421,7 @@ command:
   flectonechat:
     usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
     wrong-line: "#ff4e4e⁉ Enter the correct line name"
+    wrong-object: "#ff4e4e⁉ Enter the correct object"
     message: "&&1★ Plugin successfully reloaded!"
 
 advancement:
