@@ -115,6 +115,9 @@ public class SQLite extends Database {
             s.executeUpdate(SQLiteCreateTokensWarns);
 
             s.executeUpdate(SQLiteCreateTokensPlayers);
+            s.executeUpdate("PRAGMA JOURNAL_MODE=WAL");
+            s.executeUpdate("PRAGMA OPTIMIZE");
+            s.executeUpdate("PRAGMA LOCKING_MODE=EXCLUSIVE");
             s.close();
 
             DatabaseMetaData md = connection.getMetaData();
