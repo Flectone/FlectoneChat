@@ -241,14 +241,14 @@ public class FPlayer {
 
         this.muteInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().updatePlayerInfo("mutes", muteInfo));
     }
 
     public void unmute() {
         this.muteInfo = null;
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().deleteRow("mutes", "player", this.uuid.toString()));
     }
 
@@ -258,7 +258,7 @@ public class FPlayer {
         ModInfo modInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
         this.banInfo = modInfo;
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().updatePlayerInfo("bans", modInfo));
 
         if (player == null || !offlinePlayer.isOnline()) return;
@@ -275,7 +275,7 @@ public class FPlayer {
     public void unban() {
         this.banInfo = null;
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().deleteRow("bans", "player", this.uuid.toString()));
     }
 
@@ -545,5 +545,13 @@ public class FPlayer {
         if(this.player == null) return;
 
         this.player.spigot().sendMessage(baseComponents);
+    }
+
+    public void setSpies(boolean spies) {
+        this.spies = spies;
+    }
+
+    public boolean isSpies() {
+        return spies;
     }
 }
