@@ -1,4 +1,4 @@
-package net.flectone.testing;
+package net.flectone.misc.brand;
 
 import net.flectone.Main;
 import net.flectone.managers.FileManager;

@@ -9,7 +9,7 @@ import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.files.FYamlConfiguration;
-import net.flectone.testing.ServerBrand;
+import net.flectone.misc.brand.ServerBrand;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

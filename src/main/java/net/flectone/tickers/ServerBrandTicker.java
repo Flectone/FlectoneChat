@@ -2,7 +2,7 @@ package net.flectone.tickers;
 
 import net.flectone.managers.FileManager;
 import net.flectone.misc.runnables.FBukkitRunnable;
-import net.flectone.testing.ServerBrand;
+import net.flectone.misc.brand.ServerBrand;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

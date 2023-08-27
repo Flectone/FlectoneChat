@@ -7,7 +7,7 @@ import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
-import net.flectone.testing.ServerBrand;
+import net.flectone.misc.brand.ServerBrand;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

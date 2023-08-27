@@ -1,4 +1,4 @@
-package net.flectone.testing;
+package net.flectone.misc.brand;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
