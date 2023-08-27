@@ -7,6 +7,7 @@ import net.flectone.managers.FileManager;
 import net.flectone.managers.HookManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.sqlite.CustomThreadPool;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.misc.brand.ServerBrand;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 public final class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
+    private static CustomThreadPool dataThreadPool;
     private Database database;
 
     public static Main getInstance() {
@@ -42,17 +44,25 @@ public final class Main extends JavaPlugin implements Listener {
         getInstance().getLogger().warning(message);
     }
 
+    public static CustomThreadPool getDataThreadPool() {
+        return dataThreadPool;
+    }
+
     @Override
     public void onEnable() {
         new MetricsUtil(this, 16733);
+
+        dataThreadPool = new CustomThreadPool(1);
 
         instance = this;
 
         FileManager.initialize();
         FPlayerManager.setScoreBoard();
 
-        this.database = new SQLite(this);
-        this.database.load();
+        dataThreadPool.execute(() -> {
+            this.database = new SQLite(this);
+            this.database.load();
+        });
 
         FPlayerManager.loadPlayers();
         FPlayerManager.loadBanList();
@@ -92,14 +102,19 @@ public final class Main extends JavaPlugin implements Listener {
         PlayerPingTicker.unregisterPingObjective();
         FPlayerManager.clearPlayers();
 
-        try {
+        dataThreadPool.execute(() -> {
             Main.getDatabase().clearOldRows("mutes");
             Main.getDatabase().clearOldRows("bans");
             Main.getDatabase().clearOldRows("warns");
-            Main.getDatabase().getSQLConnection().close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+            try {
+                Main.getDatabase().getSQLConnection().close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
+            dataThreadPool.shutdown();
+        });
 
         info("✔ Plugin disabled");
     }

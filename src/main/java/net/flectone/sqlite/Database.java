@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public abstract class Database {
     final Main plugin;
-    Connection connection;
+    protected static Connection connection;
 
     public Database(@NotNull Main instance) {
         plugin = instance;
@@ -36,8 +36,7 @@ public abstract class Database {
         connection = getSQLConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
-            ResultSet rs = ps.executeQuery();
-            close(ps, rs);
+            ps.executeQuery();
 
             if (SQLite.isOldVersion) migrateDatabase3_9_0();
 
@@ -53,7 +52,6 @@ public abstract class Database {
 
             preparedStatement.setString(1, filter);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -67,22 +65,9 @@ public abstract class Database {
             preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
 
             preparedStatement.executeUpdate();
-            preparedStatement.close();
 
         } catch (SQLException exception) {
             exception.printStackTrace();
-        }
-    }
-
-    public void close(@Nullable PreparedStatement ps, @Nullable ResultSet rs) {
-        try {
-            if (ps != null)
-                ps.close();
-            if (rs != null)
-                rs.close();
-        } catch (SQLException ex) {
-            Main.warning("Failed to close MySQL connection");
-            ex.printStackTrace();
         }
     }
 
@@ -95,13 +80,12 @@ public abstract class Database {
     }
 
     public void insertPlayer(@NotNull UUID uuid) {
-        try (Connection conn = getSQLConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)")) {
-
+        try {
+            Connection conn = getSQLConnection();
+            PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO players (uuid) VALUES(?)");
             ps.setString(1, uuid.toString());
 
             ps.executeUpdate();
-            ps.close();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
@@ -112,7 +96,6 @@ public abstract class Database {
     public Object getPlayerInfo(@NotNull String table, @NotNull String column, @NotNull String filter) {
         try (Connection conn = getSQLConnection()) {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE " + column + " = ?");
-
             preparedStatement.setString(1, filter);
             ResultSet playerResult = preparedStatement.executeQuery();
 
@@ -130,10 +113,9 @@ public abstract class Database {
                 }
             }
 
-            close(preparedStatement, playerResult);
-
         } catch (SQLException e) {
             e.printStackTrace();
+            return getPlayerInfo(table, column, filter);
         }
 
         return null;
@@ -240,10 +222,9 @@ public abstract class Database {
 
             fPlayer.setChatInfo(chatInfo);
 
-            close(preparedStatement, playerResult);
-
         } catch (SQLException e) {
             e.printStackTrace();
+            initFPlayer(fPlayer);
         }
     }
 
@@ -265,8 +246,6 @@ public abstract class Database {
                 String banReason = playerResultSet.getString("tempban_reason");
                 migrateOldModeratorColumn(conn, "bans", playerUUID, banTime, banReason);
             }
-
-            close(playerStatement, playerResultSet);
 
             Statement statement = conn.createStatement();
 
@@ -293,8 +272,6 @@ public abstract class Database {
             dropColumn(statement, "players", "tempban_time");
             dropColumn(statement, "players", "tempban_reason");
 
-            statement.close();
-
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
         }
@@ -312,7 +289,6 @@ public abstract class Database {
         statement.setString(4, null);
 
         statement.executeUpdate();
-        statement.close();
     }
 
     private boolean parseBoolean(String configString, String option) {
@@ -363,8 +339,6 @@ public abstract class Database {
 
                 arrayList.add(offlinePlayerName);
             }
-
-            close(preparedStatement, playerResult);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -425,14 +399,12 @@ public abstract class Database {
                     preparedStatement.setString(2, playerUUID);
 
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
                 }
                 case "ignore_list" -> {
                     preparedStatement.setString(1, arrayToString(fPlayer.getIgnoreList()));
                     preparedStatement.setString(2, playerUUID);
 
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
                 }
                 case "mails" -> {
 
@@ -444,18 +416,12 @@ public abstract class Database {
                         break;
                     }
 
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
-
-
                     preparedStatement = connection.prepareStatement("SELECT mails FROM players WHERE uuid=?");
                     preparedStatement.setString(1, playerUUID);
                     ResultSet playerResult = preparedStatement.executeQuery();
                     playerResult.next();
 
                     String mails = playerResult.getString("mails");
-
-                    close(preparedStatement, playerResult);
 
                     saveMails(fPlayer, mails);
                 }
@@ -482,7 +448,6 @@ public abstract class Database {
             preparedStatement.setString(1, mailsBuilder.toString());
             preparedStatement.setString(2, playerUUID);
             preparedStatement.executeUpdate();
-            preparedStatement.close();
 
             fPlayer.getMails().forEach((uuid, mail) -> {
                 try {
@@ -526,7 +491,6 @@ public abstract class Database {
                     preparedStatement.setString(4, modInfo.getModerator());
 
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
                 }
                 case "mails" -> {
                     Mail mail = (Mail) playerInfo;
@@ -560,7 +524,6 @@ public abstract class Database {
                     preparedStatement.setString(16, chatInfo.getPlayer());
 
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
                 }
             }
 

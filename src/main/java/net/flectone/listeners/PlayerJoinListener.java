@@ -59,7 +59,7 @@ public class PlayerJoinListener implements Listener {
 
         FPlayer fPlayer = FPlayerManager.createFPlayer(event.getPlayer());
 
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Main.getDataThreadPool().execute(() -> {
             fPlayer.synchronizeDatabase();
             sendJoinMessage(fPlayer, player, fPlayer.isOnline());
         });

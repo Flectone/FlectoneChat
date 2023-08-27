@@ -5,7 +5,6 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +49,7 @@ public class CommandIgnore implements FTabCompleter {
         else ignoreList.add(ignoredFPlayer.getUUID());
 
         fCommand.getFPlayer().setIgnoreList(ignoreList);
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().updateFPlayer(fCommand.getFPlayer(), "ignore_list"));
 
         return true;

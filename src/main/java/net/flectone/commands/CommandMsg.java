@@ -6,7 +6,6 @@ import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class CommandMsg implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+        Main.getDataThreadPool().execute(() ->
                 command(commandSender, command, s, strings));
 
         return true;

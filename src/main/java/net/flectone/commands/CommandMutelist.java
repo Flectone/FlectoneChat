@@ -8,7 +8,6 @@ import net.flectone.misc.components.FListComponent;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +23,7 @@ public class CommandMutelist implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> command(commandSender, command, s, strings));
+        Main.getDataThreadPool().execute(() -> command(commandSender, command, s, strings));
         return true;
     }
 

@@ -39,8 +39,7 @@ public class FPlayerManager {
     }
 
     public static void loadPlayers() {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-
+        Main.getDataThreadPool().execute(() -> {
             for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
                 Main.getDatabase().insertPlayer(offlinePlayer.getUniqueId());
 
@@ -78,7 +77,7 @@ public class FPlayerManager {
                     : locale.getString("command.tempban.default-reason");
 
             ModInfo modInfo = new ModInfo(offlinePlayer.getUniqueId().toString(), -1, reason, source);
-            Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () ->
+            Main.getDataThreadPool().execute(() ->
                     Main.getDatabase().updatePlayerInfo("bans", modInfo));
 
             banList.pardon(offlinePlayer.getName());

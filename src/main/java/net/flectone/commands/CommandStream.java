@@ -1,5 +1,6 @@
 package net.flectone.commands;
 
+import net.flectone.Main;
 import net.flectone.integrations.discordsrv.FDiscordSRV;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
@@ -44,6 +45,9 @@ public class CommandStream implements FTabCompleter {
             }
 
             if (strings[0].equalsIgnoreCase("end")) {
+                Main.getDataThreadPool().execute(() ->
+                        Main.getDatabase().updateFPlayer(fCommand.getFPlayer(), "stream"));
+
                 fCommand.getFPlayer().setStreaming(false);
                 fCommand.getFPlayer().updateName();
                 fCommand.sendMeMessage("command.stream.end.message");
@@ -51,6 +55,9 @@ public class CommandStream implements FTabCompleter {
             }
 
             if (fCommand.isHaveCD() || fCommand.isMuted()) return true;
+
+            Main.getDataThreadPool().execute(() ->
+                    Main.getDatabase().updateFPlayer(fCommand.getFPlayer(), "stream"));
 
             fCommand.getFPlayer().setStreaming(true);
         }

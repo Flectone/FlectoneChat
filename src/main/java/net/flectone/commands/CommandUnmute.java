@@ -7,7 +7,6 @@ import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +19,7 @@ public class CommandUnmute implements FTabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> command(commandSender, command, s, strings));
+        Main.getDataThreadPool().execute(() -> command(commandSender, command, s, strings));
         return true;
     }
 
