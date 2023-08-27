@@ -30,8 +30,10 @@ public class WebUtil {
                         String currentVersion = Main.getInstance().getDescription().getVersion();
                         boolean isOld = !currentVersion.equals(lastVersion);
 
-                        if (isOld)
-                            Main.warning("⚠ There is a newer version of plugin " + lastVersion + " than your " + currentVersion);
+                        if (isOld) {
+                            Main.warning("⚠ Upgrade your " + currentVersion +  " version of plugin to " + lastVersion);
+                            Main.warning("⚠ Url: https://modrinth.com/plugin/flectonechat/version/" + lastVersion);
+                        }
 
                     } catch (ParseException e) {
                         Main.warning("⚠ Failed to get latest plugin version");
