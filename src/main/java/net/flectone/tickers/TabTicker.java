@@ -36,6 +36,11 @@ public class TabTicker extends FBukkitRunnable {
 
         List<String> stringList = locale.getStringList("tab." + tabType + ".message");
 
+        if (stringList.isEmpty()) {
+            list.add("update tab message to list");
+            return;
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringList.forEach(string -> {
@@ -52,6 +57,9 @@ public class TabTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
+        int nextHeaderIndex = headerIndex++ % headers.size();
+        int nextFooterIndex = footerIndex++ % footers.size();
+
         Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
             if (fPlayer == null) return;
@@ -59,14 +67,12 @@ public class TabTicker extends FBukkitRunnable {
             fPlayer.updateName();
 
             if (headerEnable && !headers.isEmpty()) {
-                int index = headerIndex++ % headers.size();
-                String string = ObjectUtil.formatString(headers.get(index), player);
+                String string = ObjectUtil.formatString(headers.get(nextHeaderIndex), player);
                 player.setPlayerListHeader(string);
             }
 
             if (footerEnable && !footers.isEmpty()) {
-                int index = footerIndex++ % footers.size();
-                String string = ObjectUtil.formatString(footers.get(index), player);
+                String string = ObjectUtil.formatString(footers.get(nextFooterIndex), player);
                 player.setPlayerListFooter(string);
             }
         });
