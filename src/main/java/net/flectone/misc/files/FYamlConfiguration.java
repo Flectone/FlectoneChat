@@ -12,10 +12,16 @@ import java.io.IOException;
 public class FYamlConfiguration extends YamlConfiguration {
 
     private final File file;
+    private final String resourceFilePath;
 
-    public FYamlConfiguration(File file) {
+    public FYamlConfiguration(File file, String resourceFilePath) {
         this.file = file;
+        this.resourceFilePath = resourceFilePath;
         load();
+    }
+
+    public String getResourceFilePath() {
+        return resourceFilePath;
     }
 
     public void load() {

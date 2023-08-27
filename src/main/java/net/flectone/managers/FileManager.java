@@ -20,15 +20,29 @@ public class FileManager {
     public static FYamlConfiguration locale;
 
     public static void initialize() {
-        config = load("config.yml", true);
+        config = load("config.yml");
 
-        loadLocale();
+        String version = Main.getInstance().getDescription().getVersion();
+
+        if (!version.equals(config.getString("version"))) {
+            Main.warning("⚠ Your configs have been updated to " + version);
+
+            config.set("version", version);
+            migrate(config);
+            loadLocale(true);
+        } else loadLocale(false);
+
         loadIcons();
     }
 
-    private static void loadLocale() {
-        FYamlConfiguration ruLocale = load(languagesPath + "ru.yml", true);
-        FYamlConfiguration enLocale = load(languagesPath + "en.yml", true);
+    private static void loadLocale(boolean needMigrate) {
+        FYamlConfiguration ruLocale = load(languagesPath + "ru.yml");
+        FYamlConfiguration enLocale = load(languagesPath + "en.yml");
+
+        if (needMigrate) {
+            migrate(ruLocale);
+            migrate(enLocale);
+        }
 
         locale = switch (config.getString("language")) {
             case "ru" -> ruLocale;
@@ -45,14 +59,12 @@ public class FileManager {
                 .forEach(icon -> Main.getInstance().saveResource(iconsPath + icon + ".png", false));
     }
 
-    public static FYamlConfiguration load(String filePath, boolean needMigrate) {
+    public static FYamlConfiguration load(String filePath) {
         File file = new File(dataFolder + filePath);
 
         if(!file.exists()) Main.getInstance().saveResource(filePath, false);
 
-        FYamlConfiguration fileConfiguration = new FYamlConfiguration(file);
-
-        if (needMigrate) migrate(fileConfiguration, filePath);
+        FYamlConfiguration fileConfiguration = new FYamlConfiguration(file, filePath);
 
         try {
             fileConfiguration.save(file);
@@ -64,8 +76,8 @@ public class FileManager {
         return fileConfiguration;
     }
 
-    private static void migrate(FYamlConfiguration fileConfiguration, String filePath) {
-        InputStream inputStream = Main.getInstance().getResource(filePath);
+    private static void migrate(FYamlConfiguration fileConfiguration) {
+        InputStream inputStream = Main.getInstance().getResource(fileConfiguration.getResourceFilePath());
 
         if (inputStream == null) return;
 
@@ -74,7 +86,8 @@ public class FileManager {
         YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 
         internalLangConfig.getKeys(true).parallelStream()
-                .filter(string -> !fileConfiguration.contains(string))
+                .filter(string -> !fileConfiguration.contains(string)
+                        || !fileConfiguration.get(string).getClass().equals(internalLangConfig.get(string).getClass()))
                 .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
     }
 }
