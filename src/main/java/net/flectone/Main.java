@@ -6,11 +6,11 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.HookManager;
 import net.flectone.managers.TickerManager;
+import net.flectone.misc.brand.ServerBrand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.sqlite.CustomThreadPool;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
-import net.flectone.misc.brand.ServerBrand;
 import net.flectone.tickers.PlayerPingTicker;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.NMSUtil;
@@ -27,6 +27,8 @@ public final class Main extends JavaPlugin implements Listener {
     private static Main instance;
     private static CustomThreadPool dataThreadPool;
     private Database database;
+
+    public static boolean isOldVersion = false;
 
     public static Main getInstance() {
         return instance;
