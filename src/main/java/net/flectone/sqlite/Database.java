@@ -38,7 +38,7 @@ public abstract class Database {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
             ps.executeQuery();
 
-            if (SQLite.isOldVersion) migrateDatabase3_9_0();
+            if (Main.isOldVersion) migrateDatabase3_9_0();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -364,8 +364,6 @@ public abstract class Database {
 
                 modInfos.add(new ModInfo(playerUUID, time, reason, moderator));
             }
-
-            close(preparedStatement, playerResult);
 
         } catch (SQLException e) {
             e.printStackTrace();

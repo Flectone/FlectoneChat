@@ -25,9 +25,12 @@ public class FileManager {
         String version = Main.getInstance().getDescription().getVersion();
 
         if (!version.equals(config.getString("version"))) {
+            Main.isOldVersion = true;
             Main.warning("⚠ Your configs have been updated to " + version);
 
             config.set("version", version);
+            config.save();
+
             migrate(config);
             loadLocale(true);
         } else loadLocale(false);
@@ -89,5 +92,7 @@ public class FileManager {
                 .filter(string -> !fileConfiguration.contains(string)
                         || !fileConfiguration.get(string).getClass().equals(internalLangConfig.get(string).getClass()))
                 .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
+
+        fileConfiguration.save();
     }
 }
