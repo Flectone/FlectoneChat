@@ -3,6 +3,7 @@ package net.flectone.listeners;
 import net.flectone.Main;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
@@ -48,6 +49,9 @@ public class PlayerJoinListener implements Listener {
             ServerBrand.getInstance().setBrand(event.getPlayer());
 
         Player player = event.getPlayer();
+
+        if (!player.hasPlayedBefore())
+            FTabCompleter.offlinePlayerList.add(player.getName());
 
         FEntity.removeBugEntities(player);
 

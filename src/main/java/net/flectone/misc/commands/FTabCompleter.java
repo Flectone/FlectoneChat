@@ -17,6 +17,8 @@ import java.util.List;
 
 public interface FTabCompleter extends CommandExecutor, TabCompleter {
 
+    List<String> offlinePlayerList = new ArrayList<>();
+
     List<String> wordsList = Collections.synchronizedList(new ArrayList<>());
 
     String getCommandName();
@@ -39,8 +41,7 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
     }
 
     default void isOfflinePlayer(@NotNull String arg) {
-        Arrays.stream(Bukkit.getOfflinePlayers()).parallel().filter(offlinePlayer -> offlinePlayer.getName() != null)
-                .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer.getName()));
+        offlinePlayerList.parallelStream().forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer));
     }
 
     default void isOnlinePlayer(@NotNull String arg) {

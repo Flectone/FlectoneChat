@@ -1,6 +1,7 @@
 package net.flectone.managers;
 
 import net.flectone.Main;
+import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ModInfo;
 import org.bukkit.BanEntry;
@@ -38,12 +39,14 @@ public class FPlayerManager {
     }
 
     public static void loadPlayers() {
-
-        for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            Main.getDatabase().insertPlayer(offlinePlayer.getUniqueId());
-        }
-
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+
+            for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+                Main.getDatabase().insertPlayer(offlinePlayer.getUniqueId());
+
+                if (offlinePlayer.getName() != null) FTabCompleter.offlinePlayerList.add(offlinePlayer.getName());
+            }
+
             for(Player player : Bukkit.getOnlinePlayers()) {
                 createFPlayer(player).synchronizeDatabase();
             }
