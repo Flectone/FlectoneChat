@@ -8,6 +8,7 @@ import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ChatInfo;
 import net.flectone.misc.entity.info.ModInfo;
 import net.flectone.misc.files.FYamlConfiguration;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,20 @@ public abstract class Database {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void clearOldRows(String table) {
+        try {
+            Connection connection = getSQLConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + table + " WHERE time<=?");
+            preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -150,6 +165,8 @@ public abstract class Database {
                 String[] mails = mail.split(",");
 
                 for (String uuid : mails) {
+                    if (uuid.isEmpty()) continue;
+
                     PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM mails WHERE uuid = ?");
                     ps2.setString(1, uuid);
 
@@ -303,7 +320,8 @@ public abstract class Database {
     public int getCountRow(String table) {
         try {
             Connection conn = getSQLConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(1) FROM " + table);
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(1) FROM " + table + " WHERE time>?");
+            preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             resultSet.next();
@@ -349,7 +367,8 @@ public abstract class Database {
         ArrayList<ModInfo> modInfos = new ArrayList<>();
         try (Connection conn = getSQLConnection()) {
 
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " LIMIT " + limit + " OFFSET " + skip);
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE time>? LIMIT " + limit + " OFFSET " + skip);
+            preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
             ResultSet playerResult = preparedStatement.executeQuery();
 
             while (playerResult.next()) {
@@ -406,43 +425,58 @@ public abstract class Database {
                     preparedStatement.executeUpdate();
                     preparedStatement.close();
 
+
                     preparedStatement = connection.prepareStatement("SELECT mails FROM players WHERE uuid=?");
                     preparedStatement.setString(1, playerUUID);
                     ResultSet playerResult = preparedStatement.executeQuery();
                     playerResult.next();
 
                     String mails = playerResult.getString("mails");
-                    String newMails = arrayToString(new ArrayList<>(fPlayer.getMails().keySet()));
-
-                    StringBuilder mailsBuilder = new StringBuilder();
-                    mailsBuilder.append(mails != null ? mails : "");
-                    mailsBuilder.append(newMails != null ? newMails : "");
 
                     close(preparedStatement, playerResult);
 
-                    preparedStatement = connection.prepareStatement("UPDATE players SET mails=? WHERE uuid=?");
-                    preparedStatement.setString(1, mailsBuilder.toString());
-                    preparedStatement.setString(2, playerUUID);
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
-
-                    fPlayer.getMails().forEach((uuid, mail) -> {
-                        try {
-                            PreparedStatement ps2 = conn.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
-                            ps2.setString(1, mail.getUUID().toString());
-                            ps2.setString(2, mail.getSender().toString());
-                            ps2.setString(3, mail.getReceiver().toString());
-                            ps2.setString(4, mail.getMessage());
-                            ps2.executeUpdate();
-                        } catch (SQLException e) {
-                            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
-                        }
-                    });
+                    saveMails(fPlayer, mails);
                 }
             }
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute SQLite statement: ", ex);
+        }
+    }
+
+    public void saveMails(FPlayer fPlayer, String addMails) {
+        try {
+            Connection connection = getSQLConnection();
+
+            String playerUUID = fPlayer.getUUID().toString();
+
+            String newMails = arrayToString(new ArrayList<>(fPlayer.getMails().keySet()));
+
+            StringBuilder mailsBuilder = new StringBuilder();
+            mailsBuilder.append(addMails != null ? addMails : "");
+            mailsBuilder.append(newMails != null ? newMails : "");
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET mails=? WHERE uuid=?");
+            preparedStatement.setString(1, mailsBuilder.toString());
+            preparedStatement.setString(2, playerUUID);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+
+            fPlayer.getMails().forEach((uuid, mail) -> {
+                try {
+                    PreparedStatement ps2 = connection.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
+                    ps2.setString(1, mail.getUUID().toString());
+                    ps2.setString(2, mail.getSender().toString());
+                    ps2.setString(3, mail.getReceiver().toString());
+                    ps2.setString(4, mail.getMessage());
+                    ps2.executeUpdate();
+                    ps2.close();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
+                }
+            });
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 

@@ -19,7 +19,9 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Main extends JavaPlugin {
+import java.sql.SQLException;
+
+public final class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
     private Database database;
@@ -89,6 +91,16 @@ public final class Main extends JavaPlugin {
     public void onDisable() {
         PlayerPingTicker.unregisterPingObjective();
         FPlayerManager.clearPlayers();
+
+        try {
+            Main.getDatabase().clearOldRows("mutes");
+            Main.getDatabase().clearOldRows("bans");
+            Main.getDatabase().clearOldRows("warns");
+            Main.getDatabase().getSQLConnection().close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         info("✔ Plugin disabled");
     }
 }

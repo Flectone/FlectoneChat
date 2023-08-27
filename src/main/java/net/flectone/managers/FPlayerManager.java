@@ -50,8 +50,11 @@ public class FPlayerManager {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 createFPlayer(player).synchronizeDatabase();
             }
-        });
 
+            Main.getDatabase().clearOldRows("mutes");
+            Main.getDatabase().clearOldRows("bans");
+            Main.getDatabase().clearOldRows("warns");
+        });
     }
 
     public static void loadBanList() {
@@ -84,7 +87,6 @@ public class FPlayerManager {
 
     public static void clearPlayers() {
         onlineFPlayers.values().forEach(FPlayer::removeTeam);
-
         onlineFPlayers.clear();
     }
 
@@ -136,6 +138,7 @@ public class FPlayerManager {
 
 
     public static void removePlayer(@NotNull UUID uuid) {
+        if (onlineFPlayers.get(uuid) == null) return;
         onlineFPlayers.get(uuid).removeTeam();
         onlineFPlayers.remove(uuid);
     }
