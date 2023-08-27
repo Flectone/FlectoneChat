@@ -91,7 +91,8 @@ public class CommandMailClear implements FTabCompleter {
 
                 if (fPlayer == null) break;
 
-                fPlayer.synchronizeDatabase();
+                if (!fPlayer.isOnline() && fPlayer.getChatInfo() == null)
+                    fPlayer.synchronizeDatabase();
 
                 HashMap<UUID, Mail> mailsList = fPlayer.getMails();
 
