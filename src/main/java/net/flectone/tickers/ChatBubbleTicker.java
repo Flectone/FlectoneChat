@@ -21,7 +21,7 @@ import static net.flectone.managers.FileManager.locale;
 public class ChatBubbleTicker extends FBukkitRunnable {
 
     public ChatBubbleTicker() {
-        super.period = 5L;
+        super.period = 20L;
     }
 
     @Override
