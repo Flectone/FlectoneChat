@@ -50,7 +50,7 @@ public class CommandMsg implements FTabCompleter {
         String message = ObjectUtil.toString(strings, 1);
 
         if (!secondFPlayer.isOnline()) {
-            Bukkit.dispatchCommand(commandSender, "mail " + playerName + " " + message);
+            fCommand.dispatchCommand("mail " + playerName + " " + message);
             return;
         }
 
