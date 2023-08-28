@@ -91,6 +91,19 @@ chat:
     - ":angry: , (╯°□°)╯︵ ┻━┻"
     - ":happy: , ＼(＾O＾)／"
 
+  cords:
+    enable: true
+  stats:
+    enable: true
+  hide:
+    enable: true
+  url:
+    enable: true
+  tooltip:
+    enable: true
+  ping:
+    enable: true
+
 death:
   message:
     enable: true

@@ -61,7 +61,7 @@ public class MessageBuilder {
 
             word = replacePattern(word);
 
-            if (itemStack != null && word.equalsIgnoreCase("%item%")) {
+            if (itemStack != null && word.equalsIgnoreCase("%item%") && config.getBoolean("chat.tooltip.enable")) {
                 wordParams.setItem(true);
                 wordParams.setText(itemStack.getItemMeta() != null && !itemStack.getItemMeta().getDisplayName().isEmpty()
                         ? net.md_5.bungee.api.ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName()
@@ -69,7 +69,7 @@ public class MessageBuilder {
                 return wordParams;
             }
 
-            if (word.startsWith(pingPrefix)) {
+            if (word.startsWith(pingPrefix) && config.getBoolean("chat.ping.enable")) {
                 String playerName = word.replaceFirst(pingPrefix, "");
 
                 FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
@@ -89,7 +89,7 @@ public class MessageBuilder {
                 }
             }
 
-            if (word.startsWith("||") && word.endsWith("||") && !word.replace("||", "").isEmpty()) {
+            if (word.startsWith("||") && word.endsWith("||") && !word.replace("||", "").isEmpty() && config.getBoolean("chat.hide.enable")) {
                 word = word.replace("||", "");
 
                 wordParams.setHideMessage(word);
@@ -100,7 +100,7 @@ public class MessageBuilder {
             }
 
             Matcher urlMatcher = urlPattern.matcher(word);
-            if (urlMatcher.find()) {
+            if (urlMatcher.find() && config.getBoolean("chat.url.enable")) {
                 wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
 
                 word = locale.getString("chat.url.message")
@@ -111,6 +111,7 @@ public class MessageBuilder {
 
                 switch (word) {
                     case "%cords%" -> {
+                        if (!config.getBoolean("chat.cords.enable")) break;
                         wordParams.setCords(true);
 
                         Location location = player.getLocation();
@@ -123,9 +124,9 @@ public class MessageBuilder {
                                 .replace("<block_z>", String.valueOf(location.getBlockZ()));
                     }
                     case "%stats%" -> {
+                        if (!config.getBoolean("chat.stats.enable")) break;
+
                         wordParams.setStats(true);
-
-
 
                         AttributeInstance armor = player.getAttribute(Attribute.GENERIC_ARMOR);
                         AttributeInstance damage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
