@@ -90,7 +90,8 @@ public class FileManager {
 
         internalLangConfig.getKeys(true).parallelStream()
                 .filter(string -> !fileConfiguration.contains(string)
-                        || !fileConfiguration.get(string).getClass().equals(internalLangConfig.get(string).getClass()))
+                        || (fileConfiguration.get(string) != null
+                        &&!fileConfiguration.get(string).getClass().equals(internalLangConfig.get(string).getClass())))
                 .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
 
         fileConfiguration.save();

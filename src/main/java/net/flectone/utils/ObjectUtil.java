@@ -8,6 +8,8 @@ import net.flectone.managers.HookManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.entity.FPlayer;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -173,5 +176,14 @@ public class ObjectUtil {
         String paddedRank = String.format("%010d", Integer.MAX_VALUE - rank);
         String paddedName = String.format("%-16s", playerName);
         return paddedRank + paddedName;
+    }
+
+    @NotNull
+    public static String getOfflinePlayerName(String uuid) {
+        if (uuid == null) return "CONSOLE";
+
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+        String name = offlinePlayer.getName();
+        return name != null ? name : "Unknown";
     }
 }

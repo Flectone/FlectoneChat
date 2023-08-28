@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -18,7 +19,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("ConstantConditions")
 public class NMSUtil {
 
     private static final Map<String, String> entityKeys = getEntityKeys();
@@ -42,7 +42,9 @@ public class NMSUtil {
         }
     }
 
-    public static String getCorrectlyName(ItemStack itemStack) {
+    @NotNull
+    public static String getCorrectlyName(@Nullable ItemStack itemStack) {
+        if (itemStack == null) return "";
         return itemStack.getItemMeta() == null || itemStack.getItemMeta().getDisplayName().isEmpty()
                 ? getMinecraftName(itemStack)
                 : net.md_5.bungee.api.ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName();

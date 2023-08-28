@@ -62,7 +62,7 @@ public abstract class Database {
         }
     }
 
-    public void clearOldRows(String table) {
+    public void clearOldRows(@NotNull String table) {
         try {
             Connection connection = getSQLConnection();
             String filter = " WHERE time<=?";
@@ -77,11 +77,11 @@ public abstract class Database {
         }
     }
 
-    private void dropColumn(Statement statement, String table, String column) throws SQLException {
+    private void dropColumn(@NotNull Statement statement, @NotNull String table, @NotNull String column) throws SQLException {
         statement.executeUpdate("ALTER TABLE " + table + " DROP COLUMN " + column);
     }
 
-    private void addColumn(Statement statement, String table, String column, String type) throws SQLException {
+    private void addColumn(@NotNull Statement statement, @NotNull String table, @NotNull String column, @NotNull String type) throws SQLException {
         statement.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type);
     }
 
@@ -296,7 +296,7 @@ public abstract class Database {
 
     }
 
-    private void migrateOldModeratorColumn(Connection conn, String table, String playerUUID, int time, String reason) throws SQLException {
+    private void migrateOldModeratorColumn(@NotNull Connection conn, @NotNull String table, @NotNull String playerUUID, int time, String reason) throws SQLException {
         if (reason == null) return;
 
         PreparedStatement statement = conn.prepareStatement("INSERT OR REPLACE INTO "+ table + " (player, time, reason, moderator) VALUES(?,?,?,?)");
@@ -309,7 +309,7 @@ public abstract class Database {
         statement.executeUpdate();
     }
 
-    private boolean parseBoolean(String configString, String option) {
+    private boolean parseBoolean(@NotNull String configString, @Nullable String option) {
         FYamlConfiguration config = FileManager.config;
 
         boolean bool = true;
@@ -321,7 +321,7 @@ public abstract class Database {
         return bool && (option == null || Boolean.parseBoolean(option));
     }
 
-    public int getCountRow(String table) {
+    public int getCountRow(@NotNull String table) {
         try {
             Connection conn = getSQLConnection();
 
@@ -342,7 +342,8 @@ public abstract class Database {
         return 0;
     }
 
-    public ArrayList<String> getPlayerNameList(String table, String column) {
+    @NotNull
+    public ArrayList<String> getPlayerNameList(@NotNull String table, @NotNull String column) {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             Connection conn = getSQLConnection();
@@ -369,7 +370,8 @@ public abstract class Database {
         return arrayList;
     }
 
-    public ArrayList<PlayerMod> getModInfoList(String table, int limit, int skip) {
+    @NotNull
+    public ArrayList<PlayerMod> getModInfoList(@NotNull String table, int limit, int skip) {
         ArrayList<PlayerMod> playerMods = new ArrayList<>();
         try (Connection conn = getSQLConnection()) {
 
@@ -460,7 +462,7 @@ public abstract class Database {
         }
     }
 
-    public void saveWarns(FPlayer fPlayer) {
+    public void saveWarns(@NotNull FPlayer fPlayer) {
         try {
             Connection connection = getSQLConnection();
 
@@ -494,7 +496,7 @@ public abstract class Database {
         }
     }
 
-    public void saveMails(FPlayer fPlayer) {
+    public void saveMails(@NotNull FPlayer fPlayer) {
         try {
             Connection connection = getSQLConnection();
 
@@ -527,7 +529,8 @@ public abstract class Database {
         }
     }
 
-    private String arrayToString(List<UUID> arrayList) {
+    @Nullable
+    private String arrayToString(@NotNull List<UUID> arrayList) {
         StringBuilder ignoreListString = new StringBuilder();
         for (UUID ignoredPlayer : arrayList)
             ignoreListString.append(ignoredPlayer).append(",");

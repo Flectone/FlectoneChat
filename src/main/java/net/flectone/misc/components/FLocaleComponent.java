@@ -5,22 +5,24 @@ import net.flectone.utils.NMSUtil;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FLocaleComponent extends FComponent{
 
-    public FLocaleComponent(String string) {
+    public FLocaleComponent(@Nullable String string) {
         super(new TranslatableComponent(string));
     }
 
-    public FLocaleComponent(PlayerDamager playerDamager) {
+    public FLocaleComponent(@NotNull PlayerDamager playerDamager) {
         this(playerDamager.getDamagerTranslateName());
     }
 
-    public FLocaleComponent(Entity entity) {
+    public FLocaleComponent(@Nullable Entity entity) {
         this(NMSUtil.getMinecraftName(entity));
     }
 
-    public FLocaleComponent(ItemStack itemStack) {
+    public FLocaleComponent(@Nullable ItemStack itemStack) {
         this(NMSUtil.getCorrectlyName(itemStack));
 
         addHoverItem(NMSUtil.getItemAsJson(itemStack));

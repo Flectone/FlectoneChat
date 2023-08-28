@@ -3,6 +3,7 @@ package net.flectone.misc.components;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -10,7 +11,7 @@ public class FComponent {
 
     private final BaseComponent component;
 
-    public FComponent(String text) {
+    public FComponent(@NotNull String text) {
         this.component = componentFromLegacyText(text);
     }
 
@@ -18,11 +19,11 @@ public class FComponent {
         this.component = new TextComponent();
     }
 
-    public FComponent(BaseComponent baseComponent) {
+    public FComponent(@Nullable BaseComponent baseComponent) {
         this.component = baseComponent;
     }
 
-    public FComponent(FComponent fComponent) {
+    public FComponent(@NotNull FComponent fComponent) {
         this.component = fComponent.get();
     }
 
@@ -31,59 +32,57 @@ public class FComponent {
         return component;
     }
 
-    protected void set(BaseComponent[] baseComponents) {
+    protected void set(@NotNull BaseComponent[] baseComponents) {
         this.component.setExtra(Arrays.asList(baseComponents));
     }
 
-    public static BaseComponent[] fromLegacyText(String text) {
+    @NotNull
+    public static BaseComponent[] fromLegacyText(@NotNull String text) {
         return TextComponent.fromLegacyText(text);
     }
 
-    protected String getLastColor(String lastColor, ComponentBuilder componentBuilder) {
+    @NotNull
+    protected String getLastColor(@NotNull String lastColor, @NotNull ComponentBuilder componentBuilder) {
         return ChatColor.getLastColors(lastColor + componentBuilder.getCurrentComponent().toString());
     }
 
-    public FComponent addHoverText(String showText) {
+    @NotNull
+    public FComponent addHoverText(@NotNull String showText) {
         return addHoverText(fromLegacyText(showText));
     }
 
-    public FComponent addHoverText(BaseComponent[] baseComponents) {
-        component.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_TEXT, baseComponents)
-        );
-
+    @NotNull
+    public FComponent addHoverText(@NotNull BaseComponent[] baseComponents) {
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, baseComponents));
         return this;
     }
 
-    public FComponent addOpenURL(String url) {
-        component.setClickEvent(new ClickEvent(
-                ClickEvent.Action.OPEN_URL, url
-        ));
+    @NotNull
+    public FComponent addOpenURL(@NotNull String url) {
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         return this;
     }
 
-    public FComponent addHoverItem(String itemJson) {
-        component.setHoverEvent(new HoverEvent(
-                HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(itemJson)})
-        );
+    @NotNull
+    public FComponent addHoverItem(@NotNull String itemJson) {
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(itemJson)}));
         return this;
     }
 
-    public FComponent addRunCommand(String command) {
-        component.setClickEvent(new ClickEvent(
-                ClickEvent.Action.RUN_COMMAND, command)
-        );
+    @NotNull
+    public FComponent addRunCommand(@NotNull String command) {
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         return this;
     }
 
-    public FComponent addSuggestCommand(String command) {
-        component.setClickEvent(new ClickEvent(
-                ClickEvent.Action.SUGGEST_COMMAND, command)
-        );
+    @NotNull
+    public FComponent addSuggestCommand(@NotNull String command) {
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         return this;
     }
 
-    protected TextComponent componentFromLegacyText(String text) {
+    @NotNull
+    protected TextComponent componentFromLegacyText(@NotNull String text) {
         return new TextComponent(fromLegacyText(text));
     }
 }

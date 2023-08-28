@@ -239,7 +239,7 @@ public class FCommand {
 
             Collection<Player> finalPlayerSet = playerSet;
             playerSet = player.getNearbyEntities(localRange, localRange, localRange).parallelStream()
-                    .filter(entity -> entity instanceof Player player && finalPlayerSet.contains(player))
+                    .filter(entity -> entity instanceof Player player1 && finalPlayerSet.contains(player1))
                     .map(entity -> (Player) entity)
                     .collect(Collectors.toSet());
         }

@@ -2,10 +2,11 @@ package net.flectone.misc.components;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import org.jetbrains.annotations.NotNull;
 
 public class FColorComponent extends FComponent{
 
-    public FColorComponent(BaseComponent baseComponent, String color) {
+    public FColorComponent(@NotNull BaseComponent baseComponent, @NotNull String color) {
         BaseComponent[] colorComponents = fromLegacyText(color);
 
         ComponentBuilder componentBuilder = new ComponentBuilder()
@@ -16,7 +17,7 @@ public class FColorComponent extends FComponent{
         set(componentBuilder.create());
     }
 
-    public FColorComponent(FComponent fComponent, String color) {
+    public FColorComponent(@NotNull FComponent fComponent, @NotNull String color) {
         this(fComponent.get(), color);
     }
 }

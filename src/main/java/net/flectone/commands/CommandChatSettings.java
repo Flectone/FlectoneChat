@@ -38,9 +38,8 @@ public class CommandChatSettings implements FTabCompleter {
 
             if (strings[0].equals("save")) {
 
-                Main.getDataThreadPool().execute(() -> {
-                    Main.getDatabase().updatePlayerInfo("chats", fPlayer.getChatInfo());
-                });
+                Main.getDataThreadPool().execute(() ->
+                        Main.getDatabase().updatePlayerInfo("chats", fPlayer.getChatInfo()));
 
                 Bukkit.dispatchCommand(commandSender, "chat-settings");
                 return true;

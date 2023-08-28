@@ -14,12 +14,13 @@ public class FYamlConfiguration extends YamlConfiguration {
     private final File file;
     private final String resourceFilePath;
 
-    public FYamlConfiguration(File file, String resourceFilePath) {
+    public FYamlConfiguration(@NotNull File file, @NotNull String resourceFilePath) {
         this.file = file;
         this.resourceFilePath = resourceFilePath;
         load();
     }
 
+    @NotNull
     public String getResourceFilePath() {
         return resourceFilePath;
     }

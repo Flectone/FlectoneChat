@@ -21,7 +21,7 @@ import static net.flectone.managers.FileManager.locale;
 
 public class PlayerJoinListener implements Listener {
 
-    public static void sendJoinMessage(@NotNull FPlayer fPlayer, @NotNull Player player, boolean isOnline) {
+    public static void sendJoinMessage(@NotNull Player player, boolean isOnline) {
         boolean isEnable = config.getBoolean("player.join.message.enable");
 
         if(!isEnable || !isOnline) return;
@@ -39,7 +39,7 @@ public class PlayerJoinListener implements Listener {
     public static void sendJoinMessage(@NotNull Player player) {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if (fPlayer == null) return;
-        sendJoinMessage(fPlayer, player, true);
+        sendJoinMessage(player, true);
     }
 
     @EventHandler
@@ -62,7 +62,7 @@ public class PlayerJoinListener implements Listener {
 
         Main.getDataThreadPool().execute(() -> {
             fPlayer.synchronizeDatabase();
-            sendJoinMessage(fPlayer, player, fPlayer.isOnline());
+            sendJoinMessage(player, fPlayer.isOnline());
         });
     }
 
@@ -70,10 +70,13 @@ public class PlayerJoinListener implements Listener {
     public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
         if(!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
 
-        PlayerMod playerMod = Main.getDatabase()
-                .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
+        if (FPlayerManager.getBannedPlayers().contains(event.getPlayer().getName())) {
 
-        if (playerMod != null) {
+            PlayerMod playerMod = Main.getDatabase()
+                    .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
+
+            if (playerMod == null) return;
+
             String localString = playerMod.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
             String formatMessage = locale.getFormatString(localString, event.getPlayer())

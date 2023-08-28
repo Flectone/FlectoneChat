@@ -73,8 +73,6 @@ public class CommandMailClear implements FTabCompleter {
         Main.getDatabase().saveMails(fPlayer);
 
         fCommand.sendMeMessage("command.mail-clear.message", replaceString, replaceTo);
-
-        return;
     }
 
     @Nullable

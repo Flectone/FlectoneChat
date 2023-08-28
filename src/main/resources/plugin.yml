@@ -9,9 +9,9 @@ commands:
     usage: /ignore <player>
     permission: flectonechat.ignore
 
-  ignore-list:
-    usage: /ignore-list
-    permission: flectonechat.ignore-list
+  ignorelist:
+    usage: /ignorelist
+    permission: flectonechat.ignorelist
 
   msg:
     usage: /msg <player> <message>
@@ -167,7 +167,7 @@ permissions:
     default: op
   flectonechat.ignore:
     default: true
-  flectonechat.ignore-list:
+  flectonechat.ignorelist:
     default: true
   flectonechat.msg:
     default: true

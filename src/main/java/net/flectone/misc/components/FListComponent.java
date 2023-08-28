@@ -3,6 +3,7 @@ package net.flectone.misc.components;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import static net.flectone.managers.FileManager.locale;
 
 public class FListComponent extends FComponent{
 
-    public FListComponent(String command, String commandName, CommandSender commandSender, int page, int lastPage) {
+    public FListComponent(@NotNull String command, @NotNull String commandName, @NotNull CommandSender commandSender, int page, int lastPage) {
         String pageLine = locale.getFormatString("command." + commandName + ".page-line", commandSender)
                 .replace("<page>", String.valueOf(page))
                 .replace("<last-page>", String.valueOf(lastPage));

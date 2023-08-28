@@ -25,7 +25,7 @@ public class CommandUnwarn implements FTabCompleter {
     private void command(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         FCommand fCommand = new FCommand(commandSender, command.getName(), s, strings);
 
-        if (fCommand.isInsufficientArgs(1)) return;;
+        if (fCommand.isInsufficientArgs(1)) return;
 
         FPlayer fPlayer = FPlayerManager.getPlayerFromName(strings[0]);
 
@@ -64,10 +64,8 @@ public class CommandUnwarn implements FTabCompleter {
         wordsList.clear();
 
         switch (strings.length) {
-            case 1 -> {
-                Main.getDatabase().getPlayerNameList("warns", "player").parallelStream()
-                        .forEach(playerName -> isStartsWith(strings[0], playerName));
-            }
+            case 1 -> Main.getDatabase().getPlayerNameList("warns", "player").parallelStream()
+                    .forEach(playerName -> isStartsWith(strings[0], playerName));
             case 2 -> {
                 String playerName = strings[0];
                 FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);

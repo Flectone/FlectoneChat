@@ -20,12 +20,14 @@ import static net.flectone.managers.FileManager.locale;
 
 public class FPlayerManager {
 
+    private static final List<String> bannedPlayers = new ArrayList<>();
     private static final HashMap<String, FPlayer> usedFPlayers = new HashMap<>();
     private static Scoreboard scoreBoard;
 
     public static void setScoreBoard() {
-        scoreBoard = config.getBoolean("scoreboard.custom") ?
-                Bukkit.getScoreboardManager().getNewScoreboard() : Bukkit.getScoreboardManager().getMainScoreboard();
+        scoreBoard = config.getBoolean("scoreboard.custom")
+                ? Bukkit.getScoreboardManager().getNewScoreboard()
+                : Bukkit.getScoreboardManager().getMainScoreboard();
     }
 
     @NotNull
@@ -33,27 +35,26 @@ public class FPlayerManager {
         return scoreBoard;
     }
 
-    @NotNull
-    public static Collection<FPlayer> getPlayers() {
-        return usedFPlayers.values();
-    }
-
     public static void loadPlayers() {
         Main.getDataThreadPool().execute(() -> {
-            for(OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+
+            Arrays.stream(Bukkit.getOfflinePlayers()).forEach(offlinePlayer -> {
                 Main.getDatabase().insertPlayer(offlinePlayer.getUniqueId());
 
                 if (offlinePlayer.getName() != null) FTabCompleter.offlinePlayerList.add(offlinePlayer.getName());
-            }
+            });
 
-            for(Player player : Bukkit.getOnlinePlayers()) {
-                createFPlayer(player).synchronizeDatabase();
-            }
+            Bukkit.getOnlinePlayers().forEach(player ->
+                    createFPlayer(player).synchronizeDatabase());
 
             Main.getDatabase().clearOldRows("mutes");
             Main.getDatabase().clearOldRows("bans");
             Main.getDatabase().clearOldRows("warns");
         });
+    }
+
+    public static List<String> getBannedPlayers() {
+        return bannedPlayers;
     }
 
     public static void loadBanList() {
@@ -81,6 +82,11 @@ public class FPlayerManager {
                     Main.getDatabase().updatePlayerInfo("bans", playerMod));
 
             banList.pardon(offlinePlayer.getName());
+        });
+
+        Main.getDataThreadPool().execute(() -> {
+            bannedPlayers.clear();
+            bannedPlayers.addAll(Main.getDatabase().getPlayerNameList("bans", "player"));
         });
     }
 

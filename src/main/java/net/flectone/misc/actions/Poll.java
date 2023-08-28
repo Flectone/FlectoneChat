@@ -16,7 +16,6 @@ import static net.flectone.managers.FileManager.config;
 public class Poll {
 
     private final List<FPlayer> fPlayerList = new ArrayList<>();
-
     private final String message;
     private final int id;
     private int agree = 0;

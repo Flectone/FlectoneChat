@@ -1,8 +1,6 @@
 package net.flectone.misc.entity.player;
 
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,38 +27,36 @@ public class PlayerWarn {
         this.reason = reason;
         this.moderator = moderator;
 
-        this.playerName = getOfflinePlayerName(player);
-        this.moderatorName = getOfflinePlayerName(moderator);
+        this.playerName = ObjectUtil.getOfflinePlayerName(player);
+        this.moderatorName = ObjectUtil.getOfflinePlayerName(moderator);
     }
 
+    @NotNull
     public UUID getUUID() {
         return uuid;
     }
 
+    @NotNull
     public String getPlayer() {
         return player;
     }
 
+    @Nullable
     public String getModerator() {
         return moderator;
     }
 
+    @NotNull
     public String getReason() {
         return reason;
     }
 
-    private String getOfflinePlayerName(String uuid) {
-        if (uuid == null) return "CONSOLE";
-
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-        String name = offlinePlayer.getName();
-        return name != null ? name : "Unknown";
-    }
-
+    @NotNull
     public String getPlayerName() {
         return playerName;
     }
 
+    @NotNull
     public String getModeratorName() {
         return moderatorName;
     }

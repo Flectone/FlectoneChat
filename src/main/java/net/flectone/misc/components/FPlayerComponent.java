@@ -7,13 +7,14 @@ import net.milkbowl.vault.chat.Chat;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 import static net.flectone.managers.FileManager.locale;
 
 public class FPlayerComponent extends FComponent{
 
-    public FPlayerComponent(CommandSender recipient, CommandSender sender, String text) {
+    public FPlayerComponent(@Nullable CommandSender recipient, @NotNull CommandSender sender, @NotNull String text) {
         super(text);
 
         String playerName = sender.getName();

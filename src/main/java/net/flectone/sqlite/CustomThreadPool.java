@@ -1,5 +1,6 @@
 package net.flectone.sqlite;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -8,8 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CustomThreadPool {
 
-    private BlockingQueue<Runnable> runnableQueue;
-    private List<WorkerThread> threads;
+    private final BlockingQueue<Runnable> runnableQueue;
+    private final List<WorkerThread> threads;
     private AtomicBoolean isThreadPoolShutDownInitiated;
 
     public CustomThreadPool(final int noOfThreads) {
@@ -45,8 +46,8 @@ public class CustomThreadPool {
 
     private class WorkerThread extends Thread {
 
-        private BlockingQueue<Runnable> taskQueue;
-        private CustomThreadPool threadPool;
+        private final BlockingQueue<Runnable> taskQueue;
+        private final CustomThreadPool threadPool;
 
         public WorkerThread(BlockingQueue<Runnable> taskQueue, CustomThreadPool threadPool) {
             this.taskQueue = taskQueue;
@@ -71,7 +72,8 @@ public class CustomThreadPool {
         }
     }
 
-    private class CustomThreadPoolException extends RuntimeException {
+    private static class CustomThreadPoolException extends RuntimeException {
+        @Serial
         private static final long serialVersionUID = 1L;
 
         public CustomThreadPoolException(Throwable t) {

@@ -22,7 +22,6 @@ public class PlayerMail {
         this(UUID.randomUUID(), sender, receiver, message);
     }
 
-
     @NotNull
     public UUID getUUID() {
         return uuid;

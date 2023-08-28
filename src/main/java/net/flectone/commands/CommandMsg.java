@@ -78,8 +78,6 @@ public class CommandMsg implements FTabCompleter {
         if(secondFPlayer.getPlayer() == null) return;
 
         fCommand.sendTellMessage(commandSender, secondFPlayer.getPlayer(), message);
-
-        return;
     }
 
     @Nullable

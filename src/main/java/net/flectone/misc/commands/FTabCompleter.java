@@ -67,11 +67,11 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
         isTabCompleteMessage(arg, "tab-complete.message");
     }
 
-    default void isTabCompleteMessage(String arg, String localeKey) {
+    default void isTabCompleteMessage(@NotNull String arg, @NotNull String localeKey) {
         isStartsWith(arg, FileManager.locale.getString(localeKey));
     }
 
-    default void isDigitInArray(String arg, String string, int start, int end) {
+    default void isDigitInArray(@NotNull String arg, String string, int start, int end) {
         for (int x = start; x < end; x++) {
             isStartsWith(arg, x + string);
         }

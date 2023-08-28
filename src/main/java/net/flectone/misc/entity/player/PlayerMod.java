@@ -1,10 +1,8 @@
 package net.flectone.misc.entity.player;
 
 import net.flectone.utils.ObjectUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-
-import java.util.UUID;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerMod {
 
@@ -16,24 +14,17 @@ public class PlayerMod {
     private final String playerName;
     private final String moderatorName;
 
-    public PlayerMod(String player, int time, String reason, String moderator) {
+    public PlayerMod(@NotNull String player, int time, @NotNull String reason, @Nullable String moderator) {
         this.player = player;
         this.time = time;
         this.reason = reason;
         this.moderator = moderator;
 
-        this.playerName = getOfflinePlayerName(player);
-        this.moderatorName = getOfflinePlayerName(moderator);
+        this.playerName = ObjectUtil.getOfflinePlayerName(player);
+        this.moderatorName = ObjectUtil.getOfflinePlayerName(moderator);
     }
 
-    private String getOfflinePlayerName(String uuid) {
-        if (uuid == null) return "CONSOLE";
-
-        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-        String name = offlinePlayer.getName();
-        return name != null ? name : "Unknown";
-    }
-
+    @NotNull
     public String getPlayer() {
         return player;
     }
@@ -46,18 +37,22 @@ public class PlayerMod {
         return time - ObjectUtil.getCurrentTime();
     }
 
+    @NotNull
     public String getReason() {
         return reason;
     }
 
+    @NotNull
     public String getPlayerName() {
         return playerName;
     }
 
+    @NotNull
     public String getModeratorName() {
         return moderatorName;
     }
 
+    @Nullable
     public String getModerator() {
         return moderator;
     }

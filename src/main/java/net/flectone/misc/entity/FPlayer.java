@@ -281,6 +281,8 @@ public class FPlayer {
         Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().updatePlayerInfo("bans", playerMod));
 
+        FPlayerManager.getBannedPlayers().add(getRealName());
+
         if (player == null || !offlinePlayer.isOnline()) return;
 
         String localStringMessage = time == -1 ? "command.ban.local-message" : "command.tempban.local-message";
@@ -289,13 +291,13 @@ public class FPlayer {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
-            player.kickPlayer(localMessage);
-        });
+        Bukkit.getScheduler().runTask(Main.getInstance(), () ->
+                player.kickPlayer(localMessage));
     }
 
     public void unban() {
         this.banInfo = null;
+        FPlayerManager.getBannedPlayers().remove(getRealName());
 
         Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().deleteRow("bans", "player", this.uuid.toString()));

@@ -22,8 +22,9 @@ public class FLuckPerms implements HookInterface {
     private static LuckPerms provider;
 
     private void onUserPromote(@NotNull NodeMutateEvent event) {
-        if (event.getTarget() instanceof User) {
-            FPlayer fPlayer = FPlayerManager.getPlayer(((User) event.getTarget()).getUsername());
+        if (event.getTarget() instanceof User user) {
+            if (user.getUsername() == null) return;
+            FPlayer fPlayer = FPlayerManager.getPlayer(user.getUsername());
             if (fPlayer == null) return;
             fPlayer.setStreamer();
             fPlayer.updateName();

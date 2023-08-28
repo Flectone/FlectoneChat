@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -43,7 +44,7 @@ public class ServerBrand {
         return instance;
     }
 
-    public void setBrand(Player player) {
+    public void setBrand(@NotNull Player player) {
         if (playerChannelsField == null) {
             try {
                 playerChannelsField = player.getClass().getDeclaredField("channels");
@@ -63,12 +64,12 @@ public class ServerBrand {
         updateBrand(player);
     }
 
-    public void updateBrand(Player player) {
+    public void updateBrand(@NotNull Player player) {
         String brandString = FileManager.locale.getStringList("server.brand.message").get(0);
         updateBrand(player, brandString);
     }
 
-    public void updateBrand(Player player, String brandString) {
+    public void updateBrand(@NotNull Player player, @NotNull String brandString) {
         player.sendPluginMessage(Main.getInstance(), channel,
                 new PacketSerializer(ObjectUtil.formatString(brandString, player) + ChatColor.RESET).toArray());
     }

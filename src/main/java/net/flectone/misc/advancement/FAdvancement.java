@@ -7,8 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 // Thanks, @CroaBeast, for these methods
 // Source https://github.com/CroaBeast/AdvancementInfo
@@ -19,9 +17,7 @@ public class FAdvancement {
     private String toChat = null;
     private String hidden = null;
     private FAdvancementType type = FAdvancementType.UNKNOWN;
-    private Object requirements = null;
     private ItemStack item = null;
-    private Object rewards = null, criteria = null;
     private String translateKey;
     private String translateDesc;
 
@@ -30,18 +26,18 @@ public class FAdvancement {
     public FAdvancement(@NotNull Advancement adv) {
         this.adv = adv;
 
-        Class<?> craftClass = net.flectone.utils.NMSUtil.getBukkitClass("advancement.CraftAdvancement");
+        Class<?> craftClass = NMSUtil.getBukkitClass("advancement.CraftAdvancement");
         if (craftClass == null) return;
 
-        Object nmsAdv = net.flectone.utils.NMSUtil.getObject(craftClass, craftClass.cast(adv), "getHandle");
-        Object display = net.flectone.utils.NMSUtil.getObject(nmsAdv, is_19_4() ? "d" : "c");
+        Object nmsAdv = NMSUtil.getObject(craftClass, craftClass.cast(adv), "getHandle");
+        Object display = NMSUtil.getObject(nmsAdv, is_19_4() ? "d" : "c");
         if (display == null) return;
 
-        Object rawTitle = net.flectone.utils.NMSUtil.getObject(display, "a");
-        Object rawDesc = net.flectone.utils.NMSUtil.getObject(display, "b");
+        Object rawTitle = NMSUtil.getObject(display, "a");
+        Object rawDesc = NMSUtil.getObject(display, "b");
 
-        translateKey = String.valueOf(net.flectone.utils.NMSUtil.getObject(net.flectone.utils.NMSUtil.getObject(rawTitle, "b"), "a"));
-        translateDesc = String.valueOf(net.flectone.utils.NMSUtil.getObject(net.flectone.utils.NMSUtil.getObject(rawDesc, "b"), "a"));
+        translateKey = String.valueOf(NMSUtil.getObject(NMSUtil.getObject(rawTitle, "b"), "a"));
+        translateDesc = String.valueOf(NMSUtil.getObject(NMSUtil.getObject(rawDesc, "b"), "a"));
 
         Field itemField = null;
         try {
@@ -61,30 +57,26 @@ public class FAdvancement {
             }
         }
 
-        String typeName = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "e"), "PROGRESS");
+        String typeName = NMSUtil.checkValue(NMSUtil.getObject(display, "e"), "PROGRESS");
         this.type = FAdvancementType.getType(typeName);
 
-        toChat = net.flectone.utils.NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "i"));
-        hidden = NMSUtil.checkValue(net.flectone.utils.NMSUtil.getObject(display, "j"));
+        toChat = NMSUtil.checkValue(NMSUtil.getObject(display, "i"));
+        hidden = NMSUtil.checkValue(NMSUtil.getObject(display, "j"));
 
-        item = net.flectone.utils.NMSUtil.getBukkitItem(nmsItemStack);
-        requirements = net.flectone.utils.NMSUtil.getObject(nmsAdv, is_19_4() ? "j" : "i");
-        rewards = net.flectone.utils.NMSUtil.getObject(nmsAdv, is_19_4() ? "e" : "d");
-        criteria = net.flectone.utils.NMSUtil.getObject(nmsAdv, is_19_4() ? "g" :
-                (net.flectone.utils.NMSUtil.getVersion() < 18 ? "getCriteria" : "f"));
+        item = NMSUtil.getBukkitItem(nmsItemStack);
 
-        Class<?> chatClass = net.flectone.utils.NMSUtil.getVersion() >= 17 ?
-                net.flectone.utils.NMSUtil.getNMSClass("net.minecraft.network.chat", COMP_CLASS, false) :
-                net.flectone.utils.NMSUtil.getNMSClass(null, COMP_CLASS, true);
+        Class<?> chatClass = NMSUtil.getVersion() >= 17 ?
+                NMSUtil.getNMSClass("net.minecraft.network.chat", COMP_CLASS, false) :
+                NMSUtil.getNMSClass(null, COMP_CLASS, true);
 
         if (chatClass != null) {
-            String method = net.flectone.utils.NMSUtil.getVersion() < 13 ? "toPlainText" : "getString";
-            title = String.valueOf(net.flectone.utils.NMSUtil.getObject(chatClass, rawTitle, method));
+            String method = NMSUtil.getVersion() < 13 ? "toPlainText" : "getString";
+            title = String.valueOf(NMSUtil.getObject(chatClass, rawTitle, method));
         }
     }
 
     private static boolean is_19_4() {
-        return net.flectone.utils.NMSUtil.getVersion() >= 19.4;
+        return NMSUtil.getVersion() >= 19.4;
     }
 
     private static boolean getBool(String string) {
@@ -127,30 +119,6 @@ public class FAdvancement {
     @Nullable
     public ItemStack getItem() {
         return item;
-    }
-
-    @Nullable
-    public Object getRewards() {
-        return rewards;
-    }
-
-    @SuppressWarnings("unchecked")
-    @NotNull
-    public Map<String, Object> getCriteria() {
-        try {
-            return criteria == null ? new HashMap<>() : (Map<String, Object>) criteria;
-        } catch (Exception e) {
-            return new HashMap<>();
-        }
-    }
-
-    @Nullable
-    public String[][] getRequirements() {
-        try {
-            return (String[][]) requirements;
-        } catch (Exception e) {
-            return null;
-        }
     }
 }
 
