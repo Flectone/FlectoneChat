@@ -112,19 +112,19 @@ Usage: `/mark <color>`\
 Aliases: `f`, `m`\
 Permission: `flectonechat.mark` (default)
 
-## /mail
+## /playerMail
 
 Send an offline message to the player (will be sent when the player is online)
 
-Usage: `/mail <player> <message>`\
-Permission: `flectonechat.mail` (default)
+Usage: `/playerMail <player> <message>`\
+Permission: `flectonechat.playerMail` (default)
 
-## /mail-clear
+## /playerMail-clear
 
-Delete sended mail by id
+Delete sended playerMail by id
 
-Usage: `mail-clear <player> <number>`\
-Permission: `flectonechat.mail` (default)
+Usage: `playerMail-clear <player> <number>`\
+Permission: `flectonechat.playerMail` (default)
 
 ## /afk
 

@@ -5,7 +5,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.entity.player.PlayerMod;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -36,10 +36,10 @@ public class CommandUnban implements FTabCompleter {
             return;
         }
 
-        ModInfo modInfo = Main.getDatabase()
+        PlayerMod playerMod = Main.getDatabase()
                 .getPlayerInfo("bans", "player", fPlayer.getUUID().toString());
 
-        if (modInfo == null) {
+        if (playerMod == null) {
             fCommand.sendMeMessage("command.unban.not-banned");
             return;
         }

@@ -1,4 +1,4 @@
-package net.flectone.misc.entity.info;
+package net.flectone.misc.entity.player;
 
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
-public class ModInfo {
+public class PlayerMod {
 
     private final String player;
     private final int time;
@@ -16,7 +16,7 @@ public class ModInfo {
     private final String playerName;
     private final String moderatorName;
 
-    public ModInfo(String player, int time, String reason, String moderator) {
+    public PlayerMod(String player, int time, String reason, String moderator) {
         this.player = player;
         this.time = time;
         this.reason = reason;

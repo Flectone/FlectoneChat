@@ -1,6 +1,6 @@
 package net.flectone.misc.components;
 
-import net.flectone.misc.entity.FDamager;
+import net.flectone.misc.entity.player.PlayerDamager;
 import net.flectone.utils.NMSUtil;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.bukkit.entity.Entity;
@@ -12,8 +12,8 @@ public class FLocaleComponent extends FComponent{
         super(new TranslatableComponent(string));
     }
 
-    public FLocaleComponent(FDamager fDamager) {
-        this(fDamager.getDamagerTranslateName());
+    public FLocaleComponent(PlayerDamager playerDamager) {
+        this(playerDamager.getDamagerTranslateName());
     }
 
     public FLocaleComponent(Entity entity) {

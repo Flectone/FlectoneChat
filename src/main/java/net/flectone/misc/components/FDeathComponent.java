@@ -1,6 +1,6 @@
 package net.flectone.misc.components;
 
-import net.flectone.misc.entity.FDamager;
+import net.flectone.misc.entity.player.PlayerDamager;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ import static net.flectone.managers.FileManager.locale;
 
 public class FDeathComponent extends FComponent {
 
-    public FDeathComponent(@NotNull ArrayList<String> placeholders, @NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull FDamager fDamager) {
+    public FDeathComponent(@NotNull ArrayList<String> placeholders, @NotNull CommandSender recipient, @NotNull CommandSender sender, @NotNull PlayerDamager playerDamager) {
         String mainColor = "";
         ComponentBuilder mainBuilder = new ComponentBuilder();
 
@@ -25,8 +25,8 @@ public class FDeathComponent extends FComponent {
                 case "<player>" -> mainBuilder.append(new FPlayerComponent(recipient, sender, mainColor + sender.getName()).get());
 
                 case "<projectile>", "<killer>" -> {
-                    if (fDamager.getFinalEntity() == null) break;
-                    Entity entity = fDamager.getFinalEntity();
+                    if (playerDamager.getFinalEntity() == null) break;
+                    Entity entity = playerDamager.getFinalEntity();
                     if (entity instanceof Player) {
                         mainBuilder.append(new FPlayerComponent(recipient, entity, mainColor + entity.getName()).get());
                         break;
@@ -34,12 +34,12 @@ public class FDeathComponent extends FComponent {
                     mainBuilder.append(new FColorComponent(new FEntityComponent(recipient, sender, entity), mainColor).get());
                 }
                 case "<block>" -> {
-                    if (!fDamager.isFinalBlock()) break;
-                    mainBuilder.append(new FColorComponent(new FLocaleComponent(fDamager), mainColor).get());
+                    if (!playerDamager.isFinalBlock()) break;
+                    mainBuilder.append(new FColorComponent(new FLocaleComponent(playerDamager), mainColor).get());
                 }
                 case "<due_to>" -> {
-                    if (fDamager.getKiller() == null || fDamager.getKiller().equals(fDamager.getFinalEntity())
-                            || (fDamager.getFinalEntity() != null && fDamager.getKiller().getType().equals(fDamager.getFinalEntity().getType()))) {
+                    if (playerDamager.getKiller() == null || playerDamager.getKiller().equals(playerDamager.getFinalEntity())
+                            || (playerDamager.getFinalEntity() != null && playerDamager.getKiller().getType().equals(playerDamager.getFinalEntity().getType()))) {
                         break;
                     }
                     String formatDueToMessage = locale.getFormatString("death.due-to", recipient, sender);
@@ -47,7 +47,7 @@ public class FDeathComponent extends FComponent {
                     ComponentBuilder dueToBuilder = new ComponentBuilder();
                     for (String dueToPlaceholder : ObjectUtil.splitLine(formatDueToMessage, new ArrayList<>(List.of("<killer>")))) {
                         if (dueToPlaceholder.equals("<killer>")) {
-                            Entity killer = fDamager.getKiller();
+                            Entity killer = playerDamager.getKiller();
                             if (killer instanceof Player) {
                                 dueToBuilder.append(new FPlayerComponent(recipient, killer, dueToColor + killer.getName()).get(), ComponentBuilder.FormatRetention.NONE);
 
@@ -63,7 +63,7 @@ public class FDeathComponent extends FComponent {
                 }
 
                 case "<by_item>" -> {
-                    if (fDamager.getKillerItemName() == null) break;
+                    if (playerDamager.getKillerItemName() == null) break;
                     String formatMessage = locale.getFormatString("death.by-item", recipient, sender);
                     String byItemColor = "";
 
@@ -71,7 +71,7 @@ public class FDeathComponent extends FComponent {
                     for (String byItemPlaceholder : ObjectUtil.splitLine(formatMessage, new ArrayList<>(List.of("<item>")))) {
                         if (byItemPlaceholder.equals("<item>")) {
 
-                            FComponent byItemComponent = new FLocaleComponent(fDamager.getKillerItem());
+                            FComponent byItemComponent = new FLocaleComponent(playerDamager.getKillerItem());
 
                             byItemBuilder.append(new FColorComponent(byItemComponent, byItemColor).get());
 

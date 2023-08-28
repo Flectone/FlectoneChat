@@ -1,4 +1,4 @@
-package net.flectone.misc.entity;
+package net.flectone.misc.entity.player;
 
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.ObjectUtil;
@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FDamager {
+public class PlayerDamager {
 
     private int time;
     private Entity killer;
@@ -19,7 +19,7 @@ public class FDamager {
     private String damagerTranslateName;
     private ItemStack killerItem;
 
-    public FDamager() {}
+    public PlayerDamager() {}
 
     public void replaceDamager(@Nullable Entity damager) {
         killer = damager;

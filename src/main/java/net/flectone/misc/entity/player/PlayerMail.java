@@ -1,24 +1,24 @@
-package net.flectone.misc.entity.info;
+package net.flectone.misc.entity.player;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class Mail {
+public class PlayerMail {
 
     private final UUID uuid;
     private final UUID sender;
     private final UUID receiver;
     private final String message;
 
-    public Mail(@NotNull UUID uuid, @NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
+    public PlayerMail(@NotNull UUID uuid, @NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
         this.uuid = uuid;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
     }
 
-    public Mail(@NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
+    public PlayerMail(@NotNull UUID sender, @NotNull UUID receiver, @NotNull String message) {
         this(UUID.randomUUID(), sender, receiver, message);
     }
 

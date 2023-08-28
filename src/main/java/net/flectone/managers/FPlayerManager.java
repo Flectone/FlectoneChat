@@ -3,7 +3,7 @@ package net.flectone.managers;
 import net.flectone.Main;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.entity.player.PlayerMod;
 import org.bukkit.BanEntry;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -76,9 +76,9 @@ public class FPlayerManager {
                     ? banEntry.getReason()
                     : locale.getString("command.tempban.default-reason");
 
-            ModInfo modInfo = new ModInfo(offlinePlayer.getUniqueId().toString(), -1, reason, source);
+            PlayerMod playerMod = new PlayerMod(offlinePlayer.getUniqueId().toString(), -1, reason, source);
             Main.getDataThreadPool().execute(() ->
-                    Main.getDatabase().updatePlayerInfo("bans", modInfo));
+                    Main.getDatabase().updatePlayerInfo("bans", playerMod));
 
             banList.pardon(offlinePlayer.getName());
         });

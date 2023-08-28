@@ -1,16 +1,16 @@
-package net.flectone.misc.entity.info;
+package net.flectone.misc.entity.player;
 
 import java.util.HashMap;
 import java.util.Set;
 
-public class ChatInfo {
+public class PlayerChat {
 
     private final String player;
     private String chatType;
 
     private final HashMap<String, Boolean> options;
 
-    public ChatInfo(String playerUUID) {
+    public PlayerChat(String playerUUID) {
         this.player = playerUUID;
         this.options = new HashMap<>();
     }

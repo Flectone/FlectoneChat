@@ -1,4 +1,4 @@
-package net.flectone.misc.entity.info;
+package net.flectone.misc.entity.player;
 
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;

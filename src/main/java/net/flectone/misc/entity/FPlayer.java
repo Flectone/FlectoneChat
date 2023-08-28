@@ -6,10 +6,7 @@ import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
-import net.flectone.misc.entity.info.Mail;
-import net.flectone.misc.entity.info.ChatInfo;
-import net.flectone.misc.entity.info.ModInfo;
-import net.flectone.misc.entity.info.PlayerWarn;
+import net.flectone.misc.entity.player.*;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
@@ -40,7 +37,7 @@ public class FPlayer {
     private final OfflinePlayer offlinePlayer;
     private final String name;
     private final UUID uuid;
-    private final HashMap<UUID, Mail> mails = new HashMap<>();
+    private final HashMap<UUID, PlayerMail> mails = new HashMap<>();
     private final List<String> listChatBubbles = new ArrayList<>();
     private Player player;
     private Block block;
@@ -52,10 +49,10 @@ public class FPlayer {
     private String[] colors = new String[]{};
     private ArrayList<UUID> ignoreList = new ArrayList<>();
     private List<Inventory> inventoryList = new ArrayList<>();
-    private ModInfo muteInfo = null;
-    private ModInfo banInfo = null;
+    private PlayerMod muteInfo = null;
+    private PlayerMod banInfo = null;
     private List<PlayerWarn> warnList = null;
-    private ChatInfo chatInfo = null;
+    private PlayerChat playerChat = null;
     private int numberLastInventory;
     private int lastTimeMoved;
     private String streamPrefix = "";
@@ -64,7 +61,7 @@ public class FPlayer {
     private String vaultPrefix = "";
     private Player lastWriter;
     private String worldPrefix = "";
-    private FDamager lastFDamager = new FDamager();
+    private PlayerDamager lastPlayerDamager = new PlayerDamager();
 
     public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
         this.offlinePlayer = offlinePlayer;
@@ -103,17 +100,17 @@ public class FPlayer {
 
         if (mails.isEmpty() || player == null) return;
 
-        mails.values().forEach(mail -> {
-            String playerName = Bukkit.getOfflinePlayer(mail.getSender()).getName();
+        mails.values().forEach(playerMail -> {
+            String playerName = Bukkit.getOfflinePlayer(playerMail.getSender()).getName();
             if (playerName == null) return;
 
             String localeString = locale.getFormatString("command.mail.get", player)
                     .replace("<player>", playerName);
 
-            String newLocaleString = localeString.replace("<message>", mail.getMessage());
+            String newLocaleString = localeString.replace("<message>", playerMail.getMessage());
             player.sendMessage(newLocaleString);
 
-            Main.getDatabase().updatePlayerInfo("mails", mail);
+            Main.getDatabase().updatePlayerInfo("mails", playerMail);
         });
 
         mails.clear();
@@ -121,12 +118,12 @@ public class FPlayer {
         Main.getDatabase().updateFPlayer(this, "mails");
     }
 
-    public void setChatInfo(ChatInfo chatInfo) {
-        this.chatInfo = chatInfo;
+    public void setChatInfo(PlayerChat playerChat) {
+        this.playerChat = playerChat;
     }
 
-    public ChatInfo getChatInfo() {
-        return chatInfo;
+    public PlayerChat getChatInfo() {
+        return playerChat;
     }
 
     public boolean isOnline() {
@@ -166,7 +163,7 @@ public class FPlayer {
         return this.uuid;
     }
 
-    public ModInfo getMute() {
+    public PlayerMod getMute() {
         return this.muteInfo;
     }
 
@@ -265,7 +262,7 @@ public class FPlayer {
     public void mute(int time, @NotNull String reason, @Nullable String moderatorUUID) {
         int finalTime = time + ObjectUtil.getCurrentTime();
 
-        this.muteInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        this.muteInfo = new PlayerMod(this.uuid.toString(), finalTime, reason, moderatorUUID);
 
         Main.getDataThreadPool().execute(() ->
                 Main.getDatabase().updatePlayerInfo("mutes", muteInfo));
@@ -281,11 +278,11 @@ public class FPlayer {
     public void tempban(int time, @NotNull String reason, @Nullable String moderatorUUID) {
         int finalTime = time == -1 ? -1 : time + ObjectUtil.getCurrentTime();
 
-        ModInfo modInfo = new ModInfo(this.uuid.toString(), finalTime, reason, moderatorUUID);
-        this.banInfo = modInfo;
+        PlayerMod playerMod = new PlayerMod(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        this.banInfo = playerMod;
 
         Main.getDataThreadPool().execute(() ->
-                Main.getDatabase().updatePlayerInfo("bans", modInfo));
+                Main.getDatabase().updatePlayerInfo("bans", playerMod));
 
         if (player == null || !offlinePlayer.isOnline()) return;
 
@@ -510,12 +507,12 @@ public class FPlayer {
     }
 
     @NotNull
-    public HashMap<UUID, Mail> getMails() {
+    public HashMap<UUID, PlayerMail> getMails() {
         return mails;
     }
 
-    public void addMail(@NotNull UUID uuid, @NotNull Mail mail) {
-        mails.put(uuid, mail);
+    public void addMail(@NotNull UUID uuid, @NotNull PlayerMail playerMail) {
+        mails.put(uuid, playerMail);
     }
 
     public void removeMail(@NotNull UUID uuid) {
@@ -548,20 +545,20 @@ public class FPlayer {
     }
 
     @Nullable
-    public FDamager getLastFDamager() {
-        return lastFDamager;
+    public PlayerDamager getLastFDamager() {
+        return lastPlayerDamager;
     }
 
     public void setLastDamager(@Nullable Entity lastDamager) {
-        this.lastFDamager.replaceDamager(lastDamager);
+        this.lastPlayerDamager.replaceDamager(lastDamager);
     }
 
     public void resetLastDamager() {
-        this.lastFDamager = new FDamager();
+        this.lastPlayerDamager = new PlayerDamager();
     }
 
     public boolean isDeathByObject() {
-        return ObjectUtil.getCurrentTime() - this.lastFDamager.getTime() < 5;
+        return ObjectUtil.getCurrentTime() - this.lastPlayerDamager.getTime() < 5;
     }
 
     public void spigotMessage(BaseComponent baseComponent) {

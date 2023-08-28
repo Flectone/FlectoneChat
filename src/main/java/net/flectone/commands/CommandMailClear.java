@@ -5,7 +5,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.Mail;
+import net.flectone.misc.entity.player.PlayerMail;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -39,7 +39,7 @@ public class CommandMailClear implements FTabCompleter {
 
         fPlayer.synchronizeDatabase();
 
-        HashMap<UUID, Mail> mailsList = fPlayer.getMails();
+        HashMap<UUID, PlayerMail> mailsList = fPlayer.getMails();
 
         if (fPlayer.isOnline() || mailsList.isEmpty()) {
             fCommand.sendMeMessage("command.mail-clear.empty");
@@ -55,7 +55,7 @@ public class CommandMailClear implements FTabCompleter {
 
         int number = Integer.parseInt(strings[1]);
 
-        Map.Entry<UUID, Mail> entry = mailsList.entrySet().parallelStream()
+        Map.Entry<UUID, PlayerMail> entry = mailsList.entrySet().parallelStream()
                 .filter(mailEntry -> mailEntry.getValue().getSender().equals(fCommand.getFPlayer().getUUID()))
                 .skip(number - 1)
                 .findFirst()
@@ -94,7 +94,7 @@ public class CommandMailClear implements FTabCompleter {
                 if (!fPlayer.isOnline() && fPlayer.getChatInfo() == null)
                     fPlayer.synchronizeDatabase();
 
-                HashMap<UUID, Mail> mailsList = fPlayer.getMails();
+                HashMap<UUID, PlayerMail> mailsList = fPlayer.getMails();
 
                 if (mailsList.isEmpty()) break;
 

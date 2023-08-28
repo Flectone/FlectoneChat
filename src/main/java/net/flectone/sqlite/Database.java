@@ -4,10 +4,10 @@ import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
 import net.flectone.managers.FileManager;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.ChatInfo;
-import net.flectone.misc.entity.info.Mail;
-import net.flectone.misc.entity.info.ModInfo;
-import net.flectone.misc.entity.info.PlayerWarn;
+import net.flectone.misc.entity.player.PlayerChat;
+import net.flectone.misc.entity.player.PlayerMail;
+import net.flectone.misc.entity.player.PlayerMod;
+import net.flectone.misc.entity.player.PlayerWarn;
 import net.flectone.misc.files.FYamlConfiguration;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -99,7 +99,7 @@ public abstract class Database {
     }
 
     @Nullable
-    public ModInfo getPlayerInfo(@NotNull String table, @NotNull String column, @NotNull String filter) {
+    public PlayerMod getPlayerInfo(@NotNull String table, @NotNull String column, @NotNull String filter) {
         try (Connection conn = getSQLConnection()) {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE " + column + " = ?");
             preparedStatement.setString(1, filter);
@@ -110,7 +110,7 @@ public abstract class Database {
             int time = playerResult.getInt(2);
             String reason = playerResult.getString(3);
             String moderator = playerResult.getString(4);
-            return new ModInfo(filter, time, reason, moderator);
+            return new PlayerMod(filter, time, reason, moderator);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,7 +152,7 @@ public abstract class Database {
                     ResultSet resultMail = ps2.executeQuery();
                     resultMail.next();
 
-                    fPlayer.addMail(UUID.fromString(uuid), new Mail(UUID.fromString(uuid),
+                    fPlayer.addMail(UUID.fromString(uuid), new PlayerMail(UUID.fromString(uuid),
                             UUID.fromString(resultMail.getString("sender")),
                             UUID.fromString(resultMail.getString("receiver")),
                             resultMail.getString("message")));
@@ -180,55 +180,55 @@ public abstract class Database {
                 }
             }
 
-            ChatInfo chatInfo = new ChatInfo(fPlayer.getUUID().toString());
+            PlayerChat playerChat = new PlayerChat(fPlayer.getUUID().toString());
 
             String chat = playerResult.getString("chat");
-            chatInfo.setChatType(chat == null ? "local" : chat);
+            playerChat.setChatType(chat == null ? "local" : chat);
 
             String option = playerResult.getString("enable_advancements");
-            chatInfo.setOption("advancement", parseBoolean("advancement.message.enable", option));
+            playerChat.setOption("advancement", parseBoolean("advancement.message.enable", option));
 
             option = playerResult.getString("enable_deaths");
-            chatInfo.setOption("death", parseBoolean("death.message.enable", option));
+            playerChat.setOption("death", parseBoolean("death.message.enable", option));
 
             option = playerResult.getString("enable_joins");
-            chatInfo.setOption("join", parseBoolean("player.join.message.enable", option));
+            playerChat.setOption("join", parseBoolean("player.join.message.enable", option));
 
             option = playerResult.getString("enable_quits");
-            chatInfo.setOption("quit", parseBoolean("player.quit.message.enable", option));
+            playerChat.setOption("quit", parseBoolean("player.quit.message.enable", option));
 
             option = playerResult.getString("enable_command_me");
-            chatInfo.setOption("me", parseBoolean("command.me.enable", option));
+            playerChat.setOption("me", parseBoolean("command.me.enable", option));
 
             option = playerResult.getString("enable_command_try");
-            chatInfo.setOption("try", parseBoolean("command.try.enable", option));
+            playerChat.setOption("try", parseBoolean("command.try.enable", option));
 
             option = playerResult.getString("enable_command_try_cube");
-            chatInfo.setOption("try-cube", parseBoolean("command.try-cube.enable", option));
+            playerChat.setOption("try-cube", parseBoolean("command.try-cube.enable", option));
 
             option = playerResult.getString("enable_command_ball");
-            chatInfo.setOption("ball", parseBoolean("command.ball.enable", option));
+            playerChat.setOption("ball", parseBoolean("command.ball.enable", option));
 
             option = playerResult.getString("enable_command_tempban");
-            chatInfo.setOption("tempban", parseBoolean("command.tempban.enable", option));
+            playerChat.setOption("tempban", parseBoolean("command.tempban.enable", option));
 
             option = playerResult.getString("enable_command_mute");
-            chatInfo.setOption("mute", parseBoolean("command.mute.enable", option));
+            playerChat.setOption("mute", parseBoolean("command.mute.enable", option));
 
             option = playerResult.getString("enable_command_warn");
-            chatInfo.setOption("warn", parseBoolean("command.warn.enable", option));
+            playerChat.setOption("warn", parseBoolean("command.warn.enable", option));
 
             option = playerResult.getString("enable_command_msg");
-            chatInfo.setOption("msg", parseBoolean("command.msg.enable", option));
+            playerChat.setOption("msg", parseBoolean("command.msg.enable", option));
 
             option = playerResult.getString("enable_command_reply");
-            chatInfo.setOption("reply", parseBoolean("command.reply.enable", option));
+            playerChat.setOption("reply", parseBoolean("command.reply.enable", option));
 
             option = playerResult.getString("enable_command_mail");
-            chatInfo.setOption("mail", parseBoolean("command.mail.enable", option));
+            playerChat.setOption("mail", parseBoolean("command.mail.enable", option));
 
             option = playerResult.getString("enable_command_tic_tac_toe");
-            chatInfo.setOption("tic-tac-toe", parseBoolean("command.tic-tac-toe.enable", option));
+            playerChat.setOption("tic-tac-toe", parseBoolean("command.tic-tac-toe.enable", option));
 
             if (fPlayer.hasPermission("flectonechat.stream")) {
                 fPlayer.setStreaming(Boolean.parseBoolean(playerResult.getString("stream")));
@@ -238,7 +238,7 @@ public abstract class Database {
                 fPlayer.setSpies(Boolean.parseBoolean(playerResult.getString("spy")));
             }
 
-            fPlayer.setChatInfo(chatInfo);
+            fPlayer.setChatInfo(playerChat);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -369,8 +369,8 @@ public abstract class Database {
         return arrayList;
     }
 
-    public ArrayList<ModInfo> getModInfoList(String table, int limit, int skip) {
-        ArrayList<ModInfo> modInfos = new ArrayList<>();
+    public ArrayList<PlayerMod> getModInfoList(String table, int limit, int skip) {
+        ArrayList<PlayerMod> playerMods = new ArrayList<>();
         try (Connection conn = getSQLConnection()) {
 
             String filter = " WHERE time>?";
@@ -387,14 +387,14 @@ public abstract class Database {
                 String reason = playerResult.getString(3);
                 String moderator = playerResult.getString(4);
 
-                modInfos.add(new ModInfo(playerUUID, time, reason, moderator));
+                playerMods.add(new PlayerMod(playerUUID, time, reason, moderator));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return modInfos;
+        return playerMods;
     }
 
     public void updateFPlayer(@NotNull FPlayer fPlayer, @NotNull String column) {
@@ -509,13 +509,13 @@ public abstract class Database {
             preparedStatement.setString(2, playerUUID);
             preparedStatement.executeUpdate();
 
-            fPlayer.getMails().forEach((uuid, mail) -> {
+            fPlayer.getMails().forEach((uuid, playerMail) -> {
                 try {
                     PreparedStatement ps2 = connection.prepareStatement("REPLACE INTO mails (uuid,sender,receiver,message) VALUES(?,?,?,?)");
-                    ps2.setString(1, mail.getUUID().toString());
-                    ps2.setString(2, mail.getSender().toString());
-                    ps2.setString(3, mail.getReceiver().toString());
-                    ps2.setString(4, mail.getMessage());
+                    ps2.setString(1, playerMail.getUUID().toString());
+                    ps2.setString(2, playerMail.getSender().toString());
+                    ps2.setString(3, playerMail.getReceiver().toString());
+                    ps2.setString(4, playerMail.getMessage());
                     ps2.executeUpdate();
                     ps2.close();
                 } catch (SQLException e) {
@@ -541,20 +541,20 @@ public abstract class Database {
 
             switch (table) {
                 case "mutes", "bans" -> {
-                    ModInfo modInfo = (ModInfo) playerInfo;
+                    PlayerMod playerMod = (PlayerMod) playerInfo;
 
                     PreparedStatement preparedStatement = connection.prepareStatement("REPLACE INTO " + table + " (player, time, reason, moderator) VALUES(?,?,?,?)");
 
-                    preparedStatement.setString(1, modInfo.getPlayer());
-                    preparedStatement.setInt(2, modInfo.getTime());
-                    preparedStatement.setString(3, modInfo.getReason());
-                    preparedStatement.setString(4, modInfo.getModerator());
+                    preparedStatement.setString(1, playerMod.getPlayer());
+                    preparedStatement.setInt(2, playerMod.getTime());
+                    preparedStatement.setString(3, playerMod.getReason());
+                    preparedStatement.setString(4, playerMod.getModerator());
 
                     preparedStatement.executeUpdate();
                 }
                 case "mails" -> {
-                    Mail mail = (Mail) playerInfo;
-                    deleteRow("mails", "uuid", mail.getUUID().toString());
+                    PlayerMail playerMail = (PlayerMail) playerInfo;
+                    deleteRow("mails", "uuid", playerMail.getUUID().toString());
                 }
                 case "warns" -> {
                     PlayerWarn playerWarn = (PlayerWarn) playerInfo;
@@ -562,7 +562,7 @@ public abstract class Database {
                 }
                 case "chats" -> {
 
-                    ChatInfo chatInfo = (ChatInfo) playerInfo;
+                    PlayerChat playerChat = (PlayerChat) playerInfo;
 
                     PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET enable_advancements=?," +
                             "enable_deaths=?,enable_joins=?,enable_quits=?,enable_command_me=?,enable_command_try=?," +
@@ -570,22 +570,22 @@ public abstract class Database {
                             "enable_command_warn=?,enable_command_msg=?,enable_command_reply=?,enable_command_mail=?," +
                             "enable_command_tic_tac_toe=? WHERE uuid=?");
 
-                    preparedStatement.setString(1, chatInfo.getOptionString(("advancement")));
-                    preparedStatement.setString(2, chatInfo.getOptionString(("death")));
-                    preparedStatement.setString(3, chatInfo.getOptionString(("join")));
-                    preparedStatement.setString(4, chatInfo.getOptionString(("quit")));
-                    preparedStatement.setString(5, chatInfo.getOptionString(("me")));
-                    preparedStatement.setString(6, chatInfo.getOptionString(("try")));
-                    preparedStatement.setString(7, chatInfo.getOptionString(("try-cube")));
-                    preparedStatement.setString(8, chatInfo.getOptionString(("ball")));
-                    preparedStatement.setString(9, chatInfo.getOptionString(("tempban")));
-                    preparedStatement.setString(10, chatInfo.getOptionString(("mute")));
-                    preparedStatement.setString(11, chatInfo.getOptionString(("warn")));
-                    preparedStatement.setString(12, chatInfo.getOptionString(("msg")));
-                    preparedStatement.setString(13, chatInfo.getOptionString(("reply")));
-                    preparedStatement.setString(14, chatInfo.getOptionString(("mail")));
-                    preparedStatement.setString(15, chatInfo.getOptionString(("tic-tac-toe")));
-                    preparedStatement.setString(16, chatInfo.getPlayer());
+                    preparedStatement.setString(1, playerChat.getOptionString(("advancement")));
+                    preparedStatement.setString(2, playerChat.getOptionString(("death")));
+                    preparedStatement.setString(3, playerChat.getOptionString(("join")));
+                    preparedStatement.setString(4, playerChat.getOptionString(("quit")));
+                    preparedStatement.setString(5, playerChat.getOptionString(("me")));
+                    preparedStatement.setString(6, playerChat.getOptionString(("try")));
+                    preparedStatement.setString(7, playerChat.getOptionString(("try-cube")));
+                    preparedStatement.setString(8, playerChat.getOptionString(("ball")));
+                    preparedStatement.setString(9, playerChat.getOptionString(("tempban")));
+                    preparedStatement.setString(10, playerChat.getOptionString(("mute")));
+                    preparedStatement.setString(11, playerChat.getOptionString(("warn")));
+                    preparedStatement.setString(12, playerChat.getOptionString(("msg")));
+                    preparedStatement.setString(13, playerChat.getOptionString(("reply")));
+                    preparedStatement.setString(14, playerChat.getOptionString(("mail")));
+                    preparedStatement.setString(15, playerChat.getOptionString(("tic-tac-toe")));
+                    preparedStatement.setString(16, playerChat.getPlayer());
 
                     preparedStatement.executeUpdate();
                 }

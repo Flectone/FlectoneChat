@@ -7,7 +7,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.components.FDeathComponent;
-import net.flectone.misc.entity.FDamager;
+import net.flectone.misc.entity.player.PlayerDamager;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -114,75 +114,75 @@ public class PlayerDeathEventListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if (fPlayer == null) return;
 
-        FDamager fDamager = fPlayer.getLastFDamager();
-        if (fDamager == null) return;
+        PlayerDamager playerDamager = fPlayer.getLastFDamager();
+        if (playerDamager == null) return;
 
         ArrayList<String> placeholders = new ArrayList<>();
         placeholders.add("<player>");
         placeholders.add("<due_to>");
 
-        if (!fPlayer.isDeathByObject()) fDamager.setKiller(null);
+        if (!fPlayer.isDeathByObject()) playerDamager.setKiller(null);
 
         switch (lastDamageEvent.getCause()) {
             case ENTITY_EXPLOSION -> {
                 placeholders.add("<killer>");
                 Entity lastDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setFinalDamager(lastDamager);
-                if (isTNT(lastDamager, fDamager)) break;
-                isProjectile(lastDamager, fDamager);
+                playerDamager.setFinalDamager(lastDamager);
+                if (isTNT(lastDamager, playerDamager)) break;
+                isProjectile(lastDamager, playerDamager);
             }
             case ENTITY_ATTACK -> {
                 placeholders.add("<killer>");
                 Entity lastEntityAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setFinalDamager(lastEntityAttackDamager);
+                playerDamager.setFinalDamager(lastEntityAttackDamager);
                 if (lastEntityAttackDamager instanceof Player ) {
                     placeholders.add("<by_item>");
 
                     ItemStack itemStack = ((Player) lastEntityAttackDamager).getInventory().getItemInMainHand();
                     if (!itemStack.getType().equals(Material.AIR)) {
-                        fDamager.setKiller(lastEntityAttackDamager);
-                        fDamager.setKillerItem(itemStack);
+                        playerDamager.setKiller(lastEntityAttackDamager);
+                        playerDamager.setKillerItem(itemStack);
                     }
                 }
             }
             case FALLING_BLOCK -> {
                 placeholders.add("<killer>");
                 Entity lastDamagerBlock = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setFinalDamager(lastDamagerBlock);
+                playerDamager.setFinalDamager(lastDamagerBlock);
             }
             case BLOCK_EXPLOSION -> {
                 placeholders.add("<block>");
-                fDamager.setFinalDamager(lastBlockInteract);
-                fDamager.setKiller(lastInteractPlayer);
+                playerDamager.setFinalDamager(lastBlockInteract);
+                playerDamager.setKiller(lastInteractPlayer);
             }
             case CONTACT -> {
                 placeholders.add("<block>");
                 Block block = ((EntityDamageByBlockEvent) lastDamageEvent).getDamager();
                 if (block == null) break;
-                fDamager.setFinalDamager(block.getBlockData().getMaterial());
+                playerDamager.setFinalDamager(block.getBlockData().getMaterial());
             }
             case PROJECTILE -> {
                 placeholders.add("<projectile>");
                 Entity projectileEntity = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setFinalDamager(projectileEntity);
-                isProjectile(projectileEntity, fDamager);
+                playerDamager.setFinalDamager(projectileEntity);
+                isProjectile(projectileEntity, playerDamager);
             }
             case MAGIC -> {
                 if (!(lastDamageEvent instanceof EntityDamageByEntityEvent)) {
-                    fDamager.setKiller(null);
+                    playerDamager.setKiller(null);
                     break;
                 }
                 Entity lastMagicDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setFinalDamager(lastMagicDamager);
-                isProjectile(lastMagicDamager, fDamager);
+                playerDamager.setFinalDamager(lastMagicDamager);
+                isProjectile(lastMagicDamager, playerDamager);
             }
             case ENTITY_SWEEP_ATTACK, THORNS -> {
                 Entity lastEntitySweepAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
-                fDamager.setKiller(lastEntitySweepAttackDamager);
+                playerDamager.setKiller(lastEntitySweepAttackDamager);
             }
         }
 
-        String formatMessage = formatMessage(configMessage, player, fDamager);
+        String formatMessage = formatMessage(configMessage, player, playerDamager);
 
         FCommand fCommand = new FCommand(player, "death", "death", formatMessage.split(" "));
         fCommand.sendConsoleMessage(formatMessage);
@@ -192,7 +192,7 @@ public class PlayerDeathEventListener implements Listener {
                     String string = ObjectUtil.formatString(configMessage, recipient, player);
                     ArrayList<String> finalPlaceholders = ObjectUtil.splitLine(string, placeholders);
 
-                    recipient.spigot().sendMessage(new FDeathComponent(finalPlaceholders, recipient, player, fDamager).get());
+                    recipient.spigot().sendMessage(new FDeathComponent(finalPlaceholders, recipient, player, playerDamager).get());
                 });
 
 
@@ -204,11 +204,11 @@ public class PlayerDeathEventListener implements Listener {
         fPlayer.resetLastDamager();
     }
 
-    private String formatMessage(String message, Player player, FDamager fDamager) {
-        Entity finalEntity = fDamager.getFinalEntity();
-        Material finalBlock = fDamager.getFinalBlockDamager();
-        Entity killer = fDamager.getKiller();
-        ItemStack killerItem = fDamager.getKillerItem();
+    private String formatMessage(String message, Player player, PlayerDamager playerDamager) {
+        Entity finalEntity = playerDamager.getFinalEntity();
+        Material finalBlock = playerDamager.getFinalBlockDamager();
+        Entity killer = playerDamager.getKiller();
+        ItemStack killerItem = playerDamager.getKillerItem();
 
         message = message.replace("<player>", player.getName());
         if (finalEntity != null) message = message
@@ -262,22 +262,22 @@ public class PlayerDeathEventListener implements Listener {
         return message.replace(" ", "_");
     }
 
-    private boolean isProjectile(@NotNull Entity entity, @NotNull FDamager fDamager) {
+    private boolean isProjectile(@NotNull Entity entity, @NotNull PlayerDamager playerDamager) {
         if (entity instanceof Projectile projectile) {
             Entity shooter = (Entity) projectile.getShooter();
             if (shooter != null) {
-                fDamager.setKiller(shooter);
+                playerDamager.setKiller(shooter);
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isTNT(@NotNull Entity entity, @NotNull FDamager fDamager) {
+    private boolean isTNT(@NotNull Entity entity, @NotNull PlayerDamager playerDamager) {
         if (entity instanceof TNTPrimed tntPrimed) {
             Entity source = tntPrimed.getSource();
             if (source instanceof Player) {
-                fDamager.setKiller(source);
+                playerDamager.setKiller(source);
                 return true;
             }
         }

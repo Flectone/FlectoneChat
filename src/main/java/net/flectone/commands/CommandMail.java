@@ -5,7 +5,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.Mail;
+import net.flectone.misc.entity.player.PlayerMail;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -68,8 +68,8 @@ public class CommandMail implements FTabCompleter {
             return;
         }
 
-        Mail mail = new Mail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
-        fPlayer.addMail(mail.getUUID(), mail);
+        PlayerMail playerMail = new PlayerMail(fCommand.getFPlayer().getUUID(), fPlayer.getUUID(), message);
+        fPlayer.addMail(playerMail.getUUID(), playerMail);
 
         Main.getDatabase().updateFPlayer(fPlayer, "mails");
 

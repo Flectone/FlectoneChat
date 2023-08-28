@@ -7,7 +7,7 @@ import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FEntity;
 import net.flectone.misc.entity.FPlayer;
-import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.entity.player.PlayerMod;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,16 +70,16 @@ public class PlayerJoinListener implements Listener {
     public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
         if(!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
 
-        ModInfo modInfo = Main.getDatabase()
+        PlayerMod playerMod = Main.getDatabase()
                 .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
 
-        if (modInfo != null) {
-            String localString = modInfo.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
+        if (playerMod != null) {
+            String localString = playerMod.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 
             String formatMessage = locale.getFormatString(localString, event.getPlayer())
-                    .replace("<time>", ObjectUtil.convertTimeToString(modInfo.getDifferenceTime()))
-                    .replace("<reason>", modInfo.getReason())
-                    .replace("<moderator>", modInfo.getModeratorName());
+                    .replace("<time>", ObjectUtil.convertTimeToString(playerMod.getDifferenceTime()))
+                    .replace("<reason>", playerMod.getReason())
+                    .replace("<moderator>", playerMod.getModeratorName());
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
             return;
         }
