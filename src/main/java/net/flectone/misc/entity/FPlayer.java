@@ -92,27 +92,14 @@ public class FPlayer {
         updateName();
     }
 
-    public void loadMuteInfo() {
-        ModInfo modInfo = (ModInfo) Main.getDatabase().getPlayerInfo("mutes", "player", this.uuid.toString());
-        if (modInfo != null) {
-            this.muteInfo = modInfo;
-        }
-    }
-
-    public void loadBanInfo() {
-        ModInfo modInfo = (ModInfo) Main.getDatabase().getPlayerInfo("bans", "player", this.uuid.toString());
-        if (modInfo != null) {
-            this.banInfo = modInfo;
-        }
-    }
-
     public void synchronizeDatabase() {
         Main.getDatabase().insertPlayer(this.uuid);
 
-        loadMuteInfo();
-        loadBanInfo();
+        this.muteInfo = Main.getDatabase().getPlayerInfo("mutes", "player", this.uuid.toString());
+        this.banInfo = Main.getDatabase().getPlayerInfo("bans", "player", this.uuid.toString());
+        this.warnList = new ArrayList<>();
 
-        Main.getDatabase().initFPlayer(this);
+        Main.getDatabase().loadPlayersTable(this);
 
         if (mails.isEmpty() || player == null) return;
 

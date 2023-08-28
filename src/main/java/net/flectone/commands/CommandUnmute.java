@@ -35,7 +35,7 @@ public class CommandUnmute implements FTabCompleter {
             return;
         }
 
-        fPlayer.loadMuteInfo();
+        fPlayer.synchronizeDatabase();
 
         if (fPlayer.getMute() == null || fPlayer.getMute().getTime() < 0) {
             fCommand.sendMeMessage("command.unmute.not-muted");

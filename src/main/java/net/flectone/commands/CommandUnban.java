@@ -36,7 +36,7 @@ public class CommandUnban implements FTabCompleter {
             return;
         }
 
-        ModInfo modInfo = (ModInfo) Main.getDatabase()
+        ModInfo modInfo = Main.getDatabase()
                 .getPlayerInfo("bans", "player", fPlayer.getUUID().toString());
 
         if (modInfo == null) {

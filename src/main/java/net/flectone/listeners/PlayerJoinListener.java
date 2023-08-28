@@ -70,7 +70,7 @@ public class PlayerJoinListener implements Listener {
     public void onLoginPlayer(@NotNull PlayerLoginEvent event) {
         if(!event.getResult().equals(PlayerLoginEvent.Result.ALLOWED)) return;
 
-        ModInfo modInfo = (ModInfo) Main.getDatabase()
+        ModInfo modInfo = Main.getDatabase()
                 .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
 
         if (modInfo != null) {
