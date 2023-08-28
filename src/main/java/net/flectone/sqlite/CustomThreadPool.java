@@ -18,11 +18,15 @@ public class CustomThreadPool {
         this.isThreadPoolShutDownInitiated = new AtomicBoolean(false);
 
         for (int i = 1; i <= noOfThreads; i++) {
-            WorkerThread thread = new WorkerThread(runnableQueue, this);
-            thread.setName("Worker Thread - " + i);
-            thread.start();
-            threads.add(thread);
+            createThread("Worker Thread - " + i);
         }
+    }
+
+    private void createThread(String name) {
+        WorkerThread thread = new WorkerThread(runnableQueue, this);
+        thread.setName(name);
+        thread.start();
+        threads.add(thread);
     }
 
     public void execute(Runnable r)  {
@@ -60,6 +64,8 @@ public class CustomThreadPool {
                     Thread.sleep(1);
                 }
             } catch (RuntimeException | InterruptedException e) {
+                threads.remove(this);
+                createThread(this.getName());
                 throw new CustomThreadPoolException(e);
             }
         }
