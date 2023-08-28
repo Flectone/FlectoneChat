@@ -79,7 +79,7 @@ public class PlayerJoinListener implements Listener {
             String formatMessage = locale.getFormatString(localString, event.getPlayer())
                     .replace("<time>", ObjectUtil.convertTimeToString(modInfo.getDifferenceTime()))
                     .replace("<reason>", modInfo.getReason())
-                    .replace("<moderator>", modInfo.getModerator());
+                    .replace("<moderator>", modInfo.getModeratorName());
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, formatMessage);
             return;
         }
