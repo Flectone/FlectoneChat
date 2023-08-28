@@ -45,6 +45,8 @@ public class TickerManager {
             addTicker(new ServerBrandTicker());
         }
 
+        addTicker(new PlayerClearTicker());
+
         bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);
     }
 }

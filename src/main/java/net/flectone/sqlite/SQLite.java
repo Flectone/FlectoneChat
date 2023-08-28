@@ -1,6 +1,7 @@
 package net.flectone.sqlite;
 
 import net.flectone.Main;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,7 +132,15 @@ public class SQLite extends Database {
                 Main.isOldVersion = true;
             }
 
-        } catch (SQLException e) {
+            if (Main.isOldVersion) {
+                File oldFile = new File(plugin.getDataFolder(), dbname + ".db");
+                File newFile = new File(plugin.getDataFolder(), dbname + "-old.db");
+                newFile.createNewFile();
+
+                FileUtils.copyFile(oldFile, newFile);
+            }
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         initialize();
