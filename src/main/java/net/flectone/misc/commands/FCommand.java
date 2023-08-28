@@ -10,6 +10,7 @@ import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -140,6 +141,7 @@ public class FCommand {
     }
 
     public boolean isConsoleMessage() {
+        if (sender instanceof BlockCommandSender) return true;
 
         if (isConsole) {
             sendMeMessage("command.not-support-console");
@@ -294,7 +296,9 @@ public class FCommand {
 
         if (firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
 
-        sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
+        if (!(firstPlayer instanceof BlockCommandSender))
+            sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
+
         sendTellUtil(messageBuilder, "get", secondPlayer, firstPlayer, firstPlayer);
     }
 
