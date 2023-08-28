@@ -44,11 +44,11 @@ public class CommandWarnlist implements FTabCompleter {
 
         if (fPlayer.getWarnList() == null) fPlayer.synchronizeDatabase();
 
-        int countMutes = fPlayer.getWarnList().size();
+        int countWarns = fPlayer.getWarnList().size();
 
         int perPage = config.getInt("command.warnlist.per-page");
 
-        int lastPage = (int) Math.ceil((double) countMutes / perPage);
+        int lastPage = (int) Math.ceil((double) countWarns / perPage);
 
         if (strings.length != 1 &&
                 (!StringUtils.isNumeric(strings[1])
@@ -59,7 +59,7 @@ public class CommandWarnlist implements FTabCompleter {
             return;
         }
 
-        if (countMutes == 0) {
+        if (countWarns == 0) {
             fCommand.sendMeMessage("command.warnlist.empty");
             return;
         }
@@ -69,11 +69,11 @@ public class CommandWarnlist implements FTabCompleter {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String title = locale.getFormatString("command.warnlist.title", commandSender)
-                .replace("<count>", String.valueOf(countMutes));
+                .replace("<count>", String.valueOf(countWarns));
 
         componentBuilder.append(FComponent.fromLegacyText(title)).append("\n\n");
 
-        String unmuteButton = locale.getFormatString("command.warnlist.unmute-button", commandSender);
+        String unwarnButton = locale.getFormatString("command.warnlist.unwarn-button", commandSender);
 
         int page = strings.length > 1 ? Math.max(1, Integer.parseInt(strings[1])) : 1;
 
@@ -83,17 +83,17 @@ public class CommandWarnlist implements FTabCompleter {
 
         fPlayer.getWarnList().stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(playerWarn -> {
 
-            String playerMuteFormat = locale.getFormatString("command.warnlist.player-warn", commandSender)
-                    .replace("<unwarn>", unmuteButton)
+            String warnFormat = locale.getFormatString("command.warnlist.player-warn", commandSender)
+                    .replace("<unwarn>", unwarnButton)
                     .replace("<player>", playerWarn.getPlayerName())
                     .replace("<reason>", playerWarn.getReason())
                     .replace("<time>", ObjectUtil.convertTimeToString(playerWarn.getDifferenceTime()))
                     .replace("<moderator>", playerWarn.getModeratorName());
 
-            String unbanHover = locale.getFormatString("command.warnlist.unmute-hover", commandSender)
+            String unbanHover = locale.getFormatString("command.warnlist.unwarn-hover", commandSender)
                     .replace("<player>", playerWarn.getPlayerName());
 
-            FComponent textComponent = new FComponent(playerMuteFormat)
+            FComponent textComponent = new FComponent(warnFormat)
                     .addHoverText(unbanHover)
                     .addRunCommand("/unwarn " + playerWarn.getPlayerName() + " " + atomicInteger.getAndIncrement());
 

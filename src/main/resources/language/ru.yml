@@ -273,8 +273,8 @@ command:
     prev-page: "&&2←"
     next-page: "&&2→"
 
-    unmute-button: "&c☒"
-    unmute-hover: "&&1Нажми, чтобы снять предупреждение с &&2<player>"
+    unwarn-button: "&c☒"
+    unwarn-hover: "&&1Нажми, чтобы снять предупреждение с &&2<player>"
 
   unwarn:
     usage: "&&1⚑ Usage: &&2/<command> (player) (index)"
@@ -340,12 +340,19 @@ command:
     true-message: "#ff4e4e☹ Ты игнорируешь <player>"
     false-message: "#4eff52☺ Ты перестал игнорировать <player>"
 
-  ignore-list:
+  ignorelist:
     usage: "&&1⚑ Использование: &&2/<command>"
-    empty: "#ff4e4e⁉ Ты никого не игнорируешь"
-    name: "&&1Список игнорируемых <number>"
-    arrow: "&&1Назад"
-    spectral_arrow: "&&1Вперёд"
+    empty: "#4eff52☺ Ты никого не игнорируешь"
+    page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
+    title: "&&2════ Игнорируемых: <count> ════"
+    player-ignore: "<unignore> &&1<player>"
+    page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
+
+    prev-page: "&&2←"
+    next-page: "&&2→"
+
+    unignore-button: "&c☒"
+    unignore-hover: "&&1Нажми, чтобы перестать игнорировать &&2<player>"
 
   msg:
     usage: "&&1⚑ Использование: &&2/<command> (игрок) (сообщение)"

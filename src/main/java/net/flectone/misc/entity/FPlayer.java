@@ -18,7 +18,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,12 +47,10 @@ public class FPlayer {
     private boolean isStreamer = false;
     private String[] colors = new String[]{};
     private ArrayList<UUID> ignoreList = new ArrayList<>();
-    private List<Inventory> inventoryList = new ArrayList<>();
     private PlayerMod muteInfo = null;
     private PlayerMod banInfo = null;
     private List<PlayerWarn> warnList = null;
     private PlayerChat playerChat = null;
-    private int numberLastInventory;
     private int lastTimeMoved;
     private String streamPrefix = "";
     private String afkSuffix = "";
@@ -319,12 +316,6 @@ public class FPlayer {
         return isIgnored(player.getUniqueId());
     }
 
-    public boolean isIgnored(@Nullable OfflinePlayer offlinePlayer) {
-        if (offlinePlayer == null || this.offlinePlayer == offlinePlayer) return false;
-
-        return isIgnored(offlinePlayer.getUniqueId());
-    }
-
     public boolean isIgnored(@NotNull UUID uuid) {
         return this.ignoreList.contains(uuid);
     }
@@ -388,23 +379,6 @@ public class FPlayer {
 
     public void setLastWriter(@NotNull Player lastWriter) {
         this.lastWriter = lastWriter;
-    }
-
-    @NotNull
-    public List<Inventory> getInventoryList() {
-        return inventoryList;
-    }
-
-    public void setInventoryList(@NotNull List<Inventory> inventoryList) {
-        this.inventoryList = inventoryList;
-    }
-
-    public int getNumberLastInventory() {
-        return numberLastInventory;
-    }
-
-    public void setNumberLastInventory(int numberLastInventory) {
-        this.numberLastInventory = numberLastInventory;
     }
 
     public boolean isStreaming() {

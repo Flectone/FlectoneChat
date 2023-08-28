@@ -201,8 +201,9 @@ command:
   ignore:
     enable: true
 
-  ignore-list:
+  ignorelist:
     enable: true
+    per-page: 4
 
   last-online:
     enable: true
@@ -352,10 +353,10 @@ cool-down:
     enable: false
     time: 5
     permission: "flectonechat.ignore.cooldown.immune"
-  ignore-list:
+  ignorelist:
     enable: false
     time: 5
-    permission: "flectonechat.ignore-list.cooldown.immune"
+    permission: "flectonechat.ignorelist.cooldown.immune"
   mail:
     enable: true
     time: 5
@@ -491,7 +492,7 @@ sound:
   ignore:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
-  ignore-list:
+  ignorelist:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"
   mail:

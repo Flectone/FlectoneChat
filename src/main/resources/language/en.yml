@@ -274,8 +274,8 @@ command:
     prev-page: "&&2←"
     next-page: "&&2→"
 
-    unmute-button: "&c☒"
-    unmute-hover: "&&1Click to unwarn &&2<player>"
+    unwarn-button: "&c☒"
+    unwarn-hover: "&&1Click to unwarn &&2<player>"
 
   unwarn:
     usage: "&&1⚑ Usage: &&2/<command> (player) (index)"
@@ -341,12 +341,19 @@ command:
     true-message: "#ff4e4e☹ You ignore <player>"
     false-message: "#4eff52☺ You unignore <player>"
 
-  ignore-list:
+  ignorelist:
     usage: "&&1⚑ Usage: &&2/<command>"
-    empty: "#ff4e4e⁉ You don't ignore anyone"
-    name: "&&1List of ignored players <number>"
-    arrow: "&&1Back"
-    spectral_arrow: "&&1Forward"
+    empty: "#4eff52☺ You don't ignore anyone"
+    page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+    title: "&&2════ Ignores: <count> ════"
+    player-ignore: "<unignore> &&1<player>"
+    page-line: "<prev-page> Page: <page>/<last-page> <next-page>"
+
+    prev-page: "&&2←"
+    next-page: "&&2→"
+
+    unignore-button: "&c☒"
+    unignore-hover: "&&1Click to unignore &&2<player>"
 
   msg:
     usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
