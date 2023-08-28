@@ -98,7 +98,7 @@ chat:
     message: "&&1World:&&2<world> &&1Biome:&&2<biome> &&1X:&&2<block_x> &&1Y:&&2<block_y> &&1Z:&&2<block_z>"
 
   stats:
-    message: "#ff4e4eHP: <hp>♥ #3de0d8Armor: <armor>🛡 #4eff52Lvl: <exp>⏺ #f0a01fFood: <food>🍖"
+    message: "#ff4e4eHP: <hp>♥ #3de0d8Armor: <armor>🛡 #e33059Damage: <attack>🗡 #4eff52Lvl: <exp>⏺ #f0a01fFood: <food>🍖"
 
   hide:
     message: "&&1█"

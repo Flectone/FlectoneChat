@@ -125,13 +125,17 @@ public class MessageBuilder {
                     case "%stats%" -> {
                         wordParams.setStats(true);
 
+
+
                         AttributeInstance armor = player.getAttribute(Attribute.GENERIC_ARMOR);
+                        AttributeInstance damage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
 
                         word = locale.getString("chat.stats.message")
                                 .replace("<hp>", String.valueOf(player.getHealth()))
                                 .replace("<armor>", String.valueOf(armor != null ? armor.getValue() : 0))
                                 .replace("<exp>", player.getLevel() + ".0")
-                                .replace("<food>", player.getFoodLevel() + ".0");
+                                .replace("<food>", player.getFoodLevel() + ".0")
+                                .replace("<attack>", String.valueOf(damage != null ? damage.getValue() : 0));
                     }
                 }
             }
