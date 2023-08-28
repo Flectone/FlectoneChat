@@ -380,6 +380,7 @@ public class FPlayer {
     }
 
     public void removeTeam() {
+        if (team == null) return;
         this.team.unregister();
     }
 
