@@ -21,7 +21,7 @@ public class FInteractiveChat implements HookInterface {
     public static String mark(@NotNull String message, @NotNull UUID sender) {
         StringBuilder stringBuilder = new StringBuilder();
         for(String string : message.split(" ")) {
-            if (!Registry.MENTION_TAG_CONVERTER.containsTags(string))
+            if (!Registry.MENTION_TAG_CONVERTER.containsTags(string) && !string.contains("<cmd="))
                 string = InteractiveChatAPI.markSender(string, sender);
 
             stringBuilder.append(string).append(" ");
