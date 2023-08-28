@@ -9,6 +9,7 @@ import net.flectone.managers.HookManager;
 import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.entity.info.ChatInfo;
 import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.entity.info.PlayerWarn;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
@@ -53,6 +54,7 @@ public class FPlayer {
     private List<Inventory> inventoryList = new ArrayList<>();
     private ModInfo muteInfo = null;
     private ModInfo banInfo = null;
+    private List<PlayerWarn> warnList = null;
     private ChatInfo chatInfo = null;
     private int numberLastInventory;
     private int lastTimeMoved;
@@ -205,7 +207,7 @@ public class FPlayer {
     }
 
     public boolean isBanned() {
-        boolean isBanned = banInfo != null && (banInfo.getDifferenceTime() > 0 || banInfo.getTime() == -1);
+        boolean isBanned = banInfo != null && banInfo.getDifferenceTime() > 0;
 
         if (isBanned) {
             unban();
@@ -234,6 +236,43 @@ public class FPlayer {
     @NotNull
     public String getStreamPrefix() {
         return streamPrefix;
+    }
+
+    public void warn(int time, @NotNull String reason, @Nullable String moderatorUUID) {
+        int finalTime = time + ObjectUtil.getCurrentTime();
+
+        PlayerWarn playerWarn = new PlayerWarn(this.uuid.toString(), finalTime, reason, moderatorUUID);
+        warnList.add(playerWarn);
+
+        if (!isBanned() && getRealWarnsCount() >= config.getInt("command.warn.count-for-ban")) {
+            String configString = locale.getString("command.warn.ban-too-many");
+            tempban(-1, configString, null);
+        }
+
+        Main.getDataThreadPool().execute(() ->
+                Main.getDatabase().saveWarns(this));
+    }
+
+    public int getRealWarnsCount() {
+        return (int) warnList.stream().filter(warn -> warn.getDifferenceTime() > 0).count();
+    }
+
+    public void addWarn(PlayerWarn playerWarn) {
+        warnList.add(playerWarn);
+    }
+
+    public List<PlayerWarn> getWarnList() {
+        return warnList;
+    }
+
+    public void unwarn(int index) {
+        PlayerWarn playerWarn = warnList.get(index);
+        warnList.remove(index);
+
+        Main.getDataThreadPool().execute(() -> {
+            Main.getDatabase().updatePlayerInfo("warns", playerWarn);
+            Main.getDatabase().saveWarns(this);
+        });
     }
 
     public void mute(int time, @NotNull String reason, @Nullable String moderatorUUID) {
@@ -269,7 +308,9 @@ public class FPlayer {
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
                 .replace("<reason>", reason);
 
-        player.kickPlayer(localMessage);
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+            player.kickPlayer(localMessage);
+        });
     }
 
     public void unban() {

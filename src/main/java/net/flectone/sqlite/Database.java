@@ -7,6 +7,7 @@ import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ChatInfo;
 import net.flectone.misc.entity.info.ModInfo;
+import net.flectone.misc.entity.info.PlayerWarn;
 import net.flectone.misc.files.FYamlConfiguration;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
@@ -15,7 +16,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -159,6 +163,27 @@ public abstract class Database {
                             UUID.fromString(resultMail.getString("sender")),
                             UUID.fromString(resultMail.getString("receiver")),
                             resultMail.getString("message")));
+                }
+            }
+
+            String warn = playerResult.getString("warns");
+            if (warn != null) {
+                String[] warns = warn.split(",");
+
+                for (String uuid : warns) {
+                    if (uuid.isEmpty()) continue;
+
+                    PreparedStatement ps2 = connection.prepareStatement("SELECT * FROM warns WHERE uuid = ?");
+                    ps2.setString(1, uuid);
+
+                    ResultSet resultMail = ps2.executeQuery();
+                    resultMail.next();
+
+                    fPlayer.addWarn(new PlayerWarn(UUID.fromString(uuid),
+                            resultMail.getString("player"),
+                            resultMail.getInt("time"),
+                            resultMail.getString("reason"),
+                            resultMail.getString("moderator")));
                 }
             }
 
@@ -419,9 +444,16 @@ public abstract class Database {
                     ResultSet playerResult = preparedStatement.executeQuery();
                     playerResult.next();
 
-                    String mails = playerResult.getString("mails");
+                case "warns" -> {
+                    if (fPlayer.getWarnList().isEmpty()) {
+                        preparedStatement.setString(1, null);
+                        preparedStatement.setString(2, playerUUID);
+                        preparedStatement.executeUpdate();
+                        preparedStatement.close();
+                        break;
+                    }
 
-                    saveMails(fPlayer, mails);
+                    saveWarns(fPlayer);
                 }
             }
 
@@ -430,7 +462,41 @@ public abstract class Database {
         }
     }
 
-    public void saveMails(FPlayer fPlayer, String addMails) {
+    public void saveWarns(FPlayer fPlayer) {
+        try {
+            Connection connection = getSQLConnection();
+
+            String playerUUID = fPlayer.getUUID().toString();
+
+            String newWarns = arrayToString(fPlayer.getWarnList().stream().map(PlayerWarn::getUUID).toList());
+
+            String warnsUUIDS = (newWarns != null ? newWarns : "");
+
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET warns=? WHERE uuid=?");
+            preparedStatement.setString(1, warnsUUIDS);
+            preparedStatement.setString(2, playerUUID);
+            preparedStatement.executeUpdate();
+
+            fPlayer.getWarnList().forEach(warn -> {
+                try {
+                    PreparedStatement ps2 = connection.prepareStatement("REPLACE INTO warns (uuid,player,time,reason,moderator) VALUES(?,?,?,?,?)");
+                    ps2.setString(1, warn.getUUID().toString());
+                    ps2.setString(2, warn.getPlayer());
+                    ps2.setInt(3, warn.getTime());
+                    ps2.setString(4, warn.getReason());
+                    ps2.setString(5, warn.getModerator());
+                    ps2.executeUpdate();
+                    ps2.close();
+                } catch (SQLException e) {
+                    plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", e);
+                }
+            });
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void saveMails(FPlayer fPlayer) {
         try {
             Connection connection = getSQLConnection();
 
@@ -493,6 +559,10 @@ public abstract class Database {
                 case "mails" -> {
                     Mail mail = (Mail) playerInfo;
                     deleteRow("mails", "uuid", mail.getUUID().toString());
+                }
+                case "warns" -> {
+                    PlayerWarn playerWarn = (PlayerWarn) playerInfo;
+                    deleteRow("warns", "uuid", playerWarn.getUUID().toString());
                 }
                 case "chats" -> {
 

@@ -11,7 +11,7 @@ import static net.flectone.managers.FileManager.locale;
 
 public class FListComponent extends FComponent{
 
-    public FListComponent(String commandName, CommandSender commandSender, int page, int lastPage) {
+    public FListComponent(String command, String commandName, CommandSender commandSender, int page, int lastPage) {
         String pageLine = locale.getFormatString("command." + commandName + ".page-line", commandSender)
                 .replace("<page>", String.valueOf(page))
                 .replace("<last-page>", String.valueOf(lastPage));
@@ -38,7 +38,7 @@ public class FListComponent extends FComponent{
             if (button != null) {
 
                 component = new FComponent(chatColor + button)
-                        .addRunCommand("/" + commandName + " " + pageNumber);
+                        .addRunCommand("/" + command + " " + pageNumber);
 
             } else component = new FComponent(chatColor + part);
 
@@ -48,5 +48,9 @@ public class FListComponent extends FComponent{
         }
 
         set(componentBuilder.create());
+    }
+
+    public FListComponent(String commandName, CommandSender commandSender, int page, int lastPage) {
+        this(commandName, commandName, commandSender, page, lastPage);
     }
 }

@@ -149,6 +149,18 @@ command:
       enable: true
       time: 3000
 
+  warn:
+    enable: true
+    announce: true
+    count-for-ban: 3
+
+  warnlist:
+    enable: true
+    per-page: 4
+
+  unwarn:
+    enable: true
+
   spy:
     enable: true
 
@@ -277,6 +289,18 @@ command:
 cool-down:
   enable: false
 
+  warn:
+    enable: false
+    time: 5
+    permission: "flectonechat.warn.cooldown.immune"
+  unwarn:
+    enable: false
+    time: 5
+    permission: "flectonechat.unwarn.cooldown.immune"
+  warnlist:
+    enable: false
+    time: 5
+    permission: "flectonechat.warnlist.cooldown.immune"
   spy:
     enable: false
     time: 5
@@ -410,6 +434,15 @@ cool-down:
     permission: "flectonechat.mutelist.cooldown.immune"
 
 sound:
+  warn:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  unwarn:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
+  warnlist:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
   spy:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"

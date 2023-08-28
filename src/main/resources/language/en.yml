@@ -257,10 +257,35 @@ command:
     true-message: "#f2d40f💤 Now you're afk"
     false-message: "#f2d40f💤 Now you're not afk"
 
+  warn:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+    default-reason: "You have been warned"
+    global-message: "#ff4e4e☠ Player <player> received warning №<count> <time>. Reason: <reason>. Moderator <moderator>"
+    ban-too-many: "Too many warnings"
+
+  warnlist:
+    usage: "&&1⚑ Usage: &&2/<command> (player)"
+    empty: "#4eff52☺ No players with warnings"
+    page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+    title: "&&2════ Warns: <count> ════"
+    player-warn: "<unwarn> &&1<player> - <reason> - <time> left - <moderator> moderator"
+    page-line: "<prev-page> Page: <page>/<last-page> <next-page>"
+
+    prev-page: "&&2←"
+    next-page: "&&2→"
+
+    unmute-button: "&c☒"
+    unmute-hover: "&&1Click to unwarn &&2<player>"
+
+  unwarn:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (index)"
+    not-warned: "#ff4e4e⁉ The player has no warnings"
+    message: "#ff4e4e☻ <player> player's warning removed"
+
   mute:
     usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
     default-reason: "You were muted on this server"
-    global-message: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>. Blocked <moderator>"
+    global-message: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>. Moderator <moderator>"
     local-message: "#ff4e4e☠ You are in mute, <time> left. Reason: <reason>"
 
   mutelist:

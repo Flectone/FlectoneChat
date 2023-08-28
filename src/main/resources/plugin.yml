@@ -129,6 +129,18 @@ commands:
     aliases: [ pardon ]
     permission: flectonechat.ban
 
+  warn:
+    usage: /warn <player> <time> <reason>
+    permission: flectonechat.warn
+
+  warnlist:
+    usage: /warnlist
+    permission: flectonechat.warnlist
+
+  unwarn:
+    usage: /unwarn <player> <index>
+    permission: flectonechat.warn
+
   banlist:
     usage: /banlist
     permission: flectonechat.banlist
@@ -212,4 +224,8 @@ permissions:
   flectonechat.chat-settings:
     default: true
   flectonechat.spy:
+    default: op
+  flectonechat.warn:
+    default: op
+  flectonechat.warnlist:
     default: op
