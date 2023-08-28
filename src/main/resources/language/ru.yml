@@ -259,7 +259,7 @@ command:
   mute:
     usage: "&&1⚑ Использование: &&2/<command> (игрок) (время) (причина)"
     default-reason: "Вы были замучены на этом сервере"
-    global-message: "#ff4e4e☠ Игрок <player> получил мут на <time>. Причина: <reason>"
+    global-message: "#ff4e4e☠ Игрок <player> получил мут на <time>. Причина: <reason>. Забанил <moderator>"
     local-message: "#ff4e4e☠ Ты в муте, осталось <time>. Причина: <reason>"
 
   unmute:
@@ -270,11 +270,11 @@ command:
   tempban:
     usage: "&&1⚑ Использование: &&2/<command> (игрок) (время) (причина)"
     default-reason: "Вы были заблокированы на этом сервере"
-    global-message: "#ff4e4e☠ Игрок <player> был заблокирован на <time>. Причина: <reason>"
+    global-message: "#ff4e4e☠ Игрок <player> был заблокирован на <time>. Причина: <reason>. Забанил <moderator>"
     local-message: "#ff4e4e☠ Ты заблокирован, осталось <time>. Причина: <reason>"
 
   ban:
-    global-message: "#ff4e4e☠ Игрок <player> был заблокирован навсегда. Причина: <reason>"
+    global-message: "#ff4e4e☠ Игрок <player> был заблокирован навсегда. Причина: <reason>. Забанил <moderator>"
     local-message: "#ff4e4e☠ Ты заблокирован навсегда. Причина: <reason>"
 
   unban:
@@ -286,7 +286,7 @@ command:
     empty: "#4eff52☺ Нет игроков в муте"
     page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
     title: "&&2════ В муте: <count> ════"
-    player-mute: "<unmute> &&1<player> - <reason> - <time> осталось"
+    player-mute: "<unmute> &&1<player> - <reason> - <time> осталось - <moderator> модератор"
     page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
 
     prev-page: "&&2←"
@@ -299,8 +299,8 @@ command:
     empty: "#4eff52☺ Нет заблокированных игроков"
     page-not-exist: "#ff4e4e⁉ Этой страницы не существует"
     title: "&&2════ Заблокированных: <count> ════"
-    player-ban: "<unban> &&1<player> - <reason> - <time> осталось"
-    player-ban-permanently: "<unban> &&1<player> - <reason> - навсегда"
+    player-ban: "<unban> &&1<player> - <reason> - <time> осталось - <moderator> модератор"
+    player-ban-permanently: "<unban> &&1<player> - <reason> - навсегда - <moderator> модератор"
     page-line: "<prev-page> Страница: <page>/<last-page> <next-page>"
 
     prev-page: "&&2←"

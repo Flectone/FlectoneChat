@@ -62,7 +62,8 @@ public class CommandMute implements FTabCompleter {
         String formatString = locale.getString("command.mute.global-message")
                 .replace("<player>", mutedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
-                .replace("<reason>", reason);
+                .replace("<reason>", reason)
+                .replace("<moderator>", commandSender.getName());
 
         boolean announceModeration = config.getBoolean("command.mute.announce");
 

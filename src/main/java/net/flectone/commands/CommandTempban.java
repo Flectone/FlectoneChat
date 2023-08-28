@@ -65,7 +65,8 @@ public class CommandTempban implements FTabCompleter {
         String globalMessage = locale.getString(globalStringMessage)
                 .replace("<player>", bannedFPlayer.getRealName())
                 .replace("<time>", ObjectUtil.convertTimeToString(time))
-                .replace("<reason>", reason);
+                .replace("<reason>", reason)
+                .replace("<moderator>", commandSender.getName());
 
         boolean announceModeration = config.getBoolean("command.tempban.announce");
 
