@@ -3,9 +3,9 @@ package net.flectone.sqlite;
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
 import net.flectone.managers.FileManager;
-import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.misc.entity.info.ChatInfo;
+import net.flectone.misc.entity.info.Mail;
 import net.flectone.misc.entity.info.ModInfo;
 import net.flectone.misc.entity.info.PlayerWarn;
 import net.flectone.misc.files.FYamlConfiguration;
@@ -65,7 +65,9 @@ public abstract class Database {
     public void clearOldRows(String table) {
         try {
             Connection connection = getSQLConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + table + " WHERE time<=?");
+            String filter = " WHERE time<=?";
+            if (table.equals("bans")) filter += " AND time!=-1";
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + table + filter);
             preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
 
             preparedStatement.executeUpdate();
@@ -97,7 +99,7 @@ public abstract class Database {
     }
 
     @Nullable
-    public Object getPlayerInfo(@NotNull String table, @NotNull String column, @NotNull String filter) {
+    public ModInfo getPlayerInfo(@NotNull String table, @NotNull String column, @NotNull String filter) {
         try (Connection conn = getSQLConnection()) {
             PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE " + column + " = ?");
             preparedStatement.setString(1, filter);
@@ -105,27 +107,18 @@ public abstract class Database {
 
             if (!playerResult.next()) return null;
 
-            switch (table) {
-                case "bans", "mutes" -> {
-                    int time = playerResult.getInt(2);
-                    String reason = playerResult.getString(3);
-                    String moderator = playerResult.getString(4);
-                    return new ModInfo(filter, time, reason, moderator);
-                }
-                case "warns" -> {
-
-                }
-            }
+            int time = playerResult.getInt(2);
+            String reason = playerResult.getString(3);
+            String moderator = playerResult.getString(4);
+            return new ModInfo(filter, time, reason, moderator);
 
         } catch (SQLException e) {
             e.printStackTrace();
             return getPlayerInfo(table, column, filter);
         }
-
-        return null;
     }
 
-    public void initFPlayer(@NotNull FPlayer fPlayer) {
+    public void loadPlayersTable(@NotNull FPlayer fPlayer) {
         try {
             Connection connection = getSQLConnection();
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
@@ -249,7 +242,7 @@ public abstract class Database {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            initFPlayer(fPlayer);
+            loadPlayersTable(fPlayer);
         }
     }
 
@@ -331,7 +324,11 @@ public abstract class Database {
     public int getCountRow(String table) {
         try {
             Connection conn = getSQLConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(1) FROM " + table + " WHERE time>?");
+
+            String filter = " WHERE time>?";
+            if (table.equals("bans")) filter += " OR time=-1";
+
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT COUNT(1) FROM " + table + filter);
             preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -376,7 +373,10 @@ public abstract class Database {
         ArrayList<ModInfo> modInfos = new ArrayList<>();
         try (Connection conn = getSQLConnection()) {
 
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + " WHERE time>? LIMIT " + limit + " OFFSET " + skip);
+            String filter = " WHERE time>?";
+            if (table.equals("bans")) filter += " OR time=-1";
+
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM " + table + filter + " LIMIT " + limit + " OFFSET " + skip);
             preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
             ResultSet playerResult = preparedStatement.executeQuery();
 
@@ -439,10 +439,8 @@ public abstract class Database {
                         break;
                     }
 
-                    preparedStatement = connection.prepareStatement("SELECT mails FROM players WHERE uuid=?");
-                    preparedStatement.setString(1, playerUUID);
-                    ResultSet playerResult = preparedStatement.executeQuery();
-                    playerResult.next();
+                    saveMails(fPlayer);
+                }
 
                 case "warns" -> {
                     if (fPlayer.getWarnList().isEmpty()) {
@@ -504,12 +502,10 @@ public abstract class Database {
 
             String newMails = arrayToString(new ArrayList<>(fPlayer.getMails().keySet()));
 
-            StringBuilder mailsBuilder = new StringBuilder();
-            mailsBuilder.append(addMails != null ? addMails : "");
-            mailsBuilder.append(newMails != null ? newMails : "");
+            String mailsBuilder = (newMails != null ? newMails : "");
 
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE players SET mails=? WHERE uuid=?");
-            preparedStatement.setString(1, mailsBuilder.toString());
+            preparedStatement.setString(1, mailsBuilder);
             preparedStatement.setString(2, playerUUID);
             preparedStatement.executeUpdate();
 
