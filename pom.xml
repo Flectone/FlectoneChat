@@ -8,7 +8,6 @@
     <artifactId>FlectoneChat</artifactId>
     <version>3.10.0</version>
     <packaging>jar</packaging>
-
     <name>FlectoneChat</name>
 
     <properties>
