@@ -10,8 +10,8 @@ import java.util.HashMap;
 public class PlayerClearTicker extends FBukkitRunnable {
 
     public PlayerClearTicker() {
-        super.period = 20L * 30;
-        super.delay = 20L * 30;
+        super.period = 20L * 60 * 60;
+        super.delay = 20L * 60 * 60;
     }
 
     @Override
