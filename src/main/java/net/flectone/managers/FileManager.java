@@ -89,9 +89,14 @@ public class FileManager {
         YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
 
         internalLangConfig.getKeys(true).parallelStream()
-                .filter(string -> !fileConfiguration.contains(string)
-                        || (fileConfiguration.get(string) != null
-                        &&!fileConfiguration.get(string).getClass().equals(internalLangConfig.get(string).getClass())))
+                .filter(string -> {
+                    if (!fileConfiguration.contains(string)) return true;
+
+                    Object objectA = fileConfiguration.get(string);
+                    Object objectB = internalLangConfig.get(string);
+
+                    return objectA != null && objectB != null && !objectA.getClass().equals(objectB.getClass());
+                })
                 .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
 
         fileConfiguration.save();
