@@ -22,7 +22,9 @@ public class ServerBrandTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        int nextIndex = index++ % brands.size();
+        int nextIndex;
+        if (!brands.isEmpty()) nextIndex = index++ % brands.size();
+        else nextIndex = 0;
 
         Bukkit.getOnlinePlayers().parallelStream().forEach(player ->
                 ServerBrand.getInstance().updateBrand(player, brands.get(nextIndex)));

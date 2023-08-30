@@ -57,8 +57,13 @@ public class TabTicker extends FBukkitRunnable {
 
     @Override
     public void run() {
-        int nextHeaderIndex = headerIndex++ % headers.size();
-        int nextFooterIndex = footerIndex++ % footers.size();
+        int nextHeaderIndex;
+        if (!headers.isEmpty()) nextHeaderIndex = headerIndex++ % headers.size();
+        else nextHeaderIndex = 0;
+
+        int nextFooterIndex;
+        if (!footers.isEmpty()) nextFooterIndex = footerIndex++ % footers.size();
+        else nextFooterIndex = 0;
 
         Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
             FPlayer fPlayer = FPlayerManager.getPlayer(player);
