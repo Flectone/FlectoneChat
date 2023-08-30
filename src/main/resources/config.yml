@@ -103,6 +103,14 @@ chat:
     enable: true
   ping:
     enable: true
+  bold:
+    enable: true
+  italic:
+    enable: true
+  underline:
+    enable: true
+  strikethrough:
+    enable: true
 
 death:
   message:
@@ -218,7 +226,7 @@ command:
     enable: true
     per-page: 4
 
-  last-online:
+  lastonline:
     enable: true
 
   mail:
