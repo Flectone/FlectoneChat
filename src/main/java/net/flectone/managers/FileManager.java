@@ -79,26 +79,26 @@ public class FileManager {
         return fileConfiguration;
     }
 
-    private static void migrate(FYamlConfiguration fileConfiguration) {
-        InputStream inputStream = Main.getInstance().getResource(fileConfiguration.getResourceFilePath());
+    private static void migrate(FYamlConfiguration oldFile) {
+        InputStream inputStream = Main.getInstance().getResource(oldFile.getResourceFilePath().replace('\\', '/'));
 
         if (inputStream == null) return;
 
         InputStreamReader defConfigStream = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
 
-        YamlConfiguration internalLangConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+        YamlConfiguration resourceFile = YamlConfiguration.loadConfiguration(defConfigStream);
 
-        internalLangConfig.getKeys(true).parallelStream()
+        resourceFile.getKeys(true).parallelStream()
                 .filter(string -> {
-                    if (!fileConfiguration.contains(string)) return true;
+                    if (!oldFile.contains(string)) return true;
 
-                    Object objectA = fileConfiguration.get(string);
-                    Object objectB = internalLangConfig.get(string);
+                    Object objectA = oldFile.get(string);
+                    Object objectB = resourceFile.get(string);
 
                     return objectA != null && objectB != null && !objectA.getClass().equals(objectB.getClass());
                 })
-                .forEach(string -> fileConfiguration.set(string, internalLangConfig.get(string)));
+                .forEach(string -> oldFile.set(string, resourceFile.get(string)));
 
-        fileConfiguration.save();
+        oldFile.save();
     }
 }
