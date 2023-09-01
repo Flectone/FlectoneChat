@@ -8,6 +8,13 @@ Usage: `/chatcolor <first color> <second color> <player>`\
 Permission: `flectonechat.chatcolor` (default)\
 Permission (other): `flectonechat.chatcolor.other` (op)
 
+## /spy
+
+Toggle command spying
+
+Usage: `/spy`\
+Permission: `flectonechat.spy` (op)
+
 ## /lastonline
 
 Find out when a player last logged in
@@ -31,11 +38,11 @@ Ignore commands and messages from a player
 Usage: `/ignore <player>`\
 Permission: `flectonechat.ignore` (default)
 
-## /ignore-list
+## /ignorelist
 
 Open menu with list of ignored players
 
-Usage: `/ignore-list`\
+Usage: `/ignorelist`\
 Permission: `flectonechat.ignore` (default)
 
 ## /me
@@ -180,15 +187,12 @@ Usage: `/maintenance <on/off>`\
 Aliases: `technical-works`\
 Permission: `flectonechat.maintenance` (op)
 
-## /chat
+## /chat-settings
 
-Usages:
+Show chat settings
 
-*   switch: `/chat switch <local/global>` - write to global/local by default
-*   hide: `/chat hide <local/global>` - hide messages from local/global chat
-
-Aliases: `chat`, `switch-chat`, `off-chat`\
-Permission: `flectonechat.chat` (default)
+Usage: `/chat-settings`\
+Permission: `flectonechat.chat-settings` (default)
 
 ## /ball
 
@@ -245,6 +249,27 @@ List banned players
 
 Usage: `/banlist <page>`\
 Permission: `flectonechat.banlist` (op)
+
+## /warn
+
+Warn a player
+
+Usage: `/warn <player> <time> <reason>`\
+Permission: `flectonechat.warn` (op)
+
+## /warnlist
+
+List warned players
+
+Usage: `/warnlist <page>`\
+Permission: `flectonechat.warnlist` (op)
+
+## /unwarn
+
+Remove warn #<index> from <player>
+
+Usage: `/unwarn <player> <index>`\
+Permission: `flectonechat.warn` (op)
 
 ## /broadcast
 
