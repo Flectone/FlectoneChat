@@ -370,9 +370,12 @@ public class FPlayer {
     }
 
     public void removeTeam() {
-        if (team == null) return;
+        if (team == null || isRemoved) return;
         this.team.unregister();
+        this.isRemoved = true;
     }
+
+    private boolean isRemoved = false;
 
     @Nullable
     public Player getLastWriter() {
