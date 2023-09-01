@@ -211,6 +211,8 @@ public class MessageBuilder {
                                 .replace("<block_x>", String.valueOf(location.getBlockX()))
                                 .replace("<block_y>", String.valueOf(location.getBlockY()))
                                 .replace("<block_z>", String.valueOf(location.getBlockZ()));
+                        wordParams.setText(word);
+                        return wordParams;
                     }
                     case "%stats%" -> {
                         if (!isPatternEnabled("stats")) break;
@@ -226,6 +228,9 @@ public class MessageBuilder {
                                 .replace("<exp>", player.getLevel() + ".0")
                                 .replace("<food>", player.getFoodLevel() + ".0")
                                 .replace("<attack>", String.valueOf(damage != null ? damage.getValue() : 0));
+
+                        wordParams.setText(word);
+                        return wordParams;
                     }
                 }
             }
