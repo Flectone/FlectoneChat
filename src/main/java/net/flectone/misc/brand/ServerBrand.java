@@ -41,6 +41,7 @@ public class ServerBrand {
     }
 
     public static ServerBrand getInstance() {
+        if (instance == null) new ServerBrand();
         return instance;
     }
 

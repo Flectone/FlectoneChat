@@ -6,10 +6,10 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.FileManager;
 import net.flectone.managers.TickerManager;
 import net.flectone.messages.MessageBuilder;
+import net.flectone.misc.brand.ServerBrand;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.files.FYamlConfiguration;
-import net.flectone.misc.brand.ServerBrand;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -90,8 +90,9 @@ public class CommandFlectonechat implements FTabCompleter {
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
 
-        if (config.getBoolean("server.brand.enable"))
+        if (config.getBoolean("server.brand.enable")) {
             ServerBrand.getInstance().updateEveryBrand();
+        }
 
         fCommand.sendMeMessage("command.flectonechat.message");
 
