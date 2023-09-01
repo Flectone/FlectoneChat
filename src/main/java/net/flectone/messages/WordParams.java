@@ -1,7 +1,11 @@
 package net.flectone.messages;
 
+import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WordParams {
 
@@ -101,6 +105,23 @@ public class WordParams {
         return text;
     }
 
+    public String getFormatting() {
+        return getChatColor("**") + getChatColor("__") + getChatColor("##") + getChatColor("~~") + getChatColor("??");
+    }
+
+    public String getChatColor(String param) {
+        if (!parameters.contains(param)) return "";
+
+        return switch (param) {
+            case "**" -> String.valueOf(ChatColor.BOLD);
+            case "__" -> String.valueOf(ChatColor.UNDERLINE);
+            case "##" -> String.valueOf(ChatColor.ITALIC);
+            case "~~" -> String.valueOf(ChatColor.STRIKETHROUGH);
+            case "??" -> String.valueOf(ChatColor.MAGIC);
+            default -> "";
+        };
+    }
+
     public void setText(@NotNull String text) {
         this.text = text;
     }
@@ -115,5 +136,19 @@ public class WordParams {
 
     public boolean isEdited() {
         return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isFormatted() || isCords() || isStats();
+    }
+
+    private final List<String> parameters = new ArrayList<>();
+
+    public void addParameters(List<String> parameters) {
+        this.parameters.addAll(parameters);
+    }
+
+    public boolean contains(String parameter) {
+        return parameters.contains(parameter);
+    }
+
+    public List<String> getParameters() {
+        return parameters;
     }
 }

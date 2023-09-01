@@ -229,3 +229,25 @@ permissions:
     default: op
   flectonechat.warnlist:
     default: op
+  flectonechat.chat.cords:
+    default: true
+  flectonechat.chat.stats:
+    default: true
+  flectonechat.chat.ping:
+    default: true
+  flectonechat.chat.url:
+    default: true
+  flectonechat.chat.tooltip:
+    default: true
+  flectonechat.chat.markdown-||:
+    default: true
+  flectonechat.chat.markdown-**:
+    default: true
+  flectonechat.chat.markdown-__:
+    default: true
+  flectonechat.chat.markdown-##:
+    default: true
+  flectonechat.chat.markdown-??:
+    default: true
+  flectonechat.chat.markdown-~~:
+    default: true

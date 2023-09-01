@@ -112,7 +112,7 @@ chat:
 
   ping:
     prefix: "@"
-    message: "&&1<prefix><player>&&2"
+    message: "&&1<prefix><player>"
 
   local:
     no-recipients: "#ff4e4e⁉ Nobody heard you"

@@ -8,6 +8,7 @@ import net.flectone.managers.HookManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.BlockCommandSender;
@@ -209,7 +210,7 @@ public class FCommand {
             recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
         });
 
-        String bubbleMessage = messageBuilder.getMessage();
+        String bubbleMessage = ChatColor.stripColor(messageBuilder.getMessage(""));
 
         if (command.contains("chat") && getFPlayer() != null) {
             if (HookManager.enabledInteractiveChat) {

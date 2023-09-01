@@ -1,5 +1,9 @@
 #  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
 #  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+#
+# Check our wiki
+# https://chat.flectone.net
+
 version: "3.10.0"
 
 language: en
@@ -92,24 +96,53 @@ chat:
     - ":happy: , ＼(＾O＾)／"
 
   cords:
+    # permission: flectonechat.chat.cords
     enable: true
+
   stats:
+    # permission: flectonechat.chat.stats
     enable: true
-  hide:
-    enable: true
+
   url:
+    # permission: flectonechat.chat.url
     enable: true
+
   tooltip:
+    # permission: flectonechat.chat.tooltip
     enable: true
+
   ping:
+    # permission: flectonechat.chat.ping
     enable: true
-  bold:
+
+  markdown-||:
+    # hide
+    # permission: flectonechat.chat.markdown-||
     enable: true
-  italic:
+
+  markdown-**:
+    # bold
+    # permission: flectonechat.chat.markdown-**
     enable: true
-  underline:
+
+  markdown-##:
+    # italic
+    # permission: flectonechat.chat.markdown-##
     enable: true
-  strikethrough:
+
+  markdown-__:
+    # underline
+    # permission: flectonechat.chat.markdown-__
+    enable: true
+
+  markdown-??:
+    # obfuscate
+    # permission: flectonechat.chat.markdown-??
+    enable: true
+
+  markdown-~~:
+    # strikethrough
+    # permission: flectonechat.chat.markdown-~~
     enable: true
 
 death:

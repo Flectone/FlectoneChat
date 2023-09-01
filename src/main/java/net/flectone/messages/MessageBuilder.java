@@ -9,6 +9,7 @@ import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -19,14 +20,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -40,10 +36,12 @@ public class MessageBuilder {
         loadPatterns();
     }
 
-    private final LinkedHashMap<Integer, WordParams> messageHashMap = new LinkedHashMap<>();
+    private final List<WordParams> messages = new ArrayList<>();
     private final ComponentBuilder componentBuilder = new ComponentBuilder();
     private final ItemStack itemStack;
     private final String command;
+    private final CommandSender sender;
+    private final static List<String> patterns = List.of("||", "**", "__", "##", "??", "~~");
 
     private final boolean clickable;
 
@@ -51,17 +49,112 @@ public class MessageBuilder {
         this.itemStack = itemStack;
         this.command = command;
         this.clickable = clickable;
+        this.sender = sender;
+
+        List<Pair<String, Integer>> sortedPairs = new ArrayList<>();
+        Map<String, Integer> patternIndexes = new HashMap<>();
+
+        int charIndex = 0;
+        while (charIndex < text.length()) {
+            if (text.startsWith("\\", charIndex)) {
+                charIndex += 2;
+                continue;
+            }
+
+            String matchedPattern = null;
+            for (String pattern : patterns) {
+                if (!isPatternEnabled("markdown-"+pattern)) {
+                    continue;
+                }
+
+                if (text.startsWith(pattern, charIndex)) {
+                    matchedPattern = pattern;
+                    break;
+                }
+            }
+
+            if (matchedPattern != null) {
+                if (patternIndexes.containsKey(matchedPattern)) {
+                    sortedPairs.add(Pair.of(matchedPattern, patternIndexes.get(matchedPattern)));
+                    sortedPairs.add(Pair.of(matchedPattern, charIndex));
+                    patternIndexes.remove(matchedPattern);
+                } else {
+                    patternIndexes.put(matchedPattern, charIndex);
+                }
+                charIndex += matchedPattern.length();
+            } else {
+                charIndex++;
+            }
+        }
+
+        sortedPairs.sort(Comparator.comparingInt(Pair::getRight));
+
+        TextParameters lastTextParamaters = new TextParameters("");
+
+        if (sortedPairs.isEmpty()) {
+            lastTextParamaters = new TextParameters(text);
+            splitStringToWordParams(lastTextParamaters);
+
+        } else if (sortedPairs.get(0).getValue() != 0) {
+            String startText = text.substring(0, sortedPairs.get(0).getValue());
+            lastTextParamaters = new TextParameters(startText);
+            splitStringToWordParams(lastTextParamaters);
+        }
+
+        for (int x = 0; x < sortedPairs.size() - 1; x++) {
+
+            var pairA = sortedPairs.get(x);
+            var pairB = sortedPairs.get(x+1);
+
+            String string = text.substring(pairA.getValue() + pairA.getKey().length(), pairB.getValue());
+            TextParameters textParameters = new TextParameters(string);
+
+            if (lastTextParamaters.contains(pairA.getKey())) {
+                lastTextParamaters.remove(pairA.getKey());
+            } else {
+                lastTextParamaters.add(pairA.getKey());
+            }
+
+            textParameters.add(lastTextParamaters.getParameters());
+
+            lastTextParamaters = textParameters;
+
+            splitStringToWordParams(textParameters);
+        }
+
+        if (!sortedPairs.isEmpty()) {
+            var pairA = sortedPairs.get(sortedPairs.size() - 1);
+
+            if (pairA.getValue() < text.length() - pairA.getKey().length()) {
+                String endText = text.substring(pairA.getValue() + pairA.getKey().length(), text.length() - 1);
+                TextParameters textParameters = new TextParameters(endText);
+
+                splitStringToWordParams(textParameters);
+            }
+        }
+
+    }
+
+    private boolean isPatternEnabled(String patterName) {
+        return config.getBoolean("chat." + patterName + ".enable")
+                && (sender == null || sender.hasPermission("flectonechat.chat." + patterName));
+    }
+
+    private void splitStringToWordParams(TextParameters textParameters) {
+        String text = replacePattern(textParameters.getText());
+
+        if (text.equals(" ")) {
+            messages.add(null);
+            return;
+        }
 
         String pingPrefix = locale.getString("chat.ping.prefix");
-
-        AtomicInteger index = new AtomicInteger();
-
         Arrays.stream(text.split(" ")).parallel().map(word -> {
+
             WordParams wordParams = new WordParams();
 
-            word = replacePattern(word);
-
-            if (itemStack != null && word.equalsIgnoreCase("%item%") && config.getBoolean("chat.tooltip.enable")) {
+            if (itemStack != null && word.equalsIgnoreCase("%item%")
+                    && isPatternEnabled("tooltip")) {
                 wordParams.setItem(true);
                 wordParams.setText(itemStack.getItemMeta() != null && !itemStack.getItemMeta().getDisplayName().isEmpty()
                         ? net.md_5.bungee.api.ChatColor.ITALIC + itemStack.getItemMeta().getDisplayName()
@@ -69,7 +162,8 @@ public class MessageBuilder {
                 return wordParams;
             }
 
-            if (word.startsWith(pingPrefix) && config.getBoolean("chat.ping.enable")) {
+            if (word.startsWith(pingPrefix)
+                    && isPatternEnabled("ping")) {
                 String playerName = word.replaceFirst(pingPrefix, "");
 
                 FPlayer fPlayer = FPlayerManager.getPlayerFromName(playerName);
@@ -82,36 +176,31 @@ public class MessageBuilder {
 
                     wordParams.setClickable(clickable, player.getName());
                     wordParams.setPlayerPing(true);
+                    wordParams.setText(word);
 
                     if(!config.getBoolean("chat.global.enable") || command.equals("globalchat")) {
                         ObjectUtil.playSound(player, "chatping");
                     }
+                    return wordParams;
                 }
             }
 
-            if (word.startsWith("||") && word.endsWith("||") && !word.replace("||", "").isEmpty() && config.getBoolean("chat.hide.enable")) {
-                word = word.replace("||", "");
-
-                wordParams.setHideMessage(word);
-                wordParams.setHide(true);
-
-                word = locale.getString("chat.hide.message")
-                        .repeat(word.length());
-            }
-
             Matcher urlMatcher = urlPattern.matcher(word);
-            if (urlMatcher.find() && config.getBoolean("chat.url.enable")) {
+            if (urlMatcher.find()
+                    && isPatternEnabled("url")) {
                 wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
 
                 word = locale.getString("chat.url.message")
                         .replace("<url>", word);
+                wordParams.setText(word);
+                return wordParams;
             }
 
             if (sender instanceof Player player) {
 
                 switch (word) {
                     case "%cords%" -> {
-                        if (!config.getBoolean("chat.cords.enable")) break;
+                        if (!isPatternEnabled("cords")) break;
                         wordParams.setCords(true);
 
                         Location location = player.getLocation();
@@ -124,7 +213,7 @@ public class MessageBuilder {
                                 .replace("<block_z>", String.valueOf(location.getBlockZ()));
                     }
                     case "%stats%" -> {
-                        if (!config.getBoolean("chat.stats.enable")) break;
+                        if (!isPatternEnabled("stats")) break;
 
                         wordParams.setStats(true);
 
@@ -141,12 +230,30 @@ public class MessageBuilder {
                 }
             }
 
+            wordParams.addParameters(textParameters.getParameters());
+
+            if (textParameters.contains("||")) {
+                wordParams.setHide(true);
+
+                wordParams.setHideMessage(locale.getString("chat.hide.message")
+                        .repeat(ChatColor.stripColor(word).length()));
+            }
             wordParams.setText(word);
             return wordParams;
+        }).forEachOrdered(wordParams -> {
+            messages.add(wordParams);
+            WordParams wordParams1 = new WordParams();
+            wordParams1.setText(" ");
+            wordParams1.addParameters(textParameters.getParameters());
 
-        })
-        .forEachOrdered(wordParams -> messageHashMap.put(index.getAndIncrement(), wordParams));
+            messages.add(wordParams1);
+        });
+
+        if (!text.endsWith(" ")) {
+            messages.remove(messages.size() - 1);
+        }
     }
+
 
     public static void loadPatterns() {
         patternMap.clear();
@@ -161,17 +268,37 @@ public class MessageBuilder {
     }
 
     @NotNull
-    public String getMessage() {
-        return messageHashMap.values().parallelStream()
-                .map(wordParams -> {
-                    String word = wordParams.getText();
-                    if (wordParams.isEdited()) {
-                        word = ObjectUtil.formatString(word, null);
-                        word = ChatColor.stripColor(word);
-                    }
-                    return word;
-                })
-                .collect(Collectors.joining(" "));
+    public String getMessage(String color) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (WordParams wordParams : messages) {
+            if (wordParams == null) {
+                stringBuilder.append(" ");
+                continue;
+            }
+
+            String word = wordParams.getText();
+            if (wordParams.isHide()) {
+                word = wordParams.getHideMessage();
+                assert word != null;
+            }
+
+            if (wordParams.isEdited()) {
+                word = ObjectUtil.formatString(word, null);
+                word = ChatColor.stripColor(word);
+            }
+
+            if (sender.hasPermission("flectonechat.formatting")) {
+                word = ObjectUtil.formatString(true, word, sender, sender);
+            }
+
+            color = ChatColor.getLastColors(color) + ChatColor.getLastColors(word);
+
+            word = color + wordParams.getFormatting() + word + ChatColor.RESET + color;
+
+            stringBuilder.append(word);
+        }
+
+        return stringBuilder.toString();
     }
 
     @NotNull
@@ -200,23 +327,28 @@ public class MessageBuilder {
     private BaseComponent[] buildMessage(@NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
-        for (Map.Entry<Integer, WordParams> entry : messageHashMap.entrySet()) {
-            String word = entry.getValue().getText();
-            WordParams wordParams = entry.getValue();
+        for(WordParams wordParams : messages) {
 
-            if (sender.hasPermission("flectonechat.formatting") && !wordParams.isEdited()) {
-                String color1 = ChatColor.getLastColors(word);
-                word = ObjectUtil.formatString(true, word, recipient, sender);
-                String color2 = ChatColor.getLastColors(word);
-
-                wordParams.setFormatted(!color1.equals(color2));
-                wordParams.setText(word);
+            if (wordParams == null) {
+                componentBuilder.append(" ");
+                continue;
             }
 
-            FComponent wordComponent = new FComponent(lastColor + word);
+            String word = lastColor + wordParams.getFormatting() + wordParams.getText();
+            if (wordParams.isEdited() && !wordParams.isHide()) {
+                word = ObjectUtil.formatString(word, recipient, sender);
+            }
 
-            if (!wordParams.isEdited() || wordParams.isFormatted())
-                lastColor = ChatColor.getLastColors(lastColor + word);
+            if (sender.hasPermission("flectonechat.formatting") && !wordParams.isEdited()) {
+                wordParams.setFormatted(true);
+
+                String newWord = ObjectUtil.formatString(true, lastColor + wordParams.getText(), recipient, sender);
+                lastColor = ChatColor.getLastColors(newWord);
+
+                word = lastColor + wordParams.getFormatting() + ChatColor.stripColor(newWord);
+            }
+
+            FComponent wordComponent = new FComponent(word);
 
             if (wordParams.isItem()) {
                 componentBuilder.append(createItemComponent(itemStack, lastColor, recipient, sender));
@@ -224,25 +356,15 @@ public class MessageBuilder {
             }
 
             if (wordParams.isClickable()) {
-                wordComponent = new FPlayerComponent(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), ObjectUtil.formatString(lastColor + word, recipient, sender));
+                wordComponent = new FPlayerComponent(recipient, FPlayerManager.getPlayerFromName(wordParams.getPlayerPingName()).getPlayer(), word);
+            } else if (wordParams.isUrl()) {
+                wordComponent = new FURLComponent(recipient, sender, word, wordParams.getUrl());
+            } else if (wordParams.isHide()) {
+                wordComponent = new FComponent(ObjectUtil.formatString(wordParams.getHideMessage(), recipient, sender));
+                wordComponent.addHoverText(word);
             }
 
-            if (wordParams.isUrl()) {
-                wordComponent = new FURLComponent(recipient, sender, ObjectUtil.formatString(lastColor + word, recipient, sender), wordParams.getUrl());
-            }
-
-            if (wordParams.isHide()) {
-                wordComponent = new FComponent(ObjectUtil.formatString(lastColor + word, recipient, sender));
-                wordComponent.addHoverText(lastColor + wordParams.getHideMessage());
-            }
-
-            if (wordParams.isCords() || wordParams.isStats()) {
-                wordComponent = new FComponent(ObjectUtil.formatString(lastColor + word, recipient, sender));
-            }
-
-            componentBuilder
-                    .append(wordComponent.get(), ComponentBuilder.FormatRetention.NONE)
-                    .append(" ");
+            componentBuilder.append(wordComponent.get(), ComponentBuilder.FormatRetention.NONE);
         }
 
         return componentBuilder.create();
@@ -261,7 +383,6 @@ public class MessageBuilder {
                 .append(new FLocaleComponent(itemStack).get())
                 .append(FComponent.fromLegacyText(componentsStrings[1]))
                 .append(color)
-                .append(" ")
                 .create();
     }
 

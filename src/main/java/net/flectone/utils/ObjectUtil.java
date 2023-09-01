@@ -148,13 +148,7 @@ public class ObjectUtil {
         if (text == null) return "";
 
         MessageBuilder messageBuilder = new MessageBuilder(command, text, player, itemStack, false);
-        String message = messageBuilder.getMessage();
-
-        if (player.isOp() || player.hasPermission("flectonechat.formatting")) {
-            message = ObjectUtil.formatString(message, player);
-        }
-
-        return message;
+        return messageBuilder.getMessage(String.valueOf(ChatColor.RESET));
     }
 
     @NotNull
