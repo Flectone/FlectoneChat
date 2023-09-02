@@ -121,10 +121,8 @@ public class SQLite extends Database {
 
             ResultSet rs = md.getColumns(null, null, "players", "mute_time");
             if (rs.next()) {
-                Main.isOldVersion = true;
-            }
+                setMigrate3_9_0(true);
 
-            if (Main.isOldVersion) {
                 File oldFile = new File(plugin.getDataFolder(), dbname + ".db");
                 File newFile = new File(plugin.getDataFolder(), dbname + "-old.db");
                 newFile.createNewFile();

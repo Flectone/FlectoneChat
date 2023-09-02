@@ -24,6 +24,12 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public abstract class Database {
+    private static boolean migrate3_9_0 = false;
+
+    public static void setMigrate3_9_0(boolean migrate3_9_0) {
+        Database.migrate3_9_0 = migrate3_9_0;
+    }
+
     final Main plugin;
     protected static Connection connection;
 
@@ -42,7 +48,7 @@ public abstract class Database {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM players WHERE uuid = ?");
             ps.executeQuery();
 
-            if (Main.isOldVersion) migrateDatabase3_9_0();
+            if (migrate3_9_0) migrateDatabase3_9_0();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);

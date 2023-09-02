@@ -25,7 +25,6 @@ public class FileManager {
         String version = Main.getInstance().getDescription().getVersion();
 
         if (!version.equals(config.getString("version"))) {
-            Main.isOldVersion = true;
             Main.warning("⚠ Your configs have been updated to " + version);
 
             config.set("version", version);

@@ -29,8 +29,6 @@ public final class Main extends JavaPlugin implements Listener {
     private static CustomThreadPool dataThreadPool;
     private Database database;
 
-    public static boolean isOldVersion = false;
-
     public static Main getInstance() {
         return instance;
     }
