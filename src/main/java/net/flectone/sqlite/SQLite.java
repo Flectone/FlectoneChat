@@ -128,6 +128,9 @@ public class SQLite extends Database {
                 newFile.createNewFile();
 
                 FileUtils.copyFile(oldFile, newFile);
+
+                config.set("tab.update.rate", 40);
+                config.save();
             }
 
         } catch (SQLException | IOException e) {
