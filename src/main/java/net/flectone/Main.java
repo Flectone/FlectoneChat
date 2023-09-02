@@ -12,6 +12,7 @@ import net.flectone.sqlite.CustomThreadPool;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.tickers.PlayerPingTicker;
+import net.flectone.utils.CommandsUtil;
 import net.flectone.utils.MetricsUtil;
 import net.flectone.utils.NMSUtil;
 import net.flectone.utils.WebUtil;
@@ -78,8 +79,6 @@ public final class Main extends JavaPlugin implements Listener {
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
 
-        if (FileManager.config.getBoolean("server.brand.enable")) new ServerBrand();
-
         info("✔ Plugin enabled");
 
         Bukkit.getScheduler().runTaskAsynchronously(this, WebUtil::checkNewerVersion);
@@ -87,15 +86,17 @@ public final class Main extends JavaPlugin implements Listener {
 
     private void registerClasses() {
         NMSUtil.registerClasses("net.flectone.listeners", (fClass) ->
-                Bukkit.getServer().getPluginManager().registerEvents((Listener) fClass.getDeclaredConstructor().newInstance(), this));
+                Bukkit.getServer().getPluginManager().registerEvents((Listener) fClass.getDeclaredConstructor().newInstance(), Main.getInstance()));
 
         NMSUtil.registerClasses("net.flectone.commands", (fClass) -> {
             FTabCompleter fTabCompleter = (FTabCompleter) fClass.getDeclaredConstructor().newInstance();
             PluginCommand pluginCommand = Main.getInstance().getCommand(fTabCompleter.getCommandName());
 
             if (pluginCommand == null) return;
-            if (!fTabCompleter.isEnable()) return;
-
+            if (!fTabCompleter.isEnable()) {
+                CommandsUtil.unregisterCommand(pluginCommand);
+                return;
+            }
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });
