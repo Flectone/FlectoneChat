@@ -72,6 +72,8 @@ public final class Main extends JavaPlugin implements Listener {
         registerClasses();
         HookManager.hookPlugins();
 
+        if (FileManager.config.getBoolean("server.brand.enable")) new ServerBrand();
+
         TickerManager.start();
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
