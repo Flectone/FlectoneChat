@@ -134,7 +134,7 @@ commands:
     permission: flectonechat.warn
 
   warnlist:
-    usage: /warnlist
+    usage: /warnlist <player>
     permission: flectonechat.warnlist
 
   unwarn:
