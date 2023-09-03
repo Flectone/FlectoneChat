@@ -161,12 +161,6 @@ checkout [Chat features](features/chat.md#patterns) to learn about patterns
 | -------- | -------------------- | ---- | ------- |
 | `enable` | Enable stats feature | bool | `true`  |
 
-### `chat.hide`
-
-| name     | description         | type | default |
-| -------- | ------------------- | ---- | ------- |
-| `enable` | Enable hide feature | bool | `true`  |
-
 ### `chat.url`
 
 | name     | description        | type | default |
@@ -184,6 +178,42 @@ checkout [Chat features](features/chat.md#patterns) to learn about patterns
 | name     | description         | type | default |
 | -------- | ------------------- | ---- | ------- |
 | `enable` | Enable ping feature | bool | `true`  |
+
+### `chat.markdown-||`
+
+| name     | description         | type | default |
+| -------- | ------------------- | ---- | ------- |
+| `enable` | Enable hide feature | bool | `true`  |
+
+### `chat.markdown-**`
+
+| name     | description                  | type | default |
+| -------- | ---------------------------- | ---- | ------- |
+| `enable` | Enable bold markdown feature | bool | `true`  |
+
+### `chat.markdown-##`
+
+| name     | description                    | type | default |
+| -------- | ------------------------------ | ---- | ------- |
+| `enable` | Enable italic markdown feature | bool | `true`  |
+
+### `chat.markdown-__`
+
+| name     | description                       | type | default |
+| -------- | --------------------------------- | ---- | ------- |
+| `enable` | Enable underline markdown feature | bool | `true`  |
+
+### `chat.markdown-~~`
+
+| name     | description                           | type | default |
+| -------- | ------------------------------------- | ---- | ------- |
+| `enable` | Enable strikethrough markdown feature | bool | `true`  |
+
+### `chat.markdown-??`
+
+| name     | description                       | type | default |
+| -------- | --------------------------------- | ---- | ------- |
+| `enable` | Enable obfuscate markdown feature | bool | `true`  |
 
 ## Death
 
