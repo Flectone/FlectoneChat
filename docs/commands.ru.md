@@ -8,6 +8,13 @@
 Разрешение: `flectonechat.chatcolor` (default)\
 Разрешение (для других): `flectonechat.chatcolor.other` (op)
 
+## /spy
+
+Включить слежение за командами
+
+Использование: `/spy`\
+Разрешение: `flectonechat.spy` (op)
+
 ## /lastonline
 
 узнать когда игрок последний раз входил на сервер
@@ -31,11 +38,11 @@
 Использование: `/ignore <player>`\
 Разрешение: `flectonechat.ignore` (default)
 
-## /ignore-list
+## /ignorelist
 
 Открыть меню со списком игнорируемых игроков
 
-Использование: `/ignore-list`\
+Использование: `/ignorelist`\
 Разрешение: `flectonechat.ignore` (default)
 
 ## /me
@@ -180,15 +187,12 @@
 Вариации: `technical-works`\
 Разрешение: `flectonechat.maintenance` (op)
 
-## /chat
+## /chat-settings
 
-Использования:
+Показать настройки чата
 
-*   switch: `/chat switch <local/global>` - писать в локальный/глобальный чат по умолчанию
-*   hide: `/chat hide <local/global>` - скрыть локальные/глобальные сообщения
-
-Вариации: `chat`, `switch-chat`, `off-chat`\
-Разрешение: `flectonechat.chat` (default)
+Использование: `/chat-settings`\
+Разрешение: `flectonechat.chat-settings` (default)
 
 ## /ball
 
@@ -245,6 +249,27 @@
 
 Использование: `/banlist <page>`\
 Разрешение: `flectonechat.banlist` (op)
+
+## /warn
+
+Предупредить игрока
+
+Использование: `/warn <player> <time> <reason>`\
+Разрешение: `flectonechat.warn` (op)
+
+## /warnlist
+
+Вывести список предупреждений
+
+Использование: `/warnlist <page>`\
+Разрешение: `flectonechat.warnlist` (op)
+
+## /unwarn
+
+Удалить варн #<index> у <player>
+
+Использование: `/unwarn <player> <index>`\
+Разрешение: `flectonechat.warn` (op)
 
 ## /broadcast
 
