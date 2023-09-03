@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
 
 public class CommandMsg implements FTabCompleter {
@@ -48,7 +49,7 @@ public class CommandMsg implements FTabCompleter {
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if (!secondFPlayer.isOnline()) {
+        if (!secondFPlayer.isOnline() && config.getBoolean("command.mail.enable") && secondFPlayer.getChatInfo().getOption("mail")) {
             fCommand.dispatchCommand("mail " + playerName + " " + message);
             return;
         }
