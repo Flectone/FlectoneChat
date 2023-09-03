@@ -218,7 +218,7 @@ public class PlayerDeathEventListener implements Listener {
         if (finalBlock != null) message = message
                 .replace("<block>", finalBlock.name());
 
-        if (killer != null) {
+        if (killer != null && finalEntity != null && !killer.getType().equals(finalEntity.getType())) {
             String dueToMessage = locale.getFormatString("death.due-to", null);
             message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
         }
