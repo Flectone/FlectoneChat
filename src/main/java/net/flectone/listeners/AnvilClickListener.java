@@ -1,6 +1,7 @@
 package net.flectone.listeners;
 
-import net.flectone.utils.ObjectUtil;
+import net.flectone.messages.MessageBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,6 +27,7 @@ public class AnvilClickListener implements Listener {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         String displayName = itemMeta.getDisplayName();
+        if (displayName.isEmpty()) return;
 
         itemMeta.setDisplayName(ObjectUtil.buildFormattedMessage(player, command, displayName, itemStack));
         itemStack.setItemMeta(itemMeta);
