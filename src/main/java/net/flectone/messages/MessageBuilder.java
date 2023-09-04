@@ -223,11 +223,11 @@ public class MessageBuilder {
                         AttributeInstance damage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
 
                         word = locale.getString("chat.stats.message")
-                                .replace("<hp>", String.valueOf(player.getHealth()))
-                                .replace("<armor>", String.valueOf(armor != null ? armor.getValue() : 0))
+                                .replace("<hp>", String.valueOf(Math.round(player.getHealth() * 10.0)/10.0))
+                                .replace("<armor>", String.valueOf(armor != null ? Math.round(armor.getValue() * 10.0)/10.0 : 0.0))
                                 .replace("<exp>", player.getLevel() + ".0")
                                 .replace("<food>", player.getFoodLevel() + ".0")
-                                .replace("<attack>", String.valueOf(damage != null ? damage.getValue() : 0));
+                                .replace("<attack>", String.valueOf(damage != null ? Math.round(damage.getValue() * 10.0)/10.0 : 0.0));
 
                         wordParams.setText(word);
                         return wordParams;
