@@ -29,7 +29,12 @@ public class AnvilClickListener implements Listener {
         String displayName = itemMeta.getDisplayName();
         if (displayName.isEmpty()) return;
 
-        itemMeta.setDisplayName(ObjectUtil.buildFormattedMessage(player, command, displayName, itemStack));
+        MessageBuilder messageBuilder = new MessageBuilder(command, displayName, player, itemStack, false);
+
+        displayName = messageBuilder.getMessage(String.valueOf(ChatColor.ITALIC));
+        if (ChatColor.stripColor(displayName).isEmpty()) return;
+
+        itemMeta.setDisplayName(displayName);
         itemStack.setItemMeta(itemMeta);
     }
 }
