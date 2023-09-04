@@ -148,7 +148,7 @@ public class ObjectUtil {
         if (text == null) return "";
 
         MessageBuilder messageBuilder = new MessageBuilder(command, text, player, itemStack, false);
-        return messageBuilder.getMessage(String.valueOf(ChatColor.RESET));
+        return messageBuilder.getMessage("");
     }
 
     @NotNull
