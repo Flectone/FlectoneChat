@@ -95,6 +95,16 @@ chat:
     - ":angry: , (╯°□°)╯︵ ┻━┻"
     - ":happy: , ＼(＾O＾)／"
 
+  anvil-formatting:
+    # permission: flectonechat.chat.anvil-formatting
+    enable: true
+  book-formatting:
+    # permission: flectonechat.chat.book-formatting
+    enable: true
+  sign-formatting:
+    # permission: flectonechat.chat.sign-formatting
+    enable: true
+
   cords:
     # permission: flectonechat.chat.cords
     enable: true

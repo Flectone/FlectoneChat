@@ -1,5 +1,6 @@
 package net.flectone.listeners;
 
+import net.flectone.managers.FileManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,11 @@ public class SignChangeListener implements Listener {
 
     @EventHandler
     public void onSignChange(@NotNull SignChangeEvent event) {
+        if (event.isCancelled()) return;
         Player player = event.getPlayer();
+        if (!FileManager.config.getBoolean("chat.sign-formatting.enable")
+                || !player.hasPermission("flectonechat.chat.sign-formatting")) return;
+
         String command = "sign";
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 

@@ -251,3 +251,9 @@ permissions:
     default: true
   flectonechat.chat.markdown-~~:
     default: true
+  flectonechat.chat.anvil-formatting:
+    default: true
+  flectonechat.chat.book-formatting:
+    default: true
+  flectonechat.chat.sign-formatting:
+    default: true

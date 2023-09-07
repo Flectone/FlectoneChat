@@ -1,5 +1,6 @@
 package net.flectone.listeners;
 
+import net.flectone.managers.FileManager;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,10 +15,12 @@ public class PlayerEditBookListener implements Listener {
     @EventHandler
     public void onPlayerEditBook(@NotNull PlayerEditBookEvent event) {
         if (event.isCancelled()) return;
+        Player player = event.getPlayer();
+        if (!FileManager.config.getBoolean("chat.book-formatting.enable")
+                || !player.hasPermission("flectonechat.chat.book-formatting")) return;
 
         BookMeta bookMeta = event.getNewBookMeta();
         String command = "book";
-        Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         for (int x = 1; x <= event.getNewBookMeta().getPages().size(); x++) {

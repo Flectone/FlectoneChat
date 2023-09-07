@@ -1,5 +1,6 @@
 package net.flectone.listeners;
 
+import net.flectone.managers.FileManager;
 import net.flectone.messages.MessageBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,6 +21,9 @@ public class AnvilClickListener implements Listener {
                 || event.getCurrentItem() == null
                 || event.getCurrentItem().getItemMeta() == null
                 || !(event.getWhoClicked() instanceof Player player)) return;
+
+        if (!FileManager.config.getBoolean("chat.anvil-formatting.enable")
+                || !player.hasPermission("flectonechat.chat.anvil-formatting")) return;
 
         String command = "anvil";
 
