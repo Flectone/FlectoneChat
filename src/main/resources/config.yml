@@ -4,10 +4,9 @@
 # Check our wiki
 # https://chat.flectone.net
 
-version: "3.10.1"
-
-language: en
+version: "3.10.2"
 database: "database"
+language: en
 
 scoreboard:
   custom: false
