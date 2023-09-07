@@ -203,22 +203,22 @@ public class FCommand {
 
         MessageBuilder messageBuilder = new MessageBuilder(command, message, sender, itemStack, clickable);
 
-        recipientsSet.parallelStream().forEach(recipient -> {
-
-            ObjectUtil.playSound(recipient, command);
-
-            recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
-        });
-
-        String bubbleMessage = ChatColor.stripColor(messageBuilder.getMessage(""));
-
         if (command.contains("chat") && getFPlayer() != null) {
+            String bubbleMessage = ChatColor.stripColor(messageBuilder.getMessage(""));
+
             if (HookManager.enabledInteractiveChat) {
                 bubbleMessage = bubbleMessage.replaceAll("(<chat=.*>)", "[]");
             }
 
             getFPlayer().addChatBubble(bubbleMessage);
         }
+
+        recipientsSet.parallelStream().forEach(recipient -> {
+
+            ObjectUtil.playSound(recipient, command);
+
+            recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
+        });
     }
 
     public void sendConsoleMessage(String message) {
