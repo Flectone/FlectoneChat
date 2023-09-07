@@ -47,14 +47,14 @@ public class PlayerAdvancementDoneListener implements Listener {
         if (isEnable) register();
         else unregister();
 
-        Bukkit.getWorlds().forEach(world -> setVisibleDefaultAnnounce(world, !isEnable));
+        Bukkit.getWorlds().forEach(world -> setAnnounceAdvancements(world, !isEnable));
     }
 
-    private static void setVisibleDefaultAnnounce(@NotNull World world, boolean visible) {
+    private static void setAnnounceAdvancements(@NotNull World world, boolean enable) {
         Object value = world.getGameRuleValue(GameRule.ANNOUNCE_ADVANCEMENTS);
-        if (value == null) return;
+        if (value == null || (boolean) value == enable) return;
 
-        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, visible);
+        world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, enable);
     }
 
     @EventHandler
