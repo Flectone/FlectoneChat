@@ -28,7 +28,9 @@ public class PlayerEditBookListener implements Listener {
             bookMeta.setPage(x, ObjectUtil.buildFormattedMessage(player, command, string, itemInHand));
         }
 
-        bookMeta.setTitle(ObjectUtil.buildFormattedMessage(player, command, bookMeta.getTitle(), itemInHand));
+        if (event.isSigning()) {
+            bookMeta.setTitle(ObjectUtil.buildFormattedMessage(player, command, bookMeta.getTitle(), itemInHand));
+        }
 
         event.setNewBookMeta(bookMeta);
     }
