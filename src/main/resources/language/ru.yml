@@ -179,6 +179,7 @@ command:
       try: "&&2/try"
       try-cube: "&&2/try-cube"
       ball: "&&2/ball"
+      kick: "&&2/kick"
       tempban: "&&2/tempban"
       mute: "&&2/mute"
       warn: "&&2/warn"
@@ -200,7 +201,7 @@ command:
       - "&&1------------------------"
       - "&&1Действия игроков: \n <advancement> \n <death> \n <join> \n <quit>"
       - "&&1------------------------"
-      - "&&1Оповещения команд: \n <me> \n <try> \n <try-cube> \n <ball> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
+      - "&&1Оповещения команд: \n <me> \n <try> \n <try-cube> \n <ball> \n <kick> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
       - "&&1------------------------"
       - "&&1Обязательно сохраняйте настройки с помощью /chat-settings save"
 
@@ -255,6 +256,12 @@ command:
     suffix: " #f2d40f💤"
     true-message: "#f2d40f💤 Теперь ты афк"
     false-message: "#f2d40f💤 Теперь ты не афк"
+
+  kick:
+    usage: "&&1⚑ Использование: &&2/<command> (игрок) (причина)"
+    default-reason: "Был кикнут оператором"
+    global-message: "#ff4e4e\n⏵ Игрок <player> был кикнут \n⏵ Причина: <reason> \n⏵ Модератор: <moderator>\n"
+    local-message: "#ff4e4e☠ Ты был кикнут \nПричина: <reason>"
 
   warn:
     usage: "&&1⚑ Испольование: &&2/<command> (игрок) (время) (причина)"

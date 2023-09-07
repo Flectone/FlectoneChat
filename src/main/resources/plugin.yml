@@ -162,6 +162,10 @@ commands:
     usage: /chat-settings
     permission: flectonechat.chat-settings
 
+  kick:
+    usage: /kick <player> <message>
+    permission: flectonechat.kick
+
 permissions:
   flectonechat.reload:
     default: op
@@ -257,3 +261,5 @@ permissions:
     default: true
   flectonechat.chat.sign-formatting:
     default: true
+  flectonechat.kick:
+    default: op

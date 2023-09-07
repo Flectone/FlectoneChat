@@ -106,6 +106,7 @@ public class SQLite extends Database {
                     "'enable_command_reply' int(11)," +
                     "'enable_command_mail' int(11)," +
                     "'enable_command_tic_tac_toe' int(11)," +
+                    "'enable_command_kick' int(11)," +
                     "PRIMARY KEY (`uuid`)" +
                     ");");
 
@@ -131,6 +132,10 @@ public class SQLite extends Database {
 
                 config.set("tab.update.rate", 40);
                 config.save();
+            }
+
+            if (rs.getMetaData().getColumnCount() != 24) {
+                setMigrate3_10_1(true);
             }
 
         } catch (SQLException | IOException e) {

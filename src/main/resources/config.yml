@@ -213,6 +213,10 @@ command:
       enable: true
       time: 3000
 
+  kick:
+    enable: true
+    announce: true
+
   warn:
     enable: true
     announce: true
@@ -354,6 +358,10 @@ command:
 cool-down:
   enable: false
 
+  kick:
+    enable: false
+    time: 5
+    permission: "flectonechat.kick.cooldown.immune"
   warn:
     enable: false
     time: 5
@@ -499,6 +507,9 @@ cool-down:
     permission: "flectonechat.mutelist.cooldown.immune"
 
 sound:
+  kick:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL"
   warn:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL"

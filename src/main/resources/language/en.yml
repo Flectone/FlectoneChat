@@ -180,6 +180,7 @@ command:
       try: "&&2/try"
       try-cube: "&&2/try-cube"
       ball: "&&2/ball"
+      kick: "&&2/kick"
       tempban: "&&2/tempban"
       mute: "&&2/mute"
       warn: "&&2/warn"
@@ -201,7 +202,7 @@ command:
       - "&&1------------------------"
       - "&&1Players actions: \n <advancement> \n <death> \n <join> \n <quit>"
       - "&&1------------------------"
-      - "&&1Command alerts: \n <me> \n <try> \n <try-cube> \n <ball> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
+      - "&&1Command alerts: \n <me> \n <try> \n <try-cube> \n <ball> \n <kick> \n <tempban> \n <mute> \n <warn> \n <msg> \n <reply> \n <mail> \n <tic-tac-toe>"
       - "&&1------------------------"
       - "&&1Be sure to save your settings with /chat-settings save"
 
@@ -256,6 +257,12 @@ command:
     suffix: " #f2d40f💤"
     true-message: "#f2d40f💤 Now you're afk"
     false-message: "#f2d40f💤 Now you're not afk"
+
+  kick:
+    usage: "&&1⚑ Usage: &&2/<command> (player) (reason)"
+    default-reason: "Kicked by an operator"
+    global-message: "#ff4e4e\n⏵ Player <player> was kicked \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+    local-message: "#ff4e4e☠ You were kicked \nReason: <reason>"
 
   warn:
     usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"

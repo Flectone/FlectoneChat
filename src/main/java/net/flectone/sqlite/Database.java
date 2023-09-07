@@ -30,6 +30,12 @@ public abstract class Database {
         Database.migrate3_9_0 = migrate3_9_0;
     }
 
+    private static boolean migrate3_10_1 = false;
+
+    public static void setMigrate3_10_1(boolean migrate3_10_1) {
+        Database.migrate3_10_1 = migrate3_10_1;
+    }
+
     final Main plugin;
     protected static Connection connection;
 
@@ -49,6 +55,7 @@ public abstract class Database {
             ps.executeQuery();
 
             if (migrate3_9_0) migrateDatabase3_9_0();
+            if (migrate3_10_1) migrateDatabase3_10_1();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -236,6 +243,9 @@ public abstract class Database {
             option = playerResult.getString("enable_command_tic_tac_toe");
             playerChat.setOption("tic-tac-toe", parseBoolean("command.tic-tac-toe.enable", option));
 
+            option = playerResult.getString("enable_command_kick");
+            playerChat.setOption("kick", parseBoolean("command.kick.enable", option));
+
             if (fPlayer.hasPermission("flectonechat.stream")) {
                 fPlayer.setStreaming(Boolean.parseBoolean(playerResult.getString("stream")));
             }
@@ -295,6 +305,18 @@ public abstract class Database {
             dropColumn(statement, "players", "mute_reason");
             dropColumn(statement, "players", "tempban_time");
             dropColumn(statement, "players", "tempban_reason");
+
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
+
+    }
+
+    private void migrateDatabase3_10_1() {
+        try (Connection conn = getSQLConnection()) {
+            Statement statement = conn.createStatement();
+
+            addColumn(statement, "players", "enable_command_kick", "varchar(11)");
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
@@ -577,7 +599,7 @@ public abstract class Database {
                             "enable_deaths=?,enable_joins=?,enable_quits=?,enable_command_me=?,enable_command_try=?," +
                             "enable_command_try_cube=?,enable_command_ball=?,enable_command_tempban=?,enable_command_mute=?," +
                             "enable_command_warn=?,enable_command_msg=?,enable_command_reply=?,enable_command_mail=?," +
-                            "enable_command_tic_tac_toe=? WHERE uuid=?");
+                            "enable_command_tic_tac_toe=?, enable_command_kick=? WHERE uuid=?");
 
                     preparedStatement.setString(1, playerChat.getOptionString(("advancement")));
                     preparedStatement.setString(2, playerChat.getOptionString(("death")));
@@ -594,7 +616,8 @@ public abstract class Database {
                     preparedStatement.setString(13, playerChat.getOptionString(("reply")));
                     preparedStatement.setString(14, playerChat.getOptionString(("mail")));
                     preparedStatement.setString(15, playerChat.getOptionString(("tic-tac-toe")));
-                    preparedStatement.setString(16, playerChat.getPlayer());
+                    preparedStatement.setString(16, playerChat.getOptionString(("kick")));
+                    preparedStatement.setString(17, playerChat.getPlayer());
 
                     preparedStatement.executeUpdate();
                 }
