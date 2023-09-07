@@ -1,6 +1,7 @@
 package net.flectone.sqlite;
 
 import net.flectone.Main;
+import net.flectone.managers.FileManager;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -118,10 +119,13 @@ public class SQLite extends Database {
             s.executeUpdate("PRAGMA WAL_AUTOCHECKPOINT=100");
             s.close();
 
-            DatabaseMetaData md = connection.getMetaData();
+            if (FileManager.getLastVersion().isEmpty()) {
+                DatabaseMetaData md = connection.getMetaData();
+                ResultSet rs = md.getColumns(null, null, "players", "mute_time");
+                if (!rs.next()) return;
+            }
 
-            ResultSet rs = md.getColumns(null, null, "players", "mute_time");
-            if (rs.next()) {
+            if (FileManager.compareVersions(FileManager.getLastVersion(), "3.10.0") == -1) {
                 setMigrate3_9_0(true);
 
                 File oldFile = new File(plugin.getDataFolder(), dbname + ".db");
@@ -134,7 +138,7 @@ public class SQLite extends Database {
                 config.save();
             }
 
-            if (rs.getMetaData().getColumnCount() != 24) {
+            if (FileManager.compareVersions(FileManager.getLastVersion(), "3.10.2") == -1) {
                 setMigrate3_10_1(true);
             }
 

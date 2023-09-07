@@ -3,6 +3,7 @@ package net.flectone.managers;
 import net.flectone.Main;
 import net.flectone.misc.files.FYamlConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class FileManager {
 
+    private static String lastVersion = "";
     private static final String dataFolder = Main.getInstance().getDataFolder().getAbsolutePath() + File.separator;
     private static final String languagesPath = "language" + File.separator;
     private static final String iconsPath = "icons" + File.separator;
@@ -21,19 +23,22 @@ public class FileManager {
 
     public static void initialize() {
         config = load("config.yml");
+        lastVersion = config.getString("version");
 
-        String version = Main.getInstance().getDescription().getVersion();
+        String currentVersion = Main.getInstance().getDescription().getVersion();
+        boolean needMigrate = false;
 
-        if (!version.equals(config.getString("version"))) {
-            Main.warning("⚠ Your configs have been updated to " + version);
+        if (compareVersions(currentVersion, lastVersion) == 1) {
+            Main.warning("⚠ Your configs have been updated to " + currentVersion);
 
-            config.set("version", version);
+            config.set("version", currentVersion);
             config.save();
 
             migrate(config);
-            loadLocale(true);
-        } else loadLocale(false);
+            needMigrate = true;
+        }
 
+        loadLocale(needMigrate);
         loadIcons();
     }
 
@@ -99,5 +104,38 @@ public class FileManager {
                 .forEach(string -> oldFile.set(string, resourceFile.get(string)));
 
         oldFile.save();
+    }
+
+    public static String getLastVersion() {
+        return lastVersion;
+    }
+
+    /**
+     * Compares two version strings and returns:<br>
+     * -1 if version1 is less than version2,<br>
+     * 0 if version1 is equal to version2, or<br>
+     * 1 if version1 is greater than version2.<br>
+     *
+     * @param version1 The first version string
+     * @param version2 The second version string
+     * @return -1, 0, or 1 based on the comparison result
+     */
+    public static int compareVersions(@NotNull String version1, @NotNull String version2) {
+        if (version1.isEmpty()) return -1;
+        if (version2.isEmpty()) return 1;
+
+        String[] parts1 = version1.split("\\.");
+        String[] parts2 = version2.split("\\.");
+
+        for (int x = 0; x < parts1.length; x++) {
+            int num1 = Integer.parseInt(parts1[x]);
+            int num2 = Integer.parseInt(parts2[x]);
+
+
+            if (num1 > num2) return 1;
+            else if (num1 < num2) return -1;
+        }
+
+        return 0;
     }
 }

@@ -1,6 +1,7 @@
 package net.flectone.utils;
 
 import net.flectone.Main;
+import net.flectone.managers.FileManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,12 +27,11 @@ public class WebUtil {
                     try {
                         JSONArray json = (JSONArray) parser.parse(s);
 
-                        String lastVersion = (String) ((JSONObject) json.get(0)).get("version_number");
                         String currentVersion = Main.getInstance().getDescription().getVersion();
-                        boolean isOld = !currentVersion.equals(lastVersion);
+                        String lastVersion = (String) ((JSONObject) json.get(0)).get("version_number");
 
-                        if (isOld) {
-                            Main.warning("⚠ Upgrade your " + currentVersion +  " version of plugin to " + lastVersion);
+                        if (FileManager.compareVersions(currentVersion, lastVersion) == -1) {
+                            Main.warning("⚠ Upgrade your " + currentVersion + " version of plugin to " + lastVersion);
                             Main.warning("⚠ Url: https://modrinth.com/plugin/flectonechat/version/" + lastVersion);
                         }
 
