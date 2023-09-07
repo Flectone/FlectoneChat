@@ -266,7 +266,7 @@ command:
   warn:
     usage: "&&1⚑ Испольование: &&2/<command> (игрок) (время) (причина)"
     default-reason: "Ты получил предупреждение"
-    global-message: "#ff4e4e☠ Игрок <player> получил предупреждение №<count> <time>. Причина: <reason>. Модератор <moderator>"
+    global-message: "#ff4e4e\n⏵ Игрок <player> получил предупреждение №<count> <time> \n⏵ Причина: <reason> \n⏵ Модератор: <moderator>\n"
     ban-too-many: "Слишком много предупреждений"
 
   warnlist:
@@ -291,8 +291,8 @@ command:
   mute:
     usage: "&&1⚑ Использование: &&2/<command> (игрок) (время) (причина)"
     default-reason: "Вы были замучены на этом сервере"
-    global-message: "#ff4e4e☠ Игрок <player> получил мут на <time>. Причина: <reason>. Забанил <moderator>"
-    local-message: "#ff4e4e☠ Ты в муте, осталось <time>. Причина: <reason>"
+    global-message: "#ff4e4e\n⏵ Игрок <player> получил мут на <time> \n⏵ Причина: <reason> \n⏵ Модератор: <moderator>\n"
+    local-message: "#ff4e4e☠ Ты в муте, осталось <time> \nПричина: <reason>"
 
   unmute:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"
@@ -302,12 +302,12 @@ command:
   tempban:
     usage: "&&1⚑ Использование: &&2/<command> (игрок) (время) (причина)"
     default-reason: "Вы были заблокированы на этом сервере"
-    global-message: "#ff4e4e☠ Игрок <player> был заблокирован на <time>. Причина: <reason>. Забанил <moderator>"
+    global-message: "#ff4e4e\n⏵ Игрок <player> был заблокирован на <time> \n⏵ Причина: <reason> \n⏵ Забанил <moderator>\n"
     local-message: "#ff4e4e☠ Ты заблокирован, осталось <time>. Причина: <reason>"
 
   ban:
-    global-message: "#ff4e4e☠ Игрок <player> был заблокирован навсегда. Причина: <reason>. Забанил <moderator>"
-    local-message: "#ff4e4e☠ Ты заблокирован навсегда. Причина: <reason>"
+    global-message: "#ff4e4e\n⏵ Игрок <player> был заблокирован навсегда \n⏵ Причина: <reason> \n⏵ Забанил <moderator>\n"
+    local-message: "#ff4e4e☠ Ты заблокирован навсегда \nПричина: <reason>"
 
   unban:
     usage: "&&1⚑ Использование: &&2/<command> (игрок)"

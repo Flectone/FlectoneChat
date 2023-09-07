@@ -267,7 +267,7 @@ command:
   warn:
     usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
     default-reason: "You have been warned"
-    global-message: "#ff4e4e☠ Player <player> received warning №<count> <time>. Reason: <reason>. Moderator <moderator>"
+    global-message: "#ff4e4e\n⏵ Player <player> received warning №<count> <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
     ban-too-many: "Too many warnings"
 
   warnlist:
@@ -292,8 +292,8 @@ command:
   mute:
     usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
     default-reason: "You were muted on this server"
-    global-message: "#ff4e4e☠ Player <player> was muted for <time>. Reason: <reason>. Moderator <moderator>"
-    local-message: "#ff4e4e☠ You are in mute, <time> left. Reason: <reason>"
+    global-message: "#ff4e4e\n⏵ Player <player> was muted for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+    local-message: "#ff4e4e☠ You are in mute, <time> left \nReason: <reason>"
 
   mutelist:
     empty: "#4eff52☺ No muted players found"
@@ -316,12 +316,12 @@ command:
   tempban:
     usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
     default-reason: "You have been banned from this server"
-    global-message: "#ff4e4e☠ Player <player> has been banned for <time>. Reason: <reason>. Blocked <moderator>"
-    local-message: "#ff4e4e☠ You are banned, <time> left. Reason: <reason>"
+    global-message: "#ff4e4e\n⏵ Player <player> has been banned for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+    local-message: "#ff4e4e☠ You are banned, <time> left \nReason: <reason>"
 
   ban:
-    global-message: "#ff4e4e☠ Player <player> has been banned permanently. Reason: <reason>. Blocked <moderator>"
-    local-message: "#ff4e4e☠ You are banned permanently. Reason: <reason>"
+    global-message: "#ff4e4e\n⏵ Player <player> has been banned permanently \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+    local-message: "#ff4e4e☠ You are banned permanently \nReason: <reason>"
 
   unban:
     usage: "&&1⚑ Usage: &&2/<command> (player)"
