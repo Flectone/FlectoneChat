@@ -13,6 +13,8 @@ public class PlayerEditBookListener implements Listener {
 
     @EventHandler
     public void onPlayerEditBook(@NotNull PlayerEditBookEvent event) {
+        if (event.isCancelled()) return;
+
         BookMeta bookMeta = event.getNewBookMeta();
         String command = "book";
         Player player = event.getPlayer();
