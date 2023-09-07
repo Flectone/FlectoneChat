@@ -298,7 +298,10 @@ public class MessageBuilder {
 
             color = ChatColor.getLastColors(color) + ChatColor.getLastColors(word);
 
-            word = color + wordParams.getFormatting() + word + ChatColor.RESET + color;
+            String newFormatting = wordParams.getFormatting();
+            if (!newFormatting.isEmpty()) {
+                word = color + newFormatting + word + ChatColor.RESET + color;
+            }
 
             stringBuilder.append(word);
         }
