@@ -125,6 +125,7 @@ chat:
 tab-complete:
   message: "(message)"
   reason: "(reason)"
+  stream-url: "https://flectone.net"
 
 command:
   null-player: "#ff4e4e⁉ This player does not exist"

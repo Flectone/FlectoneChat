@@ -102,7 +102,7 @@ public class CommandStream implements FTabCompleter {
             default -> {
                 if (!strings[0].equalsIgnoreCase("start")) break;
 
-                isStartsWith(strings[1], "https://flectone.net");
+                isStartsWith(strings[1], locale.getString("tab-complete.stream-url"));
             }
         }
 
