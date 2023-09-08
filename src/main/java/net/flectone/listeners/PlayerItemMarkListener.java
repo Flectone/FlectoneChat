@@ -54,7 +54,7 @@ public class PlayerItemMarkListener implements Listener {
 
         String command = "mark";
 
-        if (!itemName.isEmpty() && containsColor(itemName)) {
+        if (!itemName.isEmpty() && Arrays.asList(CommandMark.chatColorValues).contains(itemName.toUpperCase())) {
             command += " " + itemName;
         }
 
