@@ -70,11 +70,11 @@ player:
 
   join:
     first-time:
-      message: "&&1<player> впервые зашёл на сервер, поприветствуем его!"
-    message: "&&1<player> присоединился к серверу"
+      message: "#4eff52→ &&2<player> &&1впервые зашёл на сервер, поприветствуем его!"
+    message: "#4eff52→ &&2<player> &&1присоединился к серверу"
 
   quit:
-    message: "&&1<player> вышел с сервера"
+    message: "#ff4e4e← &&2<player> &&1вышел с сервера"
 
   world:
     prefix:

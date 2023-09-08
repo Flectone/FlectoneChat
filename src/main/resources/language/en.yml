@@ -70,11 +70,11 @@ player:
 
   join:
     first-time:
-      message: "&&1<player> has logged on to the server for the first time, let's welcome!"
-    message: "&&1<player> join the server"
+      message: "#4eff52→ &&1<player> has logged on to the server for the first time, let's welcome!"
+    message: "#4eff52→ &&2<player> &&1join the server"
 
   quit:
-    message: "&&1<player> left the server"
+    message: "#ff4e4e← &&2<player> &&1left the server"
 
   world:
     prefix:
