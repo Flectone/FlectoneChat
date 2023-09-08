@@ -35,7 +35,7 @@ public class CommandHelper implements FTabCompleter {
                 .filter(player -> player.isOp() || player.hasPermission(permission))
                 .collect(Collectors.toSet());
 
-        if (playerSet.size() == 0) {
+        if (playerSet.isEmpty()) {
             fCommand.sendMeMessage("command.helper.no-helpers");
             return true;
         }

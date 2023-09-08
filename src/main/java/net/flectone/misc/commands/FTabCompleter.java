@@ -53,7 +53,7 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
     default void isFormatString(@NotNull String arg) {
         Arrays.stream(FCommand.formatTimeList)
                 .forEach(format -> {
-                    if (arg.length() != 0 && StringUtils.isNumeric(arg.substring(arg.length() - 1))) {
+                    if (!arg.isEmpty() && StringUtils.isNumeric(arg.substring(arg.length() - 1))) {
                         isStartsWith(arg, arg + format);
                         return;
                     }

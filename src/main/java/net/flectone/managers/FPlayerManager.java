@@ -122,7 +122,7 @@ public class FPlayerManager {
 
         OfflinePlayer offlinePlayer = offlinePlayerList.size() == 1
                 ? offlinePlayerList.get(0)
-                : offlinePlayerList.parallelStream()
+                : offlinePlayerList.stream()
                 .filter(player -> player.getName().equals(name))
                 .findFirst().orElse(null);
 

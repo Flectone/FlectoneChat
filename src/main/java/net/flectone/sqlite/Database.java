@@ -563,7 +563,7 @@ public abstract class Database {
         for (UUID ignoredPlayer : arrayList)
             ignoreListString.append(ignoredPlayer).append(",");
 
-        return ignoreListString.length() == 0 ? null : ignoreListString.toString();
+        return ignoreListString.isEmpty() ? null : ignoreListString.toString();
     }
 
     public void updatePlayerInfo(@NotNull String table, @NotNull Object playerInfo) {

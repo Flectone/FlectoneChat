@@ -80,7 +80,7 @@ public class ChatBubbleTicker extends FBukkitRunnable {
             }
         }
 
-        if (line.length() > 0) lines.add(line.toString());
+        if (!line.isEmpty()) lines.add(line.toString());
 
         return lines;
     }

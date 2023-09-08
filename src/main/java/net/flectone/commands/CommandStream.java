@@ -94,16 +94,11 @@ public class CommandStream implements FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        switch (strings.length) {
-            case 1 -> {
-                isStartsWith(strings[0], "start");
-                isStartsWith(strings[0], "end");
-            }
-            default -> {
-                if (!strings[0].equalsIgnoreCase("start")) break;
-
-                isStartsWith(strings[1], locale.getString("tab-complete.stream-url"));
-            }
+        if (strings.length == 1) {
+            isStartsWith(strings[0], "start");
+            isStartsWith(strings[0], "end");
+        } else if (!strings[0].equalsIgnoreCase("start")){
+            isStartsWith(strings[1], locale.getString("tab-complete.stream-url"));
         }
 
         Collections.sort(wordsList);
