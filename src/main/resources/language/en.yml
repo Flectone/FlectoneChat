@@ -366,8 +366,8 @@ command:
   msg:
     usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
     send: "&&1✉ You → <player> » &&2"
-    get: "&&1✉ You ← <player> » &&2"
-    myself: "&&1✉ &&2"
+    get: "&&1✉ <player> → You » &&2"
+    myself: "&&1✉ [Note] &&2"
 
   mail:
     usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
