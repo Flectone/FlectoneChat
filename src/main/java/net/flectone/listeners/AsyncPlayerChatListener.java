@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,7 +99,9 @@ public class AsyncPlayerChatListener implements Listener {
 
     @EventHandler
     public void checkItemTooltipShortcut(@NotNull InventoryClickEvent event) {
-        if (event.getSlot() != 39
+        if (event.isCancelled()
+                || !(event.getInventory() instanceof CraftingInventory)
+                || event.getSlot() != 39
                 || !event.isShiftClick()
                 || event.getCursor() == null
                 || event.getCursor().getType().equals(Material.AIR)) {
