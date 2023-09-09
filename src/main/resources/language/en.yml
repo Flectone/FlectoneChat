@@ -3,18 +3,10 @@
 # This file is the english localization of plugin
 # Here you can change any lines
 # FlectoneChat has its own placeholders described like this <example>, you can delete or move them
-
-# Following plugins/api are currently supported (must be installed for them to work)
-#---------------------------------
-## █ █ ▄▀▄ █ █ █   ▀█▀   ▄▀▄ █▀▄ █
-## ▀▄▀ █▀█ ▀▄█ █▄▄  █    █▀█ █▀  █
-## Custom prefixes and suffixes in players
-#-------------------------------------------------------
-## █▀▄ █   ▄▀▄ ▄▀▀ ██▀ █▄█ ▄▀▄ █   █▀▄ ██▀ █▀▄ ▄▀▄ █▀▄ █
-## █▀  █▄▄ █▀█ ▀▄▄ █▄▄ █ █ ▀▄▀ █▄▄ █▄▀ █▄▄ █▀▄ █▀█ █▀  █
-## Any placeholders that PlaceholderAPI supports
-## Example: %server_tps% on this server
-
+#
+# Check our wiki
+# https://chat.flectone.net
+#
 # First color &&1
 # Second color &&2
 
