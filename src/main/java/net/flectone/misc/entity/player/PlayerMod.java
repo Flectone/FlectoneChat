@@ -56,4 +56,8 @@ public class PlayerMod {
     public String getModerator() {
         return moderator;
     }
+
+    public boolean isExpired() {
+        return getTime() != -1 && getDifferenceTime() <= 0;
+    }
 }

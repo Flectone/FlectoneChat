@@ -81,7 +81,10 @@ public class CommandWarnlist implements FTabCompleter {
 
         AtomicInteger atomicInteger = new AtomicInteger((page - 1) * perPage + 1);
 
-        fPlayer.getWarnList().stream().skip((long) (page - 1) * perPage).limit(perPage).forEach(playerWarn -> {
+        fPlayer.getWarnList().stream()
+                .skip((long) (page - 1) * perPage)
+                .limit(perPage)
+                .forEach(playerWarn -> {
 
             String warnFormat = locale.getFormatString("command.warnlist.player-warn", commandSender)
                     .replace("<unwarn>", unwarnButton)

@@ -75,7 +75,7 @@ public class PlayerJoinListener implements Listener {
             PlayerMod playerMod = Main.getDatabase()
                     .getPlayerInfo("bans", "player", event.getPlayer().getUniqueId().toString());
 
-            if (playerMod == null) return;
+            if (playerMod == null || playerMod.isExpired()) return;
 
             String localString = playerMod.getTime() == -1 ? "command.ban.local-message" : "command.tempban.local-message";
 

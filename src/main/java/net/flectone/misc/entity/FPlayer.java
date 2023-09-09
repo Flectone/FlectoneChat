@@ -90,7 +90,13 @@ public class FPlayer {
         Main.getDatabase().insertPlayer(this.uuid);
 
         this.muteInfo = Main.getDatabase().getPlayerInfo("mutes", "player", this.uuid.toString());
+        // check and unmute if is over
+        isMuted();
+
         this.banInfo = Main.getDatabase().getPlayerInfo("bans", "player", this.uuid.toString());
+        // check and unban if is over
+        isBanned();
+
         this.warnList = new ArrayList<>();
 
         Main.getDatabase().loadPlayersTable(this);
@@ -178,9 +184,9 @@ public class FPlayer {
     }
 
     public boolean isMuted() {
-        boolean isMuted = muteInfo != null && muteInfo.getDifferenceTime() > 0;
+        boolean isMuted = muteInfo != null && !muteInfo.isExpired();
 
-        if (!isMuted && muteInfo != null) {
+        if (!isMuted) {
             unmute();
         }
 
@@ -188,9 +194,9 @@ public class FPlayer {
     }
 
     public boolean isBanned() {
-        boolean isBanned = banInfo != null && banInfo.getDifferenceTime() > 0;
+        boolean isBanned = banInfo != null && !banInfo.isExpired();
 
-        if (isBanned) {
+        if (!isBanned) {
             unban();
         }
 
@@ -243,7 +249,8 @@ public class FPlayer {
     }
 
     public List<PlayerWarn> getWarnList() {
-        return warnList;
+        if (warnList == null) return null;
+        return warnList.stream().filter(playerWarn -> !playerWarn.isExpired()).toList();
     }
 
     public void unwarn(int index) {

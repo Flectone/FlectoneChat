@@ -7,6 +7,7 @@ import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.entity.FPlayer;
+import net.flectone.misc.entity.player.PlayerMod;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -35,9 +36,10 @@ public class CommandUnmute implements FTabCompleter {
             return;
         }
 
-        fPlayer.synchronizeDatabase();
+        PlayerMod playerMod = Main.getDatabase()
+                .getPlayerInfo("mutes", "player", fPlayer.getUUID().toString());
 
-        if (fPlayer.getMute() == null || fPlayer.getMute().getTime() < 0) {
+        if (playerMod == null || playerMod.isExpired()) {
             fCommand.sendMeMessage("command.unmute.not-muted");
             return;
         }

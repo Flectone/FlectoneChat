@@ -68,4 +68,8 @@ public class PlayerWarn {
     public int getDifferenceTime() {
         return time - ObjectUtil.getCurrentTime();
     }
+
+    public boolean isExpired() {
+        return getTime() != -1 && getDifferenceTime() <= 0;
+    }
 }

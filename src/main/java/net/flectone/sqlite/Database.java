@@ -375,7 +375,12 @@ public abstract class Database {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
             Connection conn = getSQLConnection();
-            PreparedStatement preparedStatement = conn.prepareStatement("SELECT " + column + " FROM " + table);
+
+            String filter = " WHERE time>?";
+            if (table.equals("bans")) filter += " OR time=-1";
+
+            PreparedStatement preparedStatement = conn.prepareStatement("SELECT " + column + " FROM " + table + filter);
+            preparedStatement.setInt(1, ObjectUtil.getCurrentTime());
 
             ResultSet playerResult = preparedStatement.executeQuery();
 

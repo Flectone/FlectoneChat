@@ -39,7 +39,7 @@ public class CommandUnban implements FTabCompleter {
         PlayerMod playerMod = Main.getDatabase()
                 .getPlayerInfo("bans", "player", fPlayer.getUUID().toString());
 
-        if (playerMod == null) {
+        if (playerMod == null || playerMod.isExpired()) {
             fCommand.sendMeMessage("command.unban.not-banned");
             return;
         }
