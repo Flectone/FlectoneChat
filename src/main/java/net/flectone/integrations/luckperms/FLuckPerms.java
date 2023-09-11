@@ -2,7 +2,6 @@ package net.flectone.integrations.luckperms;
 
 import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
-import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.entity.FPlayer;
@@ -61,8 +60,11 @@ public class FLuckPerms implements HookInterface {
     }
 
     public static int getPlayerGroupWeight(Player player) {
-        String vaultGroup = FVault.getProvider().getPrimaryGroup(player);
-        Group group = FLuckPerms.getProvider().getGroupManager().getGroup(vaultGroup);
+        User user = FLuckPerms.getProvider().getUserManager().getUser(player.getUniqueId());
+        if (user == null) return 0;
+
+        String primaryGroup = user.getPrimaryGroup();
+        Group group = FLuckPerms.getProvider().getGroupManager().getGroup(primaryGroup);
         if (group == null) return 0;
 
         return group.getWeight().orElse(0);

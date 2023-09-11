@@ -353,7 +353,7 @@ public class FPlayer {
 
         int rank = 0;
 
-        if (HookManager.enabledVault && HookManager.enabledLuckPerms) {
+        if (HookManager.enabledLuckPerms) {
             rank = FLuckPerms.getPlayerGroupWeight(player);
         }
 
