@@ -7,9 +7,9 @@ import net.flectone.misc.components.FPlayerComponent;
 import net.flectone.misc.components.FURLComponent;
 import net.flectone.misc.entity.FPlayer;
 import net.flectone.utils.ObjectUtil;
+import net.flectone.utils.Pair;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -75,8 +75,8 @@ public class MessageBuilder {
 
             if (matchedPattern != null) {
                 if (patternIndexes.containsKey(matchedPattern)) {
-                    sortedPairs.add(Pair.of(matchedPattern, patternIndexes.get(matchedPattern)));
-                    sortedPairs.add(Pair.of(matchedPattern, charIndex));
+                    sortedPairs.add(new Pair<>(matchedPattern, patternIndexes.get(matchedPattern)));
+                    sortedPairs.add(new Pair<>(matchedPattern, charIndex));
                     patternIndexes.remove(matchedPattern);
                 } else {
                     patternIndexes.put(matchedPattern, charIndex);
@@ -87,7 +87,7 @@ public class MessageBuilder {
             }
         }
 
-        sortedPairs.sort(Comparator.comparingInt(Pair::getRight));
+        sortedPairs.sort(Comparator.comparingInt(Pair::right));
 
         TextParameters lastTextParamaters = new TextParameters("");
 

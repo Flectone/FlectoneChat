@@ -351,13 +351,19 @@ public class FPlayer {
     @NotNull
     public Team getPlayerTeam() {
 
-        int rank = 0;
+        String sortName;
 
-        if (HookManager.enabledLuckPerms) {
-            rank = FLuckPerms.getPlayerGroupWeight(player);
+        if (!Bukkit.getBukkitVersion().startsWith("1.16.5")) {
+            int rank = 0;
+
+            if (HookManager.enabledLuckPerms) {
+                rank = FLuckPerms.getPlayerGroupWeight(player);
+            }
+
+            sortName = ObjectUtil.generateSortString(rank, player.getName());
+        } else {
+            sortName = player.getName();
         }
-
-        String sortName = ObjectUtil.generateSortString(rank, player.getName());
 
         Team bukkitTeam = FPlayerManager.getScoreBoard().getTeam(sortName);
         Team team = bukkitTeam != null ? bukkitTeam : FPlayerManager.getScoreBoard().registerNewTeam(sortName);
