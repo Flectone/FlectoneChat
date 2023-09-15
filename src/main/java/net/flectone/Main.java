@@ -12,16 +12,15 @@ import net.flectone.sqlite.CustomThreadPool;
 import net.flectone.sqlite.Database;
 import net.flectone.sqlite.SQLite;
 import net.flectone.tickers.PlayerPingTicker;
-import net.flectone.utils.CommandsUtil;
-import net.flectone.utils.MetricsUtil;
-import net.flectone.utils.NMSUtil;
-import net.flectone.utils.WebUtil;
+import net.flectone.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+
+import static net.flectone.managers.FileManager.config;
 
 public final class Main extends JavaPlugin implements Listener {
 
@@ -76,6 +75,10 @@ public final class Main extends JavaPlugin implements Listener {
         TickerManager.start();
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
+
+        if (config.getBoolean("chat.swear-protection.enable")) {
+            BlackListUtil.loadSwears();
+        }
 
         info("✔ Plugin enabled");
 

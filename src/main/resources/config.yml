@@ -78,6 +78,10 @@ chat:
 
     set-cancelled: false
 
+  # list of blacklisted words can be found in swears.yml
+  swear-protection:
+    enable: false
+
   patterns:
     - ":) , ☺"
     - ":D , ☻"
@@ -511,6 +515,9 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+  swear:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
   kick:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"

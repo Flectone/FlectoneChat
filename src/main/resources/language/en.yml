@@ -138,6 +138,9 @@ chat:
 
   all-disabled: "#ff4e4e⁉ Chat is disabled on this server"
 
+  swear-protection:
+    message: "❤"
+
 tab-complete:
   message: "(message)"
   reason: "(reason)"

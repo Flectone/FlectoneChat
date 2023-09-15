@@ -10,6 +10,7 @@ import net.flectone.misc.brand.ServerBrand;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
 import net.flectone.misc.files.FYamlConfiguration;
+import net.flectone.utils.BlackListUtil;
 import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -89,6 +90,10 @@ public class CommandFlectonechat implements FTabCompleter {
 
         PlayerDeathEventListener.reload();
         PlayerAdvancementDoneListener.reload();
+
+        if (config.getBoolean("chat.swear-protection.enable")) {
+            BlackListUtil.loadSwears();
+        }
 
         if (config.getBoolean("server.brand.enable")) {
             ServerBrand.getInstance().updateEveryBrand();

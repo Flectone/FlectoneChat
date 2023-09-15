@@ -6,6 +6,7 @@ import net.flectone.misc.components.FLocaleComponent;
 import net.flectone.misc.components.FPlayerComponent;
 import net.flectone.misc.components.FURLComponent;
 import net.flectone.misc.entity.FPlayer;
+import net.flectone.utils.BlackListUtil;
 import net.flectone.utils.ObjectUtil;
 import net.flectone.utils.Pair;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -50,6 +52,10 @@ public class MessageBuilder {
         this.command = command;
         this.clickable = clickable;
         this.sender = sender;
+
+        if (config.getBoolean("chat.swear-protection.enable")) {
+            text = replaceSwears(text);
+        }
 
         List<Pair<String, Integer>> sortedPairs = new ArrayList<>();
         Map<String, Integer> patternIndexes = new HashMap<>();
@@ -133,6 +139,52 @@ public class MessageBuilder {
             }
         }
 
+    }
+
+    private String replaceSwears(String text) {
+        String[] words = text.split(" ");
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int lastX = 0;
+
+        for (int x = 0; x < words.length; x++) {
+            String word = words[x];
+
+            stringBuilder.append(word);
+            if (BlackListUtil.contains(stringBuilder.toString())) {
+                word = locale.getFormatString("chat.swear-protection.message", sender).repeat(3);
+
+                String textWithSwear = stringBuilder.toString();
+
+                boolean remove = false;
+                for (int y = lastX; y < x; y++) {
+                    if (remove) {
+                        words[y] = "";
+                        continue;
+                    }
+
+                    textWithSwear = textWithSwear.substring(words[y].length());
+                    if (!BlackListUtil.contains(textWithSwear)) {
+                        words[y] = "";
+                        remove = true;
+                    }
+                }
+
+                words[x] = word;
+
+                stringBuilder = new StringBuilder();
+                lastX = x + 1;
+            }
+        }
+
+        if (lastX != 0 && sender instanceof Player player) {
+            ObjectUtil.playSound(player, "swear");
+        }
+
+        return Arrays.stream(words)
+                .filter(word -> !word.isEmpty())
+                .collect(Collectors.joining(" "));
     }
 
     private boolean isPatternEnabled(String patterName) {
