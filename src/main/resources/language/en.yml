@@ -136,6 +136,8 @@ chat:
     default:
       message: "<player>&&2 » <message>"
 
+  all-disabled: "#ff4e4e⁉ Chat is disabled on this server"
+
 tab-complete:
   message: "(message)"
   reason: "(reason)"

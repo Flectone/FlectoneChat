@@ -63,10 +63,13 @@ chat:
     read-speed: 800
 
   local:
+    enable: true
     range: 100
-    set-cancelled: true
+
     no-recipients:
       enable: true
+
+    set-cancelled: true
 
   global:
     enable: true

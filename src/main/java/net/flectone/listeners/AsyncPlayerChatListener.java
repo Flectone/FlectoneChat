@@ -10,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -29,7 +30,7 @@ public class AsyncPlayerChatListener implements Listener {
 
     private String noRecipientsMessage = "";
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void chat(@NotNull AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
 
@@ -41,38 +42,50 @@ public class AsyncPlayerChatListener implements Listener {
         String globalPrefix = locale.getString("chat.global.prefix");
         String message = event.getMessage();
 
-        String chatType = config.getBoolean("chat.global.enable")
-                && (fPlayerChat.contains("global")
-                || message.startsWith(globalPrefix) && !message.equals(globalPrefix) && !fPlayerChat.equals("onlylocal"))
-                ? "global" : "local";
+        String chatType = fPlayerChat.contains("global")
+                || message.startsWith(globalPrefix)
+                            && !message.equals(globalPrefix)
+                            && !fPlayerChat.equals("onlylocal")
+                ? "global"
+                : "local";
 
         String reversedChatType = chatType.equals("global") ? "local" : "global";
+
+        if (!config.getBoolean("chat." + chatType + ".enable")) {
+            if (!config.getBoolean("chat." + reversedChatType + ".enable")) {
+                player.sendMessage(locale.getFormatString("chat.all-disabled", player));
+                event.setCancelled(true);
+                return;
+            }
+
+            String tempString = chatType;
+            chatType = reversedChatType;
+            reversedChatType = tempString;
+        }
 
         Set<Player> recipients = new HashSet<>(event.getRecipients());
         removeRecipients(recipients, player, reversedChatType);
 
         if (chatType.equals("local")) {
-            if(config.getBoolean("chat.global.enable")) {
-                int localRange = config.getInt("chat.local.range");
-                recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
-                        || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-                if (config.getBoolean("chat.local.no-recipients.enable") &&
-                        recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
-                    noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
-                }
+            int localRange = config.getInt("chat.local.range");
+            recipients.removeIf(recipient -> (player.getWorld() != recipient.getWorld()
+                    || player.getLocation().distance(recipient.getLocation()) > localRange));
 
-            } else if(HookManager.enabledInteractiveChat) message = FInteractiveChat.checkMention(event);
-
-            if (config.getBoolean("chat.local.set-cancelled")) event.setCancelled(true);
+            if (config.getBoolean("chat.local.no-recipients.enable") &&
+                    recipients.stream().filter(recipient -> !recipient.getGameMode().equals(GameMode.SPECTATOR)).count() == 1) {
+                noRecipientsMessage = locale.getFormatString("chat.local.no-recipients", player);
+            }
 
         } else {
             if(HookManager.enabledInteractiveChat) message = FInteractiveChat.checkMention(event);
 
             if (config.getBoolean("chat.global.prefix.cleared")) event.setMessage(message.replaceFirst(globalPrefix, ""));
-            if (config.getBoolean("chat.global.set-cancelled")) event.setCancelled(true);
+
             message = message.replaceFirst(globalPrefix, "").trim();
         }
+
+        if (config.getBoolean("chat." + chatType + ".set-cancelled")) event.setCancelled(true);
 
         createMessage(recipients, player, message, chatType, null);
         event.getRecipients().clear();
