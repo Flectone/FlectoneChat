@@ -47,10 +47,17 @@ tab:
       - " "
 
 player:
-  right-click-message: "&&1-⏴ <player> &&1⏵-"
+  right-click:
+    # название_группы:
+    #   message: "текст"
+    default:
+      message: "&&1-⏴ <player> &&1⏵-"
 
   hover:
-    # название vault группы
+    # название_группы:
+    #   text: "текст"
+    #   command-type: "тип"
+    #   command: "команда"
     default:
       text: "&&1Нажми, чтобы написать &&2<player>"
       # виды: suggest, run
@@ -63,10 +70,17 @@ player:
   join:
     first-time:
       message: "#4eff52→ &&2<player> &&1впервые зашёл на сервер, поприветствуем его!"
-    message: "#4eff52→ &&2<player> &&1присоединился к серверу"
+
+    # название_группы:
+    #   message: "текст"
+    default:
+      message: "#4eff52→ &&2<player> &&1присоединился к серверу"
 
   quit:
-    message: "#ff4e4e← &&2<player> &&1вышел с сервера"
+    # название_группы:
+    #   message: "текст"
+    default:
+      message: "#ff4e4e← &&2<player> &&1вышел с сервера"
 
   world:
     prefix:
@@ -108,11 +122,19 @@ chat:
 
   local:
     no-recipients: "#ff4e4e⁉ Тебя никто не услышал"
-    message: "<player>&&2: <message>"
+
+    # название_группы:
+    #   message: "текст"
+    default:
+      message: "<player>&&2: <message>"
 
   global:
     prefix: "!"
-    message: "<player>&&2 » <message>"
+
+    # название_группы:
+    #   message: "текст"
+    default:
+      message: "<player>&&2 » <message>"
 
 tab-complete:
   message: "(сообщение)"
@@ -159,6 +181,7 @@ command:
     usage: "&&1⚑ Использование: &&2/<command>"
     hover-text: "&&1Нажми, чтобы изменить отображение &&2<component>"
     not-available: "#ff4e4e⁉ Невозможно изменить данную настройку"
+
     format:
       local: "&&2Локальный"
       global: "&&2Глобальный"

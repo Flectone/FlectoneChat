@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -571,5 +572,26 @@ public class FPlayer {
 
     public boolean isSpies() {
         return spies;
+    }
+
+    @NotNull
+    public static String getVaultLocaleString(@NotNull CommandSender sender, @NotNull String localeString) {
+
+        String hoverGroup = "default";
+
+        if(HookManager.enabledVault && sender instanceof Player player) {
+            Chat provider = FVault.getProvider();
+
+            String group = provider.getPrimaryGroup(player);
+            if(group != null) {
+                hoverGroup = group;
+            }
+        }
+
+        String formattedLocaleString = locale.getString(localeString.replaceFirst("<group>", hoverGroup));
+
+        return formattedLocaleString.isEmpty()
+                ? locale.getString(localeString.replaceFirst("<group>", "default"))
+                : formattedLocaleString;
     }
 }

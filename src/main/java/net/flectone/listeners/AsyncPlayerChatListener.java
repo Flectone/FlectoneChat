@@ -5,6 +5,7 @@ import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -91,7 +92,7 @@ public class AsyncPlayerChatListener implements Listener {
         FPlayer fPlayer = FPlayerManager.getPlayer(player);
         if(fPlayer == null) return;
 
-        String configMessage = locale.getString("chat." + chatType + ".message")
+        String configMessage = FPlayer.getVaultLocaleString(player, "chat." + chatType + ".<group>.message")
                 .replace("<player>", fPlayer.getDisplayName());
 
         fCommand.sendFilterGlobalMessage(recipients, configMessage, message, itemStack, true);

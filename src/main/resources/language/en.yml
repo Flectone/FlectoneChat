@@ -47,10 +47,17 @@ tab:
       - " "
 
 player:
-  right-click-message: "&&1-⏴ <player> &&1⏵-"
+  right-click:
+    # group_name:
+    #   message: "text"
+    default:
+      message: "&&1-⏴ <player> &&1⏵-"
 
   hover:
-    # vault group name
+    # group_name:
+    #   text: "text"
+    #   command-type: "type"
+    #   command: "command"
     default:
       text: "&&1Click to write to &&2<player>"
       # type: suggest, run
@@ -63,10 +70,17 @@ player:
   join:
     first-time:
       message: "#4eff52→ &&1<player> has logged on to the server for the first time, let's welcome!"
-    message: "#4eff52→ &&2<player> &&1join the server"
+
+    # group_name:
+    #   message: "text"
+    default:
+      message: "#4eff52→ &&2<player> &&1join the server"
 
   quit:
-    message: "#ff4e4e← &&2<player> &&1left the server"
+    # group_name:
+    #   message: "text"
+    default:
+      message: "#ff4e4e← &&2<player> &&1left the server"
 
   world:
     prefix:
@@ -108,11 +122,19 @@ chat:
 
   local:
     no-recipients: "#ff4e4e⁉ Nobody heard you"
-    message: "<player>&&2: <message>"
+
+    # group_name:
+    #   message: "text"
+    default:
+      message: "<player>&&2: <message>"
 
   global:
     prefix: "!"
-    message: "<player>&&2 » <message>"
+
+    # group_name:
+    #   message: "text"
+    default:
+      message: "<player>&&2 » <message>"
 
 tab-complete:
   message: "(message)"

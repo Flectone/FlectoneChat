@@ -27,7 +27,7 @@ public class PlayerJoinListener implements Listener {
         if(!isEnable || !isOnline) return;
 
         String string = player.hasPlayedBefore()
-                ? locale.getString("player.join.message")
+                ? FPlayer.getVaultLocaleString(player, "player.join.<group>.message")
                 : locale.getString("player.join.first-time.message");
         string = string.replace("<player>", player.getName());
 

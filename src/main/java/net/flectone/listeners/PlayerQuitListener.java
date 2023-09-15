@@ -4,6 +4,7 @@ import net.flectone.integrations.supervanish.FSuperVanish;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.entity.FEntity;
+import net.flectone.misc.entity.FPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +12,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import static net.flectone.managers.FileManager.config;
-import static net.flectone.managers.FileManager.locale;
 
 public class PlayerQuitListener implements Listener {
 
@@ -19,7 +19,7 @@ public class PlayerQuitListener implements Listener {
         boolean isEnable = config.getBoolean("player.quit.message.enable");
         if (!isEnable || FSuperVanish.isVanished(player)) return;
 
-        String string = locale.getString("player.quit.message")
+        String string = FPlayer.getVaultLocaleString(player, "player.quit.<group>.message")
                 .replace("<player>", player.getName());
 
         FCommand fCommand = new FCommand(player, "quit", "quit", string.split(" "));
