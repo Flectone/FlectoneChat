@@ -117,12 +117,18 @@ public class AsyncPlayerChatListener implements Listener {
                 ? "global" : "local";
         String reversedChatType = chatType.equals("global") ? "local" : "global";
 
-        int localRange = config.getInt("chat.local.range");
-        Set<Player> recipients = player.getWorld().getNearbyEntities(player.getLocation(), localRange, localRange, localRange)
-                .parallelStream()
-                .filter(entity -> entity instanceof Player)
-                .map(entity -> (Player) entity)
-                .collect(Collectors.toSet());
+        Set<Player> recipients;
+
+        if (chatType.equals("local")) {
+            int localRange = config.getInt("chat.local.range");
+            recipients = player.getWorld().getNearbyEntities(player.getLocation(), localRange, localRange, localRange)
+                    .parallelStream()
+                    .filter(entity -> entity instanceof Player)
+                    .map(entity -> (Player) entity)
+                    .collect(Collectors.toSet());
+        } else {
+            recipients = new HashSet<>(Bukkit.getOnlinePlayers());
+        }
 
         removeRecipients(recipients, player, reversedChatType);
 
