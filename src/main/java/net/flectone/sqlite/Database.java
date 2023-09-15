@@ -139,6 +139,7 @@ public abstract class Database {
 
             ResultSet playerResult = preparedStatement.executeQuery();
             if (!(playerResult.next())) return;
+            if (playerResult.isClosed()) return;
 
             String color = playerResult.getString("colors");
             String[] colors = color == null ? CommandChatcolor.getDefaultColors() : color.split(",");
