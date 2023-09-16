@@ -13,8 +13,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class ServerListPingListener implements Listener {
 
@@ -30,10 +30,10 @@ public class ServerListPingListener implements Listener {
 
         if (config.getBoolean("server.motd.messages.enable")) {
             List<String> motds = locale.getStringList("server.motd.messages");
-
-            int numberMotd = new Random().nextInt(0, motds.size());
-
-            event.setMotd(ObjectUtil.formatString(motds.get(numberMotd), null));
+            if (!motds.isEmpty()) {
+                int numberMotd = new Random().nextInt(0, motds.size());
+                event.setMotd(ObjectUtil.formatString(motds.get(numberMotd), null));
+            }
         }
 
         if (config.getBoolean("server.online.count.enable")) {
@@ -42,11 +42,13 @@ public class ServerListPingListener implements Listener {
 
         if (config.getBoolean("server.icon.enable")) {
             List<String> iconNames = config.getStringList("server.icon.names");
+            if (!iconNames.isEmpty()) {
+                int numberIcon = config.getString("server.icon.mode").equals("single")
+                        ? 0
+                        : new Random().nextInt(0, iconNames.size());
 
-            int numberIcon = config.getString("server.icon.mode").equals("single") ? 0 :
-                    new Random().nextInt(0, iconNames.size());
-
-            setIcon(event, iconNames.get(numberIcon));
+                setIcon(event, iconNames.get(numberIcon));
+            }
         }
     }
 
