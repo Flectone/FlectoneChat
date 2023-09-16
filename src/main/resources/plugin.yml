@@ -263,3 +263,37 @@ permissions:
     default: true
   flectonechat.kick:
     default: op
+  flectonechat.chat-settings.advancement:
+    default: true
+  flectonechat.chat-settings.death:
+    default: true
+  flectonechat.chat-settings.join:
+    default: true
+  flectonechat.chat-settings.quit:
+    default: true
+  flectonechat.chat-settings.me:
+    default: true
+  flectonechat.chat-settings.try:
+    default: true
+  flectonechat.chat-settings.try-cube:
+    default: true
+  flectonechat.chat-settings.ball:
+    default: true
+  flectonechat.chat-settings.tempban:
+    default: true
+  flectonechat.chat-settings.mute:
+    default: true
+  flectonechat.chat-settings.warn:
+    default: true
+  flectonechat.chat-settings.msg:
+    default: true
+  flectonechat.chat-settings.reply:
+    default: true
+  flectonechat.chat-settings.mail:
+    default: true
+  flectonechat.chat-settings.tic-tac-toe:
+    default: true
+  flectonechat.chat-settings.kick:
+    default: true
+  flectonechat.chat-settings.auto-message:
+    default: true

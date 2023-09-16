@@ -50,7 +50,7 @@ public class CommandChatSettings implements FTabCompleter {
                 return true;
             }
 
-            if (!optionEnable(strings[0])) {
+            if (!optionEnable(strings[0].toLowerCase()) || !commandSender.hasPermission("flectonechat.chat-settings." + strings[0].toLowerCase())) {
                 fCommand.sendMeMessage("command.chat-settings.not-available");
                 return true;
             }
