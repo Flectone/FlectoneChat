@@ -74,13 +74,13 @@ player:
     # название_группы:
     #   message: "текст"
     default:
-      message: "#4eff52→ &&2<player> &&1присоединился к серверу"
+      message: "#4eff52→ &&2<player>"
 
   quit:
     # название_группы:
     #   message: "текст"
     default:
-      message: "#ff4e4e← &&2<player> &&1вышел с сервера"
+      message: "#ff4e4e← &&2<player>"
 
   world:
     prefix:

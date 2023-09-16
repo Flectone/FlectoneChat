@@ -74,13 +74,13 @@ player:
     # group_name:
     #   message: "text"
     default:
-      message: "#4eff52→ &&2<player> &&1join the server"
+      message: "#4eff52→ &&2<player>"
 
   quit:
     # group_name:
     #   message: "text"
     default:
-      message: "#ff4e4e← &&2<player> &&1left the server"
+      message: "#ff4e4e← &&2<player>"
 
   world:
     prefix:
