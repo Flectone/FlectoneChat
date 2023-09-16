@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static net.flectone.managers.FileManager.config;
-import static net.flectone.managers.FileManager.locale;
 
 public class TabTicker extends FBukkitRunnable {
 
@@ -27,32 +26,8 @@ public class TabTicker extends FBukkitRunnable {
         headerIndex = 0;
         footerIndex = 0;
 
-        if (headerEnable) loadList(headers, "header");
-        if (footerEnable) loadList(footers, "footer");
-    }
-
-    private void loadList(List<String> list, String tabType) {
-        list.clear();
-
-        List<String> stringList = locale.getStringList("tab." + tabType + ".message");
-
-        if (stringList.isEmpty()) {
-            list.add("update tab message to list");
-            return;
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringList.forEach(string -> {
-            if (string.equals("<next>")) {
-                list.add(stringBuilder.substring(0, stringBuilder.length() - 1));
-                stringBuilder.setLength(0);
-            } else {
-                stringBuilder.append(string).append("\n");
-            }
-        });
-
-        list.add(stringBuilder.substring(0, stringBuilder.length() - 1));
+        if (headerEnable) loadLocaleList(headers, "tab.header.message");
+        if (footerEnable) loadLocaleList(footers, "tab.footer.message");
     }
 
     @Override
