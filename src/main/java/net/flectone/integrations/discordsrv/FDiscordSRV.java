@@ -99,11 +99,15 @@ public class FDiscordSRV implements Listener, HookInterface {
         DiscordUtil.queueMessage(textChannel, discordMessage, true);
     }
 
-    public static void sendModerationMessage(@NotNull String message) {
+    public static void sendDiscordMessageToChannel(@NotNull String message) {
+        sendDiscordMessageToChannel(message, "moderation");
+    }
+
+    public static void sendDiscordMessageToChannel(@NotNull String message, @NotNull String nameChannel) {
         message = ObjectUtil.formatString(message, null);
         message = PlaceholderUtil.replacePlaceholdersToDiscord(message);
 
-        String channelName = DiscordSRV.getPlugin().getOptionalChannel("global");
+        String channelName = DiscordSRV.getPlugin().getOptionalChannel(nameChannel);
         TextChannel textChannel = DiscordSRV.getPlugin().getDestinationTextChannelForGameChannelName(channelName);
 
         Message messageFormat = new MessageBuilder()

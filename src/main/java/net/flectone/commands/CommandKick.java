@@ -63,7 +63,7 @@ public class CommandKick implements FTabCompleter {
                 .replace("<reason>", reason)
                 .replace("<moderator>", commandSender.getName());
 
-        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendModerationMessage(globalMessage);
+        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendDiscordMessageToChannel(globalMessage);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())

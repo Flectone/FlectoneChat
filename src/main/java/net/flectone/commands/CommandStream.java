@@ -77,7 +77,7 @@ public class CommandStream implements FTabCompleter {
                 });
 
         if (HookManager.enabledDiscordSRV) {
-            FDiscordSRV.sendModerationMessage(stringBuilder.toString());
+            FDiscordSRV.sendDiscordMessageToChannel(stringBuilder.toString(), "stream");
         }
 
         fCommand.sendGlobalMessage(stringBuilder.toString(), "", null, true);

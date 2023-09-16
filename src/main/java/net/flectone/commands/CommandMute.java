@@ -67,7 +67,7 @@ public class CommandMute implements FTabCompleter {
 
         boolean announceModeration = config.getBoolean("command.mute.announce");
 
-        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendModerationMessage(formatString);
+        if (announceModeration && HookManager.enabledDiscordSRV) FDiscordSRV.sendDiscordMessageToChannel(formatString);
 
         Set<Player> receivers = announceModeration
                 ? new HashSet<>(Bukkit.getOnlinePlayers())
