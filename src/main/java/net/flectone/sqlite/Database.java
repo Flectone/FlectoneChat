@@ -36,6 +36,12 @@ public abstract class Database {
         Database.migrate3_10_1 = migrate3_10_1;
     }
 
+    private static boolean migrate3_10_3 = false;
+
+    public static void setMigrate3_10_3(boolean migrate3_10_3) {
+        Database.migrate3_10_3 = migrate3_10_3;
+    }
+
     final Main plugin;
     protected static Connection connection;
 
@@ -56,6 +62,7 @@ public abstract class Database {
 
             if (migrate3_9_0) migrateDatabase3_9_0();
             if (migrate3_10_1) migrateDatabase3_10_1();
+            if (migrate3_10_3) migrateDatabase3_10_3();
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
@@ -247,6 +254,9 @@ public abstract class Database {
             option = playerResult.getString("enable_command_kick");
             playerChat.setOption("kick", parseBoolean("command.kick.enable", option));
 
+            option = playerResult.getString("enable_auto_message");
+            playerChat.setOption("auto-message", parseBoolean("chat.auto-message.enable", option));
+
             if (fPlayer.hasPermission("flectonechat.stream")) {
                 fPlayer.setStreaming(Boolean.parseBoolean(playerResult.getString("stream")));
             }
@@ -318,6 +328,18 @@ public abstract class Database {
             Statement statement = conn.createStatement();
 
             addColumn(statement, "players", "enable_command_kick", "varchar(11)");
+
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
+        }
+
+    }
+
+    private void migrateDatabase3_10_3() {
+        try (Connection conn = getSQLConnection()) {
+            Statement statement = conn.createStatement();
+
+            addColumn(statement, "players", "enable_auto_message", "varchar(11)");
 
         } catch (SQLException ex) {
             plugin.getLogger().log(Level.SEVERE, "Couldn't execute MySQL statement: ", ex);
@@ -605,25 +627,26 @@ public abstract class Database {
                             "enable_deaths=?,enable_joins=?,enable_quits=?,enable_command_me=?,enable_command_try=?," +
                             "enable_command_try_cube=?,enable_command_ball=?,enable_command_tempban=?,enable_command_mute=?," +
                             "enable_command_warn=?,enable_command_msg=?,enable_command_reply=?,enable_command_mail=?," +
-                            "enable_command_tic_tac_toe=?, enable_command_kick=? WHERE uuid=?");
+                            "enable_command_tic_tac_toe=?, enable_command_kick=?, enable_auto_message=? WHERE uuid=?");
 
-                    preparedStatement.setString(1, playerChat.getOptionString(("advancement")));
-                    preparedStatement.setString(2, playerChat.getOptionString(("death")));
-                    preparedStatement.setString(3, playerChat.getOptionString(("join")));
-                    preparedStatement.setString(4, playerChat.getOptionString(("quit")));
-                    preparedStatement.setString(5, playerChat.getOptionString(("me")));
-                    preparedStatement.setString(6, playerChat.getOptionString(("try")));
-                    preparedStatement.setString(7, playerChat.getOptionString(("try-cube")));
-                    preparedStatement.setString(8, playerChat.getOptionString(("ball")));
-                    preparedStatement.setString(9, playerChat.getOptionString(("tempban")));
-                    preparedStatement.setString(10, playerChat.getOptionString(("mute")));
-                    preparedStatement.setString(11, playerChat.getOptionString(("warn")));
-                    preparedStatement.setString(12, playerChat.getOptionString(("msg")));
-                    preparedStatement.setString(13, playerChat.getOptionString(("reply")));
-                    preparedStatement.setString(14, playerChat.getOptionString(("mail")));
-                    preparedStatement.setString(15, playerChat.getOptionString(("tic-tac-toe")));
-                    preparedStatement.setString(16, playerChat.getOptionString(("kick")));
-                    preparedStatement.setString(17, playerChat.getPlayer());
+                    preparedStatement.setString(1, playerChat.getOptionString("advancement"));
+                    preparedStatement.setString(2, playerChat.getOptionString("death"));
+                    preparedStatement.setString(3, playerChat.getOptionString("join"));
+                    preparedStatement.setString(4, playerChat.getOptionString("quit"));
+                    preparedStatement.setString(5, playerChat.getOptionString("me"));
+                    preparedStatement.setString(6, playerChat.getOptionString("try"));
+                    preparedStatement.setString(7, playerChat.getOptionString("try-cube"));
+                    preparedStatement.setString(8, playerChat.getOptionString("ball"));
+                    preparedStatement.setString(9, playerChat.getOptionString("tempban"));
+                    preparedStatement.setString(10, playerChat.getOptionString("mute"));
+                    preparedStatement.setString(11, playerChat.getOptionString("warn"));
+                    preparedStatement.setString(12, playerChat.getOptionString("msg"));
+                    preparedStatement.setString(13, playerChat.getOptionString("reply"));
+                    preparedStatement.setString(14, playerChat.getOptionString("mail"));
+                    preparedStatement.setString(15, playerChat.getOptionString("tic-tac-toe"));
+                    preparedStatement.setString(16, playerChat.getOptionString("kick"));
+                    preparedStatement.setString(17, playerChat.getOptionString("auto-message"));
+                    preparedStatement.setString(18, playerChat.getPlayer());
 
                     preparedStatement.executeUpdate();
                 }

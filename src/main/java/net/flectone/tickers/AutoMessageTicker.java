@@ -1,7 +1,7 @@
 package net.flectone.tickers;
 
 import net.flectone.managers.FileManager;
-import net.flectone.messages.MessageBuilder;
+import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.runnables.FBukkitRunnable;
 import org.bukkit.Bukkit;
 
@@ -16,7 +16,9 @@ public class AutoMessageTicker extends FBukkitRunnable {
     private static int index = 0;
 
     public AutoMessageTicker() {
-        super.period = FileManager.config.getInt("chat.auto-message.period");
+        int count = FileManager.config.getInt("chat.auto-message.period");
+        super.period = count;
+        super.delay = count;
         this.random = FileManager.config.getBoolean("chat.auto-message.random");
 
         loadLocaleList(messageList, "chat.auto-message.message");
@@ -32,9 +34,7 @@ public class AutoMessageTicker extends FBukkitRunnable {
                     ? index++ % messageList.size()
                     : 0;
 
-        MessageBuilder message = new MessageBuilder("auto-message", messageList.get(nextIndex), Bukkit.getConsoleSender(), null, false);
-        Bukkit.getOnlinePlayers().parallelStream().forEach(player -> {
-            player.spigot().sendMessage(message.buildMessage("", player, Bukkit.getConsoleSender()));
-        });
+        FCommand fCommand = new FCommand(Bukkit.getConsoleSender(), "auto-message", "", new String[]{});
+        fCommand.sendGlobalMessage(messageList.get(nextIndex), "", null, false);
     }
 }

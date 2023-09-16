@@ -144,6 +144,10 @@ public class CommandChatSettings implements FTabCompleter {
             return config.getBoolean("player." + option + ".message.enable");
         }
 
+        if(!config.getString("chat." + option + ".enable").isEmpty()) {
+            return config.getBoolean("chat." + option + ".enable");
+        }
+
         return true;
 
     }

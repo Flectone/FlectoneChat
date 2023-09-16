@@ -96,6 +96,7 @@ public class SQLite extends Database {
                     "'enable_deaths' int(11)," +
                     "`enable_joins` int(11)," +
                     "'enable_quits' int(11)," +
+                    "'enable_auto_message' int(11)," +
                     "'enable_command_me' int(11)," +
                     "'enable_command_try' int(11)," +
                     "'enable_command_try_cube' int(11)," +
@@ -140,6 +141,10 @@ public class SQLite extends Database {
 
             if (FileManager.compareVersions(FileManager.getLastVersion(), "3.10.2") == -1) {
                 setMigrate3_10_1(true);
+            }
+
+            if (FileManager.compareVersions(FileManager.getLastVersion(), "3.11.0") == -1) {
+                setMigrate3_10_3(true);
             }
 
         } catch (SQLException | IOException e) {
