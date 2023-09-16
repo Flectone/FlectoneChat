@@ -217,7 +217,7 @@ public class FCommand {
 
             ObjectUtil.playSound(recipient, command);
 
-            recipient.spigot().sendMessage(messageBuilder.build(format, recipient, sender));
+            recipient.spigot().sendMessage(messageBuilder.buildFormat(format, recipient, sender));
         });
     }
 
@@ -307,7 +307,7 @@ public class FCommand {
         String getFormatString1 = locale.getFormatString("command.msg." + typeMessage, firstPlayer, secondPlayer)
                 .replace("<player>", secondPlayer.getName());
 
-        BaseComponent[] baseComponents1 = messageBuilder.build(getFormatString1, firstPlayer, sender);
+        BaseComponent[] baseComponents1 = messageBuilder.buildFormat(getFormatString1, firstPlayer, sender);
         firstPlayer.spigot().sendMessage(baseComponents1);
 
         if (firstPlayer instanceof Player first && secondPlayer instanceof Player second) {

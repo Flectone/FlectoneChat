@@ -362,7 +362,7 @@ public class MessageBuilder {
     }
 
     @NotNull
-    public BaseComponent[] build(@NotNull String format, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
+    public BaseComponent[] buildFormat(@NotNull String format, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         String[] formats = ObjectUtil.formatString(format, recipient, sender).split("<message>");
@@ -384,7 +384,7 @@ public class MessageBuilder {
     }
 
     @NotNull
-    private BaseComponent[] buildMessage(@NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
+    public BaseComponent[] buildMessage(@NotNull String lastColor, @NotNull CommandSender recipient, @NotNull CommandSender sender) {
         ComponentBuilder componentBuilder = new ComponentBuilder();
 
         for(WordParams wordParams : messages) {
