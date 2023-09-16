@@ -45,6 +45,10 @@ public class TickerManager {
             addTicker(new ServerBrandTicker());
         }
 
+        if (config.getBoolean("chat.auto-message.enable")) {
+            addTicker(new AutoMessageTicker());
+        }
+
         addTicker(new PlayerClearTicker());
 
         bukkitRunnableList.parallelStream().forEach(FBukkitRunnable::runTaskTimer);

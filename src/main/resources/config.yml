@@ -57,6 +57,13 @@ server:
       - "server-icon-2"
 
 chat:
+  auto-message:
+    enable: false
+    # if set to true, then the messages will be random
+    random: false
+    # minecraft ticks (1sec = 20ticks)
+    period: 600
+
   bubble:
     enable: true
     max-per-line: 35

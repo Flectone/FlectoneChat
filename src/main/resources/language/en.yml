@@ -97,6 +97,16 @@ player:
       world_the_end: "#834eff● &f"
 
 chat:
+  auto-message:
+    message:
+      - "&&1-------------- "
+      - "&&2This server uses FlectoneChat "
+      - "&&1-------------- "
+      - "<next>"
+      - "&&1❝ "
+      - "&&1Join our discord &&2https://discord.flectone.net "
+      - "&&1❠ "
+
   bubble:
     color: "#999999"
 
