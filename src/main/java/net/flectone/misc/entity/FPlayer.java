@@ -579,13 +579,15 @@ public class FPlayer {
 
         String hoverGroup = "default";
 
-        if(HookManager.enabledVault && sender instanceof Player player) {
-            Chat provider = FVault.getProvider();
+        if (sender instanceof Player player) {
 
-            String group = provider.getPrimaryGroup(player);
-            if(group != null) {
-                hoverGroup = group;
+            if (HookManager.enabledLuckPerms) {
+                hoverGroup = FLuckPerms.getPrimaryGroup(player);
+            } else if (HookManager.enabledVault) {
+                hoverGroup = FVault.getPrimaryGroup(player);
             }
+
+            if (hoverGroup == null) hoverGroup = "default";
         }
 
         String formattedLocaleString = locale.getString(localeString.replaceFirst("<group>", hoverGroup));
