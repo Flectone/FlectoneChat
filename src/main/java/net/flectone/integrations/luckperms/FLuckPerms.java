@@ -15,6 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FLuckPerms implements HookInterface {
 
@@ -59,14 +60,20 @@ public class FLuckPerms implements HookInterface {
         return provider;
     }
 
-    public static int getPlayerGroupWeight(Player player) {
-        User user = FLuckPerms.getProvider().getUserManager().getUser(player.getUniqueId());
-        if (user == null) return 0;
+    public static int getPlayerGroupWeight(@NotNull Player player) {
+        String primaryGroup = getPrimaryGroup(player);
+        if (primaryGroup == null) return 0;
 
-        String primaryGroup = user.getPrimaryGroup();
         Group group = FLuckPerms.getProvider().getGroupManager().getGroup(primaryGroup);
         if (group == null) return 0;
 
         return group.getWeight().orElse(0);
+    }
+
+    @Nullable
+    public static String getPrimaryGroup(@NotNull Player player) {
+        User user = FLuckPerms.getProvider().getUserManager().getUser(player.getUniqueId());
+        if (user == null) return null;
+        return user.getPrimaryGroup();
     }
 }
