@@ -87,23 +87,18 @@ public class AsyncPlayerChatListener implements Listener {
 
         if (config.getBoolean("chat." + chatType + ".set-cancelled")) event.setCancelled(true);
 
-        createMessage(recipients, player, message, chatType, null);
+        createMessage(recipients, fPlayer, message, chatType, null);
         event.getRecipients().clear();
     }
 
-    public void createMessage(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String message, @NotNull String chatType, @Nullable ItemStack itemStack) {
+    public void createMessage(@NotNull Set<Player> recipients, @NotNull FPlayer fPlayer, @NotNull String message, @NotNull String chatType, @Nullable ItemStack itemStack) {
+
+        Player player = fPlayer.getPlayer();
+        assert player != null;
 
         FCommand fCommand = new FCommand(player, chatType + "chat", chatType + " chat", message.split(" "));
 
         if (fCommand.isHaveCD() || fCommand.isMuted()) return;
-
-        if (!noRecipientsMessage.isEmpty()) {
-            player.sendMessage(noRecipientsMessage);
-            noRecipientsMessage = "";
-        }
-
-        FPlayer fPlayer = FPlayerManager.getPlayer(player);
-        if(fPlayer == null) return;
 
         String configMessage = FPlayer.getVaultLocaleString(player, "chat." + chatType + ".<group>.message")
                 .replace("<player>", fPlayer.getDisplayName());
@@ -123,7 +118,8 @@ public class AsyncPlayerChatListener implements Listener {
                 || event.getSlot() != 39
                 || !event.isShiftClick()
                 || event.getCursor() == null
-                || event.getCursor().getType().equals(Material.AIR)) {
+                || event.getCursor().getType().equals(Material.AIR)
+                || !config.getBoolean("chat.tooltip.enable")) {
             return;
         }
 
@@ -151,7 +147,7 @@ public class AsyncPlayerChatListener implements Listener {
 
         removeRecipients(recipients, player, reversedChatType);
 
-        createMessage(recipients, player, "%item%", chatType, event.getCursor());
+        createMessage(recipients, fPlayer, "%item%", chatType, event.getCursor());
     }
 
     private void removeRecipients(@NotNull Set<Player> recipients, @NotNull Player player, @NotNull String reversedChatType) {
