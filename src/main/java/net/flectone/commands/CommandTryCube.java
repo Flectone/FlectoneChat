@@ -2,6 +2,7 @@ package net.flectone.commands;
 
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.commands.FTabCompleter;
+import net.flectone.utils.ObjectUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,10 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
-import static net.flectone.managers.FileManager.locale;
 import static net.flectone.managers.FileManager.config;
+import static net.flectone.managers.FileManager.locale;
 
 public class CommandTryCube implements FTabCompleter {
 
@@ -46,10 +46,8 @@ public class CommandTryCube implements FTabCompleter {
         StringBuilder stringBuilder = new StringBuilder();
         int values = 0;
 
-        Random random = new Random();
-
         while (amount-- != 0) {
-            int cubeType = random.nextInt(6) + 1;
+            int cubeType = ObjectUtil.nextInt(6) + 1;
             values += cubeType;
             stringBuilder.append(locale.getString("command.try-cube.format." + cubeType)).append(" ");
         }

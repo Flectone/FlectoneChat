@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
-import java.util.Random;
 
 import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
@@ -31,7 +30,7 @@ public class ServerListPingListener implements Listener {
         if (config.getBoolean("server.motd.messages.enable")) {
             List<String> motds = locale.getStringList("server.motd.messages");
             if (!motds.isEmpty()) {
-                int numberMotd = new Random().nextInt(0, motds.size());
+                int numberMotd = ObjectUtil.nextInt(0, motds.size());
                 event.setMotd(ObjectUtil.formatString(motds.get(numberMotd), null));
             }
         }
@@ -45,7 +44,7 @@ public class ServerListPingListener implements Listener {
             if (!iconNames.isEmpty()) {
                 int numberIcon = config.getString("server.icon.mode").equals("single")
                         ? 0
-                        : new Random().nextInt(0, iconNames.size());
+                        : ObjectUtil.nextInt(0, iconNames.size());
 
                 setIcon(event, iconNames.get(numberIcon));
             }

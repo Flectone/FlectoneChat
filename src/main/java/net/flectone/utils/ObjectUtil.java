@@ -17,10 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -29,6 +26,8 @@ import static net.flectone.managers.FileManager.config;
 import static net.flectone.managers.FileManager.locale;
 
 public class ObjectUtil {
+
+    private static final Random RANDOM = new Random();
 
     @NotNull
     public static String convertTimeToString(int timeInSeconds) {
@@ -184,5 +183,14 @@ public class ObjectUtil {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
         String name = offlinePlayer.getName();
         return name != null ? name : "Unknown";
+    }
+
+    public static int nextInt(int start, int end) {
+        if (start > end) return 0;
+        return start == end ? start : start + RANDOM.nextInt(end - start);
+    }
+
+    public static int nextInt(int bound) {
+        return RANDOM.nextInt(bound);
     }
 }

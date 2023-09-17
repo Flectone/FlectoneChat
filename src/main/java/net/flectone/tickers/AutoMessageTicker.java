@@ -3,11 +3,11 @@ package net.flectone.tickers;
 import net.flectone.managers.FileManager;
 import net.flectone.misc.commands.FCommand;
 import net.flectone.misc.runnables.FBukkitRunnable;
+import net.flectone.utils.ObjectUtil;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class AutoMessageTicker extends FBukkitRunnable {
 
@@ -29,7 +29,7 @@ public class AutoMessageTicker extends FBukkitRunnable {
         int nextIndex;
 
         nextIndex = random
-                ? new Random().nextInt(0, messageList.size())
+                ? ObjectUtil.nextInt(0, messageList.size())
                 : !messageList.isEmpty()
                     ? index++ % messageList.size()
                     : 0;
