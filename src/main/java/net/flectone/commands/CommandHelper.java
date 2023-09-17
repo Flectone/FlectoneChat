@@ -32,7 +32,7 @@ public class CommandHelper implements FTabCompleter {
 
         Set<Player> playerSet = Bukkit.getOnlinePlayers()
                 .parallelStream()
-                .filter(player -> player.isOp() || player.hasPermission(permission))
+                .filter(player -> player.hasPermission(permission))
                 .collect(Collectors.toSet());
 
         if (playerSet.isEmpty()) {

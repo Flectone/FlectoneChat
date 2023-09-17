@@ -55,7 +55,7 @@ public class CommandMaintenance implements FTabCompleter {
             String kickedMessage = locale.getFormatString("command.maintenance.kicked-message", null);
 
             playerSet.stream()
-                    .filter(player -> !player.isOp() && !player.hasPermission(maintenancePermission) && player.isOnline())
+                    .filter(player -> !player.hasPermission(maintenancePermission) && player.isOnline())
                     .forEach(player -> player.kickPlayer(kickedMessage));
         }
 
