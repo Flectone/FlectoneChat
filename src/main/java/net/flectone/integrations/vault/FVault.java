@@ -4,8 +4,10 @@ import net.flectone.Main;
 import net.flectone.integrations.HookInterface;
 import net.flectone.managers.HookManager;
 import net.milkbowl.vault.chat.Chat;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FVault implements HookInterface {
 
@@ -30,5 +32,10 @@ public class FVault implements HookInterface {
         HookManager.enabledVault = true;
 
         Main.info("\uD83D\uDD12 Vault detected and hooked");
+    }
+
+    @Nullable
+    public static String getPrimaryGroup(Player player) {
+        return FVault.getProvider().getPrimaryGroup(player);
     }
 }
