@@ -16,7 +16,8 @@ public class FPlayerComponent extends FComponent{
 
         addHoverText(ObjectUtil.formatString(hoverText, recipient, sender));
 
-        String command = FPlayer.getVaultLocaleString(sender, "player.hover.<group>.command");
+        String command = FPlayer.getVaultLocaleString(sender, "player.hover.<group>.command")
+                .replace("<player>", sender.getName());
 
         switch (FPlayer.getVaultLocaleString(sender, "player.hover.<group>.command-type").toLowerCase()) {
             case "suggest" -> addSuggestCommand(command);
