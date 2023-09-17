@@ -109,6 +109,11 @@ public class AsyncPlayerChatListener implements Listener {
                 .replace("<player>", fPlayer.getDisplayName());
 
         fCommand.sendFilterGlobalMessage(recipients, configMessage, message, itemStack, true);
+
+        if (!noRecipientsMessage.isEmpty()) {
+            player.sendMessage(noRecipientsMessage);
+            noRecipientsMessage = "";
+        }
     }
 
     @EventHandler
