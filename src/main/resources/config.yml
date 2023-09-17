@@ -522,6 +522,9 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+  auto-message:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
   swear:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"
