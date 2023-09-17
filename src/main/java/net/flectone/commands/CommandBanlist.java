@@ -95,17 +95,15 @@ public class CommandBanlist implements FTabCompleter {
     public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         wordsList.clear();
 
-        Main.getDataThreadPool().execute(() -> {
-            if (strings.length == 1) {
-                int perPage = config.getInt("command.banlist.per-page");
+        if (strings.length == 1) {
+            int perPage = config.getInt("command.banlist.per-page");
 
-                int lastPage = (int) Math.ceil((double) Main.getDatabase().getCountRow("bans") / perPage);
+            int lastPage = (int) Math.ceil((double) Main.getDatabase().getCountRow("bans") / perPage);
 
-                isDigitInArray(strings[0], "", 1, lastPage + 1);
-            }
+            isDigitInArray(strings[0], "", 1, lastPage + 1);
+        }
 
-            Collections.sort(wordsList);
-        });
+        Collections.sort(wordsList);
 
         return wordsList;
     }
