@@ -94,20 +94,11 @@ public class ObjectUtil {
 
     @NotNull
     public static String formatString(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
-        return formatString(false, string, recipient, sender);
-    }
-
-    @NotNull
-    public static String formatString(boolean neededPermission, @NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
         String[] colors = null;
 
         if (recipient instanceof Player playerRecipient) {
-            if (HookManager.enabledPlaceholderAPI && sender instanceof Player playerSender
-                    && (!neededPermission || sender.hasPermission("flectonechat.placeholders"))) {
 
-                string = PlaceholderAPI.setPlaceholders(playerSender, string);
-                string = PlaceholderAPI.setRelationalPlaceholders(playerSender, playerRecipient, string);
-            }
+            string = formatPAPI(string, recipient, sender);
 
             FPlayer fPlayer = FPlayerManager.getPlayer(playerRecipient);
             colors = fPlayer != null ? fPlayer.getColors() : null;
@@ -118,6 +109,21 @@ public class ObjectUtil {
         return translateHexToColor(string
                 .replace("&&1", colors[0])
                 .replace("&&2", colors[1]));
+    }
+
+    @NotNull
+    public static String formatPAPI(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
+        if (recipient instanceof Player playerRecipient) {
+            if (HookManager.enabledPlaceholderAPI
+                    && sender instanceof Player playerSender
+                    && sender.hasPermission("flectonechat.placeholders")) {
+
+                string = PlaceholderAPI.setPlaceholders(playerSender, string);
+                string = PlaceholderAPI.setRelationalPlaceholders(playerSender, playerRecipient, string);
+            }
+        }
+
+        return string;
     }
 
     @NotNull

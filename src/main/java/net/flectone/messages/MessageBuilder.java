@@ -344,8 +344,12 @@ public class MessageBuilder {
                 word = ChatColor.stripColor(word);
             }
 
+            if (sender.hasPermission("flectonechat.placeholders")) {
+                word = ObjectUtil.formatPAPI(word, sender, sender);
+            }
+
             if (sender.hasPermission("flectonechat.formatting")) {
-                word = ObjectUtil.formatString(true, word, sender, sender);
+                word = ObjectUtil.formatString(word, sender, sender);
             }
 
             color = ChatColor.getLastColors(color) + ChatColor.getLastColors(word);
@@ -399,10 +403,14 @@ public class MessageBuilder {
                 word = ObjectUtil.formatString(word, recipient, sender);
             }
 
+            if (sender.hasPermission("flectonechat.placeholders")) {
+                word = ObjectUtil.formatPAPI(word, sender, sender);
+            }
+
             if (sender.hasPermission("flectonechat.formatting") && !wordParams.isEdited()) {
                 wordParams.setFormatted(true);
 
-                String newWord = ObjectUtil.formatString(true, lastColor + wordParams.getText(), recipient, sender);
+                String newWord = ObjectUtil.formatString(lastColor + wordParams.getText(), recipient, sender);
                 lastColor = ChatColor.getLastColors(newWord);
 
                 word = lastColor + wordParams.getFormatting() + ChatColor.stripColor(newWord);
