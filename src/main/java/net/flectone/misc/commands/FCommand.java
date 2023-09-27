@@ -243,6 +243,8 @@ public class FCommand {
                     .filter(entity -> entity instanceof Player player1 && finalPlayerSet.contains(player1))
                     .map(entity -> (Player) entity)
                     .collect(Collectors.toSet());
+
+            if (!playerSet.contains(player)) playerSet.add(player);
         }
 
         playerSet = playerSet.parallelStream()
