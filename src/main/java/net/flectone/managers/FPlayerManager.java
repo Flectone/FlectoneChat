@@ -60,6 +60,10 @@ public class FPlayerManager {
     public static void loadBanList() {
         if (!config.getBoolean("command.tempban.enable")) return;
 
+        bannedPlayers.clear();
+        Main.getDataThreadPool().execute(() ->
+                bannedPlayers.addAll(Main.getDatabase().getPlayerNameList("bans", "player")));
+
         BanList banList = Bukkit.getBanList(BanList.Type.NAME);
         if (banList.getBanEntries().isEmpty()) return;
 
@@ -84,12 +88,6 @@ public class FPlayerManager {
                     Main.getDatabase().updatePlayerInfo("bans", playerMod));
 
             banList.pardon(offlinePlayer.getName());
-        });
-
-        Main.getDataThreadPool().execute(() -> {
-            bannedPlayers.clear();
-            if (!config.getBoolean("command.tempban.enable")) return;
-            bannedPlayers.addAll(Main.getDatabase().getPlayerNameList("bans", "player"));
         });
     }
 
