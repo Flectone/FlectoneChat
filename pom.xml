@@ -6,7 +6,7 @@
 
     <groupId>net.flectone</groupId>
     <artifactId>FlectoneChat</artifactId>
-    <version>3.11.0</version>
+    <version>3.11.1</version>
     <packaging>jar</packaging>
 
     <name>FlectoneChat</name>
