@@ -94,11 +94,16 @@ public class ObjectUtil {
 
     @NotNull
     public static String formatString(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
+        return formatString(string, recipient, sender, false);
+    }
+
+    @NotNull
+    public static String formatString(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender, boolean needPermission) {
         String[] colors = null;
 
         if (recipient instanceof Player playerRecipient) {
 
-            string = formatPAPI(string, recipient, sender);
+            string = formatPAPI(string, recipient, sender, needPermission);
 
             FPlayer fPlayer = FPlayerManager.getPlayer(playerRecipient);
             colors = fPlayer != null ? fPlayer.getColors() : null;
@@ -112,11 +117,11 @@ public class ObjectUtil {
     }
 
     @NotNull
-    public static String formatPAPI(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender) {
+    public static String formatPAPI(@NotNull String string, @Nullable CommandSender recipient, @Nullable CommandSender sender, boolean needPermission) {
         if (recipient instanceof Player playerRecipient) {
             if (HookManager.enabledPlaceholderAPI
                     && sender instanceof Player playerSender
-                    && sender.hasPermission("flectonechat.placeholders")) {
+                    && (sender.hasPermission("flectonechat.placeholders") || !needPermission)) {
 
                 string = PlaceholderAPI.setPlaceholders(playerSender, string);
                 string = PlaceholderAPI.setRelationalPlaceholders(playerSender, playerRecipient, string);
