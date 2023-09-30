@@ -297,7 +297,7 @@ public class FCommand {
 
         MessageBuilder messageBuilder = new MessageBuilder(command, message, firstPlayer, itemStack, true);
 
-        if (firstPlayer instanceof Player) ObjectUtil.playSound((Player) firstPlayer, "msg");
+        if (firstPlayer instanceof Player) ObjectUtil.playSound((Player) secondPlayer, "msg");
 
         if (!(firstPlayer instanceof BlockCommandSender))
             sendTellUtil(messageBuilder, "send", firstPlayer, secondPlayer, firstPlayer);
