@@ -49,7 +49,7 @@ public class CommandMsg implements FTabCompleter {
 
         String message = ObjectUtil.toString(strings, 1);
 
-        if (!secondFPlayer.isOnline() && config.getBoolean("command.mail.enable") && secondFPlayer.getChatInfo().getOption("mail")) {
+        if (!secondFPlayer.isOnline() && config.getBoolean("command.mail.enable")) {
             fCommand.dispatchCommand("mail " + playerName + " " + message);
             return;
         }
