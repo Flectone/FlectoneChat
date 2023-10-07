@@ -23,7 +23,7 @@ public class PlayerDoorKnockingListener implements Listener {
                 || block == null
                 || !(block.getBlockData() instanceof Door)) return;
 
-        ObjectUtil.playSound(player, "door-knocking");
+        ObjectUtil.playSound(player, block.getLocation(),"door-knocking");
     }
 
 }

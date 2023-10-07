@@ -215,7 +215,7 @@ public class FCommand {
 
         recipientsSet.parallelStream().forEach(recipient -> {
 
-            ObjectUtil.playSound(recipient, command);
+            ObjectUtil.playSound(player, recipient, command);
 
             recipient.spigot().sendMessage(messageBuilder.buildFormat(format, recipient, sender));
         });

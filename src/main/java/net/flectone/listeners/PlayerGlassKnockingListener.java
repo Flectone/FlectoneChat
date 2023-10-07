@@ -24,7 +24,7 @@ public class PlayerGlassKnockingListener implements Listener {
                 || block == null
                 || !(block.getType().equals(Material.GLASS) || block.getType().equals(Material.GLASS_PANE))) return;
 
-        ObjectUtil.playSound(player, "glass-knocking");
+        ObjectUtil.playSound(player, block.getLocation(), "glass-knocking");
     }
 
 }

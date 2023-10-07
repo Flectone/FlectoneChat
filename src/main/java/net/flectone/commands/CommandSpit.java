@@ -28,7 +28,7 @@ public class CommandSpit implements FTabCompleter {
 
         location.setY(location.getY() - 0.3);
 
-        ObjectUtil.playSound(player, command.getName());
+        ObjectUtil.playSound(player, location, command.getName());
         LlamaSpit spit = (LlamaSpit) world.spawnEntity(location, EntityType.LLAMA_SPIT);
         spit.setVelocity(location.getDirection());
 

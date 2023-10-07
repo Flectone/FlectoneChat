@@ -8,9 +8,7 @@ import net.flectone.managers.HookManager;
 import net.flectone.messages.MessageBuilder;
 import net.flectone.misc.entity.FPlayer;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -141,31 +139,57 @@ public class ObjectUtil {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
+    private static String[] getSoundParams(@Nullable Player player, String command) {
+        String vaultSound = "";
+        if (player != null) {
+            vaultSound = config.getString("sound." + FPlayer.getVaultGroup(player) + "." + command);
+        }
+
+        if (!config.getBoolean("sound." + command + ".enable") && vaultSound.isEmpty()) return null;
+
+        vaultSound = vaultSound.isEmpty()
+                ? config.getString("sound." + command + ".type")
+                : vaultSound;
+
+        String[] params = vaultSound.split(":");
+
+        if (params.length < 3) {
+            Main.warning("Update the sound string sound." + command + ".type to a new format SOUND:VOLUME:PITCH");
+            params = new String[]{params[0], "1", "1"};
+        }
+        return params;
+    }
+
+    public static void playSound(@Nullable Player sender, @Nullable Player recipient, @NotNull String command) {
+        if (recipient == null) return;
+
+        String[] params = getSoundParams(sender, command);
+        if (params == null) return;
+
+        try {
+            recipient.playSound(recipient.getLocation(), Sound.valueOf(params[0]), Float.parseFloat(params[1]), Float.parseFloat(params[2]));
+        } catch (IllegalArgumentException exception) {
+            Main.warning("Incorrect sound " + params[0] + " for " + command + ".sound.type");
+            exception.printStackTrace();
+        }
+    }
+
+    public static void playSound(@Nullable Player sender, @Nullable Location location, @NotNull String command) {
+        if (location == null || location.getWorld() == null) return;
+
+        String[] params = getSoundParams(sender, command);
+        if (params == null) return;
+
+        try {
+            location.getWorld().playSound(location, Sound.valueOf(params[0]), Float.parseFloat(params[1]), Float.parseFloat(params[2]));
+        } catch (IllegalArgumentException exception) {
+            Main.warning("Incorrect sound " + params[0] + " for " + command + ".sound.type");
+            exception.printStackTrace();
+        }
+    }
+
     public static void playSound(@Nullable Player player, @NotNull String command) {
-        if (player == null) return;
-
-        Main.getDataThreadPool().execute(() -> {
-            String vaultSound = config.getString("sound." + FPlayer.getVaultGroup(player) + "." + command);
-            if (!config.getBoolean("sound." + command + ".enable") && vaultSound.isEmpty()) return;
-
-            vaultSound = vaultSound.isEmpty()
-                    ? config.getString("sound." + command + ".type")
-                    : vaultSound;
-
-            String[] params = vaultSound.split(":");
-
-            if (params.length < 3) {
-                Main.warning("Update the sound string sound." + command + ".type to a new format SOUND:VOLUME:PITCH");
-                params = new String[]{params[0], "1", "1"};
-            }
-
-            try {
-                player.playSound(player.getLocation(), Sound.valueOf(params[0]), Float.parseFloat(params[1]), Float.parseFloat(params[2]));
-            } catch (IllegalArgumentException exception) {
-                Main.warning("Incorrect sound " + params[0] + " for " + command + ".sound.type");
-                exception.printStackTrace();
-            }
-        });
+        playSound(player, player, command);
     }
 
     @NotNull
