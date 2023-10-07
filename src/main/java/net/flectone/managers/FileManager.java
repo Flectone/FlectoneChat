@@ -46,15 +46,24 @@ public class FileManager {
         FYamlConfiguration ruLocale = load(languagesPath + "ru.yml");
         FYamlConfiguration enLocale = load(languagesPath + "en.yml");
 
+        String customLocaleName = config.getString("language");
+        FYamlConfiguration customLocale = switch (customLocaleName) {
+            case "ru" -> ruLocale;
+            case "en" -> enLocale;
+            default -> load(languagesPath + customLocaleName + ".yml");
+        };
+
+        if (customLocale == null) {
+            customLocale = enLocale;
+        }
+
         if (needMigrate) {
             migrate(ruLocale);
             migrate(enLocale);
+            migrate(customLocale);
         }
 
-        locale = switch (config.getString("language")) {
-            case "ru" -> ruLocale;
-            default -> enLocale;
-        };
+        locale = customLocale;
     }
 
     private static void loadIcons() {
@@ -68,14 +77,15 @@ public class FileManager {
 
     public static FYamlConfiguration load(String filePath) {
         File file = new File(dataFolder + filePath);
-
-        if(!file.exists()) Main.getInstance().saveResource(filePath, false);
-
-        FYamlConfiguration fileConfiguration = new FYamlConfiguration(file, filePath);
+        FYamlConfiguration fileConfiguration = null;
 
         try {
+            if (!file.exists()) Main.getInstance().saveResource(filePath, false);
+
+            fileConfiguration = new FYamlConfiguration(file, filePath);
             fileConfiguration.save(file);
-        } catch (IOException exception) {
+
+        } catch (IOException | IllegalArgumentException exception) {
             Main.warning("Failed to save " + filePath + " file");
             exception.printStackTrace();
         }
