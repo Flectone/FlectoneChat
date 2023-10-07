@@ -3,8 +3,10 @@ package net.flectone.utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.*;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -125,5 +127,32 @@ public class CommandsUtil {
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Could not get knownCommands", e);
         }
+    }
+
+    public static PluginCommand createCommand(JavaPlugin plugin, String cmd, List<String> aliases) {
+        PluginCommand pc = createCommand(plugin, cmd);
+        pc.setAliases(aliases);
+        return pc;
+    }
+
+    public static PluginCommand createCommand(JavaPlugin plugin, String cmd) {
+        PluginCommand command = null;
+        cmd = cmd.toLowerCase();
+
+        ReflectiveOperationException lastException = null;
+        for (Constructor<?> constructor : PluginCommand.class.getDeclaredConstructors()) {
+            try {
+                constructor.setAccessible(true);
+                command = (PluginCommand) constructor.newInstance(cmd, plugin);
+            } catch (ReflectiveOperationException e) {
+                lastException = e;
+            }
+        }
+
+        if (command == null) {
+            throw new RuntimeException("Could not create PluginCommand", lastException);
+        }
+
+        return command;
     }
 }

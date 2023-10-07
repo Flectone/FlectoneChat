@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static net.flectone.managers.FileManager.config;
 
@@ -94,10 +95,15 @@ public final class Main extends JavaPlugin implements Listener {
             PluginCommand pluginCommand = Main.getInstance().getCommand(fTabCompleter.getCommandName());
 
             if (pluginCommand == null) return;
-            if (!fTabCompleter.isEnable()) {
-                CommandsUtil.unregisterCommand(pluginCommand);
-                return;
-            }
+
+            CommandsUtil.unregisterCommand(pluginCommand);
+
+            if (!fTabCompleter.isEnable()) return;
+
+            List<String> aliases = config.getStringList("command." + pluginCommand.getName() + ".aliases");
+            pluginCommand = CommandsUtil.createCommand(this, pluginCommand.getName(), aliases);
+            CommandsUtil.getCommandMap().register("flectonechat", pluginCommand);
+
             pluginCommand.setExecutor(fTabCompleter);
             pluginCommand.setTabCompleter(fTabCompleter);
         });

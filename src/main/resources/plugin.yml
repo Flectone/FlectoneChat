@@ -15,12 +15,10 @@ commands:
 
   msg:
     usage: /msg <player> <message>
-    aliases: [ w, tell, message, send, m ]
     permission: flectonechat.msg
 
   try-cube:
     usage: /try-cube <number>
-    aliases: [ dice ]
     permission: flectonechat.try-cube
 
   try:
@@ -29,7 +27,6 @@ commands:
 
   reply:
     usage: /r <message>
-    aliases: [ r ]
     permission: flectonechat.reply
 
   me:
@@ -46,7 +43,6 @@ commands:
 
   flectonechat:
     usage: /flectonechat reload/config/locale
-    aliases: [ fc ]
     permission: flectonechat.reload
 
   stream:
@@ -55,22 +51,18 @@ commands:
 
   ping:
     usage: /ping <player>
-    aliases: [ p ]
     permission: flectonechat.ping
 
   mark:
     usage: /mark
-    aliases: [ f ]
     permission: flectonechat.mark
 
   firstonline:
     usage: /firstonline <player>
-    aliases: [ fonline ]
     permission: flectonechat.firstonline
 
   lastonline:
     usage: /lastonline <player>
-    aliases: [ lonline ]
     permission: flectonechat.lastonline
 
   mail:
@@ -99,7 +91,6 @@ commands:
 
   maintenance:
     usage: /maintenance on/off
-    aliases: [ technical-works ]
     permission: flectonechat.maintenance
 
   switch-chat:
@@ -112,7 +103,6 @@ commands:
 
   tic-tac-toe:
     usage: /tic-tac-toe <player>
-    aliases: [ ttt ]
     permission: flectonechat.tic-tac-toe
 
   clear-chat:
@@ -121,12 +111,10 @@ commands:
 
   tempban:
     usage: /tempban <player> <time> <reason>
-    aliases: [ ban, tban ]
     permission: flectonechat.ban
 
   unban:
     usage: /unban <player>
-    aliases: [ pardon ]
     permission: flectonechat.ban
 
   warn:
@@ -151,7 +139,6 @@ commands:
 
   broadcast:
     usage: /broadcast <message>
-    aliases: [ bc ]
     permission: flectonechat.broadcast
 
   poll:

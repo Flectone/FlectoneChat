@@ -222,16 +222,19 @@ player:
 command:
   afk:
     enable: true
+    aliases: []
     timeout:
       enable: true
       time: 3000
 
   kick:
+    aliases: [pizda]
     enable: true
     announce: true
 
   warn:
     enable: true
+    aliases: []
     announce: true
 
     # number: "command"
@@ -246,92 +249,115 @@ command:
 
   warnlist:
     enable: true
+    aliases: []
     per-page: 4
 
   unwarn:
     enable: true
+    aliases: []
 
   spy:
     enable: true
+    aliases: []
 
   ball:
     enable: true
+    aliases: []
     global: true
 
   banlist:
     enable: true
+    aliases: []
     per-page: 4
 
   broadcast:
     enable: true
+    aliases: [ bc ]
 
   switch-chat:
     enable: true
+    aliases: []
 
   chat-settings:
     enable: true
+    aliases: []
 
   chatcolor:
     enable: true
+    aliases: []
 
   clear-chat:
     enable: true
+    aliases: []
 
   firstonline:
     enable: true
+    aliases: [ fonline ]
 
     # Command tab-complete mode: offline/online
     tab-complete-mode: "offline"
 
   flectonechat:
     enable: true
+    aliases: [ fc ]
 
   helper:
     enable: true
+    aliases: []
     see:
       permission: "flectonechat.helpersee"
 
   ignore:
     enable: true
+    aliases: []
 
     # Command tab-complete mode: offline/online
     tab-complete-mode: "offline"
 
   ignorelist:
     enable: true
+    aliases: []
     per-page: 4
 
   lastonline:
     enable: true
+    aliases: [ lonline ]
 
   mail:
     enable: true
+    aliases: []
 
   mail-clear:
     enable: true
+    aliases: []
 
   maintenance:
     enable: true
+    aliases: [ technical-works ]
     permission: "flectonechat.maintenance"
     turn-on: false
 
   mark:
     enable: true
+    aliases: [ f ]
     item: "WOODEN_SWORD"
     range: 30
 
   me:
     enable: true
+    aliases: []
     global: true
 
   msg:
     enable: true
+    aliases: [ w, tell, message, send, m ]
 
     # (only for visual) Command tab-complete mode: offline/online
     tab-complete-mode: "offline"
 
   mute:
     enable: true
+    aliases: []
     announce: true
 
     # (only for visual) Command tab-complete mode: offline/online
@@ -339,10 +365,12 @@ command:
 
   mutelist:
     enable: true
+    aliases: []
     per-page: 4
 
   ping:
     enable: true
+    aliases: [ p ]
     bad:
       color: "#ff4e4e"
       count: 200
@@ -354,14 +382,17 @@ command:
 
   poll:
     enable: true
+    aliases: []
     time: 50
     permission: "flectonechat.pollcreate"
 
   reply:
     enable: true
+    aliases: [ r ]
 
   stream:
     enable: true
+    aliases: []
     global: true
 
     offline-prefix:
@@ -369,6 +400,7 @@ command:
 
   tempban:
     enable: true
+    aliases: [ ban, tban ]
     announce: true
 
     # (only for visual) Command tab-complete mode: offline/online
@@ -376,21 +408,26 @@ command:
 
   tic-tac-toe:
     enable: true
+    aliases: [ ttt ]
 
   try:
     enable: true
+    aliases: []
     global: true
 
   try-cube:
     enable: true
+    aliases: [ dice ]
     global: true
     max-amount: 9
 
   unban:
     enable: true
+    aliases: [ pardon ]
 
   unmute:
     enable: true
+    aliases: []
 
 cool-down:
   enable: false
