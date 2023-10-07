@@ -87,7 +87,7 @@ public class CommandMsg implements FTabCompleter {
         wordsList.clear();
 
         switch (strings.length){
-            case 1 -> isOfflinePlayer(strings[0]);
+            case 1 -> isConfigOnlineModePlayer(strings[0]);
             case 2 -> isTabCompleteMessage(strings[1]);
         }
 

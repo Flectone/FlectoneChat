@@ -95,7 +95,7 @@ public class CommandTempban implements FTabCompleter {
         wordsList.clear();
 
         switch (strings.length) {
-            case 1 -> isOfflinePlayer(strings[0]);
+            case 1 -> isConfigOnlineModePlayer(strings[0]);
             case 2 -> {
                 isFormatString(strings[1]);
                 isStartsWith(strings[1], "permanent");

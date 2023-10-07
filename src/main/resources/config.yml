@@ -235,6 +235,9 @@ command:
     announce: true
     count-for-ban: 3
 
+    # Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
+
   warnlist:
     enable: true
     per-page: 4
@@ -271,6 +274,9 @@ command:
   firstonline:
     enable: true
 
+    # Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
+
   flectonechat:
     enable: true
 
@@ -281,6 +287,9 @@ command:
 
   ignore:
     enable: true
+
+    # Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
 
   ignorelist:
     enable: true
@@ -312,9 +321,15 @@ command:
   msg:
     enable: true
 
+    # (only for visual) Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
+
   mute:
     enable: true
     announce: true
+
+    # (only for visual) Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
 
   mutelist:
     enable: true
@@ -349,6 +364,9 @@ command:
   tempban:
     enable: true
     announce: true
+
+    # (only for visual) Command tab-complete mode: offline/online
+    tab-complete-mode: "offline"
 
   tic-tac-toe:
     enable: true

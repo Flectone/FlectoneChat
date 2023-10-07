@@ -96,7 +96,7 @@ public class CommandMute implements FTabCompleter {
         wordsList.clear();
 
         switch (strings.length){
-            case 1 -> isOfflinePlayer(strings[0]);
+            case 1 -> isConfigOnlineModePlayer(strings[0]);
             case 2 -> isFormatString(strings[1]);
             case 3 -> isTabCompleteMessage(strings[2], "tab-complete.reason");
         }

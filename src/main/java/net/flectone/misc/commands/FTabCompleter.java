@@ -40,6 +40,15 @@ public interface FTabCompleter extends CommandExecutor, TabCompleter {
                 .forEachOrdered(key -> isStartsWith(arg, key));
     }
 
+    default void isConfigOnlineModePlayer(@NotNull String arg) {
+        if (FileManager.config.getString("command." + getCommandName() + ".tab-complete-mode").equals("offline")) {
+            isOfflinePlayer(arg);
+            return;
+        }
+
+        isOnlinePlayer(arg);
+    }
+
     default void isOfflinePlayer(@NotNull String arg) {
         offlinePlayerList.parallelStream().forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer));
     }

@@ -48,7 +48,7 @@ public class CommandFirstonline implements FTabCompleter {
         wordsList.clear();
 
         if (strings.length == 1) {
-            isOfflinePlayer(strings[0]);
+            isConfigOnlineModePlayer(strings[0]);
         }
 
         Collections.sort(wordsList);
