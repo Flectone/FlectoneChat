@@ -221,6 +221,8 @@ player:
 
   door-knocking:
     enable: true
+  glass-knocking:
+    enable: true
 
 command:
   afk:
@@ -586,9 +588,12 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+  glass-knocking:
+    enable: true
+    type: "BLOCK_GLASS_PLACE:3:1"
   door-knocking:
     enable: true
-    type: "BLOCK_BELL_USE:3:1"
+    type: "BLOCK_WOOD_PLACE:3:1"
   auto-message:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"
