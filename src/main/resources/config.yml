@@ -219,6 +219,9 @@ player:
     message:
       enable: true
 
+  door-knocking:
+    enable: true
+
 command:
   afk:
     enable: true
@@ -583,6 +586,9 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+  door-knocking:
+    enable: true
+    type: "BLOCK_BELL_USE:3:1"
   auto-message:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"
