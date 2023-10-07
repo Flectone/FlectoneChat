@@ -77,7 +77,7 @@ public class CommandTicTacToe implements FTabCompleter {
             String hoverMessage = locale.getFormatString("command.tic-tac-toe.hover-message", secondFPlayer.getPlayer());
 
             FComponent textComponent = new FComponent(getMessage)
-                    .addRunCommand("/ttt " + ticTacToe.getUuid() + " yes")
+                    .addRunCommand("/tic-tac-toe " + ticTacToe.getUuid() + " yes")
                     .addHoverText(hoverMessage);
 
             secondFPlayer.getPlayer().spigot().sendMessage(textComponent.get());
