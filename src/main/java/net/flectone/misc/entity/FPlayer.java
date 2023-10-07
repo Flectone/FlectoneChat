@@ -579,6 +579,14 @@ public class FPlayer {
     @NotNull
     public static String getVaultLocaleString(@NotNull CommandSender sender, @NotNull String localeString) {
 
+        String formattedLocaleString = locale.getString(localeString.replaceFirst("<group>", getVaultGroup(sender)));
+
+        return formattedLocaleString.isEmpty()
+                ? locale.getString(localeString.replaceFirst("<group>", "default"))
+                : formattedLocaleString;
+    }
+
+    public static String getVaultGroup(@NotNull CommandSender sender) {
         String hoverGroup = "default";
 
         if (sender instanceof Player player) {
@@ -591,11 +599,6 @@ public class FPlayer {
 
             if (hoverGroup == null) hoverGroup = "default";
         }
-
-        String formattedLocaleString = locale.getString(localeString.replaceFirst("<group>", hoverGroup));
-
-        return formattedLocaleString.isEmpty()
-                ? locale.getString(localeString.replaceFirst("<group>", "default"))
-                : formattedLocaleString;
+        return hoverGroup;
     }
 }
