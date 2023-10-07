@@ -71,15 +71,16 @@ public class ObjectUtil {
                 .collect(Collectors.joining(delimiter));
     }
 
+    private static final Pattern HEX_PATTERN = Pattern.compile("&?#[a-fA-F0-9]{6}");
+
     @NotNull
     public static String translateHexToColor(@NotNull String string) {
-        Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
-        Matcher matcher = pattern.matcher(string);
+        Matcher matcher = HEX_PATTERN.matcher(string);
         StringBuilder sb = new StringBuilder();
 
         while (matcher.find()) {
             String hexCode = matcher.group();
-            String replaceSharp = hexCode.replace('#', 'x');
+            String replaceSharp = hexCode.replaceFirst("&", "").replace('#', 'x');
 
             StringBuilder builder = new StringBuilder();
             for (char c : replaceSharp.toCharArray()) {
