@@ -434,9 +434,20 @@ command:
     enable: true
     aliases: []
 
+  spit:
+    enable: true
+    aliases: []
+
+    # allows to use a command if you hold this item in your hand and press RMB
+    item: "WHITE_DYE"
+
 cool-down:
   enable: false
 
+  spit:
+    enable: false
+    time: 5
+    permission: "flectonechat.spit.cooldown.immune"
   kick:
     enable: false
     time: 5
@@ -588,12 +599,15 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+  spit:
+    enable: true
+    type: "ENTITY_LLAMA_SPIT:0.3:1"
   glass-knocking:
     enable: true
-    type: "BLOCK_GLASS_PLACE:3:1"
+    type: "BLOCK_GLASS_PLACE:1:1"
   door-knocking:
     enable: true
-    type: "BLOCK_WOOD_PLACE:3:1"
+    type: "BLOCK_WOOD_PLACE:1:1"
   auto-message:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"

@@ -153,6 +153,10 @@ commands:
     usage: /kick <player> <message>
     permission: flectonechat.kick
 
+  spit:
+    usage: /spit
+    permission: flectonechat.spit
+
 permissions:
   flectonechat.reload:
     default: op
@@ -283,4 +287,6 @@ permissions:
   flectonechat.chat-settings.kick:
     default: true
   flectonechat.chat-settings.auto-message:
+    default: true
+  flectonechat.spit:
     default: true
