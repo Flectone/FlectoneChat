@@ -39,6 +39,14 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>org.example:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.MF</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
@@ -81,6 +89,10 @@
         <repository>
             <id>Scarsz-Nexus</id>
             <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>iridiumdevelopment</id>
+            <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
         </repository>
     </repositories>
 
@@ -138,6 +150,12 @@
             <artifactId>bungeecord-api</artifactId>
             <version>1.16-R0.3</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.iridium</groupId>
+            <artifactId>IridiumColorAPI</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

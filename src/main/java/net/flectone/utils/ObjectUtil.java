@@ -1,5 +1,6 @@
 package net.flectone.utils;
 
+import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.flectone.Main;
 import net.flectone.commands.CommandChatcolor;
@@ -88,7 +89,7 @@ public class ObjectUtil {
         }
         matcher.appendTail(sb);
 
-        return ChatColor.translateAlternateColorCodes('&', sb.toString());
+        return IridiumColorAPI.process(ChatColor.translateAlternateColorCodes('&', sb.toString()));
     }
 
     @NotNull

@@ -192,8 +192,15 @@ advancement:
 
 
 player:
-  display-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
-  tab-name: "<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>"
+
+  name:
+    # group_name: "text"
+    # admin: "&c<player>"
+    default: "<GRADIENT:2C08BA><player></GRADIENT:028A97>"
+
+    display: "<world_prefix><vault_prefix><stream_prefix><name><afk_suffix><vault_suffix>"
+    tab: "<world_prefix><vault_prefix><stream_prefix><name><afk_suffix><vault_suffix>"
+
 
   world:
     # type or name
@@ -233,7 +240,7 @@ command:
       time: 3000
 
   kick:
-    aliases: [pizda]
+    aliases: []
     enable: true
     announce: true
 

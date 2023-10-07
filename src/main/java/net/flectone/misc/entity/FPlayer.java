@@ -7,6 +7,7 @@ import net.flectone.integrations.vault.FVault;
 import net.flectone.managers.FPlayerManager;
 import net.flectone.managers.HookManager;
 import net.flectone.misc.entity.player.*;
+import net.flectone.misc.files.FYamlConfiguration;
 import net.flectone.utils.ObjectUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.milkbowl.vault.chat.Chat;
@@ -435,10 +436,11 @@ public class FPlayer {
     private String getName(@NotNull String formatName) {
         setVaultPrefixSuffix();
 
-        String name = config.getString("player." + formatName)
+        String name = config.getString("player.name." + formatName)
                 .replace("<vault_prefix>", this.vaultPrefix)
                 .replace("<world_prefix>", this.worldPrefix)
                 .replace("<stream_prefix>", this.streamPrefix)
+                .replace("<name>", getVaultConfigString(player,"player.name.<group>"))
                 .replace("<player>", this.name)
                 .replace("<vault_suffix>", this.vaultSuffix)
                 .replace("<afk_suffix>", this.afkSuffix);
@@ -449,12 +451,12 @@ public class FPlayer {
 
     @NotNull
     public String getDisplayName() {
-        return getName("display-name");
+        return getName("display");
     }
 
     @NotNull
     public String getTabName() {
-        return getName("tab-name");
+        return getName("tab");
     }
 
     @NotNull
@@ -468,10 +470,18 @@ public class FPlayer {
         String prefix = "";
         String suffix = "";
         if (config.getBoolean("player.name-tag.enable")) {
-            String[] strings = getDisplayName().split(this.name);
-            prefix = strings.length > 0 ? strings[0] : "";
-            suffix = strings.length > 1 ? strings[1] : "";
+            String displayName = config.getString("player.name.display")
+                    .replace("<vault_prefix>", this.vaultPrefix)
+                    .replace("<world_prefix>", this.worldPrefix)
+                    .replace("<stream_prefix>", this.streamPrefix)
+                    .replace("<vault_suffix>", this.vaultSuffix)
+                    .replace("<afk_suffix>", this.afkSuffix);
+
+            String[] strings = displayName.split("<name>");
+            prefix = strings.length > 0 ? ObjectUtil.formatString(strings[0], player) : "";
+            suffix = strings.length > 1 ? ObjectUtil.formatString(strings[1], player) : "";
         }
+
 
         this.team.setPrefix(prefix);
         this.team.setSuffix(suffix);
@@ -578,11 +588,19 @@ public class FPlayer {
 
     @NotNull
     public static String getVaultLocaleString(@NotNull CommandSender sender, @NotNull String localeString) {
+        return getVaultString(sender, localeString, locale);
+    }
 
-        String formattedLocaleString = locale.getString(localeString.replaceFirst("<group>", getVaultGroup(sender)));
+    @NotNull
+    public static String getVaultConfigString(@NotNull CommandSender sender, @NotNull String configString) {
+        return getVaultString(sender, configString, config);
+    }
+
+    private static String getVaultString(@NotNull CommandSender sender, @NotNull String localeString, FYamlConfiguration configuration) {
+        String formattedLocaleString = configuration.getString(localeString.replaceFirst("<group>", getVaultGroup(sender)));
 
         return formattedLocaleString.isEmpty()
-                ? locale.getString(localeString.replaceFirst("<group>", "default"))
+                ? configuration.getString(localeString.replaceFirst("<group>", "default"))
                 : formattedLocaleString;
     }
 
