@@ -142,21 +142,30 @@ public class ObjectUtil {
     }
 
     public static void playSound(@Nullable Player player, @NotNull String command) {
-        if (player == null || !config.getBoolean("sound." + command + ".enable")) return;
+        if (player == null) return;
 
-        String[] params = config.getString("sound." + command + ".type").split(":");
-        if (params.length < 3) {
-            Main.warning("Update the sound string sound." + command + ".type to a new format SOUND:VOLUME:PITCH");
-            params = new String[]{params[0], "1", "1"};
-        }
+        Main.getDataThreadPool().execute(() -> {
+            String vaultSound = config.getString("sound." + FPlayer.getVaultGroup(player) + "." + command);
+            if (!config.getBoolean("sound." + command + ".enable") && vaultSound.isEmpty()) return;
 
-        try {
-            player.playSound(player.getLocation(), Sound.valueOf(params[0]), Float.parseFloat(params[1]), Float.parseFloat(params[2]));
-        } catch (IllegalArgumentException exception) {
-            Main.warning("Incorrect sound " + params[0] + " for " + command + ".sound.type");
-            exception.printStackTrace();
-        }
+            vaultSound = vaultSound.isEmpty()
+                    ? config.getString("sound." + command + ".type")
+                    : vaultSound;
 
+            String[] params = vaultSound.split(":");
+
+            if (params.length < 3) {
+                Main.warning("Update the sound string sound." + command + ".type to a new format SOUND:VOLUME:PITCH");
+                params = new String[]{params[0], "1", "1"};
+            }
+
+            try {
+                player.playSound(player.getLocation(), Sound.valueOf(params[0]), Float.parseFloat(params[1]), Float.parseFloat(params[2]));
+            } catch (IllegalArgumentException exception) {
+                Main.warning("Incorrect sound " + params[0] + " for " + command + ".sound.type");
+                exception.printStackTrace();
+            }
+        });
     }
 
     @NotNull

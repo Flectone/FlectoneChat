@@ -599,6 +599,17 @@ cool-down:
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 sound:
+
+# You can set different sounds for vault groups
+#
+#  admin:
+#    try-cube: "BLOCK_NOTE_BLOCK_BELL:1:1"
+#  helper:
+#    try-cube: "ENTITY_LLAMA_SPIT:0.3:1"
+#
+# In this case you don't need to use "enable" and "type",
+# the most important thing is that this string is not empty
+
   spit:
     enable: true
     type: "ENTITY_LLAMA_SPIT:0.3:1"
