@@ -149,7 +149,7 @@ chat:
   all-disabled: "#ff4e4e⁉ На этом сервере отключён чат"
 
   swear-protection:
-    symbol: "❤"
+    message: "❤"
 
 tab-complete:
   message: "(сообщение)"
