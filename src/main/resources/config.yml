@@ -233,7 +233,13 @@ command:
   warn:
     enable: true
     announce: true
-    count-for-ban: 3
+
+    # number: "command"
+    # These actions will be executed when the number of warnings EQUALS the number config
+    # There can be as many as you want
+    action:
+      3: "ban <player> 7d"
+      5: "ban <player>"
 
     # Command tab-complete mode: offline/online
     tab-complete-mode: "offline"

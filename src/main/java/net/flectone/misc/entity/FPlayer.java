@@ -232,9 +232,11 @@ public class FPlayer {
         PlayerWarn playerWarn = new PlayerWarn(this.uuid.toString(), finalTime, reason, moderatorUUID);
         warnList.add(playerWarn);
 
-        if (!isBanned() && getRealWarnsCount() >= config.getInt("command.warn.count-for-ban")) {
-            String configString = locale.getString("command.warn.ban-too-many");
-            tempban(-1, configString, null);
+        int countWarns = getRealWarnsCount();
+        String warnAction = config.getString("command.warn.action." + countWarns);
+        if (!warnAction.isEmpty()) {
+            Bukkit.getScheduler().runTask(Main.getInstance(), () ->
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), warnAction.replace("<player>", this.name)));
         }
 
         Main.getDataThreadPool().execute(() ->
