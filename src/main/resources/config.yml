@@ -4,7 +4,7 @@
 # Check our wiki
 # https://chat.flectone.net
 
-version: "3.12.0"
+version: "3.13.0"
 database: "database"
 language: en
 
