@@ -286,3 +286,17 @@
 Использование: `/poll create/vote <poll>`\
 Разрешение: `flectonechat.pollvote` (default)\
 Разрешение на создание: `flectonechat.pollcreate` (op)
+
+## /kick
+
+Кикнуть игрока
+
+Использование: `/kick <player> <message>`\
+Разрешение: `flectonechat.kick` (op)
+
+## /spit
+
+Плюнуть (🙂)
+
+Usage: `/spit`\
+Permission: `flectonechat.spit` (default)
