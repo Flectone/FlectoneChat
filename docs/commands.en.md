@@ -119,19 +119,19 @@ Usage: `/mark <color>`\
 Aliases: `f`, `m`\
 Permission: `flectonechat.mark` (default)
 
-## /playerMail
+## /mail
 
 Send an offline message to the player (will be sent when the player is online)
 
-Usage: `/playerMail <player> <message>`\
-Permission: `flectonechat.playerMail` (default)
+Usage: `/mail <player> <message>`\
+Permission: `flectonechat.mail` (default)
 
-## /playerMail-clear
+## /mail-clear
 
-Delete sended playerMail by id
+Delete sended mail by id
 
-Usage: `playerMail-clear <player> <number>`\
-Permission: `flectonechat.playerMail` (default)
+Usage: `mail-clear <player> <number>`\
+Permission: `flectonechat.mail` (default)
 
 ## /afk
 
@@ -292,7 +292,7 @@ Creating permission: `flectonechat.pollcreate` (op)
 Kick a player
 
 Usage: `/kick <player> <message>`\
-Permission: `flectonechat.kick` (default)
+Permission: `flectonechat.kick` (op)
 
 ## /spit
 

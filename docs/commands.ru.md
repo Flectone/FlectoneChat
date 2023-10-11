@@ -119,19 +119,19 @@
 Вариации: `f`, `m`\
 Разрешение: `flectonechat.mark` (default)
 
-## /playerMail
+## /mail
 
 Отправить сообщение игроку не в сети  (будет отправлено, когда игрок будет в сети)
 
-Использование: `/playerMail <player> <message>`\
-Разрешение: `flectonechat.playerMail` (default)
+Использование: `/mail <player> <message>`\
+Разрешение: `flectonechat.mail` (default)
 
-## /playerMail-clear
+## /mail-clear
 
 Удалить отправленные сообщения
 
-Использование: `playerMail-clear <player> <number>`\
-Разрешение: `flectonechat.playerMail` (default)
+Использование: `mail-clear <player> <number>`\
+Разрешение: `flectonechat.mail` (default)
 
 ## /afk
 

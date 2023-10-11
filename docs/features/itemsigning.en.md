@@ -5,3 +5,5 @@ This can be done by left-clicking on the anvil with the main item in hand and th
 
 ![](https://i.imgur.com/fcTl9IL.gif)
 ![](https://i.imgur.com/XrV2DXK.png)
+
+you can erase your sign by clicking on the cauldron.

@@ -6,3 +6,5 @@
 
 ![](https://i.imgur.com/fcTl9IL.gif)
 ![](https://i.imgur.com/XrV2DXK.png)
+
+вы можете стереть подпись, нажав предметом по котлу.
