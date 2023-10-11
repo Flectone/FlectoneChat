@@ -23,12 +23,7 @@
 
 ## Tab
 
-`tab`
-
-<!--
-TODO: custom tab feature
-https://github.com/Flectone/FlectoneChat/commit/0dc1e6091cb74e8fe7a158012f85ea6ec04aa080
--->
+checkout [tab feature](features/tab.md) to learn how to customize your tab
 
 *   `tab.header-message`
 
@@ -57,10 +52,7 @@ https://github.com/Flectone/FlectoneChat/commit/0dc1e6091cb74e8fe7a158012f85ea6e
 
 ## Server
 
-<!-- 
-TODO: custom branding feature
-https://github.com/Flectone/FlectoneChat/commit/2bef043258b0e43be186cfc8c7ca6cddc2c28c3d
--->
+checkout [branding feature](features/branding.md) to learn how to customize your server's branding
 
 * `server.brand`
 
@@ -99,10 +91,19 @@ https://github.com/Flectone/FlectoneChat/commit/2bef043258b0e43be186cfc8c7ca6cdd
 
 ## Chat
 
+### `chat.auto-message`
+
+| name     | description                                 | type   | default |
+| -------- | ------------------------------------------- | ------ | ------- |
+| `enable` | Enable auto-messages                        | bool   | `false` |
+| `random` | If `true`, then the messages will be random | bool   | `false` |
+| `period` | Delay between auto-messages                 | number | `600`   |
+
 ### `chat.local`
 
 | name            | description                         | type   | default |
 | --------------- | ----------------------------------- | ------ | ------- |
+| `enable`        | Enable local chat                   | bool   | `true`  |
 | `range`         | Local chat range                    | number | `100`   |
 | `set-cancelled` | Cancel chat event for other plugins | bool   | `true`  |
 
@@ -112,12 +113,11 @@ https://github.com/Flectone/FlectoneChat/commit/2bef043258b0e43be186cfc8c7ca6cdd
 | -------- | ----------------------------------------------- | ---- | ------- |
 | `enable` | Enable no-recipients notification in local chat | bool | `true`  |
 
-*   `chat.local.admin-see`
+### `chat.swear-protection`
 
-| name         | description                         | type   | default                            |
-| ------------ | ----------------------------------- | ------ | ---------------------------------- |
-| `enable`     | Enable local chat spying for admins | bool   | `false`                            |
-| `permission` | Permission for local chat spying    | string | `flectonechat.localchat.admin_see` |
+| name     | description             | type | default |
+| -------- | ----------------------- | ---- | ------- |
+| `enable` | Enable swear protection | bool | `false` |
 
 ### `chat.global`
 
@@ -148,6 +148,24 @@ duration = (messageLength + 8 * BubblesCount) * 1200 / readSpeed;
 ### `chat.patterns`
 
 checkout [Chat features](features/chat.md#patterns) to learn about patterns
+
+### `chat.anvil-formatting`
+
+| name     | description                 | type | default |
+| -------- | --------------------------- | ---- | ------- |
+| `enable` | Enable formatting in anvils | bool | `true`  |
+
+### `chat.book-formatting`
+
+| name     | description                | type | default |
+| -------- | -------------------------- | ---- | ------- |
+| `enable` | Enable formatting in books | bool | `true`  |
+
+### `chat.sign-formatting`
+
+| name     | description                | type | default |
+| -------- | -------------------------- | ---- | ------- |
+| `enable` | Enable formatting on sings | bool | `true`  |
 
 ### `chat.cords`
 
@@ -228,11 +246,8 @@ checkout [Chat features](features/chat.md#patterns) to learn about patterns
 
 ## Advancement
 
-<!-- 
-TODO: advancements feature 
-https://github.com/Flectone/FlectoneChat/commit/3a3ee1d8a12196ebaa410a569cc0fceb582f9b1b#diff-58cdd3d308ccba6c594e040ff9c065bb11eeb6e30f35ba87694ea45d5ae6096c 
-https://github.com/Flectone/FlectoneChat/commit/a33a28a1b3dbc8d7c7208d5a7f3c86507dc98f64
--->
+!!! note Custom advancement messages
+    You can customize your advancement announcements with `advancement.*` in your lang file
 
 ### `advancement.message`
 
@@ -260,13 +275,28 @@ https://github.com/Flectone/FlectoneChat/commit/a33a28a1b3dbc8d7c7208d5a7f3c8650
 
 ## Player
 
-`player.*`
+### `player.*`
+
+| name           | description                          | type   | default |
+| -------------- | ------------------------------------ | ------ | ------- |
+| `name-visible` | Show displayname above player's head | `bool` | `false` |
+
+### `player.name`
+
+??? tip "Per-group name styles" 
+    You can set custom displaynames for specific vault groups.
+    To do this, add a style to `player.name.GROUP_NAME`
+    ```yaml
+    player:
+      name:
+        admin: "&c<player>"
+        default: "<GRADIENT:2C08BA><player></GRADIENT:028A97>"
+    ```
 
 | name           | description                          | type   | default                                                                         |
 | -------------- | ------------------------------------ | ------ | ------------------------------------------------------------------------------- |
-| `display-name` | Players' displayname format          | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
-| `tab-name`     | Players' tab name format             | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
-| `name-visible` | Show displayname above player's head | `bool` | `false`                                                                         |
+| `display`      | Players' displayname format          | string | `<world_prefix><vault_prefix><stream_prefix><player><afk_suffix><vault_suffix>` |
+| `tab`          | Players' tab name format             | string | `<world_prefix><vault_prefix><stream_prefix><name><afk_suffix><vault_suffix>`   |
 
 ### `player.world`
 
@@ -285,6 +315,18 @@ https://github.com/Flectone/FlectoneChat/commit/a33a28a1b3dbc8d7c7208d5a7f3c8650
 | name     | description                                | type   | default |
 | -------- | ------------------------------------------ | ------ | ------- |
 | `enable` | Show suffix and prefix above player's head | `bool` | `true`  |
+
+### `player.door-knocking`
+
+| name     | description          | type   | default |
+| -------- | -------------------- | ------ | ------- |
+| `enable` | Enable door-knocking | `bool` | `true`  |
+
+### `player.glass-knocking`
+
+| name     | description           | type   | default |
+| -------- | --------------------- | ------ | ------- |
+| `enable` | Enable glass-knocking | `bool` | `true`  |
 
 ### `player.item`
 
@@ -311,11 +353,6 @@ https://github.com/Flectone/FlectoneChat/commit/a33a28a1b3dbc8d7c7208d5a7f3c8650
 | `enable` | Enable quit message | bool | `true`  |
 
 ## Command
-
-<!-- 
-TODO: command disabling feature
-https://github.com/Flectone/FlectoneChat/commit/474ac575106520b79b35d700da217c524ca538e4
- -->
 
 ### `command.maintenance`
 
@@ -347,10 +384,30 @@ https://github.com/Flectone/FlectoneChat/commit/474ac575106520b79b35d700da217c52
 
 ### `command.warn`
 
-| name            | description                                               | type   | default |
-| --------------- | --------------------------------------------------------- | ------ | ------- |
-| `announce`      | Enable warn announcing                                    | bool   | `true`  |
-| `count-for-ban` | Automatically ban player when warn count >= count-for-ban | number | `3`     |
+checkout [warn system feature](features/warns.md) to learn about warns
+
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `announce`          | Enable warn announcing                                                                | bool                   | `true`    |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
+
+### `command.firstonline`
+
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
+
+### `command.ignore`
+
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
+
+### `command.msg`
+
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
 
 ### `command.ping`
 
@@ -426,9 +483,10 @@ check [mark feature](features/mark.md) for more info
 
 ### `command.mute`
 
-| name       | description                         | type | default |
-| ---------- | ----------------------------------- | ---- | ------- |
-| `announce` | Announce player mute to all players | bool | `true`  |
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `announce`          | Announce player mute to all players                                                   | bool                   | `true`    |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
 
 ### `command.mutelist`
 
@@ -438,9 +496,22 @@ check [mark feature](features/mark.md) for more info
 
 ### `command.tempban`
 
-| name       | description                          | type | default |
-| ---------- | ------------------------------------ | ---- | ------- |
-| `announce` | Announce a player ban to all players | bool | `true`  |
+| name                | description                                                                           | type                   | default   |
+| ------------------- | ------------------------------------------------------------------------------------- | ---------------------- | --------- |
+| `announce`          | Announce a player ban to all players                                                  | bool                   | `true`    |
+| `tab-complete-mode` | Offline: show all players in tab-complete. \ Online: show only players who are online | string{offline/online} | `offline` |
+
+### `command.kick`
+
+| name       | description                           | type | default |
+| ---------- | ------------------------------------- | ---- | ------- |
+| `announce` | Announce a player kick to all players | bool | `true`  |
+
+### `command.spit`
+
+| name   | description      | type   | default     |
+| ------ | ---------------- | ------ | ----------- |
+| `item` | Fast-action item | string | `WHITE_DYE` |
 
 ## Cooldown
 
@@ -470,7 +541,10 @@ You can customize them as follows
 ```yaml
   command-name:
     enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL" # Sound name here 
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1" 
 ```
+
+### Sound type format
+`SOUND_NAME`:`VOLUME`:`PITCH`
 
 You can get all sound names [here](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html)

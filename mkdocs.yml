@@ -3,6 +3,7 @@ theme:
   features:
     - content.code.annotate
     - navigation.expand
+    - navigation.tracking
   logo: assets/logo.png
   favicon: assets/logo.png
   name: material
@@ -42,6 +43,9 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+
+  - toc:
+      permalink: true
   - pymdownx.escapeall:
       hardbreak: true
 

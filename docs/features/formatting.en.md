@@ -10,6 +10,7 @@ If a player has the `flectonechat.placeholders` permission, he can use placehold
 chat.
 
 !!! warning
-Access to placeholderAPI is dangerous and can lead to information leakage
+    Access to placeholderAPI is dangerous and can lead to information leakage
 
-Formatting can also be used in anvils, signs and books!
+Formatting can also be used in anvils, signs and books!\
+You can disable it in the [config.yml](../configuration.md#chatanvil-formatting)

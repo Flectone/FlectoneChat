@@ -286,3 +286,17 @@ Create a poll
 Usage: `/poll create/vote <poll>`\
 Permission: `flectonechat.pollvote` (default)\
 Creating permission: `flectonechat.pollcreate` (op)
+
+## /kick
+
+Kick a player
+
+Usage: `/kick <player> <message>`\
+Permission: `flectonechat.kick` (default)
+
+## /spit
+
+Spit (🙂)
+
+Usage: `/spit`\
+Permission: `flectonechat.spit` (default)
