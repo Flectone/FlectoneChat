@@ -47,7 +47,7 @@ public class PlayerAdvancementDoneListener implements Listener {
         if (isEnable) register();
         else unregister();
 
-        Bukkit.getWorlds().forEach(world -> setAnnounceAdvancements(world, !isEnable));
+        Bukkit.getWorlds().forEach(world -> setAnnounceAdvancements(world, isEnable));
     }
 
     private static void setAnnounceAdvancements(@NotNull World world, boolean enable) {
