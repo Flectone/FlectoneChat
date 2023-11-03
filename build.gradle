@@ -45,6 +45,8 @@ repositories {
 }
 
 dependencies {
+    implementation files("LICENSE")
+
     implementation "com.iridium:IridiumColorAPI:1.0.6"
     implementation 'org.jetbrains:annotations:24.0.0'
 
