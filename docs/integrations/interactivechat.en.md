@@ -1,3 +1,0 @@
-# InteractiveChat
-
-It works.

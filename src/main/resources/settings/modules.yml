@@ -1,0 +1,108 @@
+extra:
+  enable: true
+
+  item-sign:
+    enable: true
+
+    unsign:
+      enable: true
+
+  mark:
+    enable: true
+
+  knocking:
+    enable: true
+
+  spit:
+    enable: true
+
+server:
+  enable: true
+
+  brand:
+    enable: true
+
+  tab:
+    enable: true
+
+  status:
+    enable: true
+
+server-message:
+  enable: true
+
+  death:
+    enable: true
+
+  advancement:
+    enable: true
+
+  join:
+    enable: true
+
+  quit:
+    enable: true
+
+player:
+  enable: true
+
+  name:
+    enable: true
+
+  name-tag:
+    enable: true
+
+  world:
+    enable: true
+
+  afk-timeout:
+    enable: true
+
+  right-click:
+    enable: true
+
+  hover:
+    enable: true
+
+player-message:
+  enable: true
+
+  swear-protection:
+    enable: false
+
+  patterns:
+    enable: true
+
+  formatting:
+    enable: true
+
+  anvil:
+    enable: true
+  book:
+    enable: true
+  sign:
+    enable: true
+
+  chat:
+    enable: true
+
+chat-bubble:
+  enable: true
+
+auto-message:
+  enable: true
+
+color:
+  enable: true
+
+commands:
+  enable: true
+
+integrations:
+  enable: true
+
+sounds:
+  enable: true
+
+cooldowns:
+  enable: true

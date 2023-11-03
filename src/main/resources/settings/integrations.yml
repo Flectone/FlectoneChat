@@ -1,0 +1,16 @@
+DiscordSRV:
+  enable: true
+PlaceholderAPI:
+  enable: true
+InteractiveChat:
+  enable: true
+LuckPerms:
+  enable: true
+SuperVanish:
+  enable: true
+Vault:
+  enable: true
+PlasmoVoice:
+  enable: true
+VoiceChat:
+  enable: true

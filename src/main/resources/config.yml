@@ -1,748 +1,363 @@
-#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
-#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
-#
-# Check our wiki
-# https://chat.flectone.net
+plugin:
+  version: 4.0.0
 
-version: "3.13.0"
-database: "database"
-language: en
+  language: en
 
-scoreboard:
-  custom: false
+  database:
+    name: "database"
 
-color:
-  # &&1
-  first: "#1abaf0"
+  scoreboard:
+    custom: false
 
-  # &&2
-  second: "#77d7f7"
-
-tab:
-  header-message:
-    enable: true
-  footer-message:
-    enable: true
-  update:
+  bStats:
     enable: true
 
-    # minecraft ticks (1sec = 20ticks)
-    rate: 40
-  player-ping:
+# <player> - minecraft player name
+# <player_name_real> - player.name.real
+# <player_name_display> - player.name.display
+# <player_name_tab> - player.name.tab
+
+default:
+  extra:
     enable: true
 
-server:
-  brand:
-    enable: true
-
-    update:
+    item-sign:
       enable: true
-      rate: 20
 
-  motd:
-    messages:
+      format: "<dye>&o#<player>"
+      block: "ANVIL"
+
+      unsign:
+        enable: true
+        drop-dye: true
+        block: "GRINDSTONE"
+
+    mark:
       enable: true
-  online:
-    count:
+
+      item: "WOODEN_SWORD"
+      range: 30
+
+    knocking:
       enable: true
-      digit: 69
-  icon:
+
+      list:
+        - "glass"
+        - "door"
+
+    spit:
+      enable: true
+
+      item: "WHITE_DYE"
+
+  server:
     enable: true
-    # Modes: single or random
-    mode: random
 
-    # If "single" mode is enabled, only the first one will be displayed
-    names:
-      - "server-icon-1"
-      - "server-icon-2"
+    brand:
+      enable: true
+      update:
+        enable: true
+        rate: 20
 
-chat:
-  auto-message:
-    enable: false
-    # if set to true, then the messages will be random
-    random: false
-    # minecraft ticks (1sec = 20ticks)
-    period: 600
+    tab:
+      enable: true
 
-  bubble:
+      update:
+        enable: true
+        rate: 40
+
+      header:
+        enable: true
+      footer:
+        enable: true
+
+      player-list-name:
+        enable: true
+
+      player-ping:
+        enable: true
+
+    status:
+      icon:
+        enable: true
+
+        # Modes: single or random
+        mode: random
+
+        # If "single" mode is enabled, only the first one will be displayed
+        names:
+          - "server-icon-1"
+          - "server-icon-2"
+      motd:
+        enable: true
+
+      player-count:
+        enable: true
+        number: 69
+        # permission bypass: flectonechat.server.status.player-count.bypass
+
+  server-message:
     enable: true
+
+    death:
+      enable: true
+
+      # if disabled, custom death messages will not be shown
+      visible: true
+
+      # if enabled, then death from any mob will be located on the "death.mob.default",
+      # otherwise it will be necessary to register for each separately
+      mob-default: true
+
+      entity:
+        hover:
+          enable: true
+
+    advancement:
+      enable: true
+
+      task:
+        visible: true
+      goal:
+        visible: true
+      challenge:
+        visible: true
+
+    join:
+      enable: true
+
+      first-time:
+        enable: true
+
+    quit:
+      enable: true
+
+      first-time:
+        enable: true
+
+  player:
+    enable: true
+
+    name:
+      enable: true
+
+      display: "<player_prefix><player_name_real><player_suffix>"
+      tab: "<player_prefix>&f<player_name_real><player_suffix>"
+
+      prefix: "<world_prefix><vault_prefix><stream_prefix>"
+      real: "<GRADIENT:2C08BA><player></GRADIENT:028A97>"
+      suffix: "<afk_suffix><vault_suffix>"
+
+    name-tag:
+      enable: true
+
+      visible: true
+
+      suffix:
+        enable: true
+      prefix:
+        enable: true
+
+      sort:
+        enable: true
+
+    world:
+      enable: true
+
+      # type or name
+      # if mode=name the language file should contain lines with names of the worlds
+      mode: "type"
+
+      normal: "#4eff52● &f"
+      nether: "#ff4e4e● &f"
+      the_end: "#834eff● &f"
+      custom: "#1abaf0● &f"
+
+      world: "#4eff52● &f"
+      world_nether: "#ff4e4e● &f"
+      world_the_end: "#834eff● &f"
+
+    afk-timeout:
+      enable: true
+
+      # ticks
+      time: 3000
+
+    right-click:
+      enable: true
+      format: "&&1-⏴ &&2<player> &&1⏵-"
+
+    hover:
+      enable: true
+
+      command-type: "suggest"
+      command: "/msg <player> "
+
+  player-message:
+    enable: true
+
+    swear-protection:
+      enable: false
+      symbol: "❤"
+
+    patterns:
+      enable: true
+
+      list:
+        ':)': "☺"
+        ':D': "☻"
+        ':(': "☹"
+        ':ok:': "🖒"
+        ':+1:': "🖒"
+        ':-1': "🖓"
+        ':cool:': "😎"
+        'B)':  "😎"
+        ':clown:': "🤡"
+        '<3': "❤"
+        'xd': "😆"
+        '%)': "😵"
+        '=D': "😃"
+        '>:(': "😡"
+        ':idk:': "¯\\_(ツ)_/¯"
+        ':angry:': "(╯°□°)╯︵ ┻━┻"
+        ':happy:': "＼(＾O＾)／"
+        #...
+
+    formatting:
+      enable: true
+
+      list:
+        ping:
+          enable: true
+          trigger: "%ping%"
+
+          bad:
+            color: "#ff4e4e"
+            count: 200
+          medium:
+            color: "#fce303"
+            count: 100
+          good:
+            color: "#4eff52"
+
+        cords:
+          enable: true
+          trigger: "%cords%"
+
+        stats:
+          enable: true
+          trigger: "%stats%"
+
+        url:
+          enable: true
+          hover:
+            enable: true
+          trigger: ((https?|ftp|gopher|telnet|file):((//)|(\\))+[\w:#@%/;$()~_?+-=\\.&]*)
+          format: "&&1<message>"
+
+        item:
+          enable: true
+          trigger: "%item%"
+          format: "&&1[<message>]"
+
+        mention:
+          enable: true
+          trigger: "@"
+          format: "&&1@<message>"
+
+        markdown-||:
+          enable: true
+          trigger: "||"
+          symbol: "&&1█"
+
+        markdown-**:
+          enable: true
+          trigger: "**"
+
+        markdown-##:
+          enable: true
+          trigger: "##"
+
+        markdown-__:
+          enable: true
+          trigger: "__"
+
+        markdown-??:
+          enable: true
+          trigger: "??"
+
+        markdown-~~:
+          enable: true
+          trigger: "~~"
+
+    anvil:
+      enable: true
+      features: [swear-protection, patterns, formatting]
+    book:
+      enable: true
+      features: [swear-protection, patterns, formatting]
+    sign:
+      enable: true
+      features: [swear-protection, patterns, formatting]
+
+    chat:
+      enable: true
+
+      list:
+        local:
+          enable: true
+          priority: 0
+          features: [swear-protection, patterns, formatting]
+          worlds: []
+          format: "<player_name_display>&&2: <message>"
+
+          range: 100
+
+          no-recipients:
+            enable: true
+
+          prefix:
+            cleared: true
+            trigger: ""
+
+          set-cancelled: true
+
+        global:
+          enable: true
+          priority: 5
+          features: [swear-protection, patterns, formatting]
+          worlds: []
+          format: "<player_name_display>&&2 » <message>"
+
+          range: 0
+
+          no-recipients:
+            enable: true
+
+          prefix:
+            cleared: true
+            trigger: "!"
+
+          set-cancelled: false
+        #...
+
+  chat-bubble:
+    enable: true
+    color: "#999999"
     max-per-line: 35
     read-speed: 800
 
-  local:
-    enable: true
-    range: 100
-
-    no-recipients:
-      enable: true
-
-    set-cancelled: true
-
-  global:
-    enable: true
-    prefix:
-      cleared: true
-
-    set-cancelled: false
-
-  # list of blacklisted words can be found in swears.yml
-  swear-protection:
-    enable: false
-
-  patterns:
-    - ":) , ☺"
-    - ":D , ☻"
-    - ":( , ☹"
-    - ":ok: , 🖒"
-    - ":+1: , 🖒"
-    - ":-1: , 🖓"
-    - ":cool: , 😎"
-    - "B) , 😎"
-    - ":clown: , 🤡"
-    - "<3 , ❤"
-    - "xd , 😆"
-    - "%) , 😵"
-    - "=D , 😃"
-    - ">:( , 😡"
-    - ":idk: , ¯\\_(ツ)_/¯"
-    - ":angry: , (╯°□°)╯︵ ┻━┻"
-    - ":happy: , ＼(＾O＾)／"
-
-  anvil-formatting:
-    # permission: flectonechat.chat.anvil-formatting
-    enable: true
-  book-formatting:
-    # permission: flectonechat.chat.book-formatting
-    enable: true
-  sign-formatting:
-    # permission: flectonechat.chat.sign-formatting
-    enable: true
-
-  cords:
-    # permission: flectonechat.chat.cords
-    enable: true
-
-  stats:
-    # permission: flectonechat.chat.stats
-    enable: true
-
-  url:
-    # permission: flectonechat.chat.url
-    enable: true
-
-  tooltip:
-    # permission: flectonechat.chat.tooltip
-    enable: true
-
-  ping:
-    # permission: flectonechat.chat.ping
-    enable: true
-
-  markdown-||:
-    # hide
-    # permission: flectonechat.chat.markdown-||
-    enable: true
-
-  markdown-**:
-    # bold
-    # permission: flectonechat.chat.markdown-**
-    enable: true
-
-  markdown-##:
-    # italic
-    # permission: flectonechat.chat.markdown-##
-    enable: true
-
-  markdown-__:
-    # underline
-    # permission: flectonechat.chat.markdown-__
-    enable: true
-
-  markdown-??:
-    # obfuscate
-    # permission: flectonechat.chat.markdown-??
-    enable: true
-
-  markdown-~~:
-    # strikethrough
-    # permission: flectonechat.chat.markdown-~~
-    enable: true
-
-death:
-  message:
-    enable: true
-
-    # if disabled, custom death messages will not be shown
-    visible: true
-
-    # if enabled, then death from any mob will be located on the "death.mob.default",
-    # otherwise it will be necessary to register for each separately
-    mob-default: true
-
-advancement:
-  message:
-    enable: true
-
-    task:
-      visible: true
-    goal:
-      visible: true
-    challenge:
-      visible: true
-
-
-player:
-
-  name:
-    # group_name: "text"
-    # admin: "&c<player>"
-    default: "<GRADIENT:2C08BA><player></GRADIENT:028A97>"
-
-    display: "<world_prefix><vault_prefix><stream_prefix><name><afk_suffix><vault_suffix>"
-    tab: "<world_prefix><vault_prefix><stream_prefix><name><afk_suffix><vault_suffix>"
-
-
-  world:
-    # type or name
-    # if mode=name the language file should contain lines with names of the worlds
-    mode: "type"
-    prefix:
-      enable: true
-
-  name-tag:
-    enable: true
-
-  name-visible: false
-
-  item:
-    sign:
-      enable: true
-
-  join:
-    message:
-      enable: true
-
-  quit:
-    message:
-      enable: true
-
-  door-knocking:
-    enable: true
-  glass-knocking:
-    enable: true
-
-command:
-  afk:
-    enable: true
-    aliases: []
-    timeout:
-      enable: true
-      time: 3000
-
-  kick:
-    aliases: []
-    enable: true
-    announce: true
-
-  warn:
-    enable: true
-    aliases: []
-    announce: true
-
-    # number: "command"
-    # These actions will be executed when the number of warnings EQUALS the number config
-    # There can be as many as you want
-    action:
-      3: "ban <player> 7d"
-      5: "ban <player>"
-
-    # Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  warnlist:
-    enable: true
-    aliases: []
-    per-page: 4
-
-  unwarn:
-    enable: true
-    aliases: []
-
-  spy:
-    enable: true
-    aliases: []
-
-  ball:
-    enable: true
-    aliases: []
-    global: true
-
-  banlist:
-    enable: true
-    aliases: []
-    per-page: 4
-
-  broadcast:
-    enable: true
-    aliases: [ bc ]
-
-  switch-chat:
-    enable: true
-    aliases: []
-
-  chat-settings:
-    enable: true
-    aliases: []
-
-  chatcolor:
-    enable: true
-    aliases: []
-
-  clear-chat:
-    enable: true
-    aliases: []
-
-  firstonline:
-    enable: true
-    aliases: [ fonline ]
-
-    # Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  flectonechat:
-    enable: true
-    aliases: [ fc ]
-
-  helper:
-    enable: true
-    aliases: []
-    see:
-      permission: "flectonechat.helpersee"
-
-  ignore:
-    enable: true
-    aliases: []
-
-    # Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  ignorelist:
-    enable: true
-    aliases: []
-    per-page: 4
-
-  lastonline:
-    enable: true
-    aliases: [ lonline ]
-
-  mail:
-    enable: true
-    aliases: []
-
-  mail-clear:
-    enable: true
-    aliases: []
-
-  maintenance:
-    enable: true
-    aliases: [ technical-works ]
-    permission: "flectonechat.maintenance"
-    turn-on: false
-
-  mark:
-    enable: true
-    aliases: [ f ]
-    item: "WOODEN_SWORD"
-    range: 30
-
-  me:
-    enable: true
-    aliases: []
-    global: true
-
-  msg:
-    enable: true
-    aliases: [ w, tell, message, send, m ]
-
-    # (only for visual) Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  mute:
-    enable: true
-    aliases: []
-    announce: true
-
-    # (only for visual) Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  mutelist:
-    enable: true
-    aliases: []
-    per-page: 4
-
-  ping:
-    enable: true
-    aliases: [ p ]
-    bad:
-      color: "#ff4e4e"
-      count: 200
-    medium:
-      color: "#fce303"
-      count: 100
-    good:
-      color: "#4eff52"
-
-  poll:
-    enable: true
-    aliases: []
-    time: 50
-    permission: "flectonechat.pollcreate"
-
-  reply:
-    enable: true
-    aliases: [ r ]
-
-  stream:
-    enable: true
-    aliases: []
-    global: true
-
-    offline-prefix:
-      enable: true
-
-  tempban:
-    enable: true
-    aliases: [ ban, tban ]
-    announce: true
-
-    # (only for visual) Command tab-complete mode: offline/online
-    tab-complete-mode: "offline"
-
-  tic-tac-toe:
-    enable: true
-    aliases: [ ttt ]
-
-  try:
-    enable: true
-    aliases: []
-    global: true
-
-  try-cube:
-    enable: true
-    aliases: [ dice ]
-    global: true
-    max-amount: 9
-
-  unban:
-    enable: true
-    aliases: [ pardon ]
-
-  unmute:
-    enable: true
-    aliases: []
-
-  spit:
-    enable: true
-    aliases: []
-
-    # allows to use a command if you hold this item in your hand and press RMB
-    item: "WHITE_DYE"
-
-cool-down:
-  enable: false
-
-  spit:
-    enable: false
-    time: 5
-    permission: "flectonechat.spit.cooldown.immune"
-  kick:
-    enable: false
-    time: 5
-    permission: "flectonechat.kick.cooldown.immune"
-  warn:
-    enable: false
-    time: 5
-    permission: "flectonechat.warn.cooldown.immune"
-  unwarn:
-    enable: false
-    time: 5
-    permission: "flectonechat.unwarn.cooldown.immune"
-  warnlist:
-    enable: false
-    time: 5
-    permission: "flectonechat.warnlist.cooldown.immune"
-  spy:
-    enable: false
-    time: 5
-    permission: "flectonechat.spy.cooldown.immune"
-  poll:
-    enable: false
-    time: 5
-    permission: "flectonechat.poll.cooldown.immune"
-  broadcast:
-    enable: false
-    time: 5
-    permission: "flectonechat.broadcast.cooldown.immune"
-  unban:
-    enable: false
-    permission: "flectonechat.ban.cooldown.immune"
-  tempban:
-    enable: false
-    time: 5
-    permission: "flectonechat.ban.cooldown.immune"
-  clear-chat:
-    enable: true
-    time: 5
-    permission: "flectonechat.clear-chat.cooldown.immune"
-  switch-chat:
-    enable: true
-    time: 5
-    permission: "flectonechat.switch-chat.cooldown.immune"
-  chat-settings:
-    enable: true
-    time: 5
-    permission: "flectonechat.chat-settings.cooldown.immune"
-  localchat:
-    enable: true
-    time: 5
-    permission: "flectonechat.localchat.cooldown.immune"
-  globalchat:
-    enable: true
-    time: 5
-    permission: "flectonechat.globalchat.cooldown.immune"
-  chatcolor:
-    enable: false
-    time: 5
-    permission: "flectonechat.chatcolor.cooldown.immune"
-  flectonechat:
-    enable: false
-    time: 5
-    permission: "flectonechat.flectonechat.cooldown.immune"
-  ignore:
-    enable: false
-    time: 5
-    permission: "flectonechat.ignore.cooldown.immune"
-  ignorelist:
-    enable: false
-    time: 5
-    permission: "flectonechat.ignorelist.cooldown.immune"
-  mail:
-    enable: true
-    time: 5
-    permission: "flectonechat.mail.cooldown.immune"
-  helper:
-    enable: true
-    time: 5
-    permission: "flectonechat.helper.cooldown.immune"
-  mark:
-    enable: false
-    time: 5
-    permission: "flectonechat.mark.cooldown.immune"
-  me:
-    enable: true
-    time: 5
-    permission: "flectonechat.me.cooldown.immune"
-  msg:
-    enable: false
-    time: 5
-    permission: "flectonechat.msg.cooldown.immune"
-  ping:
-    enable: false
-    time: 5
-    permission: "flectonechat.ping.cooldown.immune"
-  reply:
-    enable: false
-    time: 5
-    permission: "flectonechat.reply.cooldown.immune"
-  mail-clear:
-    enable: false
-    time: 5
-    permission: "flectonechat.mail-clear.cooldown.immune"
-  stream:
-    enable: false
-    time: 5
-    permission: "flectonechat.stream.cooldown.immune"
-  try:
-    enable: true
-    time: 5
-    permission: "flectonechat.try.cooldown.immune"
-  try-cube:
-    enable: true
-    time: 5
-    permission: "flectonechat.try-cube.cooldown.immune"
-  afk:
-    enable: false
-    time: 5
-    permission: "flectonechat.afk.cooldown.immune"
-  mute:
-    enable: false
-    time: 5
-    permission: "flectonechat.mute.cooldown.immune"
-  unmute:
-    enable: false
-    time: 5
-    permission: "flectonechat.mute.cooldown.immune"
-  maintenance:
-    enable: false
-    time: 5
-    permission: "flectonechat.maintenance.cooldown.immune"
-  ball:
-    enable: false
-    time: 5
-    permission: "flectonechat.ball.cooldown.immune"
-  tic-tac-toe:
-    enable: false
-    time: 5
-    permission: "flectonechat.tic-tac-toe.cooldown.immune"
-  banlist:
-    enable: false
-    time: 5
-    permission: "flectonechat.banlist.cooldown.immune"
-  mutelist:
-    enable: false
-    time: 5
-    permission: "flectonechat.mutelist.cooldown.immune"
-
-# Sound type format
-# SOUND_NAME:VOLUME:PITCH
-sound:
-
-# You can set different sounds for vault groups
-#
-#  admin:
-#    try-cube: "BLOCK_NOTE_BLOCK_BELL:1:1"
-#  helper:
-#    try-cube: "ENTITY_LLAMA_SPIT:0.3:1"
-#
-# In this case you don't need to use "enable" and "type",
-# the most important thing is that this string is not empty
-
-  spit:
-    enable: true
-    type: "ENTITY_LLAMA_SPIT:0.3:1"
-  glass-knocking:
-    enable: true
-    type: "BLOCK_GLASS_PLACE:1:1"
-  door-knocking:
-    enable: true
-    type: "BLOCK_WOOD_PLACE:1:1"
   auto-message:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  swear:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  kick:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  warn:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  unwarn:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  warnlist:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  spy:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  poll:
     enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  broadcast:
+    # if set to true, then the messages will be random
+    random: false
+
+    period: 600
+
+  color:
     enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  unban:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  tempban:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  clear-chat:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  switch-chat:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  chat-settings:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  localchat:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  globalchat:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  chatping:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_HARP:1:1"
-  join:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  quit:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  chatcolor:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  flectonechat:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  ignore:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  ignorelist:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  mail:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  helper:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  mark:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  me:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  msg:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  ping:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  reply:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  mail-clear:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  stream:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  try:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  try-cube:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  afk:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  mute:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  unmute:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  maintenance:
-    enable: true
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  ball:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
-  tic-tac-toe:
-    enable: false
-    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+
+    list:
+      "&&1": "#1abaf0"
+      "&&2": "#77d7f7"
+      #...

@@ -1,0 +1,136 @@
+# Sound type format
+# SOUND_NAME:VOLUME:PITCH
+
+default:
+  spit:
+    enable: true
+    type: "ENTITY_LLAMA_SPIT:0.3:1"
+
+  knocking_glass:
+    enable: true
+    type: "BLOCK_GLASS_PLACE:1:1"
+
+  knocking_door:
+    enable: true
+    type: "BLOCK_WOOD_PLACE:1:1"
+
+  auto-message:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  swear:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  kick:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  warn:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  unwarn:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  warnlist:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  spy:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  poll:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  broadcast:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  unban:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  tempban:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  clear-chat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  switch-chat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  chat-settings:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  localchat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  globalchat:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  chatping:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_HARP:1:1"
+  join:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  quit:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  chatcolor:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  flectonechat:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  ignore:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  ignorelist:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  mail:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  helper:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  mark:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  me:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  msg:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  ping:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  reply:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  mail-clear:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  stream:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  try:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  try-cube:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  afk:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  mute:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  unmute:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  maintenance:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  ball:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+  tic-tac-toe:
+    enable: false
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"

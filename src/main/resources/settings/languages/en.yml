@@ -1,0 +1,490 @@
+default:
+  server:
+    brand:
+      message:
+        - "&bFlectoneChat"
+        - "&fFlectoneChat"
+
+    tab:
+      header:
+        message:
+          - " "
+          - "&&1❤"
+          - " "
+          - "<next>"
+          - " "
+          - "&&2❤"
+          - " "
+      footer:
+        message:
+          - " "
+          - "&&1FlectoneChat"
+          - " "
+          - "<next>"
+          - " "
+          - "&&2FlectoneChat"
+          - " "
+
+    status:
+      motd:
+        message:
+          - "&&1This server uses FlectoneChat ❤"
+          - "&&1Welcome to our server!"
+          - "&&1Join us and enjoy a unique game experience!"
+          - "&&1Join our Discord server for communication and updates: https://discord.flectone.net"
+          - "&&1We have a friendly community - be polite and respect each other!"
+          - "&&1Enjoy the game! If you have any questions, feel free to contact the administration"
+
+      player-count:
+        server-full: "&&1The server is full"
+
+  server-message:
+    death:
+      entity:
+        hover:
+          message: "&&2<name> \n&&1Type: &&2<type> \n&&1<uuid>"
+
+      due-to: "&&1due to &&2<killer>"
+      by-item: "&&1using &&2[<item>]"
+
+      natural:
+        contact: "&&1🪦 &&2<player> &&1was prickled to death by &&2<block> <due_to>"
+        entity_sweep_attack: "&&1🪦 &&2<player> &&1was swept off their feet <due_to>"
+        projectile: "&&1🪦 &&2<player> &&1was shot by a &&2<projectile> <due_to>"
+        suffocation: "&&1🪦 &&2<player> &&1suffocated in a wall <due_to>"
+        fall: "&&1🪦 &&2<player> &&1hit the ground too hard <due_to>"
+        fire: "&&1🪦 &&2<player> &&1went up in flames <due_to>"
+        fire_tick: "&&1🪦 &&2<player> &&1burned to death <due_to>"
+        melting: "&&1🪦 &&2<player> &&1melted <due_to>"
+        lava: "&&1🪦 &&2<player> &&1tried to swim in lava <due_to>"
+        drowning: "&&1🪦 &&2<player> &&1drowned <due_to>"
+        block_explosion: "&&1🪦 &&2<player> &&1was blown up by &&2<block> <due_to>"
+        entity_explosion: "&&1🪦 &&2<player> &&1was blown up by &&2<killer> <due_to>"
+        void: "&&1🪦 &&2<player> &&1fell out of the world <due_to>"
+        lightning: "&&1🪦 &&2<player> &&1was struck by lightning <due_to>"
+        suicide: "&&1🪦 &&2<player> &&1took their own life <due_to>"
+        starvation: "&&1🪦 &&2<player> &&1starved to death <due_to>"
+        poison: "&&1🪦 &&2<player> &&1died of poison <due_to>"
+        magic: "&&1🪦 &&2<player> &&1was hit by &&2<killer> <due_to>"
+        wither: "&&1🪦 &&2<player> &&1withered away <due_to>"
+        falling_block: "&&1🪦 &&2<player> &&1was squashed by a &&2<killer> <due_to>"
+        thorns: "&&1🪦 &&2<player> &&1was killed by thorns <due_to>"
+        dragon_breath: "&&1🪦 &&2<player> &&1was roasted in dragon's breath <due_to>"
+        custom: "&&1🪦 &&2<player> &&1died of unknown causes <due_to>"
+        fly_into_wall: "&&1🪦 &&2<player> &&1experienced kinetic energy <due_to>"
+        hot_floor: "&&1🪦 &&2<player> &&1discovered the floor was lava <due_to>"
+        cramming: "&&1🪦 &&2<player> &&1was squished too much <due_to>"
+        dryout: "&&1🪦 &&2<player> &&1died from dehydration <due_to>"
+        freeze: "&&1🪦 &&2<player> &&1froze to death <due_to>"
+        sonic_boom: "&&1🪦 &&2<player> &&1was obliterated by a sonically-charged shriek <due_to>"
+        kill: "&&1🪦 &&2<player> &&1was killed <due_to>"
+      mob:
+        default: "&&1🪦 &&2<player> &&1was slain by &&2<killer> <due_to>"
+        player: "&&1🪦 &&2<player> &&1was killed by player &&2<killer> <by_item>"
+        zombie: "&&1🪦 &&2<player> &&1was eaten by a &&2<killer> <due_to>"
+
+    advancement:
+      task:
+        name: "#4eff52🌠 &&2<player> &&1has made the task #4eff52[<advancement>]"
+        hover: "#4eff52<name> \n<description>"
+      goal:
+        name: "#f2d40f🌠 &&2<player> &&1reached the goal #f2d40f[<advancement>]"
+        hover: "#f2d40f<name> \n<description>"
+      challenge:
+        name: "#834eff🌠 &&2<player> &&1has made the challenge #834eff[<advancement>]"
+        hover: "#834eff<name> \n<description>"
+
+    join:
+      message: "#4eff52→ &&2<player>"
+
+      first-time:
+        message: "#4eff52→ &&2<player> &&1has logged on to the server for the first time, let's welcome!"
+
+    quit:
+      message: "#ff4e4e← &&2<player>"
+
+      first-time:
+        message: "#ff4e4e←  &&1<player> &&1left the server for the first time"
+
+  player:
+    hover:
+      message: "&&1Click to write to &&2<player>"
+
+  player-message:
+    formatting:
+      list:
+        cords:
+          message: "&&1World:&&2<world> &&1Biome:&&2<biome> &&1X:&&2<block_x> &&1Y:&&2<block_y> &&1Z:&&2<block_z>"
+        stats:
+          message: "#ff4e4eHP: <hp>♥ #3de0d8Armor: <armor>🛡 #e33059Damage: <attack>🗡 #4eff52Lvl: <exp>⏺ #f0a01fFood: <food>🍖"
+        url:
+          hover:
+            message: "&&1Click to open url"
+    chat:
+      not-found: "#ff4e4e⁉ Chat is disabled on this server"
+      no-recipients: "#ff4e4e⁉ Nobody heard you"
+
+
+  auto-message:
+    message:
+      - "&&1-------------- "
+      - "&&2This server uses FlectoneChat "
+      - "&&1-------------- "
+      - "<next>"
+      - "&&1❝ "
+      - "&&1Join our discord &&2https://discord.flectone.net "
+      - "&&1❠ "
+
+  commands:
+    null-player: "#ff4e4e⁉ This player does not exist"
+    console: "#ff4e4e⁉ This command is not possible in console"
+    cooldown: "#ff4e4e⁉ You will be able to use <alias> in <time>."
+
+    muted: "#ff4e4e☠ You are in mute, <time> left \nReason: <reason>"
+
+    disabled: "#ff4e4e⁉ This command disabled on server"
+    you-disabled: "#ff4e4e⁉ Display of this command is disabled, check /chatsettings"
+    he-disabled: "#ff4e4e⁉ He disabled this option via /chatsettings"
+
+    you-ignore: "#ff4e4e⁉ You can't write to him because you ignore him"
+    he-ignore: "#ff4e4e⁉ You can't write to him because he ignore you"
+
+    wrong-number: "#ff4e4e⁉ Wrong number entered"
+    long-number: "#ff4e4e⁉ The number you entered is too large"
+
+    format:
+      day: "d"
+      hour: "h"
+      minute: "m"
+      second: "s"
+
+    tab-complete:
+      message: "(message)"
+      reason: "(reason)"
+      stream-url: "https://flectone.net"
+
+    afk:
+      suffix: " #f2d40f💤"
+      true-message: "#f2d40f💤 Now you're afk"
+      false-message: "#f2d40f💤 Now you're not afk"
+
+    ball:
+      usage: "&&1⚑ Usage: &&2/<command> (message)"
+      message: "#bb63f2❓ <player> asked: <message> \n#9340c7🔮 Ball answered: <answer>"
+      answers:
+        - "Undeniably"
+        - "No doubt about it."
+        - "Definitely yes."
+        - "You can be sure of it"
+        - "Probably most likely"
+        - "Good prospects"
+        - "Yes"
+        - "Not sure yet, try again."
+        - "Ask later."
+        - "It's better not to tell."
+        - "You can't predict now."
+        - "Concentrate and ask again"
+        - "Don't even think about it"
+        - "No"
+        - "Prospects are not good."
+        - "Very doubtful."
+        - "Based"
+
+    ban:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+      default-reason: "You have been banned from this server"
+
+      server-message: "#ff4e4e\n⏵ Player <player> has been banned for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+      player-message: "#ff4e4e☠ You are banned, <time> left \nReason: <reason>"
+
+      permanent-server-message: "#ff4e4e\n⏵ Player <player> has been banned permanently \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+      permanent-player-message: "#ff4e4e☠ You are banned permanently \nReason: <reason>"
+
+      login-message: "#ff4e4e☠ You are banned, re-login to get the reason and time"
+
+    banlist:
+      empty: "#4eff52☺ No banned players found"
+      page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+      title: "&&2════ Banned: <count> ════"
+      player-ban: "<unban> &&1<player> - <reason> - <time> left - <moderator> moderator"
+      player-ban-permanently: "<unban> &&1<player> - <reason> - permanently - <moderator> moderator"
+      page-line: "<prev-page> &&1Page: <page>/<last-page> <next-page>"
+
+      prev-page: "&&2←"
+      next-page: "&&2→"
+
+      unban-button: "&c☒"
+      unban-hover: "&&1Click to unban &&2<player>"
+
+    me:
+      usage: "&&1⚑ Usage: &&2/<command> (message)"
+      message: "&&1✎ <player> <message>"
+
+    broadcast:
+      usage: "&&1⚑ Usage: &&2/<command> (message)"
+      message: "#fce303🕫 Message for all from <player> \n<message>"
+
+    chatcolor:
+      usage: "&&1⚑ Usage: &&2/<command> (...colors)"
+      message: "#4eff52★ You set <colors>"
+      color: "<color>message "
+      minimum-message: "#ff4e4e⁉ Too few colors needed at least <minimum>"
+
+    chatsettings:
+      usage: "&&1⚑ Usage: &&2/<command>"
+      hover-text: "&&1Click to change &&2<component> &&1display"
+      not-available: "#ff4e4e⁉ Cannot change this setting"
+      message-changed: "&&1⚙ Did you change the settings, save them #4eff52[✔]&&1?"
+
+      format:
+        chat: "&&2<chat>"
+        advancement: "&&2Advancements"
+        death: "&&2Deaths"
+        join: "&&2Joins"
+        quit: "&&2Quits"
+        auto-message: "&&2Auto-message"
+        me: "&&2/me"
+        try: "&&2/try"
+        dice: "&&2/dice"
+        ball: "&&2/ball"
+        kick: "&&2/kick"
+        ban: "&&2/ban"
+        mute: "&&2/mute"
+        warn: "&&2/warn"
+        tell: "&&2/tell"
+        reply: "&&2/reply"
+        mail: "&&2/mail"
+        tic-tac-toe: "&&2/tic-tac-toe"
+
+      color:
+        false: "#ff4e4e[❌] "
+        true: "#4eff52[✔] "
+
+      message:
+        - " "
+        - "&&1════ Chat settings ════"
+        - "&&1Chat types: <chat>"
+        - "&&1------------------------"
+        - "&&1Server messages: \n <advancement> \n <death> \n <join> \n <quit> \n <auto-message>"
+        - "&&1------------------------"
+        - "&&1Command alerts: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tic-tac-toe>"
+        - "&&1------------------------"
+        - "&&1Be sure to save your settings with /chatsettings save"
+
+    clearchat:
+      message: "&&1💬 Chat is cleared"
+
+    firstonline:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      message: "&&1⌛ <player> was first on server <time> ago"
+
+    flectonechat:
+      usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
+      wrong-file: "#ff4e4e⁉ Enter the correct file name"
+      message: "&&1★ Plugin successfully reloaded!"
+
+    helper:
+      usage: "&&1⚑ Usage: &&2/<command> (message)"
+      no-helpers: "#ff4e4e⁉ There are no people who can help you"
+      server-message: "&&1👤 <player> needs help ⏩ &&2<message>"
+      player-message: "&&1👤 Request sent, awaiting reply"
+
+    ignore:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      myself: "#ff4e4e⁉ You can't ignore yourself"
+      true-message: "#ff4e4e☹ You ignore <player>"
+      false-message: "#4eff52☺ You unignore <player>"
+
+    ignorelist:
+      usage: "&&1⚑ Usage: &&2/<command>"
+      empty: "#4eff52☺ You don't ignore anyone"
+      page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+
+      title: "&&2════ Ignores: <count> ════"
+      player-ignore: "<unignore> &&1<player>"
+      page-line: "<prev-page> &&1Page: <page>/<last-page> <next-page>"
+
+      prev-page: "&&2←"
+      next-page: "&&2→"
+
+      unignore-button: "&c☒"
+      unignore-hover: "&&1Click to unignore &&2<player>"
+
+    kick:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (reason)"
+      default-reason: "Kicked by an operator"
+      server-message: "#ff4e4e\n⏵ Player <player> was kicked \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+      player-message: "#ff4e4e☠ You were kicked by <moderator> \nReason: <reason>"
+
+    lastonline:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      currently: "&&1⌛ <player> currently on server"
+      message: "&&1⌛ <player> was last on server <time> ago"
+
+    mail:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
+      send: "&&1✉ [Offline mail] to <player> ⏩ &&2<message>"
+      get: "&&1✉ [Offline mail] from <player> ⏩ &&2<message>"
+
+    clearmail:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (number)"
+      empty: "#ff4e4e⁉ You have no mail for this player"
+      message: "&&1✉ [Offline mail] cleared for <player> ⏩ &&2<message>"
+
+    maintenance:
+      usage: "&&1⚑ Usage: &&2/<command> on/off"
+
+      already: "#ff4e4e⁉ You have already switched on maintenance"
+      not: "#ff4e4e⁉ You have not switched on maintenance"
+
+      turned-on: "&&1★ You have enabled maintenance on the server"
+      turned-off: "&&1★ You have disabled maintenance on the server"
+
+      motd:
+        message: "&cThe server is under maintenance"
+
+      kicked-message: "&&1★ The server is under maintenance"
+
+    mark:
+      usage: "&&1⚑ Usage: &&2/<command> (color)"
+
+    tell:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
+      send: "&&1✉ You → <player> » &&2<message>"
+      get: "&&1✉ <player> → You » &&2<message>"
+      myself: "&&1✉ [Note] &&2<message>"
+
+    mute:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+      default-reason: "You were muted on this server"
+      server-message: "#ff4e4e\n⏵ Player <player> was muted for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+
+    mutelist:
+      empty: "#4eff52☺ No muted players found"
+      page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+
+      title: "&&2════ Muted: <count> ════"
+      player-mute: "<unmute> &&1<player> - <reason> - <time> left - <moderator> moderator"
+      page-line: "<prev-page> &&1Page: <page>/<last-page> <next-page>"
+
+      prev-page: "&&2←"
+      next-page: "&&2→"
+
+      unmute-button: "&c☒"
+      unmute-hover: "&&1Click to unmute &&2<player>"
+
+    ping:
+      myself-message: "&&1🌍 Your ping is <ping>"
+      message: "&&1🌍 <player> ping is <ping>"
+
+    poll:
+      usage: "&&1⚑ Usage: &&2/<command> create/vote"
+      message: "#fce303🗐 There's a poll #<id> going on right now \n❓ <message>"
+
+      over-message: "#fce303🗐 Poll #<id> is over \n❓ <message> \nVotes: <agree>-<agree_count> <disagree>-<disagree_count>"
+
+      agree-message: "#4eff52👍 You voted with agree in poll #<id>. There are <count> of you"
+      disagree-message: "#ff4e4e🖓 You voted with disagree in poll #<id>. There are <count> of you"
+
+      already-message: "#ff4e4e⁉ You've already voted in this poll"
+      expired-message: "#ff4e4e⁉ This poll has already ended"
+
+      format:
+        agree: "#4eff52[✔]"
+        disagree: "#ff4e4e[❌]"
+
+    reply:
+      no-receiver: "#ff4e4e⁉ No one to answer"
+
+    spy:
+      message: "#ff9729[👁] &&2<player> &&1used <action> ⏵ &&2<message>"
+      true-message: "#ff9729[👁] You #4eff52turned on #ff9729spy mode"
+      false-message: "#ff9729[👁] You #ff4e4eturned off #ff9729spy mode"
+
+    stream:
+      usage: "&&1⚑ Usage: &&2/<command> start/end"
+      online-prefix: "#ff4e4e⏻&f "
+      offline-prefix: "#666666⏻&f "
+
+      end:
+        not: "#ff4e4e⁉ You don't stream"
+        message: "&&1★ Thanks for streaming on our server!"
+      start:
+        need-url: "#ff4e4e⁉ You must enter a url(s)"
+        already: "#ff4e4e⁉ You are already streaming"
+        message:
+          - "#ff4e4e🔔 &&1Announcement #ff4e4e🔔"
+          - "&&2• • • • • • • • •"
+          - "&&2Player <player> started stream"
+          - "&&2• • • • • • • • •"
+          - "&&1Url(s): \n<links>"
+
+    tictactoe:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      send-message: "&&1☐ An offer to play was sent to <player>"
+      get-message: "&&1☐ Received an invite to play tic tac toe with <player>, accept? [+]"
+      hover-message: "&&1Click to accept"
+      game:
+        ended: "#ff4e4e⁉ This game is over"
+        wrong: "#ff4e4e⁉ Such a move is impossible"
+        move: "&&1<player>'s move\n-----"
+        win: "#4eff52🧍 <player> won this game\n-----"
+        draw: "#4eff52👬 The game ended in a draw\n-----"
+      format:
+        win: "#4eff52"
+        empty: "&&2☐"
+        first: "&&1☑"
+        second: "&&1☒"
+
+    try:
+      usage: "&&1⚑ Usage: &&2/<command> (message)"
+      true-message: "#4eff52☺ <player> <message> <percent>%"
+      false-message: "#ff4e4e☹ <player> <message> <percent>%"
+
+    dice:
+      usage: "&&1⚑ Usage: &&2/<command> (number)"
+      only-number: "#ff4e4e⁉ You must enter a number"
+
+      true-message: "#4eff52☺ <player> successfully rolled <cube>"
+      false-message: "#ff4e4e☹ <player> failed to roll <cube>"
+      format:
+        1: "⚀"
+        2: "⚁"
+        3: "⚂"
+        4: "⚃"
+        5: "⚄"
+        6: "⚅"
+
+    unban:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      not-banned: "#ff4e4e⁉ This player is not banned"
+      message: "#ff4e4e☻ Player <player> unbanned"
+
+    unmute:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      not-muted: "#ff4e4e⁉ This player does not muted"
+      message: "#ff4e4e☻ Player <player> unmuted"
+
+    warn:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (time) (reason)"
+      default-reason: "You have been warned"
+      server-message: "#ff4e4e\n⏵ Player <player> received warning №<count> <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+
+    unwarn:
+      usage: "&&1⚑ Usage: &&2/<command> (player) (index)"
+      not-warned: "#ff4e4e⁉ The player has no warnings"
+      message: "#ff4e4e☻ <player> player's warning removed"
+
+    warnlist:
+      usage: "&&1⚑ Usage: &&2/<command>"
+      empty: "#4eff52☺ No players with warnings"
+      page-not-exist: "#ff4e4e⁉ This page doesn't exist"
+      title: "&&2════ Warns: <count> ════"
+      player-warn: "<unwarn> &&1<player> - <reason> - <time> left - <moderator> moderator"
+      page-line: "<prev-page> &&1Page: <page>/<last-page> <next-page>"
+
+      prev-page: "&&2←"
+      next-page: "&&2→"
+
+      unwarn-button: "&c☒"
+      unwarn-hover: "&&1Click to unwarn &&2<player>"

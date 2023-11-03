@@ -1,0 +1,100 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java'
+}
+
+group = 'net'
+version = '4.0.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+    maven {
+        name = "jitpack.io"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "loohp-repo"
+        url = "https://repo.loohpjames.com/repository"
+    }
+    maven {
+        name = "m2-dv8tion"
+        url = "https://m2.dv8tion.net/releases"
+    }
+    maven {
+        name = "Scarsz-Nexus"
+        url = "https://nexus.scarsz.me/content/groups/public/"
+    }
+
+    maven {
+        url = 'https://maven.maxhenkel.de/repository/public'
+    }
+
+    maven {
+        name = "iridiumdevelopment"
+        url = "https://nexus.iridiumdevelopment.net/repository/maven-releases/"
+    }
+
+}
+
+dependencies {
+    implementation "com.iridium:IridiumColorAPI:1.0.6"
+    implementation 'org.jetbrains:annotations:24.0.0'
+
+    compileOnly "com.loohp:InteractiveChat:4.2.7.2"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
+    compileOnly "me.clip:placeholderapi:2.11.3"
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:2.4.11"
+    compileOnly "net.luckperms:api:5.4"
+    compileOnly "com.github.LeonMangler:SuperVanish:6.2.17"
+    compileOnly "com.discordsrv:discordsrv:1.26.2"
+    compileOnly "net.md-5:bungeecord-api:1.16-R0.3"
+
+    compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+def targetJavaVersion = 16
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+shadowJar {
+    dependencies {
+        exclude(dependency('org.jetbrains:annotations:24.0.0'))
+        exclude(dependency('org.jetbrains:annotations:24.0.0'))
+    }
+}

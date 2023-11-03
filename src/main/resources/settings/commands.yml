@@ -1,0 +1,233 @@
+afk:
+  enable: true
+  aliases: []
+
+ball:
+  enable: true
+  aliases: []
+
+  features: [swear-protection, patterns, formatting]
+  range: 0
+
+ban:
+  enable: true
+  aliases: [ tempban, tban ]
+
+  range: 0
+
+  load-minecraft-banlist: false
+
+banlist:
+  enable: true
+  aliases: []
+
+  per-page: 4
+
+me:
+  enable: true
+  aliases: []
+
+  features: [swear-protection, patterns, formatting]
+  range: 0
+
+broadcast:
+  enable: true
+  aliases: [ bc ]
+
+  features: [patterns, formatting]
+  range: 0
+
+chatcolor:
+  enable: true
+  aliases: []
+
+  minimum: 2
+
+chatsettings:
+  enable: true
+  aliases: []
+
+  change-list:
+    - local
+    - global
+    - advancement
+    - death
+    - join
+    - quit
+    - auto-message
+    - me
+    - try
+    - dice
+    - ball
+    - ban
+    - mute
+    - warn
+    - tell
+    - reply
+    - mail
+    - tic-tac-toe
+    - kick
+
+clearchat:
+  enable: true
+  aliases: []
+
+firstonline:
+  enable: true
+  aliases: []
+
+flectonechat:
+  enable: true
+  aliases: [ fc ]
+
+helper:
+  enable: true
+  aliases: []
+
+ignore:
+  enable: true
+  aliases: []
+
+ignorelist:
+  enable: true
+  aliases: []
+
+  per-page: 4
+
+kick:
+  enable: true
+  aliases: []
+
+  range: 0
+
+lastonline:
+  enable: true
+  aliases: []
+
+mail:
+  enable: true
+  aliases: []
+
+clearmail:
+  enable: true
+  aliases: []
+
+maintenance:
+  enable: true
+  aliases: []
+  turned-on: false
+
+mark:
+  enable: true
+  aliases: []
+  range: 30
+
+tell:
+  enable: true
+  aliases: [ w, msg, message, send, m ]
+  features: [ swear-protection, patterns, formatting ]
+
+
+mute:
+  enable: true
+  aliases: [ tempmute, tmute]
+
+  range: 0
+
+mutelist:
+  enable: true
+  aliases: []
+
+  per-page: 4
+
+ping:
+  enable: true
+  aliases: []
+
+poll:
+  enable: true
+  aliases: []
+
+  time: 600
+  last-id: 0
+
+  range: 0
+
+reply:
+  enable: true
+  aliases: [ r ]
+
+spit:
+  enable: true
+  aliases: []
+
+spy:
+  enable: true
+  aliases: []
+
+  list:
+    - msg
+    - local
+    - anvil
+    - book
+    - sign
+
+stream:
+  enable: true
+  aliases: []
+
+tictactoe:
+  enable: true
+  aliases: [ ttt ]
+
+try:
+  enable: true
+  aliases: []
+  features: [ swear-protection, patterns, formatting ]
+
+  range: 0
+
+  min-%: 0
+  max-%: 100
+
+  good-%: 50
+
+dice:
+  enable: true
+  aliases: []
+  features: [ swear-protection, patterns, formatting ]
+
+  range: 0
+
+  min: 1
+  max: 6
+
+  win-coefficient: 3.0
+
+unban:
+  enable: true
+  aliases: [ pardon ]
+
+unmute:
+  enable: true
+  aliases: []
+
+warn:
+  enable: true
+  aliases: []
+
+  range: 0
+
+  action:
+    3: "ban <player> 7d"
+    5: "ban <player>"
+
+unwarn:
+  enable: true
+  aliases: []
+
+warnlist:
+  enable: true
+  aliases: []
+
+  per-page: 4

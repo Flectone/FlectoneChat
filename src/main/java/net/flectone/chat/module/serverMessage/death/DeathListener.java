@@ -1,0 +1,200 @@
+package net.flectone.chat.module.serverMessage.death;
+
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.module.FListener;
+import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
+import net.flectone.chat.model.player.FPlayer;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Bed;
+import org.bukkit.block.data.type.RespawnAnchor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import static net.flectone.chat.manager.FileManager.config;
+import static net.flectone.chat.manager.FileManager.locale;
+
+public class DeathListener extends FListener {
+
+    private static Player lastInteractPlayer;
+    private static Material lastBlockInteract;
+
+    public DeathListener(FModule module) {
+        super(module);
+        init();
+    }
+
+    @Override
+    public void init() {
+        register();
+    }
+
+    @EventHandler
+    public void onPlayerClickOnBed(@NotNull PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null
+                || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                || IntegrationsModule.isVanished(event.getPlayer())) return;
+
+        Block block = event.getClickedBlock();
+        BlockData blockData = block.getBlockData();
+        World.Environment worldEnvironment = block.getWorld().getEnvironment();
+
+        if ((blockData instanceof Bed && !worldEnvironment.equals(World.Environment.NORMAL))
+                || (blockData instanceof RespawnAnchor && !worldEnvironment.equals(World.Environment.NETHER))) {
+
+            lastInteractPlayer = event.getPlayer();
+            lastBlockInteract = block.getBlockData().getMaterial();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamageEvent(@NotNull EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)
+                || IntegrationsModule.isVanished(player)
+                || player.getHealth() <= event.getFinalDamage()
+                || !(event instanceof EntityDamageByEntityEvent entityDamageByEntityEvent)) return;
+
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        fPlayer.setLastDamager(entityDamageByEntityEvent.getDamager());
+    }
+
+    @EventHandler
+    public void onPlayerDeathEvent(@NotNull PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        EntityDamageEvent lastDamageEvent = player.getLastDamageCause();
+
+        if (hasNoPermission(player)) return;
+        if (IntegrationsModule.isVanished(player) || lastDamageEvent == null) return;
+
+        String configMessage = locale.getVaultString(player, getModule() + getDeathConfigMessage(player, lastDamageEvent));
+        if (configMessage.isEmpty()) return;
+
+        if (!config.getVaultBoolean(player, getModule() + ".enable")) {
+            event.setDeathMessage("");
+            return;
+        }
+
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        PlayerDamager playerDamager = fPlayer.getPlayerDamager();
+        if (playerDamager == null) return;
+
+        if (!playerDamager.isExpired()) playerDamager.setKiller(null);
+
+        switch (lastDamageEvent.getCause()) {
+            case ENTITY_EXPLOSION -> {
+                Entity lastDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setFinalDamager(lastDamager);
+                if (isTNT(lastDamager, playerDamager)) break;
+                isProjectile(lastDamager, playerDamager);
+            }
+            case ENTITY_ATTACK -> {
+                Entity lastEntityAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setFinalDamager(lastEntityAttackDamager);
+                if (lastEntityAttackDamager instanceof Player ) {
+                    ItemStack itemStack = ((Player) lastEntityAttackDamager).getInventory().getItemInMainHand();
+                    if (!itemStack.getType().equals(Material.AIR)) {
+                        playerDamager.setKiller(lastEntityAttackDamager);
+                        playerDamager.setKillerItem(itemStack);
+                    }
+                }
+            }
+            case FALLING_BLOCK -> {
+                Entity lastDamagerBlock = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setFinalDamager(lastDamagerBlock);
+            }
+            case BLOCK_EXPLOSION -> {
+                playerDamager.setFinalDamager(lastBlockInteract);
+                playerDamager.setKiller(lastInteractPlayer);
+            }
+            case CONTACT -> {
+                Block block = ((EntityDamageByBlockEvent) lastDamageEvent).getDamager();
+                if (block == null) break;
+                playerDamager.setFinalDamager(block.getBlockData().getMaterial());
+            }
+            case PROJECTILE -> {
+                Entity projectileEntity = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setFinalDamager(projectileEntity);
+                isProjectile(projectileEntity, playerDamager);
+            }
+            case MAGIC -> {
+                if (!(lastDamageEvent instanceof EntityDamageByEntityEvent)) {
+                    playerDamager.setKiller(null);
+                    break;
+                }
+
+                Entity lastMagicDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setFinalDamager(lastMagicDamager);
+                isProjectile(lastMagicDamager, playerDamager);
+            }
+            case ENTITY_SWEEP_ATTACK, THORNS -> {
+                Entity lastEntitySweepAttackDamager = ((EntityDamageByEntityEvent) lastDamageEvent).getDamager();
+                playerDamager.setKiller(lastEntitySweepAttackDamager);
+            }
+        }
+
+        ((DeathModule) getModule()).sendAll(player, playerDamager, configMessage);
+
+        event.setDeathMessage("");
+        fPlayer.setLastDamager(new PlayerDamager());
+    }
+
+    @NotNull
+    private String getDeathConfigMessage(@NotNull Player player, @NotNull EntityDamageEvent lastDamageEvent) {
+        String message;
+        EntityDamageEvent.DamageCause damageCause = lastDamageEvent.getCause();
+        if (lastDamageEvent instanceof EntityDamageByEntityEvent lastEntityDamageEvent
+                && damageCause == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+
+            Entity damager = lastEntityDamageEvent.getDamager();
+
+            message = ".mob.";
+
+            message += damager instanceof Player
+                    ? "player"
+                    : config.getVaultBoolean(player, getModule() + ".mob-default")
+                    ? "default"
+                    : damager.getType().name().toLowerCase();
+
+        } else message = ".natural." + damageCause.name().toLowerCase();
+
+        return message.replace(" ", "_");
+    }
+
+    private boolean isProjectile(@NotNull Entity entity, @NotNull PlayerDamager playerDamager) {
+        if (entity instanceof Projectile projectile) {
+            Entity shooter = (Entity) projectile.getShooter();
+            if (shooter != null) {
+                playerDamager.setKiller(shooter);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isTNT(@NotNull Entity entity, @NotNull PlayerDamager playerDamager) {
+        if (entity instanceof TNTPrimed tntPrimed) {
+            Entity source = tntPrimed.getSource();
+            if (source instanceof Player) {
+                playerDamager.setKiller(source);
+                return true;
+            }
+        }
+        return false;
+    }
+}

@@ -1,0 +1,24 @@
+package net.flectone.chat.module.server.tab;
+
+import net.flectone.chat.module.FListener;
+import net.flectone.chat.module.FModule;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
+
+public class TabListener extends FListener {
+    public TabListener(FModule module) {
+        super(module);
+        init();
+    }
+
+    @Override
+    public void init() {
+        register();
+    }
+
+    @EventHandler
+    public void playerJoinEvent(@NotNull PlayerJoinEvent event) {
+        ((TabModule) getModule()).update(event.getPlayer());
+    }
+}

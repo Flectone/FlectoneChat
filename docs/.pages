@@ -1,6 +1,0 @@
-nav:
-    - ... | index*.md
-    - ... | commands*.md
-    - ... | configuration*.md
-    - features
-    - integrations

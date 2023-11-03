@@ -1,292 +1,233 @@
 name: FlectoneChat
-version: '${project.version}'
-main: net.flectone.Main
-api-version: 1.16
+version: '${version}'
+main: net.flectone.chat.FlectoneChat
+api-version: '1.16'
 authors: [ TheFaser, fxd ]
-softdepend: [ Vault, PlaceHolderAPI, voicechat, plasmovoice, InteractiveChat, LuckPerms, SuperVanish, DiscordSRV ]
-commands:
-  ignore:
-    usage: /ignore <player>
-    permission: flectonechat.ignore
-
-  ignorelist:
-    usage: /ignorelist
-    permission: flectonechat.ignorelist
-
-  msg:
-    usage: /msg <player> <message>
-    permission: flectonechat.msg
-
-  try-cube:
-    usage: /try-cube <number>
-    permission: flectonechat.try-cube
-
-  try:
-    usage: /try <message>
-    permission: flectonechat.try
-
-  reply:
-    usage: /r <message>
-    permission: flectonechat.reply
-
-  me:
-    usage: /me <message>
-    permission: flectonechat.me
-
-  chatcolor:
-    usage: /chatcolor <first color> <second color>
-    permission: flectonechat.chatcolor
-
-  spy:
-    usage: /spy
-    permission: flectonechat.spy
-
-  flectonechat:
-    usage: /flectonechat reload/config/locale
-    permission: flectonechat.reload
-
-  stream:
-    usage: /stream start/end
-    permission: flectonechat.stream
-
-  ping:
-    usage: /ping <player>
-    permission: flectonechat.ping
-
-  mark:
-    usage: /mark
-    permission: flectonechat.mark
-
-  firstonline:
-    usage: /firstonline <player>
-    permission: flectonechat.firstonline
-
-  lastonline:
-    usage: /lastonline <player>
-    permission: flectonechat.lastonline
-
-  mail:
-    usage: /mail <player> <message>
-    permission: flectonechat.mail
-
-  mail-clear:
-    usage: /mail-clear <player> <number>
-    permission: flectonechat.mail-clear
-
-  afk:
-    usage: /afk
-    permission: flectonechat.afk
-
-  mute:
-    usage: /mute <player> <time> <reason>
-    permission: flectonechat.mute
-
-  unmute:
-    usage: /unmute <player>
-    permission: flectonechat.mute
-
-  helper:
-    usage: /helper <message>
-    permission: flectonechat.helper
-
-  maintenance:
-    usage: /maintenance on/off
-    permission: flectonechat.maintenance
-
-  switch-chat:
-    usage: /switch-chat switch/hide local/global
-    permission: flectonechat.switch-chat
-
-  ball:
-    usage: /ball <message>
-    permission: flectonechat.ball
-
-  tic-tac-toe:
-    usage: /tic-tac-toe <player>
-    permission: flectonechat.tic-tac-toe
-
-  clear-chat:
-    usage: /clearchat
-    permission: flectonechat.clear-chat
-
-  tempban:
-    usage: /tempban <player> <time> <reason>
-    permission: flectonechat.ban
-
-  unban:
-    usage: /unban <player>
-    permission: flectonechat.ban
-
-  warn:
-    usage: /warn <player> <time> <reason>
-    permission: flectonechat.warn
-
-  warnlist:
-    usage: /warnlist <player>
-    permission: flectonechat.warnlist
-
-  unwarn:
-    usage: /unwarn <player> <index>
-    permission: flectonechat.warn
-
-  banlist:
-    usage: /banlist
-    permission: flectonechat.banlist
-
-  mutelist:
-    usage: /mutelist
-    permission: flectonechat.mutelist
-
-  broadcast:
-    usage: /broadcast <message>
-    permission: flectonechat.broadcast
-
-  poll:
-    usage: /poll create/vote
-    permission: flectonechat.pollvote
-
-  chat-settings:
-    usage: /chat-settings
-    permission: flectonechat.chat-settings
-
-  kick:
-    usage: /kick <player> <message>
-    permission: flectonechat.kick
-
-  spit:
-    usage: /spit
-    permission: flectonechat.spit
+website: https://chat.flectone.net/
+softdepend: [ DiscordSRV, PlaceholderAPI, InteractiveChat, LuckPerms, SuperVanish, Vault, PlasmoVoice, VoiceChat ]
 
 permissions:
-  flectonechat.reload:
+
+  flectonechat.chat-bubble:
+    default: true
+  flectonechat.extra.item-sign:
+    default: true
+  flectonechat.extra.item-sign.unsign:
+    default: true
+  flectonechat.extra.knocking:
+    default: true
+  flectonechat.extra.knocking.door:
+    default: true
+  flectonechat.extra.knocking.glass:
+    default: true
+  flectonechat.extra.mark:
+    default: true
+  flectonechat.extra.spit:
+    default: true
+  flectonechat.player.afk-timeout:
+    default: true
+  flectonechat.player.hover:
+    default: true
+  flectonechat.player.name.prefix:
+    default: true
+  flectonechat.player.name.suffix:
+    default: true
+  flectonechat.player.name.real:
+    default: true
+  flectonechat.player.name.display:
+    default: true
+  flectonechat.player.name.tab:
+    default: true
+  flectonechat.player.name-tag.sort:
+    default: true
+  flectonechat.player.name-tag.visible:
+    default: true
+  flectonechat.player.right-click:
+    default: true
+  flectonechat.player.world:
+    default: true
+  flectonechat.player-message.anvil:
+    default: true
+  flectonechat.player-message.book:
+    default: true
+  flectonechat.player-message.chat.local:
+    default: true
+  flectonechat.player-message.chat.global:
+    default: true
+  flectonechat.player-message.formatting:
     default: op
-  flectonechat.ignore:
+  flectonechat.player-message.placeholders:
+    default: op
+  flectonechat.player-message.formatting.ping:
     default: true
-  flectonechat.ignorelist:
+  flectonechat.player-message.formatting.cords:
     default: true
-  flectonechat.msg:
+  flectonechat.player-message.formatting.stats:
     default: true
-  flectonechat.try:
+  flectonechat.player-message.formatting.url:
     default: true
-  flectonechat.try-cube:
+  flectonechat.player-message.formatting.item:
     default: true
-  flectonechat.reply:
+  flectonechat.player-message.formatting.mention:
     default: true
-  flectonechat.me:
+  flectonechat.player-message.formatting.markdown-||:
     default: true
-  flectonechat.chatcolor:
+  flectonechat.player-message.formatting.markdown-**:
     default: true
-  flectonechat.stream:
+  flectonechat.player-message.formatting.markdown-##:
+    default: true
+  flectonechat.player-message.formatting.markdown-__:
+    default: true
+  flectonechat.player-message.formatting.markdown-??:
+    default: true
+  flectonechat.player-message.formatting.markdown-~~:
+    default: true
+  flectonechat.player-message.patterns:
+    default: true
+  flectonechat.player-message.sign:
+    default: true
+  flectonechat.player-message.swear-protection:
+    default: true
+  flectonechat.player-message.swear-protection.bypass:
+    default: op
+  flectonechat.server.brand:
+    default: true
+  flectonechat.server.tab.header:
+    default: true
+  flectonechat.server.tab.footer:
+    default: true
+  flectonechat.server.tab.player-list-name:
+    default: true
+  flectonechat.server-message.advancement:
+    default: true
+  flectonechat.server-message.death:
+    default: true
+  flectonechat.server-message.join:
+    default: true
+  flectonechat.server-message.quit:
+    default: true
+  flectonechat.sounds:
+    default: true
+  flectonechat.server.status.player-count.bypass:
+    default: op
+
+  flectonechat.commands.afk:
+    default: true
+  flectonechat.commands.ball:
+    default: true
+  flectonechat.commands.ban:
+    default: op
+  flectonechat.commands.banlist:
+    default: op
+  flectonechat.commands.me:
+    default: true
+  flectonechat.commands.broadcast:
+    default: op
+  flectonechat.commands.chatcolor.other:
+    default: op
+  flectonechat.commands.chatcolor:
+    default: true
+  flectonechat.commands.chatsettings:
+    default: true
+  flectonechat.commands.chatsettings.advancement:
+    default: true
+  flectonechat.commands.chatsettings.death:
+    default: true
+  flectonechat.commands.chatsettings.join:
+    default: true
+  flectonechat.commands.chatsettings.quit:
+    default: true
+  flectonechat.commands.chatsettings.auto-message:
+    default: true
+  flectonechat.commands.chatsettings.me:
+    default: true
+  flectonechat.commands.chatsettings.try:
+    default: true
+  flectonechat.commands.chatsettings.dice:
+    default: true
+  flectonechat.commands.chatsettings.ball:
+    default: true
+  flectonechat.commands.chatsettings.ban:
+    default: true
+  flectonechat.commands.chatsettings.mute:
+    default: true
+  flectonechat.commands.chatsettings.warn:
+    default: true
+  flectonechat.commands.chatsettings.tell:
+    default: true
+  flectonechat.commands.chatsettings.reply:
+    default: true
+  flectonechat.commands.chatsettings.mail:
+    default: true
+  flectonechat.commands.chatsettings.tic-tac-toe:
+    default: true
+  flectonechat.commands.chatsettings.kick:
+    default: true
+  flectonechat.commands.chatsettings.local:
+    default: true
+  flectonechat.commands.chatsettings.global:
+    default: true
+  flectonechat.commands.clearchat:
+    default: true
+  flectonechat.commands.clearchat.other:
+    default: op
+  flectonechat.commands.firstonline:
+    default: true
+  flectonechat.commands.flectonechat:
+    default: op
+  flectonechat.commands.helper:
+    default: true
+  flectonechat.commands.helper.other:
+    default: op
+  flectonechat.commands.ignore:
+    default: true
+  flectonechat.commands.ignorelist:
+    default: true
+  flectonechat.commands.kick:
+    default: op
+  flectonechat.commands.lastonline:
+    default: true
+  flectonechat.commands.mail:
+    default: true
+  flectonechat.commands.clearmail:
+    default: true
+  flectonechat.commands.maintenance:
+    default: op
+  flectonechat.commands.mark:
+    default: true
+  flectonechat.commands.tell:
+    default: true
+  flectonechat.commands.mute:
+    default: op
+  flectonechat.commands.mutelist:
+    default: op
+  flectonechat.commands.ping:
+    default: true
+  flectonechat.commands.poll:
+    default: true
+  flectonechat.commands.poll.create:
+    default: op
+  flectonechat.commands.reply:
+    default: true
+  flectonechat.commands.spit:
+    default: true
+  flectonechat.commands.spy:
+    default: op
+  flectonechat.commands.stream:
     default: false
-  flectonechat.ping:
+  flectonechat.commands.tictactoe:
     default: true
-  flectonechat.mark:
+  flectonechat.commands.try:
     default: true
-  flectonechat.firstonline:
+  flectonechat.commands.dice:
     default: true
-  flectonechat.lastonline:
-    default: true
-  flectonechat.mail:
-    default: true
-  flectonechat.mail-clear:
-    default: true
-  flectonechat.afk:
-    default: true
-  flectonechat.mute:
+  flectonechat.commands.unban:
     default: op
-  flectonechat.helper:
-    default: true
-  flectonechat.maintenance:
+  flectonechat.commands.unmute:
     default: op
-  flectonechat.switch-chat:
-    default: true
-  flectonechat.ball:
-    default: true
-  flectonechat.tic-tac-toe:
-    default: true
-  flectonechat.clear-chat:
-    default: true
-  flectonechat.ban:
+  flectonechat.commands.warn:
     default: op
-  flectonechat.broadcast:
+  flectonechat.commands.unwarn:
     default: op
-  flectonechat.pollvote:
-    default: true
-  flectonechat.banlist:
+  flectonechat.commands.warnlist:
     default: op
-  flectonechat.mutelist:
-    default: op
-  flectonechat.chat-settings:
-    default: true
-  flectonechat.spy:
-    default: op
-  flectonechat.warn:
-    default: op
-  flectonechat.warnlist:
-    default: op
-  flectonechat.chat.cords:
-    default: true
-  flectonechat.chat.stats:
-    default: true
-  flectonechat.chat.ping:
-    default: true
-  flectonechat.chat.url:
-    default: true
-  flectonechat.chat.tooltip:
-    default: true
-  flectonechat.chat.markdown-||:
-    default: true
-  flectonechat.chat.markdown-**:
-    default: true
-  flectonechat.chat.markdown-__:
-    default: true
-  flectonechat.chat.markdown-##:
-    default: true
-  flectonechat.chat.markdown-??:
-    default: true
-  flectonechat.chat.markdown-~~:
-    default: true
-  flectonechat.chat.anvil-formatting:
-    default: true
-  flectonechat.chat.book-formatting:
-    default: true
-  flectonechat.chat.sign-formatting:
-    default: true
-  flectonechat.kick:
-    default: op
-  flectonechat.chat-settings.advancement:
-    default: true
-  flectonechat.chat-settings.death:
-    default: true
-  flectonechat.chat-settings.join:
-    default: true
-  flectonechat.chat-settings.quit:
-    default: true
-  flectonechat.chat-settings.me:
-    default: true
-  flectonechat.chat-settings.try:
-    default: true
-  flectonechat.chat-settings.try-cube:
-    default: true
-  flectonechat.chat-settings.ball:
-    default: true
-  flectonechat.chat-settings.tempban:
-    default: true
-  flectonechat.chat-settings.mute:
-    default: true
-  flectonechat.chat-settings.warn:
-    default: true
-  flectonechat.chat-settings.msg:
-    default: true
-  flectonechat.chat-settings.reply:
-    default: true
-  flectonechat.chat-settings.mail:
-    default: true
-  flectonechat.chat-settings.tic-tac-toe:
-    default: true
-  flectonechat.chat-settings.kick:
-    default: true
-  flectonechat.chat-settings.auto-message:
-    default: true
-  flectonechat.spit:
-    default: true

@@ -1,0 +1,114 @@
+default:
+  spit:
+    enable: false
+    time: 5
+  kick:
+    enable: false
+    time: 5
+  warn:
+    enable: false
+    time: 5
+  unwarn:
+    enable: false
+    time: 5
+  warnlist:
+    enable: false
+    time: 5
+  spy:
+    enable: false
+    time: 5
+  poll:
+    enable: false
+    time: 5
+  broadcast:
+    enable: false
+    time: 5
+  unban:
+    enable: false
+  tempban:
+    enable: false
+    time: 5
+  clear-chat:
+    enable: true
+    time: 5
+  switch-chat:
+    enable: true
+    time: 5
+  chat-settings:
+    enable: true
+    time: 5
+  localchat:
+    enable: true
+    time: 5
+  globalchat:
+    enable: true
+    time: 5
+  chatcolor:
+    enable: false
+    time: 5
+  flectonechat:
+    enable: false
+    time: 5
+  ignore:
+    enable: false
+    time: 5
+  ignorelist:
+    enable: false
+    time: 5
+  mail:
+    enable: true
+    time: 5
+  helper:
+    enable: true
+    time: 5
+  mark:
+    enable: false
+    time: 5
+  me:
+    enable: true
+    time: 5
+  msg:
+    enable: false
+    time: 5
+  ping:
+    enable: false
+    time: 5
+  reply:
+    enable: false
+    time: 5
+  mail-clear:
+    enable: false
+    time: 5
+  stream:
+    enable: false
+    time: 5
+  try:
+    enable: true
+    time: 5
+  try-cube:
+    enable: true
+    time: 5
+  afk:
+    enable: false
+    time: 5
+  mute:
+    enable: false
+    time: 5
+  unmute:
+    enable: false
+    time: 5
+  maintenance:
+    enable: false
+    time: 5
+  ball:
+    enable: false
+    time: 5
+  tic-tac-toe:
+    enable: false
+    time: 5
+  banlist:
+    enable: false
+    time: 5
+  mutelist:
+    enable: false
+    time: 5
