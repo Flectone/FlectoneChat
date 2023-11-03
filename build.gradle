@@ -95,8 +95,8 @@ processResources {
 }
 
 shadowJar {
+    archiveFileName = "FlectoneChat-" + version + ".jar"
     dependencies {
-        exclude(dependency('org.jetbrains:annotations:24.0.0'))
         exclude(dependency('org.jetbrains:annotations:24.0.0'))
     }
 }
