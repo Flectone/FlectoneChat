@@ -3,12 +3,9 @@ package net.flectone.chat.module.playerMessage.sign;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
-import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.commands.SpyListener;
-import net.flectone.chat.util.MessageUtil;
-import net.flectone.chat.util.TimeUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.SignChangeEvent;
@@ -18,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class SignListener extends FListener {
     public SignListener(FModule module) {
@@ -38,20 +34,10 @@ public class SignListener extends FListener {
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
 
-        if (fPlayer != null && fPlayer.isMuted()) {
-            String message = locale.getVaultString(fPlayer.getPlayer(), "commands.muted");
-
-            Moderation mute = fPlayer.getMute();
-            message = message
-                    .replace("<time>", TimeUtil.convertTime(fPlayer.getPlayer(), mute.getTime() - TimeUtil.getCurrentTime()))
-                    .replace("<reason>", mute.getReason())
-                    .replace("<moderator>", mute.getModeratorName());
-
-            message = MessageUtil.formatAll(fPlayer.getPlayer(), message);
-
-            player.sendMessage(message);
-
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
             event.setCancelled(true);
         }
 

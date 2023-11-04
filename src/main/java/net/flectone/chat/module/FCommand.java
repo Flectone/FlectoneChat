@@ -82,30 +82,6 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         return commands.getStringList(name + ".features");
     }
 
-    public void sendMutedMessage(@NotNull FPlayer fPlayer) {
-        String message = locale.getVaultString(fPlayer.getPlayer(), getModule() + ".muted");
-
-        Moderation mute = fPlayer.getMute();
-        message = message
-                .replace("<time>", TimeUtil.convertTime(fPlayer.getPlayer(), mute.getTime() - TimeUtil.getCurrentTime()))
-                .replace("<reason>", mute.getReason())
-                .replace("<moderator>", mute.getModeratorName());
-
-        message = MessageUtil.formatAll(fPlayer.getPlayer(), message);
-
-        fPlayer.getPlayer().sendMessage(message);
-    }
-
-    public void sendCDMessage(@NotNull Player player, @NotNull String alias, @NotNull Integer cooldownTime) {
-        String message = locale.getVaultString(player, getModule() + ".cooldown");
-        message = message
-                .replace("<alias>", alias)
-                .replace("<time>", cooldownTime.toString());
-        message = MessageUtil.formatAll(player, message);
-
-        player.sendMessage(message);
-    }
-
     public void sendUsageMessage(@NotNull CommandSender commandSender, @NotNull String alias) {
         String message = locale.getVaultString(commandSender, this + ".usage");
         message = message.replace("<command>", alias);
@@ -289,11 +265,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     @Getter
     public class CmdSettings {
 
-        private static final HashMap<String, Integer> COOLDOWN_MAP = new HashMap<>();
-
         private boolean isConsole = false;
-        private boolean isHaveCooldown = false;
-        private boolean isMuted = false;
         private boolean isDisabled = false;
         private Player sender;
         private ItemStack itemStack;
@@ -301,7 +273,6 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         private final CommandSender commandSender;
         private final Command command;
         private final String commandName;
-        private Integer cooldownTime;
 
         public CmdSettings(@NotNull CommandSender commandSender, @NotNull Command command) {
             this.commandSender = commandSender;
@@ -313,28 +284,19 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                 this.sender = (Player) commandSender;
                 this.fPlayer = FPlayerManager.get(sender);
 
-                String cooldownMapKey = sender.getUniqueId() + commandName;
-
-                cooldownTime = COOLDOWN_MAP.get(cooldownMapKey);
-                this.isHaveCooldown = cooldownTime != null
-                        && cooldownTime > TimeUtil.getCurrentTime()
-                        && !sender.hasPermission("flectonechat.cooldowns." + commandName + ".bypass");
-
-                if (!isHaveCooldown) {
-                    cooldownTime = cooldowns.getVaultInt(sender, commandName + ".time");
-                    COOLDOWN_MAP.put(cooldownMapKey, cooldownTime);
-                }
-
                 this.itemStack = sender.getInventory().getItemInMainHand();
 
                 if (fPlayer != null) {
-                    this.isMuted = fPlayer.isMuted();
                     Object bool = fPlayer.getSettings().getSETTINGS_MAP().get(Settings.Type.fromString("enable_command_" + name));
                     this.isDisabled = bool != null && String.valueOf(bool).equals("-1");
                 }
             }
         }
 
+        public boolean isMuted() {
+            if (fPlayer == null) return false;
+            return fPlayer.isMuted();
+        }
     }
 
 }

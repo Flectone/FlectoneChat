@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class AnvilListener extends FListener {
     public AnvilListener(FModule module) {
@@ -46,20 +45,10 @@ public class AnvilListener extends FListener {
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
 
-        if (fPlayer != null && fPlayer.isMuted()) {
-            String message = locale.getVaultString(fPlayer.getPlayer(), "commands.muted");
-
-            Moderation mute = fPlayer.getMute();
-            message = message
-                    .replace("<time>", TimeUtil.convertTime(fPlayer.getPlayer(), mute.getTime() - TimeUtil.getCurrentTime()))
-                    .replace("<reason>", mute.getReason())
-                    .replace("<moderator>", mute.getModeratorName());
-
-            message = MessageUtil.formatAll(fPlayer.getPlayer(), message);
-
-            player.sendMessage(message);
-
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
             event.setCancelled(true);
         }
 

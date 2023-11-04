@@ -94,7 +94,7 @@ public class CommandMail extends FCommand {
         }
 
         if (cmdSettings.isMuted()) {
-            sendMutedMessage(fSender);
+            fSender.sendMutedMessage();
             return;
         }
 

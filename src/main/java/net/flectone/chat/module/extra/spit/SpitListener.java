@@ -1,6 +1,8 @@
 package net.flectone.chat.module.extra.spit;
 
 
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import org.bukkit.entity.Player;
@@ -33,6 +35,13 @@ public class SpitListener extends FListener {
         String configMaterial = config.getVaultString(player, getModule() + ".item");
         if (!item.getType().toString().equalsIgnoreCase(configMaterial)) return;
 
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
+            return;
+        }
         ((SpitModule) getModule()).spit(player);
     }
 

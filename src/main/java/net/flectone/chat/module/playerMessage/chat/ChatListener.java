@@ -2,12 +2,10 @@ package net.flectone.chat.module.playerMessage.chat;
 
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
-import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.commands.SpyListener;
 import net.flectone.chat.util.MessageUtil;
-import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -42,19 +40,7 @@ public class ChatListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-
-            String message = locale.getVaultString(fPlayer.getPlayer(), "commands.muted");
-
-            Moderation mute = fPlayer.getMute();
-            message = message
-                    .replace("<time>", TimeUtil.convertTime(fPlayer.getPlayer(), mute.getTime() - TimeUtil.getCurrentTime()))
-                    .replace("<reason>", mute.getReason())
-                    .replace("<moderator>", mute.getModeratorName());
-
-            message = MessageUtil.formatAll(fPlayer.getPlayer(), message);
-
-            sender.sendMessage(message);
-
+            fPlayer.sendMutedMessage();
             event.setCancelled(true);
             return;
         }

@@ -1,6 +1,8 @@
 package net.flectone.chat.module.extra.mark;
 
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import org.bukkit.Material;
@@ -52,6 +54,13 @@ public class MarkListener extends FListener {
 
         if (!itemStack.getType().equals(triggerMaterial)) return;
 
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
+            return;
+        }
         String itemName = itemStack.getItemMeta().getDisplayName().toUpperCase();
         String color = COLOR_VALUES.contains(itemName)
                 ? itemName

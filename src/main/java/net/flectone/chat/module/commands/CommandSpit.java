@@ -33,7 +33,17 @@ public class CommandSpit extends FCommand {
             return true;
         }
 
-        new Spit(cmdSettings.getSender()).spawn();
+        if (cmdSettings.isMuted()) {
+            cmdSettings.getFPlayer().sendMutedMessage();
+            return true;
+        }
+
+        if (cmdSettings.isHaveCooldown()) {
+            cmdSettings.getFPlayer().sendCDMessage(alias);
+            return true;
+        }
+
+        new Spit(cmdSettings.getSender(), this.toString()).spawn();
 
         return true;
     }

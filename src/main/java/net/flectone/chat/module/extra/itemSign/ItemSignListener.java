@@ -44,6 +44,10 @@ public class ItemSignListener extends FListener {
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return;
 
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
+            return;
+        }
         String signFormat = config.getVaultString(player, getModule() + ".format");
 
         signFormat = MessageUtil.formatPlayerString(player, signFormat);

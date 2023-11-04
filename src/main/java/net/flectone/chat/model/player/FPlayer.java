@@ -262,4 +262,17 @@ public class FPlayer {
         String value = getSettings().getValue(Settings.Type.STREAM);
         return value != null && value.equals("1");
     }
+    public void sendMutedMessage() {
+        String message = locale.getVaultString(player, "commands.muted");
+
+        Moderation mute = getMute();
+        message = message
+                .replace("<time>", TimeUtil.convertTime(player, mute.getTime() - TimeUtil.getCurrentTime()))
+                .replace("<reason>", mute.getReason())
+                .replace("<moderator>", mute.getModeratorName());
+
+        message = MessageUtil.formatAll(player, message);
+
+        player.sendMessage(message);
+    }
 }

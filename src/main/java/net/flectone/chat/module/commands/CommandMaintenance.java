@@ -65,7 +65,7 @@ public class CommandMaintenance extends FCommand {
         }
 
         if (cmdSettings.isMuted()) {
-            sendMutedMessage(cmdSettings.getFPlayer());
+            cmdSettings.getFPlayer().sendMutedMessage();
             return true;
         }
 

@@ -35,6 +35,11 @@ public class CommandMark extends FCommand {
             return true;
         }
 
+        if (cmdSettings.isMuted()) {
+            cmdSettings.getFPlayer().sendMutedMessage();
+            return true;
+        }
+
         String color = args.length != 0 ? args[0].toUpperCase() : "WHITE";
         int range = commands.getInt(getName() + ".range");
 

@@ -1,5 +1,7 @@
 package net.flectone.chat.module.extra.knocking;
 
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import org.bukkit.Location;
@@ -45,6 +47,13 @@ public class KnockingListener extends FListener {
         if (knockingBlock.isEmpty()) return;
         if (hasNoPermission(player, blockType)) return;
 
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage();
+            return;
+        }
         Location location = block.getLocation();
         location.setX(location.getX() + 0.5);
         location.setZ(location.getZ() + 0.5);

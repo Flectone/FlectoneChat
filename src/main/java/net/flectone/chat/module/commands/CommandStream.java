@@ -77,7 +77,7 @@ public class CommandStream extends FCommand {
             }
 
             if (cmdSettings.isMuted()) {
-                sendMutedMessage(fPlayer);
+                cmdSettings.getFPlayer().sendMutedMessage();
                 return true;
             }
 
