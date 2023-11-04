@@ -58,6 +58,7 @@ public class ChatListener extends FListener {
             for (String chatType : availableChatsList) {
                 String chatTrigger = config.getVaultString(sender, getModule() + ".list." + chatType + ".prefix.trigger");
                 if (!chatTrigger.isEmpty() && !message.startsWith(chatTrigger)) continue;
+                if (message.equals(chatTrigger)) continue;
 
                 int chatPriority = config.getVaultInt(sender, getModule() + ".list." + chatType + ".priority");
                 if (chatPriority <= priority) continue;
