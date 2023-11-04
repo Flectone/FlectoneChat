@@ -109,7 +109,7 @@ default:
       enable: true
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     chatsettings:
-      enable: true
+      enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     chatcolor:
       enable: false
@@ -124,7 +124,7 @@ default:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     mail:
-      enable: true
+      enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     helper:
       enable: true
@@ -133,7 +133,7 @@ default:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     me:
-      enable: true
+      enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     tell:
       enable: false
@@ -151,10 +151,10 @@ default:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     try:
-      enable: true
+      enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     dice:
-      enable: true
+      enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     afk:
       enable: false
