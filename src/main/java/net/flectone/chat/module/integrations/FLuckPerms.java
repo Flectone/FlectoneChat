@@ -86,4 +86,21 @@ public class FLuckPerms implements FIntegration {
         if (user == null) return null;
         return user.getCachedData().getMetaData().getSuffix();
     }
+
+    @NotNull
+    public String[] getGroups(@NotNull Player player) {
+        User user = provider.getUserManager().getUser(player.getUniqueId());
+        if (user == null) return null;
+        List<String> groupList = new ArrayList<>();
+
+        for (Node node : user.getDistinctNodes()) {
+            String groupName = node.getKey().substring(6);
+            groupList.add(groupName);
+        }
+
+        groupList.sort(Comparator.comparing(this::getGroupWeight));
+        Collections.reverse(groupList);
+
+        return groupList.toArray(new String[]{});
+    }
 }

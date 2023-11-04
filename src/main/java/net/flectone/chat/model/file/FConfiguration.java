@@ -1,6 +1,6 @@
 package net.flectone.chat.model.file;
 
-import net.flectone.chat.util.PlayerUtil;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -49,15 +49,23 @@ public class FConfiguration extends YamlConfiguration {
 
     @NotNull
     public List<String> getCustomList(@Nullable Player player, @NotNull String string) {
-        String playerGroup = PlayerUtil.getVaultGroup(player);
+        String[] playerGroups = IntegrationsModule.getGroups(player);
+        if (playerGroups == null) playerGroups = new String[]{"default"};
 
-        ConfigurationSection configurationSection = this.getConfigurationSection(playerGroup + string);
-        if (configurationSection == null) {
-            configurationSection = this.getConfigurationSection("default." + string);
-            if (configurationSection == null) return new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (String group : playerGroups) {
+            ConfigurationSection configurationSection = this.getConfigurationSection(group + string);
+            if (configurationSection == null) {
+                configurationSection = this.getConfigurationSection(group + "." + string);
+                if (configurationSection == null) continue;
+            }
+
+            arrayList.addAll(configurationSection.getKeys(false));
         }
 
-        return new ArrayList<>(configurationSection.getKeys(false));
+        return arrayList.isEmpty()
+                ? this.getStringList("default." + string)
+                : arrayList;
     }
 
     @NotNull
@@ -71,13 +79,24 @@ public class FConfiguration extends YamlConfiguration {
     }
 
     @NotNull
-    public String getVaultStringEmpty(@Nullable CommandSender sender, @NotNull String string) {
-        return this.getString(PlayerUtil.getVaultGroup(sender) + "." + string);
-    }
-
-    @NotNull
     public String getVaultString(@Nullable CommandSender sender, @NotNull String string) {
-        String vaultString = getVaultStringEmpty(sender, string);
+        String[] playerGroups = null;
+
+        if (sender instanceof Player player) {
+            playerGroups = IntegrationsModule.getGroups(player);
+        }
+
+        if (playerGroups == null) playerGroups = new String[]{"default"};
+
+        String vaultString = "";
+
+        for (String group : playerGroups) {
+            String value = this.getString(group + "." + string);
+            if (!value.isEmpty()) {
+                vaultString = value;
+                break;
+            }
+        }
 
         return vaultString.isEmpty()
                 ? this.getString("default." + string)
@@ -85,20 +104,73 @@ public class FConfiguration extends YamlConfiguration {
     }
 
     public boolean getVaultBoolean(@Nullable CommandSender sender, @NotNull String string) {
-        return  getVaultStringEmpty(sender, string).isEmpty()
+        String[] playerGroups = null;
+
+        if (sender instanceof Player player) {
+            playerGroups = IntegrationsModule.getGroups(player);
+        }
+
+        if (playerGroups == null) playerGroups = new String[]{"default"};
+
+        String vaultString = "";
+
+        for (String group : playerGroups) {
+            String value = this.getString(group + "." + string);
+            if (!value.isEmpty()) {
+                vaultString = value;
+                break;
+            }
+        }
+
+        return vaultString.isEmpty()
                 ? this.getBoolean("default." + string)
-                : this.getBoolean(PlayerUtil.getVaultGroup(sender) + "." + string);
+                : Boolean.parseBoolean(vaultString);
     }
 
     public int getVaultInt(@NotNull CommandSender sender, @NotNull String string) {
-        return getVaultStringEmpty(sender, string).isEmpty()
+        String[] playerGroups = null;
+
+        if (sender instanceof Player player) {
+            playerGroups = IntegrationsModule.getGroups(player);
+        }
+
+        if (playerGroups == null) playerGroups = new String[]{"default"};
+
+        String vaultString = "";
+
+        for (String group : playerGroups) {
+            String value = this.getString(group + "." + string);
+            if (!value.isEmpty()) {
+                vaultString = value;
+                break;
+            }
+        }
+
+        return vaultString.isEmpty()
                 ? this.getInt("default." + string)
-                : this.getInt(PlayerUtil.getVaultGroup(sender) + "." + string);
+                : Integer.parseInt(vaultString);
     }
 
     public List<String> getVaultStringList(@NotNull CommandSender sender, @NotNull String string) {
-        return getVaultStringEmpty(sender, string).isEmpty()
+        String[] playerGroups = null;
+
+        if (sender instanceof Player player) {
+            playerGroups = IntegrationsModule.getGroups(player);
+        }
+
+        if (playerGroups == null) playerGroups = new String[]{"default"};
+
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        for (String group : playerGroups) {
+            String value = this.getString(group + "." + string);
+            if (value.isEmpty()) continue;
+
+            arrayList.addAll(this.getStringList(group + "." + string));
+        }
+
+        return arrayList.isEmpty()
                 ? this.getStringList("default." + string)
-                : this.getStringList(PlayerUtil.getVaultGroup(sender) + "." + string);
+                : arrayList;
     }
 }

@@ -68,7 +68,17 @@ public class IntegrationsModule extends FModule {
                 .anyMatch(MetadataValue::asBoolean);
     }
 
-    public static int getGroupWeight(@NotNull Player player) {
+    @Nullable
+    public static String[] getGroups(@Nullable Player player) {
+        if (player == null) return null;
+        FIntegration luckPerms = get("LuckPerms");
+        if (luckPerms != null) return ((FLuckPerms) luckPerms).getGroups(player);
+        FIntegration vault = get("Vault");
+        if (vault != null) return new String[]{((FVault) vault).getPrimaryGroup(player)};
+        return null;
+    }
+
+    public static int getPrimaryGroupWeight(@NotNull Player player) {
         FIntegration fIntegration = get("LuckPerms");
         if (fIntegration == null) return 0;
         return ((FLuckPerms) fIntegration).getPlayerGroupWeight(player);
