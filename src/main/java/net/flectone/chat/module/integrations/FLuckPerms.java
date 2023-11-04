@@ -3,9 +3,6 @@ package net.flectone.chat.module.integrations;
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.event.EventBus;
-import net.luckperms.api.event.node.NodeAddEvent;
-import net.luckperms.api.event.node.NodeMutateEvent;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
@@ -29,24 +26,6 @@ public class FLuckPerms implements FIntegration {
     @Getter
     private static LuckPerms provider;
 
-    private void onUserPromote(@NotNull NodeMutateEvent event) {
-//        if (event.getTarget() instanceof User user) {
-//            if (user.getUsername() == null) return;
-//            FPlayer fPlayer = FPlayerManager.getPlayer(user.getUsername());
-//            if (fPlayer == null) return;
-//            fPlayer.setStreamer();
-//            fPlayer.updateName();
-//            return;
-//        }
-//
-//        Bukkit.getOnlinePlayers().parallelStream()
-//                .forEach(player -> {
-//                    FPlayer fPlayer = FPlayerManager.getPlayer(player);
-//                    if (fPlayer == null) return;
-//                    fPlayer.setStreamer();
-//                    fPlayer.updateName();
-//                });
-    }
 
     @Override
     public void init() {
@@ -55,9 +34,6 @@ public class FLuckPerms implements FIntegration {
         if (serviceProvider == null) return;
 
         provider = serviceProvider.getProvider();
-
-        EventBus eventBus = serviceProvider.getProvider().getEventBus();
-        eventBus.subscribe(FlectoneChat.getInstance(), NodeAddEvent.class, this::onUserPromote);
 
         FlectoneChat.info("LuckPerms detected and hooked");
     }
