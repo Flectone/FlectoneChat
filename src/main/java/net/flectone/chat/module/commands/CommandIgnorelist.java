@@ -148,6 +148,7 @@ public class CommandIgnorelist extends FCommand {
 
         commandSender.spigot().sendMessage(componentBuilder.create());
 
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
 
         return true;
     }

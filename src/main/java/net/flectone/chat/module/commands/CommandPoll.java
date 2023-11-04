@@ -1,10 +1,13 @@
 package net.flectone.chat.module.commands;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.manager.PollManager;
 import net.flectone.chat.model.poll.Poll;
+import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -94,6 +97,11 @@ public class CommandPoll extends FCommand {
                                 .get());
 
                         player.spigot().sendMessage(componentBuilder.create());
+
+                        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+                        if (fModule instanceof SoundsModule soundsModule) {
+                            soundsModule.play(new FSound(cmdSettings.getSender(), player, this.toString()));
+                        }
                     });
 
             commands.set(getName() + ".last-id", poll.getId());

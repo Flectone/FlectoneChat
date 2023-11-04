@@ -74,6 +74,10 @@ public class CommandLastonline extends FCommand {
 
         commandSender.sendMessage(message);
 
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+
         return true;
     }
 

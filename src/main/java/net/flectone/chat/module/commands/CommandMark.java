@@ -44,6 +44,9 @@ public class CommandMark extends FCommand {
         int range = commands.getInt(getName() + ".range");
 
         Mark.getMark(cmdSettings.getSender(), range, color).spawn();
+
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+
         return true;
     }
 

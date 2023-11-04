@@ -81,6 +81,10 @@ public class CommandPing extends FCommand {
 
         commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), fPlayer.getPlayer(), message));
 
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+
         return true;
     }
 

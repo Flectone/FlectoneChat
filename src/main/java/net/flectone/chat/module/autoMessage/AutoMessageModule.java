@@ -1,10 +1,13 @@
 package net.flectone.chat.module.autoMessage;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
+import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import net.flectone.chat.util.RandomUtil;
@@ -49,6 +52,11 @@ public class AutoMessageModule extends FModule {
         if (!enabled) return;
 
         send(player, incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player));
+
+        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        if (fModule instanceof SoundsModule soundsModule) {
+            soundsModule.play(new FSound(player, player, this.toString()));
+        }
     }
 
     @NotNull

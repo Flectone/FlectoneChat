@@ -76,6 +76,10 @@ public class CommandUnban extends FCommand {
                 .replace("<player>", fPlayer.getMinecraftName());
 
         commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));
+
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
     }
 
     @Override

@@ -122,6 +122,8 @@ public class ChatListener extends FListener {
         List<String> featuresList = config.getVaultStringList(sender, getModule() + ".list." + playerChat + ".features");
         ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList);
 
+        fPlayer.playSound(sender, recipientsList, getModule() + "." + playerChat);
+
         boolean noRecipientsMessageEnabled = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".no-recipients.enable");
         if ((recipientsList.isEmpty() || recipientsList.size() == 1) && noRecipientsMessageEnabled) {
             String recipientsEmpty = locale.getVaultString(sender, getModule() + ".no-recipients");

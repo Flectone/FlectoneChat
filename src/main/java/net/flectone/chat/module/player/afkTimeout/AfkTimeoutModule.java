@@ -63,6 +63,7 @@ public class AfkTimeoutModule extends FModule {
 
             if (getAfkTime(player) >= afkTimeout) {
                 setAfk(player, true);
+                fPlayer.playSound(player, player, this + "-true");
             }
 
             return;
@@ -74,6 +75,7 @@ public class AfkTimeoutModule extends FModule {
         if (!fPlayer.isAfk()) return;
 
         setAfk(player, false);
+        fPlayer.playSound(player, player, this + "-false");
     }
 
     public void removePlayer(@NotNull UUID uuid) {

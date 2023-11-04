@@ -6,12 +6,12 @@ import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
-import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.model.player.Settings;
+import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.integrations.IntegrationsModule;
+import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.CommandsUtil;
 import net.flectone.chat.util.MessageUtil;
-import net.flectone.chat.util.TimeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -20,10 +20,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static net.flectone.chat.manager.FileManager.*;
+import static net.flectone.chat.manager.FileManager.commands;
+import static net.flectone.chat.manager.FileManager.locale;
 
 @Getter
 public abstract class FCommand implements CommandExecutor, TabCompleter, FAction {
@@ -117,8 +121,15 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                                   @NotNull String message, boolean isClickable) {
 
         MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, message, getFeatures());
-        recipients.parallelStream().forEach(recipient ->
-                recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable)));
+        recipients.parallelStream().forEach(recipient -> {
+            recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
+
+            FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+            if (fModule instanceof SoundsModule soundsModule) {
+                soundsModule.play(new FSound(player, recipient, this.toString()));
+            }
+        });
+
     }
 
     @NotNull

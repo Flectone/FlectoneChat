@@ -153,6 +153,8 @@ public class CommandChatsettings extends FCommand {
         Player player = fPlayer.getPlayer();
         player.spigot().sendMessage(fComponentBuilder.build(player, player));
 
+        fPlayer.playSound(player, player, this.toString());
+
         return true;
     }
 

@@ -63,5 +63,7 @@ public class ItemSignListener extends FListener {
                 signFormat, dropDyeEnabled);
 
         event.setCancelled(isCompleted);
+
+        if (isCompleted) fPlayer.playSound(getModule().toString());
     }
 }

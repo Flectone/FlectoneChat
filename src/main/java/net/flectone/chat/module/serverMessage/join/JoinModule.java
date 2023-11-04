@@ -43,6 +43,7 @@ public class JoinModule extends FModule {
                     componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
 
             player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+            fPlayer.playSound(sender, player, this.toString());
         });
     }
 }

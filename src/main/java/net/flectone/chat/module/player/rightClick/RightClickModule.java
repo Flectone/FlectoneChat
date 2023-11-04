@@ -2,6 +2,8 @@ package net.flectone.chat.module.player.rightClick;
 
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.manager.FActionManager;
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
@@ -23,5 +25,9 @@ public class RightClickModule extends FModule {
 
     public void sendAction(@NotNull Player player, @NotNull String string) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(string));
+
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+        fPlayer.playSound(player, player, this.toString());
     }
 }

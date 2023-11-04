@@ -96,6 +96,7 @@ public class CommandClearmail extends FCommand {
         playerMessage = MessageUtil.formatAll(cmdSettings.getSender(), playerMessage);
 
         commandSender.sendMessage(playerMessage);
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
     }
 
     @Override

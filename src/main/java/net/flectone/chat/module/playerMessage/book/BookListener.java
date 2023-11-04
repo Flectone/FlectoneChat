@@ -49,6 +49,8 @@ public class BookListener extends FListener {
             return;
         }
 
+        fPlayer.playSound(getModule().toString());
+
         BookMeta bookMeta = event.getNewBookMeta();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 

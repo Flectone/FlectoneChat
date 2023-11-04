@@ -44,6 +44,10 @@ public class CommandClearchat extends FCommand {
         commandSender.sendMessage(CLEARED_STRING);
         sendMessage(commandSender, this + ".message");
 
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+
         return true;
     }
 

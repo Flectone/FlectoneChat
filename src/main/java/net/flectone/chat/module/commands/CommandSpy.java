@@ -52,6 +52,10 @@ public class CommandSpy extends FCommand {
         String message = locale.getVaultString(commandSender, this + "." + !isEnabled + "-message");
         commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));
 
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+
         return true;
     }
 

@@ -149,8 +149,11 @@ public class CommandBanlist extends FCommand {
         });
 
         componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
-
         commandSender.spigot().sendMessage(componentBuilder.create());
+
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
     }
 
     @Override

@@ -57,5 +57,7 @@ public class ItemUnsignListener extends FListener {
                 player.getInventory(), dropDyeEnabled);
 
         event.setCancelled(isCompleted);
+
+        if (isCompleted) fPlayer.playSound(getModule() + ".unsign");
     }
 }

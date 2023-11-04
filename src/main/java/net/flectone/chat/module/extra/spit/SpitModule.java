@@ -21,6 +21,6 @@ public class SpitModule extends FModule {
     }
 
     public void spit(Player player) {
-        new Spit(player).spawn();
+        new Spit(player, this.toString()).spawn();
     }
 }

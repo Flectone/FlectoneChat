@@ -63,6 +63,11 @@ public class CommandFirstonline extends FCommand {
         message = MessageUtil.formatAll(cmdSettings.getSender(), message);
 
         commandSender.sendMessage(message);
+
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+
         return true;
     }
 

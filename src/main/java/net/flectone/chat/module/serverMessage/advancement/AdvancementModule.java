@@ -96,6 +96,8 @@ public class AdvancementModule extends FModule {
             }));
 
             player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+
+            fPlayer.playSound(sender, player, this.toString());
         });
     }
 }

@@ -57,6 +57,7 @@ public class CommandAfk extends FCommand {
         String afkMessage = locale.getVaultString(player, "commands.afk." + isAfk + "-message");
         player.sendMessage(MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
 
+        fPlayer.playSound(player, player, this.toString());
         return true;
     }
 

@@ -35,7 +35,6 @@ public class FSound {
     }
 
     public void play() {
-        if (sender == null) return;
         if (recipient == null && location == null) return;
         if (!sounds.getVaultBoolean(sender, name + ".enable")) return;
 

@@ -116,6 +116,8 @@ public class CommandChatcolor extends FCommand {
 
         message = message.replace("<colors>", colorsMessage);
         player.sendMessage(MessageUtil.formatAll(player, player, message, true));
+
+        fPlayer.playSound(fPlayer.getPlayer(), fPlayer.getPlayer(), this.toString());
     }
 
     @Override

@@ -86,6 +86,9 @@ public class CommandIgnore extends FCommand {
         message = MessageUtil.formatAll(cmdSettings.getSender(), message);
 
         commandSender.sendMessage(message);
+
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+
         return true;
     }
 

@@ -1,9 +1,7 @@
 package net.flectone.chat.model.spit;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.model.sound.FSound;
-import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.sounds.SoundsModule;
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.player.FPlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -17,11 +15,13 @@ public class Spit {
     private final World world;
     private final Location location;
     private final Player player;
+    private final String action;
 
-    public Spit(@NotNull Player player) {
+    public Spit(@NotNull Player player, @NotNull String action) {
         this.location = player.getEyeLocation();
         this.world = player.getWorld();
         this.player = player;
+        this.action = action;
 
         location.setY(location.getY() - 0.3);
     }
@@ -30,10 +30,10 @@ public class Spit {
         LlamaSpit spit = (LlamaSpit) world.spawnEntity(location, EntityType.LLAMA_SPIT);
         spit.setVelocity(location.getDirection());
 
-        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
-        if (fModule instanceof SoundsModule soundsModule) {
-            soundsModule.play(new FSound(player, location, "spit"));
-        }
+        FPlayer fPlayer = FPlayerManager.get(player);
+        if (fPlayer == null) return;
+
+        fPlayer.playSound(location, action);
     }
 
 }

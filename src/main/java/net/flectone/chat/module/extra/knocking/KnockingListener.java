@@ -64,6 +64,6 @@ public class KnockingListener extends FListener {
         location.setX(location.getX() + 0.5);
         location.setZ(location.getZ() + 0.5);
 
-        ((KnockingModule) getModule()).knock(player, location, "knocking_" + knockingBlock.get());
+        ((KnockingModule) getModule()).knock(player, location, getModule() + "." + knockingBlock.get());
     }
 }

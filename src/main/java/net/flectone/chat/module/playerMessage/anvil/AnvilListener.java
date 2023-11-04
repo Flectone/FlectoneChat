@@ -55,6 +55,8 @@ public class AnvilListener extends FListener {
             return;
         }
 
+        fPlayer.playSound(getModule().toString());
+
         ItemStack itemStack = event.getCurrentItem();
         ItemMeta itemMeta = itemStack.getItemMeta();
 

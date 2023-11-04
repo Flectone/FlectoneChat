@@ -157,6 +157,9 @@ public class CommandTictactoe extends FCommand {
         cmdSettings.getFPlayer().getPlayer().spigot().sendMessage(ticTacToe.build(cmdSettings.getFPlayer()));
         secondFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(secondFPlayer));
 
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        secondFPlayer.playSound(secondFPlayer.getPlayer(), secondFPlayer.getPlayer(), this.toString());
+
         return true;
     }
 

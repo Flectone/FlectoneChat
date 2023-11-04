@@ -6,14 +6,17 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.mail.Mail;
+import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
 import net.flectone.chat.module.player.nameTag.NameTagModule;
 import net.flectone.chat.module.player.world.WorldModule;
+import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -23,8 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
+import static net.flectone.chat.manager.FileManager.*;
 
 @Getter
 public class FPlayer {
@@ -307,5 +309,28 @@ public class FPlayer {
         message = MessageUtil.formatAll(player, message);
 
         player.sendMessage(message);
+    }
+
+    public void playSound(@NotNull Location location, @NotNull String action) {
+        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        if (fModule instanceof SoundsModule soundsModule) {
+            soundsModule.play(new FSound(player, location, action));
+        }
+    }
+
+    public void playSound(@NotNull String action) {
+        playSound(player.getLocation(), action);
+    }
+
+    public void playSound(@Nullable Player sender, @NotNull Player recipient, @NotNull String action) {
+
+        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        if (fModule instanceof SoundsModule soundsModule) {
+            soundsModule.play(new FSound(sender, recipient, action));
+        }
+    }
+
+    public void playSound(@Nullable Player sender, @NotNull Collection<Player> recipients, @NotNull String action) {
+        recipients.forEach(recipient -> playSound(sender, recipient, action));
     }
 }
