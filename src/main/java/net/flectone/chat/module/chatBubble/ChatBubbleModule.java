@@ -4,6 +4,7 @@ import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -37,6 +38,9 @@ public class ChatBubbleModule extends FModule {
     public void add(@NotNull Player player, @NotNull String message) {
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return;
+
+        message = IntegrationsModule.replaceInteractiveChatPlaceholders(message);
+
         fPlayer.addChatBubble(message);
     }
 

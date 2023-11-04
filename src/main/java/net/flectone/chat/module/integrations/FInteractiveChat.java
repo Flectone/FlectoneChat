@@ -15,12 +15,12 @@ public class FInteractiveChat implements FIntegration {
         init();
     }
 
-    public static String checkMention(AsyncPlayerChatEvent event) {
+    public String checkMention(AsyncPlayerChatEvent event) {
         return ChatEvents.checkMention(event);
     }
 
     @NotNull
-    public static String mark(@NotNull String message, @NotNull UUID sender) {
+    public String mark(@NotNull String message, @NotNull UUID sender) {
         StringBuilder stringBuilder = new StringBuilder();
         for(String string : message.split(" ")) {
             if (!Registry.MENTION_TAG_CONVERTER.containsTags(string) && !string.contains("<cmd="))

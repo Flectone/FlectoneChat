@@ -5,6 +5,7 @@ import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.chatBubble.ChatBubbleModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,8 @@ public class ChatModule extends FModule {
     public void send(@NotNull Player sender, @NotNull List<Player> recipientsList,
                      @NotNull String message, @NotNull String chatFormat,
                      @NotNull List<String> featuresList) {
+
+        message = IntegrationsModule.interactiveChatMark(message, sender.getUniqueId());
 
         MessageBuilder messageBuilder = new MessageBuilder(sender, sender.getInventory().getItemInMainHand(), message, featuresList);
 

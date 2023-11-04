@@ -5,11 +5,13 @@ import net.flectone.chat.module.FModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static net.flectone.chat.manager.FileManager.integrations;
 
@@ -82,6 +84,25 @@ public class IntegrationsModule extends FModule {
         FIntegration fIntegration = get("LuckPerms");
         if (fIntegration == null) return 0;
         return ((FLuckPerms) fIntegration).getPrimaryGroupWeight(player);
+    }
+
+    public static String interactiveChatMark(@NotNull String string, @NotNull UUID uuid) {
+        FIntegration interactiveChat = get("InteractiveChat");
+        if (interactiveChat == null) return string;
+        return ((FInteractiveChat) interactiveChat).mark(string, uuid);
+    }
+
+    public static String interactiveChatCheckMention(@NotNull AsyncPlayerChatEvent event) {
+        FIntegration interactiveChat = get("InteractiveChat");
+        if (interactiveChat == null) return event.getMessage();
+        return ((FInteractiveChat) interactiveChat).checkMention(event);
+    }
+
+    public static String replaceInteractiveChatPlaceholders(@NotNull String string) {
+        FIntegration interactiveChat = get("InteractiveChat");
+        if (interactiveChat == null) return string;
+
+        return string.replaceAll("(<chat=.*>)", "[...]");
     }
 
     @Nullable

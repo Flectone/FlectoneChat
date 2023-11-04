@@ -5,6 +5,7 @@ import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.commands.SpyListener;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -83,6 +84,11 @@ public class ChatListener extends FListener {
 
         SpyListener.send(sender, playerChat, event.getMessage());
 
+        List<String> featuresList = config.getVaultStringList(sender, getModule() + ".list." + playerChat + ".features");
+        if (featuresList.contains("mention")) {
+            message = IntegrationsModule.interactiveChatCheckMention(event);
+        }
+
         boolean prefixIsCleared = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".prefix.cleared");
         if (prefixIsCleared) {
             String chatTrigger = config.getVaultString(sender, getModule() + ".list." + playerChat + ".prefix.trigger");
@@ -119,7 +125,6 @@ public class ChatListener extends FListener {
         String chatFormat = config.getVaultString(sender, getModule() + ".list." + playerChat + ".format");
         chatFormat = MessageUtil.formatPlayerString(sender, chatFormat);
 
-        List<String> featuresList = config.getVaultStringList(sender, getModule() + ".list." + playerChat + ".features");
         ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList);
 
         fPlayer.playSound(sender, recipientsList, getModule() + "." + playerChat);

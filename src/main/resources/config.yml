@@ -325,7 +325,7 @@ default:
         global:
           enable: true
           priority: 5
-          features: [swear-protection, patterns, formatting]
+          features: [swear-protection, patterns, formatting, mention]
           worlds: []
           format: "<player_name_display>&&2 » <message>"
 

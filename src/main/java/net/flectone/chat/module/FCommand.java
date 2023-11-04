@@ -120,6 +120,10 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                                   @Nullable ItemStack itemStack, @NotNull String format,
                                   @NotNull String message, boolean isClickable) {
 
+        if (player != null) {
+            message = IntegrationsModule.interactiveChatMark(message, player.getUniqueId());
+        }
+
         MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, message, getFeatures());
         recipients.parallelStream().forEach(recipient -> {
             recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
