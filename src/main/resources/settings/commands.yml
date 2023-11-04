@@ -5,8 +5,8 @@ afk:
 ball:
   enable: true
   aliases: []
-
   features: [swear-protection, patterns, formatting]
+
   range: 0
 
 ban:
@@ -16,6 +16,8 @@ ban:
   range: 0
 
   load-minecraft-banlist: false
+
+  tab-complete-mode: 0
 
 banlist:
   enable: true
@@ -76,6 +78,8 @@ firstonline:
   enable: true
   aliases: []
 
+  tab-complete-mode: 0
+
 flectonechat:
   enable: true
   aliases: [ fc ]
@@ -87,6 +91,8 @@ helper:
 ignore:
   enable: true
   aliases: []
+
+  tab-complete-mode: 0
 
 ignorelist:
   enable: true
@@ -127,12 +133,15 @@ tell:
   aliases: [ w, msg, message, send, m ]
   features: [ swear-protection, patterns, formatting ]
 
+  tab-complete-mode: 1
 
 mute:
   enable: true
   aliases: [ tempmute, tmute]
 
   range: 0
+
+  tab-complete-mode: 0
 
 mutelist:
   enable: true
@@ -221,6 +230,8 @@ warn:
   action:
     3: "ban <player> 7d"
     5: "ban <player>"
+
+  tab-complete-mode: 0
 
 unwarn:
   enable: true

@@ -99,7 +99,7 @@ public class CommandIgnore extends FCommand {
         tabCompleteClear();
 
         if (args.length == 1) {
-            isOfflinePlayer(args[0]);
+            isConfigModePlayer(args[0]);
         }
 
         return getSortedTabComplete();

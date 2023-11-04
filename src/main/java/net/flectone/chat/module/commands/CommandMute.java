@@ -93,7 +93,7 @@ public class CommandMute extends FCommand {
 
         tabCompleteClear();
         switch (args.length) {
-            case 1 -> isOfflinePlayer(args[0]);
+            case 1 -> isConfigModePlayer(args[0]);
             case 2 -> isFormatString(args[1]);
             case 3 -> isTabCompleteMessage(commandSender, args[2], "reason");
         }

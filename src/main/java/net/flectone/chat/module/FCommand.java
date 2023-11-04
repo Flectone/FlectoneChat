@@ -189,14 +189,12 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                 .forEachOrdered(key -> isStartsWith(arg, key));
     }
 
-//    public void isConfigOnlineModePlayer(@NotNull String arg) {
-//        if (FileManager.config.getString("command." + getCommandName() + ".tab-complete-mode").equals("offline")) {
-//            isOfflinePlayer(arg);
-//            return;
-//        }
-//
-//        isOnlinePlayer(arg);
-//    }
+    public void isConfigModePlayer(@NotNull String arg) {
+        switch (commands.getInt("command." + name + ".tab-complete-mode")) {
+            case 0 -> isOfflinePlayer(arg);
+            case 1 -> isOnlinePlayer(arg);
+        }
+    }
 
     public void isOfflinePlayer(@NotNull String arg) {
         FPlayerManager.getOFFLINE_PLAYERS()

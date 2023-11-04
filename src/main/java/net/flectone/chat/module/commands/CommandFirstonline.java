@@ -76,7 +76,7 @@ public class CommandFirstonline extends FCommand {
                                                 @NotNull String alias, @NotNull String[] args) {
         tabCompleteClear();
         if (args.length == 1) {
-            isOfflinePlayer(args[0]);
+            isConfigModePlayer(args[0]);
         }
 
         return getSortedTabComplete();

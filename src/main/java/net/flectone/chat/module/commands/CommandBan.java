@@ -129,7 +129,7 @@ public class CommandBan extends FCommand {
                                                 @NotNull String alias, @NotNull String[] args) {
         tabCompleteClear();
         switch (args.length) {
-            case 1 -> isOfflinePlayer(args[0]);
+            case 1 -> isConfigModePlayer(args[0]);
             case 2 -> {
                 isFormatString(args[1]);
                 isStartsWith(args[1], "permanent");

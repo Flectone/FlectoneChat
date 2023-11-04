@@ -136,7 +136,7 @@ public class CommandTell extends FCommand {
 
         tabCompleteClear();
         switch (args.length) {
-            case 1 -> isOnlinePlayer(args[0]);
+            case 1 -> isConfigModePlayer(args[0]);
             case 2 -> isTabCompleteMessage(commandSender, args[1], "message");
         }
 
