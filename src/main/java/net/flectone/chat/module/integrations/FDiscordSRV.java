@@ -13,12 +13,16 @@ import github.scarsz.discordsrv.util.TimeUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.builder.MessageBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.BiFunction;
+
+import static net.flectone.chat.manager.FileManager.integrations;
 
 /*
 
@@ -170,13 +174,16 @@ public class FDiscordSRV implements Listener, FIntegration {
 
     @Subscribe(priority = ListenerPriority.HIGHEST)
     public void onChatMessageFromInGame(@NotNull GameChatMessagePreProcessEvent event) {
-//        Player player = event.getPlayer();
-//
-//        String message = event.getMessage();
-//
-//        message = ObjectUtil.buildFormattedMessage(player, "discordchat", message, player.getInventory().getItemInMainHand());
-//
-//        event.setMessage(message);
+        Player player = event.getPlayer();
+
+        String message = event.getMessage();
+
+        List<String> features = integrations.getStringList("DiscordSRV.features");
+
+        MessageBuilder messageBuilder = new MessageBuilder(player, player.getInventory().getItemInMainHand(), message, features);
+        message = messageBuilder.getMessage("");
+
+        event.setMessage(message);
     }
 
     @Override

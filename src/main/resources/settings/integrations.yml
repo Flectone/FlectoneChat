@@ -1,5 +1,3 @@
-DiscordSRV:
-  enable: true
 PlaceholderAPI:
   enable: true
 InteractiveChat:
@@ -14,3 +12,6 @@ PlasmoVoice:
   enable: true
 VoiceChat:
   enable: true
+DiscordSRV:
+  enable: true
+  features: [ swear-protection, patterns, formatting ]
