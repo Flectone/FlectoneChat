@@ -50,6 +50,11 @@ public class CommandClearmail extends FCommand {
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
+        if (cmdSettings.isConsole()) {
+            sendMessage(commandSender, getModule() + ".console");
+            return;
+        }
+
         String targetPlayer = args[0];
         FPlayer fTarget = FPlayerManager.getOffline(targetPlayer);
         if (fTarget == null) {
