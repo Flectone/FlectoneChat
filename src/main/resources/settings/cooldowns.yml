@@ -97,7 +97,7 @@ default:
       enable: false
       time: 5
     me:
-      enable: true
+      enable: false
       time: 5
     tell:
       enable: false
@@ -115,10 +115,10 @@ default:
       enable: false
       time: 5
     try:
-      enable: true
+      enable: false
       time: 5
     dice:
-      enable: true
+      enable: false
       time: 5
     afk:
       enable: false
