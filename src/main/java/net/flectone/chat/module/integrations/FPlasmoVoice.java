@@ -1,32 +1,44 @@
 package net.flectone.chat.module.integrations;
 
+import com.google.inject.Inject;
 import net.flectone.chat.FlectoneChat;
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import su.plo.voice.api.addon.AddonInitializer;
+import su.plo.voice.api.addon.AddonLoaderScope;
+import su.plo.voice.api.addon.ServerAddonsLoader;
+import su.plo.voice.api.addon.annotation.Addon;
+import su.plo.voice.api.server.PlasmoVoiceServer;
+import su.plo.voice.api.server.mute.MuteDurationUnit;
 
-// shitcode until the plasmo devs make a usable api
-public class FPlasmoVoice implements FIntegration {
+import java.util.UUID;
+
+@Addon(id = "FlectoneChat", scope = AddonLoaderScope.SERVER, version = "1.0.0", authors = {"TheFaser, fxd"})
+public class FPlasmoVoice implements FIntegration, AddonInitializer {
+
+    @Inject
+    private PlasmoVoiceServer voiceServer;
 
     public FPlasmoVoice() {
         init();
     }
 
-    public static void mute(boolean unmute, @NotNull String player, @NotNull String time, @NotNull String reason) {
-        if (unmute) unmute(player);
-        executeCommand("vmute " + player + " " + time + " " + reason);
+    public void mute(@NotNull Player player, @Nullable UUID moderator, int time, @NotNull String reason) {
+        voiceServer.getMuteManager().mute(player.getUniqueId(), moderator, time, MuteDurationUnit.SECOND, reason, true);
     }
 
-    public static void unmute(@NotNull String player) {
-        executeCommand("vunmute " + player);
-    }
-
-    private static void executeCommand(@NotNull String command) {
-        Bukkit.getScheduler().runTask(FlectoneChat.getInstance(), () ->
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command));
+    public void unmute(@NotNull Player player) {
+        voiceServer.getMuteManager().unmute(player.getUniqueId(), true);
     }
 
     @Override
     public void init() {
+        ServerAddonsLoader.INSTANCE.load(this);
+    }
+
+    @Override
+    public void onAddonInitialize() {
         FlectoneChat.info("PlasmoVoice detected and hooked");
     }
 }

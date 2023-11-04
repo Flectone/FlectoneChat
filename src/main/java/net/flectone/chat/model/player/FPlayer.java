@@ -8,6 +8,7 @@ import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
 import net.flectone.chat.module.player.nameTag.NameTagModule;
 import net.flectone.chat.module.player.world.WorldModule;
@@ -167,6 +168,10 @@ public class FPlayer {
                 FlectoneChat.getDatabase().updateFPlayer("mutes", mute));
 
         FPlayerManager.getMUTED_PLAYERS().add(getMinecraftName());
+
+        if (player != null) {
+            IntegrationsModule.mutePlasmoVoice(player, moderator == null ? null : UUID.fromString(moderator), time, reason);
+        }
     }
 
     public void unmute() {
@@ -175,6 +180,10 @@ public class FPlayer {
 
         FlectoneChat.getDatabase().execute(() ->
                 FlectoneChat.getDatabase().deleteRow("mutes", "player", uuid.toString()));
+
+        if (player != null) {
+            IntegrationsModule.unmutePlasmoVoice(player);
+        }
     }
 
     public void ban(String reason, int time, String moderator) {

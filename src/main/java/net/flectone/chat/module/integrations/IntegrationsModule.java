@@ -152,4 +152,16 @@ public class IntegrationsModule extends FModule {
         FIntegration discordSRV = INTEGRATIONS_MAP.get("DiscordSRV");
         if (discordSRV != null) ((FDiscordSRV) discordSRV).unsubscribe();
     }
+
+    public static void mutePlasmoVoice(@NotNull Player player, @Nullable UUID moderator, int time, @NotNull String reason) {
+        FIntegration fIntegration = get("PlasmoVoice");
+        if (fIntegration == null) return;
+        ((FPlasmoVoice) fIntegration).mute(player, moderator, time, reason);
+    }
+
+    public static void unmutePlasmoVoice(@NotNull Player player) {
+        FIntegration fIntegration = get("PlasmoVoice");
+        if (fIntegration == null) return;
+        ((FPlasmoVoice) fIntegration).unmute(player);
+    }
 }

@@ -1,6 +1,6 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'net'
@@ -42,6 +42,10 @@ repositories {
         url = "https://nexus.iridiumdevelopment.net/repository/maven-releases/"
     }
 
+    maven {
+        url = "https://repo.plo.su"
+    }
+
 }
 
 dependencies {
@@ -49,6 +53,8 @@ dependencies {
 
     implementation "com.iridium:IridiumColorAPI:1.0.6"
     implementation 'org.jetbrains:annotations:24.0.0'
+
+    compileOnly "su.plo.voice.api:server:2.0.3"
 
     compileOnly "com.loohp:InteractiveChat:4.2.7.2"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
