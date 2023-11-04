@@ -8,11 +8,17 @@ import net.luckperms.api.event.node.NodeAddEvent;
 import net.luckperms.api.event.node.NodeMutateEvent;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class FLuckPerms implements FIntegration {
 
@@ -56,11 +62,15 @@ public class FLuckPerms implements FIntegration {
         FlectoneChat.info("LuckPerms detected and hooked");
     }
 
-    public int getPlayerGroupWeight(@NotNull Player player) {
+    public int getPrimaryGroupWeight(@NotNull Player player) {
         String primaryGroup = getPrimaryGroup(player);
         if (primaryGroup == null) return 0;
 
-        Group group = provider.getGroupManager().getGroup(primaryGroup);
+        return getGroupWeight(primaryGroup);
+    }
+
+    public int getGroupWeight(@NotNull String groupName) {
+        Group group = provider.getGroupManager().getGroup(groupName);
         if (group == null) return 0;
 
         return group.getWeight().orElse(0);

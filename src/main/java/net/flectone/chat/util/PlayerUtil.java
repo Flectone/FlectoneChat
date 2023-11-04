@@ -37,11 +37,12 @@ public class PlayerUtil {
         return suffix != null ? suffix : "";
     }
 
-    public static String getVaultGroup(@Nullable CommandSender sender) {
+    @NotNull
+    public static String getPrimaryGroup(@Nullable CommandSender sender) {
         String playerGroup = null;
 
         if (sender instanceof Player player) {
-            playerGroup = IntegrationsModule.getGroup(player);
+            playerGroup = IntegrationsModule.getPrimaryGroup(player);
         }
 
         return playerGroup != null ? playerGroup : "default";

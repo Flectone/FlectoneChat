@@ -88,7 +88,7 @@ public class TabModule extends FModule {
     }
 
     private List<String> getTabMap(HashMap<String, List<String>> map, Player player, String type) {
-        String playerGroup = PlayerUtil.getVaultGroup(player);
+        String playerGroup = PlayerUtil.getPrimaryGroup(player);
         List<String> tabList = map.get(playerGroup);
         if (tabList != null) return tabList;
 

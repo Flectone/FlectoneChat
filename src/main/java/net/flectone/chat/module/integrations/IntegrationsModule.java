@@ -81,7 +81,7 @@ public class IntegrationsModule extends FModule {
     public static int getPrimaryGroupWeight(@NotNull Player player) {
         FIntegration fIntegration = get("LuckPerms");
         if (fIntegration == null) return 0;
-        return ((FLuckPerms) fIntegration).getPlayerGroupWeight(player);
+        return ((FLuckPerms) fIntegration).getPrimaryGroupWeight(player);
     }
 
     @Nullable
@@ -103,7 +103,7 @@ public class IntegrationsModule extends FModule {
     }
 
     @Nullable
-    public static String getGroup(@NotNull Player player) {
+    public static String getPrimaryGroup(@NotNull Player player) {
         FIntegration luckPerms = get("LuckPerms");
         if (luckPerms != null) return ((FLuckPerms) luckPerms).getPrimaryGroup(player);
         FIntegration vault = get("Vault");

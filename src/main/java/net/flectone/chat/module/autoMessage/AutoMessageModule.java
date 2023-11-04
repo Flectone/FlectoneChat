@@ -75,7 +75,7 @@ public class AutoMessageModule extends FModule {
     }
 
     private List<String> getMessageMap(HashMap<String, List<String>> map, Player player) {
-        String playerGroup = PlayerUtil.getVaultGroup(player);
+        String playerGroup = PlayerUtil.getPrimaryGroup(player);
         List<String> messageList = map.get(playerGroup);
         if (messageList != null) return messageList;
 

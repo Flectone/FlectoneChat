@@ -56,7 +56,7 @@ public class BrandModule extends FModule {
     }
 
     public String incrementIndexAndGet(Player player) {
-        String playerGroup = PlayerUtil.getVaultGroup(player);
+        String playerGroup = PlayerUtil.getPrimaryGroup(player);
         List<String> brandList = GROUP_BRAND_LIST.get(playerGroup);
         if (brandList == null) {
             brandList = locale.getVaultStringList(player, this + ".message");

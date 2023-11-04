@@ -46,7 +46,7 @@ public class FormattingModule extends FModule {
     public HashMap<String, String> load(@Nullable Player player) {
         HashMap<String, String> groupFormattingMap = new HashMap<>();
 
-        String vaultGroup = PlayerUtil.getVaultGroup(player);
+        String vaultGroup = PlayerUtil.getPrimaryGroup(player);
         if (FORMATTING_MAP.containsKey(vaultGroup)) return FORMATTING_MAP.get(vaultGroup);
 
         if (!hasNoPermission(player)) {

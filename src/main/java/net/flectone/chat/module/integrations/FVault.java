@@ -44,5 +44,4 @@ public class FVault implements FIntegration {
     public String getSuffix(@NotNull Player player) {
         return provider.getPlayerSuffix(player);
     }
-
 }

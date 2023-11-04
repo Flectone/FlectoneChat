@@ -70,7 +70,7 @@ public class NameTagModule extends FModule {
         if (!config.getVaultBoolean(player, this + ".sort.enable")) return playerName;
         if (hasNoPermission(player, "sort")) return playerName;
 
-        int rank = IntegrationsModule.getGroupWeight(player);
+        int rank = IntegrationsModule.getPrimaryGroupWeight(player);
 
         return PlayerUtil.generateSortString(rank, player.getName());
     }

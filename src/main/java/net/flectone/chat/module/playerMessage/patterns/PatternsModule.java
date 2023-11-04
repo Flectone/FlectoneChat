@@ -31,7 +31,7 @@ public class PatternsModule extends FModule {
     public HashMap<String, String> load(@Nullable Player player) {
         HashMap<String, String> groupPatternMap = new HashMap<>();
 
-        String vaultGroup = PlayerUtil.getVaultGroup(player);
+        String vaultGroup = PlayerUtil.getPrimaryGroup(player);
         if (PATTERN_MAP.containsKey(vaultGroup)) return PATTERN_MAP.get(vaultGroup);
 
         List<String> patternList = config.getCustomList(player, this + ".list");
