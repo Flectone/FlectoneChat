@@ -4,6 +4,9 @@
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 default:
+  mention:
+    enable: true
+    type: "BLOCK_NOTE_BLOCK_BELL:1:1"
   auto-message:
     enable: false
     type: "BLOCK_NOTE_BLOCK_BELL:1:1"

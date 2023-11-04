@@ -66,7 +66,7 @@ public class FormattingModule extends FModule {
     }
 
     public void replace(@Nullable Player player, @NotNull String message, @NotNull String command,
-                               @NotNull List<WordParams> messages, @Nullable ItemStack itemStack,
+                               @NotNull List<WordParams> messages, @Nullable ItemStack itemStack, boolean mentionEnabled,
                                boolean isEnabled) {
 
         HashMap<String, String> formattingMap = load(player);
@@ -111,12 +111,12 @@ public class FormattingModule extends FModule {
 
         if (sortedPairs.isEmpty()) {
             lastTextParamaters = new TextParameters(message);
-            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, isEnabled);
+            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
 
         } else if (sortedPairs.get(0).getValue() != 0) {
             String startText = message.substring(0, sortedPairs.get(0).getValue());
             lastTextParamaters = new TextParameters(startText);
-            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, isEnabled);
+            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
         }
 
         for (int x = 0; x < sortedPairs.size() - 1; x++) {
@@ -137,7 +137,7 @@ public class FormattingModule extends FModule {
 
             lastTextParamaters = textParameters;
 
-            splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, isEnabled);
+            splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
         }
 
         if (!sortedPairs.isEmpty()) {
@@ -147,7 +147,7 @@ public class FormattingModule extends FModule {
                 String endText = message.substring(pairA.getValue() + pairA.getKey().length());
                 TextParameters textParameters = new TextParameters(endText);
 
-                splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, isEnabled);
+                splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
             }
         }
 
@@ -156,7 +156,7 @@ public class FormattingModule extends FModule {
     private void splitStringToWordParams(@Nullable Player sender, @NotNull String command,
                                          @NotNull TextParameters textParameters, @NotNull List<WordParams> messages,
                                          @Nullable ItemStack itemStack, @NotNull HashMap<String, String> formattingMap,
-                                         boolean isEnabled) {
+                                         boolean mentionEnabled, boolean isEnabled) {
         String text = textParameters.getText();
 
         if (text.equals(" ")) {
@@ -184,7 +184,7 @@ public class FormattingModule extends FModule {
             }
 
             if (word.startsWith(mentionPrefix)
-                    && formattingMap.containsKey("mention")) {
+                    && formattingMap.containsKey("mention") && mentionEnabled) {
                 String playerName = word.replaceFirst(mentionPrefix, "");
 
                 FPlayer fPlayer = FPlayerManager.get(playerName);
@@ -198,12 +198,9 @@ public class FormattingModule extends FModule {
                     wordParams.setPlayerPing(true);
                     wordParams.setText(word);
 
-                    //need rewrite
-                    if(!config.getBoolean("chat.global.enable") || command.equals("globalchat")) {
-                        FModule fModule1 = FlectoneChat.getModuleManager().get(SoundsModule.class);
-                        if (fModule1 instanceof SoundsModule soundsModule) {
-                            soundsModule.play(new FSound(player, "chatping"));
-                        }
+                    FModule fModule1 = FlectoneChat.getModuleManager().get(SoundsModule.class);
+                    if (fModule1 instanceof SoundsModule soundsModule) {
+                        soundsModule.play(new FSound(player, "mention"));
                     }
 
                     return wordParams;

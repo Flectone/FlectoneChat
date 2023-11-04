@@ -52,7 +52,8 @@ public class MessageBuilder {
 
         FModule fModule = FlectoneChat.getModuleManager().get(FormattingModule.class);
         if (fModule instanceof FormattingModule formattingModule) {
-            formattingModule.replace(sender, message, "", messages, itemStack, featuresList.contains("formatting"));
+            boolean mentionEnabled = featuresList.contains("mention");
+            formattingModule.replace(sender, message, "", messages, itemStack, mentionEnabled, featuresList.contains("formatting"));
         } else {
             WordParams wordParams = new WordParams();
             wordParams.setText(message);
