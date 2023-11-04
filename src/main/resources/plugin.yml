@@ -159,7 +159,7 @@ permissions:
     default: true
   flectonechat.commands.chatsettings.mail:
     default: true
-  flectonechat.commands.chatsettings.tic-tac-toe:
+  flectonechat.commands.chatsettings.tictactoe:
     default: true
   flectonechat.commands.chatsettings.kick:
     default: true

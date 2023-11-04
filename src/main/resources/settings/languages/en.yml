@@ -85,13 +85,13 @@ default:
 
     advancement:
       task:
-        name: "#4eff52🌠 &&2<player> &&1has made the task #4eff52[<advancement>]"
+        name: "#4eff52🌠 &&2<player> &&1has completed the task #4eff52[<advancement>]"
         hover: "#4eff52<name> \n<description>"
       goal:
-        name: "#f2d40f🌠 &&2<player> &&1reached the goal #f2d40f[<advancement>]"
+        name: "#f2d40f🌠 &&2<player> &&1completed the goal #f2d40f[<advancement>]"
         hover: "#f2d40f<name> \n<description>"
       challenge:
-        name: "#834eff🌠 &&2<player> &&1has made the challenge #834eff[<advancement>]"
+        name: "#834eff🌠 &&2<player> &&1has completed the challenge #834eff[<advancement>]"
         hover: "#834eff<name> \n<description>"
 
     join:
@@ -254,7 +254,7 @@ default:
         tell: "&&2/tell"
         reply: "&&2/reply"
         mail: "&&2/mail"
-        tic-tac-toe: "&&2/tic-tac-toe"
+        tictactoe: "&&2/tictactoe"
 
       color:
         false: "#ff4e4e[❌] "
@@ -267,7 +267,7 @@ default:
         - "&&1------------------------"
         - "&&1Server messages: \n <advancement> \n <death> \n <join> \n <quit> \n <auto-message>"
         - "&&1------------------------"
-        - "&&1Command alerts: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tic-tac-toe>"
+        - "&&1Command alerts: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe>"
         - "&&1------------------------"
         - "&&1Be sure to save your settings with /chatsettings save"
 
@@ -279,7 +279,7 @@ default:
       message: "&&1⌛ <player> was first on server <time> ago"
 
     flectonechat:
-      usage: "&&1⚑ Usage: &&2/<command> reload/config/locale"
+      usage: "&&1⚑ Usage: &&2/<command> reload/set"
       wrong-file: "#ff4e4e⁉ Enter the correct file name"
       message: "&&1★ Plugin successfully reloaded!"
 

@@ -1,6 +1,7 @@
 package net.flectone.chat.manager;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,10 @@ public class FileManager {
 
     public static void init() {
         config = Type.CONFIG.load();
+
+        Type.LOCALE.setFileName(config.getString("plugin.language"));
         locale = Type.LOCALE.load();
+
         modules = Type.MODULES.load();
         commands = Type.COMMANDS.load();
         sounds = Type.SOUNDS.load();
@@ -97,8 +101,9 @@ public class FileManager {
         @Getter
         private FConfiguration file;
         private final String filePath;
+        @Setter
         @Getter
-        private final String fileName;
+        private String fileName;
         Type(@NotNull String filePath, @NotNull String fileName) {
             this.filePath = filePath;
             this.fileName = fileName;
