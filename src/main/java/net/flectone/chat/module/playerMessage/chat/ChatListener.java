@@ -8,6 +8,7 @@ import net.flectone.chat.module.commands.SpyListener;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,6 +96,7 @@ public class ChatListener extends FListener {
             String chatTrigger = config.getVaultString(sender, getModule() + ".list." + playerChat + ".prefix.trigger");
             if (!chatTrigger.isEmpty() && message.startsWith(chatTrigger)) {
                 message = message.replaceFirst(chatTrigger, "");
+                if (message.startsWith(" ")) message = message.replaceFirst(" ", "");
             }
         }
 
@@ -129,6 +131,8 @@ public class ChatListener extends FListener {
         ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList);
 
         fPlayer.playSound(sender, recipientsList, getModule() + "." + playerChat);
+
+        recipientsList.removeIf(player -> player.getGameMode() == GameMode.SPECTATOR);
 
         boolean noRecipientsMessageEnabled = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".no-recipients.enable");
         if ((recipientsList.isEmpty() || recipientsList.size() == 1) && noRecipientsMessageEnabled) {
