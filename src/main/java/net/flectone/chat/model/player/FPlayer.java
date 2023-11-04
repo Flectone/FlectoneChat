@@ -262,6 +262,39 @@ public class FPlayer {
         String value = getSettings().getValue(Settings.Type.STREAM);
         return value != null && value.equals("1");
     }
+
+
+    private static final HashMap<String, Integer> COOLDOWN_MAP = new HashMap<>();
+    private Integer cooldownTime;
+
+    public boolean isHaveCooldown(@NotNull String action) {
+        String cooldownMapKey = getUuid() + action;
+
+        if (!cooldowns.getVaultBoolean(player, action + ".enable")) return false;
+
+        cooldownTime = COOLDOWN_MAP.get(cooldownMapKey);
+        boolean isHaveCooldown = cooldownTime != null
+                && cooldownTime > TimeUtil.getCurrentTime()
+                && !getPlayer().hasPermission("flectonechat.cooldowns." + action + ".bypass");
+
+        if (!isHaveCooldown) {
+            cooldownTime = cooldowns.getVaultInt(getPlayer(), action + ".time");
+            COOLDOWN_MAP.put(cooldownMapKey, cooldownTime + TimeUtil.getCurrentTime());
+        }
+
+        return isHaveCooldown;
+    }
+
+    public void sendCDMessage(@NotNull String action) {
+        String message = locale.getVaultString(player, "commands.cooldown");
+        message = message
+                .replace("<alias>", action)
+                .replace("<time>", TimeUtil.convertTime(player, cooldownTime - TimeUtil.getCurrentTime()));
+        message = MessageUtil.formatAll(player, message);
+
+        player.sendMessage(message);
+    }
+
     public void sendMutedMessage() {
         String message = locale.getVaultString(player, "commands.muted");
 

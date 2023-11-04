@@ -41,6 +41,14 @@ public class SignListener extends FListener {
             event.setCancelled(true);
         }
 
+        if (fPlayer.isHaveCooldown(getModule().toString())) {
+            fPlayer.sendCDMessage("sign");
+            event.setCancelled(true);
+            return;
+        }
+
+        fPlayer.playSound(getModule().toString());
+
         List<String> features = config.getVaultStringList(player, getModule() + ".features");
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 

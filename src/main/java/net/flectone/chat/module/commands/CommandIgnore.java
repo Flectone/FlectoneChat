@@ -44,6 +44,11 @@ public class CommandIgnore extends FCommand {
             return true;
         }
 
+        if (cmdSettings.isHaveCooldown()) {
+            cmdSettings.getFPlayer().sendCDMessage(alias);
+            return true;
+        }
+
         String ignoredPlayerName = args[0];
         if (ignoredPlayerName.equalsIgnoreCase(commandSender.getName())) {
             sendMessage(commandSender, this + ".myself");

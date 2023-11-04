@@ -45,6 +45,11 @@ public class CommandChatsettings extends FCommand {
             return true;
         }
 
+        if (cmdSettings.isHaveCooldown()) {
+            cmdSettings.getFPlayer().sendCDMessage(alias);
+            return true;
+        }
+
         FPlayer fPlayer = cmdSettings.getFPlayer();
 
         if (args.length == 1 && args[0].equals("save")) {

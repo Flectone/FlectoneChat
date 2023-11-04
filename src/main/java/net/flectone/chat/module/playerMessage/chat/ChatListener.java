@@ -75,6 +75,12 @@ public class ChatListener extends FListener {
             return;
         }
 
+        if (fPlayer.isHaveCooldown(getModule() + "." + playerChat)) {
+            fPlayer.sendCDMessage(playerChat);
+            event.setCancelled(true);
+            return;
+        }
+
         SpyListener.send(sender, playerChat, event.getMessage());
 
         boolean prefixIsCleared = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".prefix.cleared");

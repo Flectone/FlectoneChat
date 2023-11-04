@@ -89,7 +89,7 @@ public class CommandMail extends FCommand {
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            sendCDMessage(cmdSettings.getSender(), alias, cmdSettings.getCooldownTime());
+            cmdSettings.getFPlayer().sendCDMessage(alias);
             return;
         }
 
@@ -117,6 +117,8 @@ public class CommandMail extends FCommand {
         sendMessage = MessageUtil.formatAll(cmdSettings.getSender(), sendMessage);
 
         commandSender.sendMessage(sendMessage);
+
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
     }
 
     @Override

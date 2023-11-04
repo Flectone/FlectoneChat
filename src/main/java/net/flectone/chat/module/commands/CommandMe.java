@@ -34,7 +34,7 @@ public class CommandMe extends FCommand {
 
         CmdSettings cmdSettings = processCommand(commandSender, command);
         if (cmdSettings.isHaveCooldown()) {
-            sendCDMessage(cmdSettings.getSender(), alias, cmdSettings.getCooldownTime());
+            cmdSettings.getFPlayer().sendCDMessage(alias);
             return true;
         }
 

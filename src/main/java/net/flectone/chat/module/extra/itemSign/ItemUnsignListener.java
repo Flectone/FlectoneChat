@@ -46,6 +46,12 @@ public class ItemUnsignListener extends FListener {
             fPlayer.sendMutedMessage();
             return;
         }
+
+        if (fPlayer.isHaveCooldown(getModule() + ".unsign")) {
+            fPlayer.sendCDMessage("unsign");
+            return;
+        }
+
         boolean dropDyeEnabled = config.getVaultBoolean(player, getModule() + ".unsign.drop-dye");
         boolean isCompleted = ((ItemSignModule) getModule()).unsign(player, clickedBlock.getLocation(),
                 player.getInventory(), dropDyeEnabled);

@@ -61,6 +61,14 @@ public class MarkListener extends FListener {
             fPlayer.sendMutedMessage();
             return;
         }
+
+        if (fPlayer.isHaveCooldown(getModule().toString())) {
+            fPlayer.sendCDMessage("mark");
+            return;
+        }
+
+        fPlayer.playSound(getModule().toString());
+
         String itemName = itemStack.getItemMeta().getDisplayName().toUpperCase();
         String color = COLOR_VALUES.contains(itemName)
                 ? itemName

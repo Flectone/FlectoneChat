@@ -66,7 +66,7 @@ public class CommandIgnorelist extends FCommand {
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            sendCDMessage(cmdSettings.getSender(), alias, cmdSettings.getCooldownTime());
+            cmdSettings.getFPlayer().sendCDMessage(alias);
             return true;
         }
 

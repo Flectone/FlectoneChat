@@ -54,6 +54,12 @@ public class KnockingListener extends FListener {
             fPlayer.sendMutedMessage();
             return;
         }
+
+        if (fPlayer.isHaveCooldown(getModule() + "." + knockingBlock.get())) {
+            fPlayer.sendCDMessage("knocking_" + knockingBlock.get());
+            return;
+        }
+
         Location location = block.getLocation();
         location.setX(location.getX() + 0.5);
         location.setZ(location.getZ() + 0.5);

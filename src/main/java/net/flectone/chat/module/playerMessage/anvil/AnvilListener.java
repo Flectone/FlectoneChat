@@ -3,12 +3,9 @@ package net.flectone.chat.module.playerMessage.anvil;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
-import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.commands.SpyListener;
-import net.flectone.chat.util.MessageUtil;
-import net.flectone.chat.util.TimeUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,6 +47,12 @@ public class AnvilListener extends FListener {
         if (fPlayer.isMuted()) {
             fPlayer.sendMutedMessage();
             event.setCancelled(true);
+        }
+
+        if (fPlayer.isHaveCooldown(getModule().toString())) {
+            fPlayer.sendCDMessage("anvil");
+            event.setCancelled(true);
+            return;
         }
 
         ItemStack itemStack = event.getCurrentItem();

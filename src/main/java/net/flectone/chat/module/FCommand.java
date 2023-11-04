@@ -293,6 +293,11 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
             }
         }
 
+        public boolean isHaveCooldown() {
+            if (fPlayer == null) return false;
+            return fPlayer.isHaveCooldown("commands." + commandName);
+        }
+
         public boolean isMuted() {
             if (fPlayer == null) return false;
             return fPlayer.isMuted();

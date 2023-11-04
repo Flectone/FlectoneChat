@@ -38,7 +38,7 @@ public class CommandAfk extends FCommand {
         }
 
         if (commandCmdSettings.isHaveCooldown()) {
-            sendCDMessage(commandCmdSettings.getSender(), s, commandCmdSettings.getCooldownTime());
+            commandCmdSettings.getFPlayer().sendCDMessage(s);
             return true;
         }
 

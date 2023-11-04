@@ -43,6 +43,12 @@ public class BookListener extends FListener {
             event.setCancelled(true);
         }
 
+        if (fPlayer.isHaveCooldown(getModule().toString())) {
+            fPlayer.sendCDMessage("book");
+            event.setCancelled(true);
+            return;
+        }
+
         BookMeta bookMeta = event.getNewBookMeta();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 

@@ -76,7 +76,7 @@ public class CommandClearmail extends FCommand {
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            sendCDMessage(cmdSettings.getSender(), alias, cmdSettings.getCooldownTime());
+            cmdSettings.getFPlayer().sendCDMessage(alias);
             return;
         }
 

@@ -48,6 +48,12 @@ public class ItemSignListener extends FListener {
             fPlayer.sendMutedMessage();
             return;
         }
+
+        if (fPlayer.isHaveCooldown(getModule().toString())) {
+            fPlayer.sendCDMessage("item-sign");
+            return;
+        }
+
         String signFormat = config.getVaultString(player, getModule() + ".format");
 
         signFormat = MessageUtil.formatPlayerString(player, signFormat);

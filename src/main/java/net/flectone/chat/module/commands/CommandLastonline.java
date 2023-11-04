@@ -48,7 +48,7 @@ public class CommandLastonline extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            sendCDMessage(cmdSettings.getSender(), alias, cmdSettings.getCooldownTime());
+            cmdSettings.getFPlayer().sendCDMessage(alias);
             return true;
         }
 
