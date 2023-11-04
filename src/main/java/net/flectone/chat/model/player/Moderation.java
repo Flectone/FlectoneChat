@@ -1,7 +1,6 @@
 package net.flectone.chat.model.player;
 
 import lombok.Getter;
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -33,8 +32,6 @@ public class Moderation {
     }
 
     public boolean isExpired() {
-        FlectoneChat.warning(String.valueOf(time));
-        FlectoneChat.warning(String.valueOf((TimeUtil.getCurrentTime() > time) && (time != -1)));
         return (TimeUtil.getCurrentTime() >= time) && (time != -1);
     }
 

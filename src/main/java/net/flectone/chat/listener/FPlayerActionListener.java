@@ -68,7 +68,6 @@ public class FPlayerActionListener extends FListener {
 
     @EventHandler
     public void onLoginPlayer(@NotNull AsyncPlayerPreLoginEvent event) {
-        FlectoneChat.warning(String.valueOf(event.isAsynchronous()));
 
         if (!FPlayerManager.getBANNED_PLAYERS().contains(event.getUniqueId())) return;
 
