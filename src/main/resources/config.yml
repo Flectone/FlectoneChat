@@ -145,7 +145,7 @@ default:
       tab: "<player_prefix>&f<player_name_real><player_suffix>"
 
       prefix: "<world_prefix><vault_prefix><stream_prefix>"
-      real: "<GRADIENT:2C08BA><player></GRADIENT:028A97>"
+      real: "<GRADIENT:11b8f0><player></GRADIENT:87cee6>"
       suffix: "<afk_suffix><vault_suffix>"
 
     name-tag:
@@ -358,6 +358,6 @@ default:
     enable: true
 
     list:
-      "&&1": "#1abaf0"
-      "&&2": "#77d7f7"
+      "&&1": "#68d0f2"
+      "&&2": "#bce8f7"
       #...
