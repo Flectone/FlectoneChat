@@ -146,7 +146,7 @@ default:
     name-tag:
       enable: true
 
-      visible: true
+      visible: false
 
       suffix:
         enable: true
