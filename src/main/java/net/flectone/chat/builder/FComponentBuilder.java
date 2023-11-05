@@ -66,8 +66,8 @@ public class FComponentBuilder {
         return split;
     }
 
+    @FunctionalInterface
     public interface Replace {
-
         void action(ComponentBuilder componentBuilder, String color);
     }
 }
