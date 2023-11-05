@@ -40,6 +40,8 @@ public class AfkTimeoutModule extends FModule {
         if (!isAfk) {
             List<String> list = config.getVaultStringList(player, this + ".take-out-actions");
             if (!list.contains(takeOutAction)) return;
+
+            LAST_BLOCK_MAP.put(player.getUniqueId(), null);
         }
 
         FPlayer fPlayer = FPlayerManager.get(player);
