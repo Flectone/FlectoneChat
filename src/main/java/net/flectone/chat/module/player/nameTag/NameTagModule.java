@@ -80,7 +80,7 @@ public class NameTagModule extends FModule {
         if (team == null) return;
         if (hasNoPermission(player, "visible")) return;
 
-        boolean isVisible = config.getVaultBoolean(player, this + ".visible.enable");
+        boolean isVisible = config.getVaultBoolean(player, this + ".visible");
 
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, isVisible
                 ? Team.OptionStatus.ALWAYS
