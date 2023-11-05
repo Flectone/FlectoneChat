@@ -62,7 +62,7 @@ public final class FlectoneChat extends JavaPlugin {
 
         if (FileManager.config.getBoolean("plugin.bStats.enable")) {
             Metrics bStats = new Metrics(this, 20209);
-            bStats.addCustomChart(new Metrics.SimplePie("language", () -> FileManager.config.getString("plugin.language")));
+            bStats.addCustomChart(new Metrics.SimplePie("plugin_language", () -> FileManager.config.getString("plugin.language")));
             bStats.addCustomChart(new Metrics.AdvancedPie("modules", () -> {
                 Map<String, Integer> map = new HashMap<>();
                 FlectoneChat.getModuleManager().getModules().forEach(fModule -> map.put(fModule.getName(), 1));
