@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static net.flectone.chat.manager.FileManager.config;
@@ -32,11 +33,18 @@ public class AfkTimeoutModule extends FModule {
         register();
 
         FActionManager.add(new AfkTimeoutTicker(this));
+        FActionManager.add(new AfkTimeoutListener(this));
     }
 
-    public void setAfk(@NotNull Player player, boolean isAfk) {
+    public void setAfk(@NotNull Player player, boolean isAfk, @NotNull String takeOutAction) {
+        if (!isAfk) {
+            List<String> list = config.getVaultStringList(player, this + ".take-out-actions");
+            if (!list.contains(takeOutAction)) return;
+        }
+
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return;
+        if (fPlayer.isAfk() == isAfk) return;
 
         String afkSuffix = isAfk
                 ? locale.getVaultString(player, "commands.afk.suffix")
@@ -62,7 +70,7 @@ public class AfkTimeoutModule extends FModule {
             if (afkTimeout != 0) afkTimeout /= 20;
 
             if (getAfkTime(player) >= afkTimeout) {
-                setAfk(player, true);
+                setAfk(player, true, "move");
                 fPlayer.playSound(player, player, this + "-true");
             }
 
@@ -74,7 +82,7 @@ public class AfkTimeoutModule extends FModule {
 
         if (!fPlayer.isAfk()) return;
 
-        setAfk(player, false);
+        setAfk(player, false, "move");
         fPlayer.playSound(player, player, this + "-false");
     }
 

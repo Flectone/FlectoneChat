@@ -183,6 +183,13 @@ default:
       # ticks
       time: 3000
 
+      take-out-actions:
+        - commands
+        - chat
+        - move
+        # - right-click
+        # - left-click
+
     right-click:
       enable: true
       format: "&&1-⏴ &&2<player> &&1⏵-"
