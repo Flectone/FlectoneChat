@@ -20,3 +20,9 @@ jobs:
 
       - name: Run build with Gradle Wrapper
         run: ./gradlew shadowJar
+
+      - name: Publish artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: FlectoneChat
+          path: build/libs
