@@ -9,6 +9,7 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.manager.FileManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.serverMessage.advancement.AdvancementModule;
+import net.flectone.chat.model.metric.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.java.JavaPlugin;

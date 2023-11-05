@@ -19,6 +19,7 @@ import net.flectone.chat.module.serverMessage.ServerMessageModule;
 import net.flectone.chat.module.sounds.SoundsModule;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 @Getter
@@ -37,6 +38,10 @@ public class FModuleManager {
     private ServerMessageModule serverMessageModule;
     private PlayerMessageModule playerMessageModule;
     private ColorModule colorModule;
+
+    public Collection<FModule> getModules() {
+        return F_MODULE_MAP.values();
+    }
 
     public void put(FModule fModule) {
         F_MODULE_MAP.put(fModule.getClass(), fModule);
