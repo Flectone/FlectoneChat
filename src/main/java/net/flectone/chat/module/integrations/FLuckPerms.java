@@ -5,17 +5,11 @@ import net.flectone.chat.FlectoneChat;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
-import net.luckperms.api.node.Node;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class FLuckPerms implements FIntegration {
 
@@ -77,16 +71,12 @@ public class FLuckPerms implements FIntegration {
     public String[] getGroups(@NotNull Player player) {
         User user = provider.getUserManager().getUser(player.getUniqueId());
         if (user == null) return null;
-        List<String> groupList = new ArrayList<>();
 
-        for (Node node : user.getDistinctNodes()) {
-            String groupName = node.getKey().substring(6);
-            groupList.add(groupName);
-        }
+        return user.getInheritedGroups(user.getQueryOptions())
+                .stream()
+                .map(Group::getName)
+                .toList()
+                .toArray(new String[]{});
 
-        groupList.sort(Comparator.comparing(this::getGroupWeight));
-        Collections.reverse(groupList);
-
-        return groupList.toArray(new String[]{});
     }
 }
