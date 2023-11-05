@@ -16,9 +16,13 @@ import static net.flectone.chat.manager.FileManager.config;
 public class PlayerUtil {
 
     public static String getIP(Player player) {
-        InetSocketAddress playerAddress = player.getAddress();
-        if (playerAddress == null) return "0.0.0.0";
-        return playerAddress.getHostName();
+        try {
+            InetSocketAddress playerAddress = player.getAddress();
+            if (playerAddress == null || playerAddress.isUnresolved()) return "0.0.0.0";
+            return playerAddress.getHostString();
+        } catch (Throwable e) {
+            return "0.0.0.0";
+        }
     }
 
     public static String getPing(Player player) {
