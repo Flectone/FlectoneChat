@@ -29,6 +29,7 @@ public class Spit {
     public void spawn() {
         LlamaSpit spit = (LlamaSpit) world.spawnEntity(location, EntityType.LLAMA_SPIT);
         spit.setVelocity(location.getDirection());
+        spit.setShooter(player);
 
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return;

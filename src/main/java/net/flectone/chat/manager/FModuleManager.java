@@ -1,10 +1,7 @@
 package net.flectone.chat.manager;
 
 import lombok.Getter;
-import net.flectone.chat.listener.ChatBubbleSpawnListener;
-import net.flectone.chat.listener.FPlayerActionListener;
-import net.flectone.chat.listener.FPlayerTicker;
-import net.flectone.chat.listener.MarkSpawnListener;
+import net.flectone.chat.listener.*;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.autoMessage.AutoMessageModule;
 import net.flectone.chat.module.chatBubble.ChatBubbleModule;
@@ -64,6 +61,7 @@ public class FModuleManager {
         FActionManager.add(new MarkSpawnListener(null));
         FActionManager.add(new ChatBubbleSpawnListener(null));
         FActionManager.add(new FPlayerTicker(null));
+        FActionManager.add(new SpitHitListener(null));
     }
 
     @Nullable
