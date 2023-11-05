@@ -18,11 +18,6 @@ plugin:
   bStats:
     enable: true
 
-# <player> - minecraft player name
-# <player_name_real> - player.name.real
-# <player_name_display> - player.name.display
-# <player_name_tab> - player.name.tab
-
 default:
   extra:
     enable: true
@@ -87,10 +82,8 @@ default:
       icon:
         enable: true
 
-        # Modes: single or random
         mode: random
 
-        # If "single" mode is enabled, only the first one will be displayed
         names:
           - "server-icon-1"
           - "server-icon-2"
@@ -100,7 +93,6 @@ default:
       player-count:
         enable: true
         number: 69
-        # permission bypass: flectonechat.server.status.player-count.bypass
 
   server-message:
     enable: true
@@ -108,11 +100,8 @@ default:
     death:
       enable: true
 
-      # if disabled, custom death messages will not be shown
       visible: true
 
-      # if enabled, then death from any mob will be located on the "death.mob.default",
-      # otherwise it will be necessary to register for each separately
       mob-default: true
 
       entity:
@@ -170,8 +159,6 @@ default:
     world:
       enable: true
 
-      # type or name
-      # if mode=name the language file should contain lines with names of the worlds
       mode: "type"
 
       normal: "#4eff52● &f"
@@ -186,15 +173,12 @@ default:
     afk-timeout:
       enable: true
 
-      # ticks
       time: 3000
 
       take-out-actions:
         - commands
         - chat
         - move
-        # - right-click
-        # - left-click
 
     right-click:
       enable: true
@@ -352,7 +336,6 @@ default:
             trigger: "!"
 
           set-cancelled: false
-        #...
 
   chat-bubble:
     enable: true
@@ -362,7 +345,7 @@ default:
 
   auto-message:
     enable: true
-    # if set to true, then the messages will be random
+
     random: false
 
     period: 600
@@ -373,4 +356,3 @@ default:
     list:
       "&&1": "#68d0f2"
       "&&2": "#bce8f7"
-      #...

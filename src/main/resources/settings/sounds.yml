@@ -1,6 +1,9 @@
-# Sound type format
-# SOUND_NAME:VOLUME:PITCH
-
+#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
+#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+#
+# You are advised to check out our plugin documentation
+# https://wiki-chat.flectone.net
+#
 # Sound type format
 # SOUND_NAME:VOLUME:PITCH
 default:
