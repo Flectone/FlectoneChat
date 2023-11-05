@@ -35,7 +35,10 @@ public class TabModule extends FModule {
 
         FActionManager.add(new TabListener(this));
         FActionManager.add(new TabTicker(this));
-        FActionManager.add(new TabPlayerPingTicker(this));
+
+        if (config.getBoolean("default.server.tab.player-ping.enable")) {
+            FActionManager.add(new TabPlayerPingTicker(this));
+        }
     }
 
     public void setPlayerListName(@NotNull Player player, @NotNull String string) {
