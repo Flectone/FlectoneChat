@@ -87,6 +87,24 @@ public class FileManager {
 
     }
 
+    public static int compareVersions(@NotNull String firstVersion, @NotNull String secondVersion) {
+        if (firstVersion.isEmpty()) return -1;
+        if (secondVersion.isEmpty()) return 1;
+
+        String[] parts1 = firstVersion.split("\\.");
+        String[] parts2 = secondVersion.split("\\.");
+
+        for (int x = 0; x < parts1.length; x++) {
+            int num1 = Integer.parseInt(parts1[x]);
+            int num2 = Integer.parseInt(parts2[x]);
+
+            if (num1 > num2) return 1;
+            else if (num1 < num2) return -1;
+        }
+
+        return 0;
+    }
+
     public enum Type {
 
         CONFIG("", "config"),
