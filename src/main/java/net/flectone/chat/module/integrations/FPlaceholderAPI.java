@@ -51,10 +51,12 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
             default -> null;
         };
 
+        if (placeholder != null) return placeholder;
+
         FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
-        if (!(fModule instanceof NameModule nameModule)) return placeholder;
+        if (!(fModule instanceof NameModule nameModule)) return null;
         Player onlinePlayer = fPlayer.getPlayer();
-        if (onlinePlayer == null) return placeholder;
+        if (onlinePlayer == null) return null;
 
         return switch (params.toLowerCase()) {
             case "player_name_real" -> nameModule.getReal(onlinePlayer);
