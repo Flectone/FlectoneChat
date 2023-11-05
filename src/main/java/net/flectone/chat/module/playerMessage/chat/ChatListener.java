@@ -142,6 +142,7 @@ public class ChatListener extends FListener {
 
         boolean isCancelled = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".set-cancelled");
         event.setCancelled(isCancelled);
+        event.setMessage(message);
         event.getRecipients().clear();
     }
 }
