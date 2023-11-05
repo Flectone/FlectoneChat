@@ -11,6 +11,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+
 public class FLuckPerms implements FIntegration {
 
     public FLuckPerms() {
@@ -67,16 +69,14 @@ public class FLuckPerms implements FIntegration {
         return user.getCachedData().getMetaData().getSuffix();
     }
 
-    @NotNull
-    public String[] getGroups(@NotNull Player player) {
+    @Nullable
+    public ArrayList<String> getGroups(@NotNull Player player) {
         User user = provider.getUserManager().getUser(player.getUniqueId());
         if (user == null) return null;
 
-        return user.getInheritedGroups(user.getQueryOptions())
+        return new ArrayList<>(user.getInheritedGroups(user.getQueryOptions())
                 .stream()
                 .map(Group::getName)
-                .toList()
-                .toArray(new String[]{});
-
+                .toList());
     }
 }

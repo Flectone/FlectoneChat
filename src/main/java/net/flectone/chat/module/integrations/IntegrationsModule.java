@@ -10,7 +10,9 @@ import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import static net.flectone.chat.manager.FileManager.integrations;
@@ -71,12 +73,16 @@ public class IntegrationsModule extends FModule {
     }
 
     @Nullable
-    public static String[] getGroups(@Nullable Player player) {
+    public static ArrayList<String> getGroups(@Nullable Player player) {
         if (player == null) return null;
         FIntegration luckPerms = get("LuckPerms");
         if (luckPerms != null) return ((FLuckPerms) luckPerms).getGroups(player);
         FIntegration vault = get("Vault");
-        if (vault != null) return new String[]{((FVault) vault).getPrimaryGroup(player)};
+        if (vault != null) {
+            String vaultGroup = ((FVault) vault).getPrimaryGroup(player);
+            if (vaultGroup == null) return null;
+            return new ArrayList<>(List.of(vaultGroup));
+        }
         return null;
     }
 

@@ -49,23 +49,19 @@ public class FConfiguration extends YamlConfiguration {
 
     @NotNull
     public List<String> getCustomList(@Nullable Player player, @NotNull String string) {
-        String[] playerGroups = IntegrationsModule.getGroups(player);
-        if (playerGroups == null) playerGroups = new String[]{"default"};
+        ArrayList<String> playerGroups = IntegrationsModule.getGroups(player);
+        if (playerGroups == null) playerGroups = new ArrayList<>(List.of("default"));
+        else if (!playerGroups.contains("default")) playerGroups.add("default");
 
         ArrayList<String> arrayList = new ArrayList<>();
         for (String group : playerGroups) {
-            ConfigurationSection configurationSection = this.getConfigurationSection(group + string);
-            if (configurationSection == null) {
-                configurationSection = this.getConfigurationSection(group + "." + string);
-                if (configurationSection == null) continue;
-            }
+            ConfigurationSection configurationSection = this.getConfigurationSection(group + "." + string);
+            if (configurationSection == null) continue;
 
             arrayList.addAll(configurationSection.getKeys(false));
         }
 
-        return arrayList.isEmpty()
-                ? this.getStringList("default." + string)
-                : arrayList;
+        return arrayList;
     }
 
     @NotNull
@@ -80,13 +76,13 @@ public class FConfiguration extends YamlConfiguration {
 
     @NotNull
     public String getVaultString(@Nullable CommandSender sender, @NotNull String string) {
-        String[] playerGroups = null;
+        List<String> playerGroups = null;
 
         if (sender instanceof Player player) {
             playerGroups = IntegrationsModule.getGroups(player);
         }
 
-        if (playerGroups == null) playerGroups = new String[]{"default"};
+        if (playerGroups == null) playerGroups = List.of("default");
 
         String vaultString = "";
 
@@ -104,13 +100,13 @@ public class FConfiguration extends YamlConfiguration {
     }
 
     public boolean getVaultBoolean(@Nullable CommandSender sender, @NotNull String string) {
-        String[] playerGroups = null;
+        List<String> playerGroups = null;
 
         if (sender instanceof Player player) {
             playerGroups = IntegrationsModule.getGroups(player);
         }
 
-        if (playerGroups == null) playerGroups = new String[]{"default"};
+        if (playerGroups == null) playerGroups = List.of("default");
 
         String vaultString = "";
 
@@ -128,13 +124,13 @@ public class FConfiguration extends YamlConfiguration {
     }
 
     public int getVaultInt(@NotNull CommandSender sender, @NotNull String string) {
-        String[] playerGroups = null;
+        List<String> playerGroups = null;
 
         if (sender instanceof Player player) {
             playerGroups = IntegrationsModule.getGroups(player);
         }
 
-        if (playerGroups == null) playerGroups = new String[]{"default"};
+        if (playerGroups == null) playerGroups = List.of("default");
 
         String vaultString = "";
 
@@ -152,13 +148,13 @@ public class FConfiguration extends YamlConfiguration {
     }
 
     public List<String> getVaultStringList(@NotNull CommandSender sender, @NotNull String string) {
-        String[] playerGroups = null;
+        List<String> playerGroups = null;
 
         if (sender instanceof Player player) {
             playerGroups = IntegrationsModule.getGroups(player);
         }
 
-        if (playerGroups == null) playerGroups = new String[]{"default"};
+        if (playerGroups == null) playerGroups = List.of("default");
 
         ArrayList<String> arrayList = new ArrayList<>();
 

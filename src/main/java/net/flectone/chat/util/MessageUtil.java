@@ -49,7 +49,7 @@ public class MessageUtil {
         if (colors == null) {
             colors = new HashMap<>();
 
-            List<String> colorsKey = config.getCustomList(recipient, ".color.list");
+            List<String> colorsKey = config.getCustomList(recipient, "color.list");
 
             for (String colorKey : colorsKey) {
                 colors.put(colorKey, config.getVaultString(recipient, "color.list." + colorKey));

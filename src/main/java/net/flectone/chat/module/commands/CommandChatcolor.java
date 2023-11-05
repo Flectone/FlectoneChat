@@ -73,7 +73,7 @@ public class CommandChatcolor extends FCommand {
         }
 
         if (args[0].equalsIgnoreCase("default")) {
-            List<String> colorsKey = config.getCustomList(cmdSettings.getSender(), ".color.list");
+            List<String> colorsKey = config.getCustomList(cmdSettings.getSender(), "color.list");
 
             for (String colorKey : colorsKey) {
                 colors.put(colorKey, config.getVaultString(cmdSettings.getSender(), "color.list." + colorKey));
