@@ -28,10 +28,10 @@ default:
     status:
       motd:
         message:
-          - "&&1This server uses FlectoneChat ❤"
+          - "&&1This server uses &&2FlectoneChat"
           - "&&1Welcome to our server!"
           - "&&1Join us and enjoy a unique game experience!"
-          - "&&1Join our Discord server for communication and updates: https://discord.flectone.net"
+          - "&&1Join our Discord server for communication and updates: &&2https://discord.flectone.net"
           - "&&1We have a friendly community - be polite and respect each other!"
           - "&&1Enjoy the game! If you have any questions, feel free to contact the administration"
 
@@ -104,7 +104,7 @@ default:
       message: "#ff4e4e← &&2<player>"
 
       first-time:
-        message: "#ff4e4e←  &&1<player> &&1left the server for the first time"
+        message: "#ff4e4e← &&2<player> &&1left the server for the first time"
 
   player:
     hover:
@@ -200,8 +200,6 @@ default:
       permanent-server-message: "#ff4e4e\n⏵ Player <player> has been banned permanently \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
       permanent-player-message: "#ff4e4e☠ You are banned permanently \nReason: <reason>"
 
-      login-message: "#ff4e4e☠ You are banned, re-login to get the reason and time"
-
     banlist:
       empty: "#4eff52☺ No banned players found"
       page-not-exist: "#ff4e4e⁉ This page doesn't exist"
@@ -276,7 +274,7 @@ default:
 
     firstonline:
       usage: "&&1⚑ Usage: &&2/<command> (player)"
-      message: "&&1⌛ <player> was first on server <time> ago"
+      message: "&&1⌛ &&2<player> &&1was first on server &&2<time> &&1ago"
 
     flectonechat:
       usage: "&&1⚑ Usage: &&2/<command> reload/set"
@@ -318,8 +316,8 @@ default:
 
     lastonline:
       usage: "&&1⚑ Usage: &&2/<command> (player)"
-      currently: "&&1⌛ <player> currently on server"
-      message: "&&1⌛ <player> was last on server <time> ago"
+      currently: "&&1⌛ &&2<player> &&1currently on server"
+      message: "&&1⌛ &&2<player> &&1was last on server <time> ago"
 
     mail:
       usage: "&&1⚑ Usage: &&2/<command> (player) (message)"
@@ -375,7 +373,7 @@ default:
 
     ping:
       myself-message: "&&1🌍 Your ping is <ping>"
-      message: "&&1🌍 <player> ping is <ping>"
+      message: "&&1🌍 &&2<player> &&1ping is <ping>"
 
     poll:
       usage: "&&1⚑ Usage: &&2/<command> create/vote"
@@ -420,12 +418,13 @@ default:
           - "&&2• • • • • • • • •"
           - "&&2Player <player> started stream"
           - "&&2• • • • • • • • •"
-          - "&&1Url(s): \n<links>"
+          - "&&1Url(s):"
+          - "<urls>"
 
     tictactoe:
       usage: "&&1⚑ Usage: &&2/<command> (player)"
-      send-message: "&&1☐ An offer to play was sent to <player>"
-      get-message: "&&1☐ Received an invite to play tic tac toe with <player>, accept? [+]"
+      send-message: "&&1☐ An offer to play was sent to &&2<player>"
+      get-message: "&&1☐ Received an invite to play tic tac toe with &&2<player>&&1, accept? [+]"
       hover-message: "&&1Click to accept"
       game:
         ended: "#ff4e4e⁉ This game is over"

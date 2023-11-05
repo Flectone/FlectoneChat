@@ -92,7 +92,7 @@ public class CommandStream extends FCommand {
 
                     string = string
                             .replace("<player>", commandSender.getName())
-                            .replace("<links>", MessageUtil.joinArray(args, 1, "\n") + " ");
+                            .replace("<urls>", MessageUtil.joinArray(args, 1, "\n") + " ");
 
                     stringBuilder.append(string);
                     stringBuilder.append("\n");
