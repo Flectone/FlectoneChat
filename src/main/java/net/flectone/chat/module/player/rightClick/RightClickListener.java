@@ -26,6 +26,7 @@ public class RightClickListener extends FListener {
     public void rightClickEvent(@NotNull PlayerInteractAtEntityEvent event) {
         if (!(event.getRightClicked() instanceof Player player)) return;
         if (hasNoPermission(player)) return;
+        if (!config.getVaultBoolean(player, getModule() + ".enable")) return;
 
         String formatMessage = config.getVaultString(player, getModule() + ".format");
 
