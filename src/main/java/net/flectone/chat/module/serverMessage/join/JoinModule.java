@@ -10,6 +10,7 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class JoinModule extends FModule {
     public JoinModule(FModule module, String name) {
@@ -37,13 +38,24 @@ public class JoinModule extends FModule {
 
             if (fPlayer.getIgnoreList().contains(sender.getUniqueId())) return;
 
-            FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
+            sendMessage(sender, player, message);
 
-            fComponentBuilder.replace("<player>", (componentBuilder, color) ->
-                    componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
-
-            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
             fPlayer.playSound(sender, player, this.toString());
         });
+
+        sendMessage(sender, null, message);
+    }
+
+    public void sendMessage(@NotNull Player sender, @Nullable Player player, @NotNull String message) {
+        FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
+
+        fComponentBuilder.replace("<player>", (componentBuilder, color) ->
+                componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
+
+        if (player != null) {
+            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+        } else {
+            FPlayer.sendToConsole(fComponentBuilder.build(sender, null));
+        }
     }
 }

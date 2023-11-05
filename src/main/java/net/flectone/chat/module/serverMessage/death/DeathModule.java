@@ -49,57 +49,68 @@ public class DeathModule extends FModule {
 
             if (fPlayer.getIgnoreList().contains(sender.getUniqueId())) return;
 
-            FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
+            sendMessage(sender, player, playerDamager, message);
 
-            fComponentBuilder.replace("<player>", (componentBuilder, color) ->
-                    componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
-
-            fComponentBuilder.replace("<projectile>", ((componentBuilder, color) ->
-                    createEntityComponent(sender, player, playerDamager.getFinalEntity(), componentBuilder, color)));
-
-            fComponentBuilder.replace("<killer>", ((componentBuilder, color) ->
-                    createEntityComponent(sender, player, playerDamager.getFinalEntity(), componentBuilder, color)));
-
-            fComponentBuilder.replace("<block>", ((componentBuilder, color) -> {
-                if (!playerDamager.isFinalBlock()) return;
-                componentBuilder.append(new FColorComponent(new FLocaleComponent(playerDamager), color).get());
-            }));
-
-            fComponentBuilder.replace("<due_to>", ((componentBuilder, color) -> {
-                if (playerDamager.getKiller() == null
-                        || playerDamager.getKiller().equals(playerDamager.getFinalEntity())
-                        || (playerDamager.getFinalEntity() != null && playerDamager.getKiller().getType().equals(playerDamager.getFinalEntity().getType()))) {
-                    return;
-                }
-
-                String formatDueToMessage = locale.getVaultString(player, this + ".due-to");
-
-                FComponentBuilder dueToComponentBuilder = new FComponentBuilder(formatDueToMessage);
-
-                dueToComponentBuilder.replace("<killer>", (dueToBuilder, dueToColor) ->
-                        createEntityComponent(sender, player, playerDamager.getKiller(), dueToBuilder, dueToColor));
-
-                componentBuilder.append(dueToComponentBuilder.build(sender, player));
-            }));
-
-            fComponentBuilder.replace("<by_item>", (componentBuilder, color) -> {
-                if (playerDamager.getKillerItemName() == null) return;
-
-                String formatMessage = locale.getVaultString(sender, this + ".by-item");
-                FComponentBuilder byItemComponentBuilder = new FComponentBuilder(formatMessage);
-
-                byItemComponentBuilder.replace("<item>", (byItemBuilder, byItemColor) ->
-                        byItemBuilder.append(new FColorComponent(new FLocaleComponent(playerDamager.getKillerItem()), byItemColor).get()));
-
-                componentBuilder.append(byItemComponentBuilder.build(sender, player));
-            });
-
-            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
             fPlayer.playSound(sender, player, this.toString());
         });
+
+        sendMessage(sender, null, playerDamager, message);
     }
 
-    public void createEntityComponent(@NotNull Player sender, @NotNull Player player, @Nullable Entity entity, @NotNull ComponentBuilder componentBuilder, String color) {
+    public void sendMessage(@NotNull Player sender, @Nullable Player player, @NotNull PlayerDamager playerDamager, @NotNull String message) {
+        FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
+
+        fComponentBuilder.replace("<player>", (componentBuilder, color) ->
+                componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
+
+        fComponentBuilder.replace("<projectile>", ((componentBuilder, color) ->
+                createEntityComponent(sender, player, playerDamager.getFinalEntity(), componentBuilder, color)));
+
+        fComponentBuilder.replace("<killer>", ((componentBuilder, color) ->
+                createEntityComponent(sender, player, playerDamager.getFinalEntity(), componentBuilder, color)));
+
+        fComponentBuilder.replace("<block>", ((componentBuilder, color) -> {
+            if (!playerDamager.isFinalBlock()) return;
+            componentBuilder.append(new FColorComponent(new FLocaleComponent(playerDamager), color).get());
+        }));
+
+        fComponentBuilder.replace("<due_to>", ((componentBuilder, color) -> {
+            if (playerDamager.getKiller() == null
+                    || playerDamager.getKiller().equals(playerDamager.getFinalEntity())
+                    || (playerDamager.getFinalEntity() != null && playerDamager.getKiller().getType().equals(playerDamager.getFinalEntity().getType()))) {
+                return;
+            }
+
+            String formatDueToMessage = locale.getVaultString(player, this + ".due-to");
+
+            FComponentBuilder dueToComponentBuilder = new FComponentBuilder(formatDueToMessage);
+
+            dueToComponentBuilder.replace("<killer>", (dueToBuilder, dueToColor) ->
+                    createEntityComponent(sender, player, playerDamager.getKiller(), dueToBuilder, dueToColor));
+
+            componentBuilder.append(dueToComponentBuilder.build(sender, player));
+        }));
+
+        fComponentBuilder.replace("<by_item>", (componentBuilder, color) -> {
+            if (playerDamager.getKillerItemName() == null) return;
+
+            String formatMessage = locale.getVaultString(sender, this + ".by-item");
+            FComponentBuilder byItemComponentBuilder = new FComponentBuilder(formatMessage);
+
+            byItemComponentBuilder.replace("<item>", (byItemBuilder, byItemColor) ->
+                    byItemBuilder.append(new FColorComponent(new FLocaleComponent(playerDamager.getKillerItem()), byItemColor).get()));
+
+            componentBuilder.append(byItemComponentBuilder.build(sender, player));
+        });
+
+        if (player != null) {
+            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+        } else {
+            FPlayer.sendToConsole(fComponentBuilder.build(sender, null));
+        }
+    }
+
+    public void createEntityComponent(@NotNull Player sender, @Nullable Player player, @Nullable Entity entity, @NotNull ComponentBuilder componentBuilder, String color) {
         if (entity == null) return;
 
         if (entity instanceof Player) {

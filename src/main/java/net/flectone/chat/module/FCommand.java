@@ -120,6 +120,8 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                                   @Nullable ItemStack itemStack, @NotNull String format,
                                   @NotNull String message, boolean isClickable) {
 
+        FPlayer.sendToConsole(format.replace("<message>", message));
+
         if (player != null) {
             message = IntegrationsModule.interactiveChatMark(message, player.getUniqueId());
         }
@@ -133,7 +135,6 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                 soundsModule.play(new FSound(player, recipient, this.toString()));
             }
         });
-
     }
 
     @NotNull

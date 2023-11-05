@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FPlayerComponent extends FComponent{
 
-    public FPlayerComponent(@Nullable CommandSender sender, @NotNull CommandSender recipient, @NotNull String text) {
+    public FPlayerComponent(@Nullable CommandSender sender, @Nullable CommandSender recipient, @NotNull String text) {
         super(text);
 
         if (!(sender instanceof Player player) || !(recipient instanceof Player recip)) return;

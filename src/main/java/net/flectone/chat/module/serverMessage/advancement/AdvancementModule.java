@@ -17,6 +17,7 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
@@ -75,29 +76,39 @@ public class AdvancementModule extends FModule {
 
             if (fPlayer.getIgnoreList().contains(sender.getUniqueId())) return;
 
-            FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
-
-            fComponentBuilder.replace("<player>", (componentBuilder, color) ->
-                    componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
-
-            fComponentBuilder.replace("<advancement>", ((componentBuilder, color) -> {
-                FComponent advancementComponent = new FLocaleComponent(fAdvancement.getTranslateKey());
-
-                String hover = locale.getVaultString(sender, this + "." + fAdvancement.getType() + ".hover");
-                FComponentBuilder hoverComponentBuilder = new FComponentBuilder(hover);
-                hoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
-                        hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateKey()), hoverColor).get()));
-                hoverComponentBuilder.replace("<description>", (hoverBuilder, hoverColor) ->
-                        hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateDesc()), hoverColor).get()));
-
-                advancementComponent.addHoverText(hoverComponentBuilder.build(sender, player));
-
-                componentBuilder.append(advancementComponent.get());
-            }));
-
-            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+            sendMessage(sender, player, fAdvancement, message);
 
             fPlayer.playSound(sender, player, this.toString());
         });
+
+        sendMessage(sender, null, fAdvancement, message);
+    }
+
+    public void sendMessage(@NotNull Player sender, @Nullable Player player, @NotNull FAdvancement fAdvancement, @NotNull String message) {
+        FComponentBuilder fComponentBuilder = new FComponentBuilder(message);
+
+        fComponentBuilder.replace("<player>", (componentBuilder, color) ->
+                componentBuilder.append(new FPlayerComponent(sender, player, color + sender.getName()).get()));
+
+        fComponentBuilder.replace("<advancement>", ((componentBuilder, color) -> {
+            FComponent advancementComponent = new FLocaleComponent(fAdvancement.getTranslateKey());
+
+            String hover = locale.getVaultString(sender, this + "." + fAdvancement.getType() + ".hover");
+            FComponentBuilder hoverComponentBuilder = new FComponentBuilder(hover);
+            hoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
+                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateKey()), hoverColor).get()));
+            hoverComponentBuilder.replace("<description>", (hoverBuilder, hoverColor) ->
+                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateDesc()), hoverColor).get()));
+
+            advancementComponent.addHoverText(hoverComponentBuilder.build(sender, player));
+
+            componentBuilder.append(advancementComponent.get());
+        }));
+
+        if (player != null) {
+            player.spigot().sendMessage(fComponentBuilder.build(sender, player));
+        } else {
+            FPlayer.sendToConsole(fComponentBuilder.build(sender, null));
+        }
     }
 }

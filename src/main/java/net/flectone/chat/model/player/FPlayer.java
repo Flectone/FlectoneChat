@@ -16,6 +16,7 @@ import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import net.flectone.chat.util.TimeUtil;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -341,5 +342,13 @@ public class FPlayer {
 
     public void playSound(@Nullable Player sender, @NotNull Collection<Player> recipients, @NotNull String action) {
         recipients.forEach(recipient -> playSound(sender, recipient, action));
+    }
+
+    public static void sendToConsole(@NotNull String message) {
+        Bukkit.getConsoleSender().sendMessage(MessageUtil.formatAll(null, message));
+    }
+
+    public static void sendToConsole(@NotNull BaseComponent[] baseComponents) {
+        Bukkit.getConsoleSender().spigot().sendMessage(baseComponents);
     }
 }
