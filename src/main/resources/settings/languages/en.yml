@@ -1,3 +1,9 @@
+#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
+#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+#
+# You are advised to check out our plugin documentation
+# https://wiki-chat.flectone.net
+
 default:
   server:
     brand:
