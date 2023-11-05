@@ -110,7 +110,6 @@ permissions:
     default: true
   flectonechat.server.status.player-count.bypass:
     default: op
-
   flectonechat.commands.afk:
     default: true
   flectonechat.commands.ball:
