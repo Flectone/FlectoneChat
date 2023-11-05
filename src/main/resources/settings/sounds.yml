@@ -77,8 +77,8 @@ default:
 
   commands:
     spit:
-      enable: false
-      type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+      enable: true
+      type: "ENTITY_LLAMA_SPIT:0.3:1"
     kick:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
