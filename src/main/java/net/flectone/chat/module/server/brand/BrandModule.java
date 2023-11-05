@@ -95,7 +95,12 @@ public class BrandModule extends FModule {
 
     public void updateBrand(@NotNull Player player, @NotNull String brandString) {
         if (hasNoPermission(player)) return;
-        player.sendPluginMessage(FlectoneChat.getInstance(), channel,
-                new PacketSerializer(brandString + ChatColor.RESET).toArray());
+        try {
+            player.sendPluginMessage(FlectoneChat.getInstance(), channel,
+                    new PacketSerializer(brandString + ChatColor.RESET).toArray());
+        } catch (Throwable e) {
+            FlectoneChat.warning("Failed to send a custom server brand. If the error is repeated, disable the server.brand module");
+            e.printStackTrace();
+        }
     }
 }

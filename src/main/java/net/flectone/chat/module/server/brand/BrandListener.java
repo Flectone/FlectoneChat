@@ -4,6 +4,7 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,7 @@ public class BrandListener extends FListener {
         register();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void brandEvent(@NotNull PlayerJoinEvent event) {
         FModule fModule = FlectoneChat.getModuleManager().get(BrandModule.class);
         if (fModule instanceof BrandModule brandModule) {
