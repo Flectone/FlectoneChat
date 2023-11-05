@@ -30,7 +30,7 @@ public class Settings {
         COMMAND_TRY("enable_command_try"), COMMAND_DICE("enable_command_dice"), COMMAND_BALL("enable_command_ball"),
         COMMAND_BAN("enable_command_ban"), COMMAND_MUTE("enable_command_mute"), COMMAND_WARN("enable_command_warn"),
         COMMAND_TELL("enable_command_tell"), COMMAND_REPLY("enable_command_reply"), COMMAND_MAIL("enable_command_mail"),
-        COMMAND_TIC_TAC_TOE("enable_command_tic_tac_toe"), COMMAND_KICK("enable_command_kick");
+        COMMAND_TICTACTOE("enable_command_tictactoe"), COMMAND_KICK("enable_command_kick");
 
         private final String dbPath;
         Type(String dbPath) {

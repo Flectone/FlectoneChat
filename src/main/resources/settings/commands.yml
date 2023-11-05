@@ -67,7 +67,7 @@ chatsettings:
     - tell
     - reply
     - mail
-    - tic-tac-toe
+    - tictactoe
     - kick
 
 clearchat:

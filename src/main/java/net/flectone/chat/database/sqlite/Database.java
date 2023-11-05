@@ -124,7 +124,7 @@ public class Database extends SQLHandler {
                     "`enable_command_tell` INTEGER, " +
                     "`enable_command_reply` INTEGER, " +
                     "`enable_command_mail` INTEGER, " +
-                    "`enable_command_tic_tac_toe` INTEGER, " +
+                    "`enable_command_tictactoe` INTEGER, " +
                     "`enable_command_kick` INTEGER, " +
                     "PRIMARY KEY (`uuid`), " +
                     "FOREIGN KEY (`uuid`) REFERENCES `players`(`uuid`)" +
@@ -414,7 +414,7 @@ public class Database extends SQLHandler {
                 getSettingInt(playerResult, Settings.Type.COMMAND_TELL, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_REPLY, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_MAIL, settings);
-                getSettingInt(playerResult, Settings.Type.COMMAND_TIC_TAC_TOE, settings);
+                getSettingInt(playerResult, Settings.Type.COMMAND_TICTACTOE, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_KICK, settings);
             }
 
@@ -622,7 +622,7 @@ public class Database extends SQLHandler {
                             "enable_command_tell=?," +
                             "enable_command_reply=?," +
                             "enable_command_mail=?," +
-                            "enable_command_tic_tac_toe=?," +
+                            "enable_command_tictactoe=?," +
                             "enable_command_kick=?," +
                             "enable_auto_message=?," +
                             "chat=?" +
@@ -649,7 +649,7 @@ public class Database extends SQLHandler {
                                 "enable_command_tell," +
                                 "enable_command_reply," +
                                 "enable_command_mail," +
-                                "enable_command_tic_tac_toe," +
+                                "enable_command_tictactoe," +
                                 "enable_command_kick," +
                                 "enable_auto_message," +
                                 "chat," +
@@ -681,7 +681,7 @@ public class Database extends SQLHandler {
         preparedStatement.setString(12, settings.getValue(Settings.Type.COMMAND_TELL));
         preparedStatement.setString(13, settings.getValue(Settings.Type.COMMAND_REPLY));
         preparedStatement.setString(14, settings.getValue(Settings.Type.COMMAND_MAIL));
-        preparedStatement.setString(15, settings.getValue(Settings.Type.COMMAND_TIC_TAC_TOE));
+        preparedStatement.setString(15, settings.getValue(Settings.Type.COMMAND_TICTACTOE));
         preparedStatement.setString(16, settings.getValue(Settings.Type.COMMAND_KICK));
         preparedStatement.setString(17, settings.getValue(Settings.Type.AUTO_MESSAGE));
         preparedStatement.setString(18, settings.getValue(Settings.Type.CHAT));
