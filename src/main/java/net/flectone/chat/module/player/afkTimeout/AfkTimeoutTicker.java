@@ -18,7 +18,10 @@ public class AfkTimeoutTicker extends FTicker {
 
     @Override
     public void run() {
-        PlayerUtil.getPlayersWithFeature(getModule() + ".enable").forEach(player ->
-                ((AfkTimeoutModule) getModule()).checkAfk(player));
+        PlayerUtil.getPlayersWithFeature(getModule() + ".enable")
+                .stream()
+                .filter(player -> !getModule().hasNoPermission(player))
+                .filter(player -> getModule().isEnabledFor(player))
+                .forEach(player -> ((AfkTimeoutModule) getModule()).checkAfk(player));
     }
 }

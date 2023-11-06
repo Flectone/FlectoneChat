@@ -3,6 +3,7 @@ package net.flectone.chat.module.server.brand;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -21,9 +22,13 @@ public class BrandListener extends FListener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void brandEvent(@NotNull PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (!getModule().isEnabledFor(player)) return;
+        if (hasNoPermission(player)) return;
+
         FModule fModule = FlectoneChat.getModuleManager().get(BrandModule.class);
         if (fModule instanceof BrandModule brandModule) {
-            brandModule.setBrand(event.getPlayer(), ((BrandModule) getModule()).incrementIndexAndGet(event.getPlayer()));
+            brandModule.setBrand(event.getPlayer(), ((BrandModule) getModule()).incrementIndexAndGet(player));
         }
     }
 }

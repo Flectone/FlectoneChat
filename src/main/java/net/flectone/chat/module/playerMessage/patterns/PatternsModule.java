@@ -36,10 +36,8 @@ public class PatternsModule extends FModule {
 
         List<String> patternList = config.getCustomList(player, this + ".list");
 
-        if (!hasNoPermission(player)) {
-            patternList.forEach(pattern ->
-                    groupPatternMap.put(pattern, config.getVaultString(player, this + ".list." + pattern)));
-        }
+        patternList.forEach(pattern ->
+                groupPatternMap.put(pattern, config.getVaultString(player, this + ".list." + pattern)));
 
         PATTERN_MAP.put(vaultGroup, groupPatternMap);
 
@@ -49,6 +47,7 @@ public class PatternsModule extends FModule {
     @NotNull
     public String replace(@Nullable Player player, @NotNull String string) {
         if (!isEnabledFor(player)) return string;
+        if (hasNoPermission(player)) return string;
 
         HashMap<String, String> patterns = load(player);
 

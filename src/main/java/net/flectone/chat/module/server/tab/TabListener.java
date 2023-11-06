@@ -19,6 +19,8 @@ public class TabListener extends FListener {
 
     @EventHandler
     public void playerJoinEvent(@NotNull PlayerJoinEvent event) {
+        if (!getModule().isEnabledFor(event.getPlayer())) return;
+
         ((TabModule) getModule()).update(event.getPlayer());
     }
 }

@@ -45,8 +45,6 @@ public class NameTagModule extends FModule {
             team.addEntry(playerName);
         }
 
-        if (!isEnabledFor(player)) return team;
-
         setVisibility(player, team);
 
         team.setColor(ChatColor.WHITE);
@@ -70,6 +68,7 @@ public class NameTagModule extends FModule {
         String playerName = player.getName();
         if (Bukkit.getBukkitVersion().startsWith("1.16.5")) return playerName;
         if (!config.getVaultBoolean(player, this + ".sort.enable")) return playerName;
+        if (!isEnabledFor(player)) return playerName;
         if (hasNoPermission(player, "sort")) return playerName;
 
         int rank = IntegrationsModule.getPrimaryGroupWeight(player);
@@ -80,6 +79,7 @@ public class NameTagModule extends FModule {
     public void setVisibility(@Nullable Player player, @Nullable Team team) {
         if (player == null) return;
         if (team == null) return;
+        if (!isEnabledFor(player)) return;
         if (hasNoPermission(player, "visible")) return;
 
         boolean isVisible = config.getVaultBoolean(player, this + ".visible");

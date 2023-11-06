@@ -24,6 +24,9 @@ public class BrandTicker extends FTicker {
     @Override
     public void run() {
         PlayerUtil.getPlayersWithFeature(getModule() + ".enable")
+                .stream()
+                .filter(player -> !getModule().hasNoPermission(player))
+                .filter(player -> getModule().isEnabledFor(player))
                 .forEach(player ->
                         ((BrandModule) getModule()).updateBrand(player,
                                 ((BrandModule) getModule()).incrementIndexAndGet(player)));

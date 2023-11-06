@@ -24,6 +24,8 @@ public class TabTicker extends FTicker {
     @Override
     public void run() {
         PlayerUtil.getPlayersWithFeature(getModule() + ".enable")
+                .stream()
+                .filter(player -> getModule().isEnabledFor(player))
                 .forEach(player -> ((TabModule) getModule()).update(player));
     }
 }

@@ -49,15 +49,13 @@ public class FormattingModule extends FModule {
         String vaultGroup = PlayerUtil.getPrimaryGroup(player);
         if (FORMATTING_MAP.containsKey(vaultGroup)) return FORMATTING_MAP.get(vaultGroup);
 
-        if (!hasNoPermission(player)) {
-            List<String> formattingList = config.getCustomList(player, this + ".list");
+        List<String> formattingList = config.getCustomList(player, this + ".list");
 
-            for (String formatting : formattingList) {
-                if (!config.getVaultBoolean(player, this + ".list." + formatting + ".enable")) continue;
-                if (hasNoPermission(player, formatting)) continue;
+        for (String formatting : formattingList) {
+            if (!config.getVaultBoolean(player, this + ".list." + formatting + ".enable")) continue;
+            if (hasNoPermission(player, formatting)) continue;
 
-                groupFormattingMap.put(formatting, config.getVaultString(player, this + ".list." + formatting + ".trigger"));
-            }
+            groupFormattingMap.put(formatting, config.getVaultString(player, this + ".list." + formatting + ".trigger"));
         }
 
         FORMATTING_MAP.put(vaultGroup, groupFormattingMap);
@@ -69,6 +67,7 @@ public class FormattingModule extends FModule {
                                @NotNull List<WordParams> messages, @Nullable ItemStack itemStack, boolean mentionEnabled,
                                boolean isEnabled) {
         if (!isEnabledFor(player)) return;
+        if (hasNoPermission(player)) return;
 
         HashMap<String, String> formattingMap = load(player);
 

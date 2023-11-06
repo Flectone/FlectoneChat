@@ -94,8 +94,6 @@ public class BrandModule extends FModule {
     }
 
     public void updateBrand(@NotNull Player player, @NotNull String brandString) {
-        if (!isEnabledFor(player)) return;
-        if (hasNoPermission(player)) return;
         try {
             player.sendPluginMessage(FlectoneChat.getInstance(), channel,
                     new PacketSerializer(brandString + ChatColor.RESET).toArray());

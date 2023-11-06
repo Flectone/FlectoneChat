@@ -54,7 +54,6 @@ public class TabModule extends FModule {
     }
 
     public void update(@NotNull Player player) {
-        if (!isEnabledFor(player)) return;
 
         if (config.getVaultBoolean(player, this + ".header.enable")
                 && !hasNoPermission(player, "header")) {
