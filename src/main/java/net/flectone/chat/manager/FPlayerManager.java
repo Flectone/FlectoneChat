@@ -129,20 +129,20 @@ public class FPlayerManager {
                 .filter(player -> player.getName() != null && player.getName().equalsIgnoreCase(name))
                 .toList();
 
-        OfflinePlayer offlinePlayer = offlinePlayerList.size() == 1
-                ? offlinePlayerList.get(0)
-                : offlinePlayerList.stream()
-                .filter(player -> player.getName().equals(name))
-                .findFirst().orElse(null);
-
-        if (offlinePlayer == null) {
-            F_PLAYER_MAP.put(name, null);
-            return null;
+        if (offlinePlayerList.size() > 1) {
+            FlectoneChat.warning("Please remove offline players with the same names, it can cause problems");
         }
 
-        fPlayer = new FPlayer(offlinePlayer);
-        F_PLAYER_MAP.put(name, fPlayer);
+        OfflinePlayer offlinePlayer = offlinePlayerList.stream()
+                .filter(player -> player.getName().equals(name))
+                .findFirst()
+                .orElse(null);
 
+        fPlayer = offlinePlayer != null
+                ? new FPlayer(offlinePlayer)
+                : null;
+
+        F_PLAYER_MAP.put(name, fPlayer);
         return fPlayer;
     }
 
