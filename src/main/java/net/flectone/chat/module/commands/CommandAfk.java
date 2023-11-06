@@ -1,8 +1,10 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.module.FCommand;
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.player.FPlayer;
+import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -47,6 +49,12 @@ public class CommandAfk extends FCommand {
         Player player = fPlayer.getPlayer();
 
         boolean isAfk = !fPlayer.isAfk();
+
+        FModule fModule = FlectoneChat.getModuleManager().get(AfkTimeoutModule.class);
+        if (fModule instanceof AfkTimeoutModule afkTimeoutModule) {
+            afkTimeoutModule.setAfk(player, isAfk, "/afk");
+            return true;
+        }
 
         String afkSuffix = isAfk
                 ? locale.getVaultString(player, "commands.afk.suffix")

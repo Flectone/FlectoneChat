@@ -42,6 +42,9 @@ public class AfkTimeoutModule extends FModule {
             if (!list.contains(takeOutAction)) return;
 
             LAST_BLOCK_MAP.put(player.getUniqueId(), null);
+        } else {
+
+            LAST_BLOCK_MAP.put(player.getUniqueId(), new Pair<>(TimeUtil.getCurrentTime(), player.getLocation().getBlock()));
         }
 
         FPlayer fPlayer = FPlayerManager.get(player);
@@ -56,12 +59,11 @@ public class AfkTimeoutModule extends FModule {
 
         String afkMessage = locale.getVaultString(player, "commands.afk." + isAfk + "-message");
         player.sendMessage(MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
+
+        fPlayer.playSound(player, player, this.toString());
     }
 
     public void checkAfk(@NotNull Player player) {
-        if (!isEnabledFor(player)) return;
-        if (hasNoPermission(player)) return;
-
         FPlayer fPlayer = FPlayerManager.get(player);
         if(fPlayer == null) return;
 

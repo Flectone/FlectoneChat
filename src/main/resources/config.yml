@@ -176,6 +176,7 @@ default:
       time: 3000
 
       take-out-actions:
+        - /afk
         - commands
         - chat
         - move
@@ -336,6 +337,9 @@ default:
             trigger: "!"
 
           set-cancelled: false
+
+  sounds:
+    enable: true
 
   chat-bubble:
     enable: true

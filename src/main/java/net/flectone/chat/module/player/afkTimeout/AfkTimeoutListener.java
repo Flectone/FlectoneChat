@@ -27,6 +27,7 @@ public class AfkTimeoutListener extends FListener {
 
     @EventHandler
     public void playerCommandSendEvent(@NotNull PlayerCommandPreprocessEvent event) {
+        if (event.getMessage().contains("/afk")) return;
         ((AfkTimeoutModule) getModule()).setAfk(event.getPlayer(), false, "commands");
     }
 
