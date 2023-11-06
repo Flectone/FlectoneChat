@@ -33,6 +33,7 @@ public class JoinModule extends FModule {
                 .forEach(player -> {
                     FPlayer fPlayer = FPlayerManager.get(player);
                     if (fPlayer == null) return;
+                    if (fPlayer.getSettings() == null) return;
 
                     String join = fPlayer.getSettings().getValue(Settings.Type.JOIN);
                     boolean enabled = join == null || Integer.parseInt(join) != -1;
