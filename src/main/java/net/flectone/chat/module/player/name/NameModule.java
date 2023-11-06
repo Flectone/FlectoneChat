@@ -24,6 +24,8 @@ public class NameModule extends FModule {
 
     @NotNull
     public String getPrefix(@NotNull Player player) {
+        if (!isEnabledFor(player)) return "";
+
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return "";
 
@@ -34,6 +36,8 @@ public class NameModule extends FModule {
 
     @NotNull
     public String getSuffix(@NotNull Player player) {
+        if (!isEnabledFor(player)) return "";
+
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return "";
 
@@ -44,6 +48,8 @@ public class NameModule extends FModule {
 
     @NotNull
     public String getReal(@NotNull Player player) {
+        if (!isEnabledFor(player)) return "";
+
         String playerName = player.getName();
 
         FPlayer fPlayer = FPlayerManager.get(player);
@@ -56,6 +62,8 @@ public class NameModule extends FModule {
 
     @NotNull
     public String getDisplay(@NotNull Player player) {
+        if (!isEnabledFor(player)) return "";
+
         String playerName = player.getName();
 
         FPlayer fPlayer = FPlayerManager.get(player);
@@ -68,6 +76,8 @@ public class NameModule extends FModule {
 
     @NotNull
     public String getTab(@NotNull Player player) {
+        if (!isEnabledFor(player)) return "";
+
         String playerName = player.getName();
 
         FPlayer fPlayer = FPlayerManager.get(player);

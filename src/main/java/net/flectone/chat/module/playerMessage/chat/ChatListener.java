@@ -40,6 +40,7 @@ public class ChatListener extends FListener {
         Player sender = event.getPlayer();
         FPlayer fPlayer = FPlayerManager.get(sender);
         if (fPlayer == null) return;
+        if (!getModule().isEnabledFor(sender)) return;
 
         if (fPlayer.isMuted()) {
             fPlayer.sendMutedMessage();

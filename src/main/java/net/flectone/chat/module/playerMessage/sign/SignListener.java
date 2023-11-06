@@ -31,6 +31,7 @@ public class SignListener extends FListener {
     public void signChangeEvent(@NotNull SignChangeEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);

@@ -6,6 +6,7 @@ import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.Pair;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static net.flectone.chat.manager.FileManager.config;
 import static net.flectone.chat.manager.FileManager.locale;
@@ -23,8 +24,10 @@ public class HoverModule extends FModule {
         register();
     }
 
-    @NotNull
+    @Nullable
     public Pair<String, Pair<String, CommandType>> get(@NotNull Player player) {
+        if (!isEnabledFor(player)) return null;
+
         String hoverText = locale.getVaultString(player, this + ".message");
         hoverText = MessageUtil.formatPlayerString(player, hoverText);
 

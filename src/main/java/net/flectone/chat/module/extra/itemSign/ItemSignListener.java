@@ -36,6 +36,7 @@ public class ItemSignListener extends FListener {
 
         Player player = event.getPlayer();
         if (!config.getVaultBoolean(player, getModule() + ".enable")) return;
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         String configBlock = config.getVaultString(player, getModule() + ".block");

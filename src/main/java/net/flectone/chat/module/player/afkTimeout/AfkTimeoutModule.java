@@ -59,6 +59,7 @@ public class AfkTimeoutModule extends FModule {
     }
 
     public void checkAfk(@NotNull Player player) {
+        if (!isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);

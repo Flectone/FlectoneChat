@@ -33,6 +33,7 @@ public class BookListener extends FListener {
     public void bookEvent(@NotNull PlayerEditBookEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);

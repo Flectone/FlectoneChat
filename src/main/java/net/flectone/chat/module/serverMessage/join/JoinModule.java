@@ -27,21 +27,23 @@ public class JoinModule extends FModule {
     }
 
     public void sendAll(@NotNull Player sender, @NotNull String message) {
-        PlayerUtil.getPlayersWithFeature(this + ".enable").forEach(player -> {
+        PlayerUtil.getPlayersWithFeature(this + ".enable")
+                .stream()
+                .filter(this::isEnabledFor)
+                .forEach(player -> {
+                    FPlayer fPlayer = FPlayerManager.get(player);
+                    if (fPlayer == null) return;
 
-            FPlayer fPlayer = FPlayerManager.get(player);
-            if (fPlayer == null) return;
+                    String join = fPlayer.getSettings().getValue(Settings.Type.JOIN);
+                    boolean enabled = join == null || Integer.parseInt(join) != -1;
+                    if (!enabled) return;
 
-            String join = fPlayer.getSettings().getValue(Settings.Type.JOIN);
-            boolean enabled = join == null || Integer.parseInt(join) != -1;
-            if (!enabled) return;
+                    if (fPlayer.getIgnoreList().contains(sender.getUniqueId())) return;
 
-            if (fPlayer.getIgnoreList().contains(sender.getUniqueId())) return;
+                    sendMessage(sender, player, message);
 
-            sendMessage(sender, player, message);
-
-            fPlayer.playSound(sender, player, this.toString());
-        });
+                    fPlayer.playSound(sender, player, this.toString());
+                });
 
         sendMessage(sender, null, message);
     }

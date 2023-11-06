@@ -36,6 +36,7 @@ public class KnockingListener extends FListener {
         if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK)) return;
         if (!player.isSneaking()) return;
         if (!config.getVaultBoolean(player, getModule() + ".enable")) return;
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         Block block = event.getClickedBlock();

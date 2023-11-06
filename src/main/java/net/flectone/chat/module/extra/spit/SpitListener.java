@@ -30,6 +30,7 @@ public class SpitListener extends FListener {
 
         Player player = event.getPlayer();
         if (!config.getVaultBoolean(player, getModule() + ".enable")) return;
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         String configMaterial = config.getVaultString(player, getModule() + ".item");

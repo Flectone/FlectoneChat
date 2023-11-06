@@ -39,6 +39,7 @@ public class AnvilListener extends FListener {
                 || !(event.getWhoClicked() instanceof Player player)) return;
 
         if (event.isCancelled()) return;
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);

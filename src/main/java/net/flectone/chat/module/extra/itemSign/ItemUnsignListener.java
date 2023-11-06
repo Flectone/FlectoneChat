@@ -34,6 +34,7 @@ public class ItemUnsignListener extends FListener {
 
         Player player = event.getPlayer();
         if (!config.getVaultBoolean(player, getModule() + ".unsign.enable")) return;
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player, "unsign")) return;
 
         String configBlock = config.getVaultString(player, getModule() + ".unsign.block");

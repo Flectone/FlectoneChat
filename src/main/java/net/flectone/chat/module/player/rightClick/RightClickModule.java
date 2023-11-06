@@ -24,6 +24,8 @@ public class RightClickModule extends FModule {
     }
 
     public void sendAction(@NotNull Player player, @NotNull String string) {
+        if (!isEnabledFor(player)) return;
+
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, FComponent.fromLegacyText(string));
 
         FPlayer fPlayer = FPlayerManager.get(player);

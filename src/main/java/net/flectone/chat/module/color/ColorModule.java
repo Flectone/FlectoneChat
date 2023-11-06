@@ -24,6 +24,8 @@ public class ColorModule extends FModule {
 
     @Nullable
     public HashMap<String, String> getColors(@NotNull Player player) {
+        if (!isEnabledFor(player)) return null;
+
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer != null) {
             if (fPlayer.getSettings() != null)

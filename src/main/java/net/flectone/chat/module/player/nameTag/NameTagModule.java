@@ -45,6 +45,8 @@ public class NameTagModule extends FModule {
             team.addEntry(playerName);
         }
 
+        if (!isEnabledFor(player)) return team;
+
         setVisibility(player, team);
 
         team.setColor(ChatColor.WHITE);

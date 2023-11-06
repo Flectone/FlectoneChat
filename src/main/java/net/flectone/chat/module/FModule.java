@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.flectone.chat.manager.FileManager.modules;
+import static net.flectone.chat.manager.FileManager.config;
 
 @Getter
 public abstract class FModule {
@@ -46,6 +47,15 @@ public abstract class FModule {
     public boolean isEnabled() {
         String string = name + ".enable";
         return modules.getBoolean(module != null ? module + "." + string : string);
+    }
+
+    public boolean isEnabledFor(@Nullable Player player) {
+        if (player == null) return true;
+        String string = name + ".enable";
+
+        return module != null
+                ? module.isEnabledFor(player) && config.getVaultBoolean(player, module + "." + string)
+                : config.getVaultBoolean(player, string);
     }
 
     @Override

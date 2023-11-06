@@ -27,6 +27,7 @@ public class ChatBubbleListener extends FListener {
         if (event.isCancelled() || event.getRecipients().isEmpty()) return;
 
         Player player = event.getPlayer();
+        if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
         String message = event.getMessage();

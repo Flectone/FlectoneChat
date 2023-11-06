@@ -26,6 +26,8 @@ public class WorldModule extends FModule {
 
     @NotNull
     public String getPrefix(@NotNull Player player, @NotNull World world) {
+        if (!isEnabledFor(player)) return "";
+
         String worldType = config.getVaultString(player, this + ".mode").equals("type")
                 ? world.getEnvironment().toString().toLowerCase()
                 : world.getName().toLowerCase();

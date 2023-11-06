@@ -48,6 +48,7 @@ public class PatternsModule extends FModule {
 
     @NotNull
     public String replace(@Nullable Player player, @NotNull String string) {
+        if (!isEnabledFor(player)) return string;
 
         HashMap<String, String> patterns = load(player);
 

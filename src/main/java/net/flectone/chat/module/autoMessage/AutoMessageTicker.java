@@ -22,7 +22,9 @@ public class AutoMessageTicker extends FTicker {
 
     @Override
     public void run() {
-        PlayerUtil.getPlayersWithFeature(getModule() + ".enable").forEach(player ->
-                ((AutoMessageModule) getModule()).send(player));
+        PlayerUtil.getPlayersWithFeature(getModule() + ".enable")
+                .stream()
+                .filter(player -> getModule().isEnabledFor(player))
+                .forEach(player -> ((AutoMessageModule) getModule()).send(player));
     }
 }
