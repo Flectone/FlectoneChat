@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FVault implements FIntegration {
 
+
     private static Chat provider;
 
     public FVault() {
@@ -43,5 +44,9 @@ public class FVault implements FIntegration {
     @Nullable
     public String getSuffix(@NotNull Player player) {
         return provider.getPlayerSuffix(player);
+    }
+
+    public boolean isEnabled() {
+        return provider != null;
     }
 }

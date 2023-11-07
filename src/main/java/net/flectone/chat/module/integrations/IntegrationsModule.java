@@ -48,7 +48,10 @@ public class IntegrationsModule extends FModule {
             INTEGRATIONS_MAP.put("SuperVanish", new FSuperVanish());
         }
         if (isPluginEnabled("Vault")) {
-            INTEGRATIONS_MAP.put("Vault", new FVault());
+            FVault fVault = new FVault();
+            if (fVault.isEnabled()) {
+                INTEGRATIONS_MAP.put("Vault", fVault);
+            }
         }
         if (isPluginEnabled("PlasmoVoice")) {
             INTEGRATIONS_MAP.put("PlasmoVoice", new FPlasmoVoice());
