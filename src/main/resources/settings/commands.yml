@@ -90,6 +90,10 @@ flectonechat:
   enable: true
   aliases: [ fc ]
 
+geolocate:
+  enable: true
+  aliases: []
+
 helper:
   enable: true
   aliases: []

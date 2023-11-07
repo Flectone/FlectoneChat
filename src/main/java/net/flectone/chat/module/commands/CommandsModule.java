@@ -52,5 +52,6 @@ public class CommandsModule extends FModule {
         FActionManager.add(new CommandWarn(this, "warn"));
         FActionManager.add(new CommandUnwarn(this, "unwarn"));
         FActionManager.add(new CommandWarnlist(this, "warnlist"));
+        FActionManager.add(new CommandGeolocate(this, "geolocate"));
     }
 }

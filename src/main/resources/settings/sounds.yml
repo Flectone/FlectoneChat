@@ -120,6 +120,9 @@ default:
     flectonechat:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+    geolocate:
+      enable: false
+      type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     ignore:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"

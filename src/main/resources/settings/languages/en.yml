@@ -287,6 +287,19 @@ default:
       wrong-file: "#ff4e4e⁉ Enter the correct file name"
       message: "&&1★ Plugin successfully reloaded!"
 
+    geolocate:
+      usage: "&&1⚑ Usage: &&2/<command> (player)"
+      fail: "#ff4e4e⁉ Problem receiving information, try again"
+      message: "&&1Geolocation for &&2<player>\n
+                &&1Country: &&2<country>\n
+                &&1Region: &&2<region_name>\n 
+                &&1City: &&2<city>\n
+                &&1Timezone: &&2<timezone>\n
+                &&1Mobile connection: &&2<mobile>\n 
+                &&1VPN: &&2<proxy>\n
+                &&1Hosting: &&2<hosting>\n 
+                &&1IP: &&2<query>"
+
     helper:
       usage: "&&1⚑ Usage: &&2/<command> (message)"
       no-helpers: "#ff4e4e⁉ There are no people who can help you"

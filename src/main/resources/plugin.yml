@@ -230,3 +230,5 @@ permissions:
     default: op
   flectonechat.commands.warnlist:
     default: op
+  flectonechat.commands.geolocate:
+    default: op
