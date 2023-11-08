@@ -50,6 +50,7 @@ public class MaintenanceListener extends FListener {
         if (!commands.getBoolean("maintenance.turned-on")) return;
 
         Player player = event.getPlayer();
+        if (player.hasPermission("flectonechat.commands.maintenance")) return;
 
         String kickedMessage = locale.getVaultString(player, "commands.maintenance.kicked-message");
         kickedMessage = MessageUtil.formatAll(player, kickedMessage);
