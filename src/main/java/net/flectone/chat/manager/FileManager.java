@@ -7,6 +7,10 @@ import net.flectone.chat.model.file.FConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +49,22 @@ public class FileManager {
         }
 
         loadIcons();
+
+        checkMigration();
+    }
+
+    public static void checkMigration() {
+        String fileVersion = config.getString("plugin.version");
+        String projectVersion = FlectoneChat.getInstance().getDescription().getVersion();
+
+        if (compareVersions(fileVersion, projectVersion) == -1) {
+            Arrays.stream(Type.values()).forEach(Type::update);
+        } else return;
+
+        config.set("plugin.version", projectVersion);
+        config.save();
+
+        FlectoneChat.warning("Your configs have been updated to " + projectVersion + " version");
     }
 
     public static FConfiguration loadFile(String filePath) {
@@ -138,6 +158,30 @@ public class FileManager {
         public FConfiguration load() {
             this.file = loadFile(filePath + fileName + ".yml");
             return file;
+        }
+
+        public void update() {
+            if (this.file == null) return;
+            InputStream inputStream = FlectoneChat.getInstance().getResource(file.getResourceFilePath().replace('\\', '/'));
+
+            if (inputStream == null) return;
+
+            InputStreamReader defConfigStream = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+
+            YamlConfiguration resourceFile = YamlConfiguration.loadConfiguration(defConfigStream);
+
+            resourceFile.getKeys(true).parallelStream()
+                    .filter(string -> {
+                        if (!file.contains(string)) return true;
+
+                        Object objectA = file.get(string);
+                        Object objectB = resourceFile.get(string);
+
+                        return objectA != null && objectB != null && !objectA.getClass().equals(objectB.getClass());
+                    })
+                    .forEach(string -> file.set(string, resourceFile.get(string)));
+
+            file.save();
         }
     }
 }
