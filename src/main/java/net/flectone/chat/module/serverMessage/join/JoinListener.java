@@ -30,11 +30,15 @@ public class JoinListener extends FListener {
         if (hasNoPermission(player)) return;
         if (IntegrationsModule.isVanished(player)) return;
 
-        String string = player.hasPlayedBefore() || !config.getVaultBoolean(player, getModule() + ".first-time.enable")
+        boolean hasPlayerBefore = player.hasPlayedBefore() || !config.getVaultBoolean(player, getModule() + ".first-time.enable");
+
+        String string = hasPlayerBefore
                 ? locale.getVaultString(player, getModule() + ".message")
                 : locale.getVaultString(player, getModule() + ".first-time.message");
 
         FlectoneChat.getDatabase().execute(() -> ((JoinModule) getModule()).sendAll(player, string));
+
+        IntegrationsModule.sendDiscordJoin(player, hasPlayerBefore ? "usually" : "first");
 
         event.setJoinMessage(null);
     }

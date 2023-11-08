@@ -4,6 +4,7 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.apache.commons.lang.StringUtils;
@@ -83,6 +84,8 @@ public class CommandMute extends FCommand {
                 : null;
 
         mutedFPlayer.mute(reason, muteTime, moderator);
+
+        IntegrationsModule.sendDiscordMute(mutedFPlayer.getOfflinePlayer(), mutedFPlayer.getMute());
 
         return true;
     }

@@ -21,3 +21,620 @@ VoiceChat:
 DiscordSRV:
   enable: true
   features: [ swear-protection, patterns, formatting ]
+
+  message:
+    advancement-task:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#4eff52"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<player> has completed the task [<advancement>]"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    advancement-goal:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#f2d40f"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<player> has completed the goal [<advancement>]"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    advancement-challenge:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#834eff"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<player> has completed the challenge [<advancement>]"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    death:
+      enable: false
+
+      channel-id: ""
+
+      due-to: "due to <killer>"
+      by-item: "using [<item>]"
+
+      type:
+        natural:
+          contact: "<player> was prickled to death by <block> <due_to>"
+          entity_sweep_attack: "<player> was swept off their feet <due_to>"
+          projectile: "<player> was shot by a <projectile> <due_to>"
+          suffocation: "<player> suffocated in a wall <due_to>"
+          fall: "<player> hit the ground too hard <due_to>"
+          fire: "<player> went up in flames <due_to>"
+          fire_tick: "<player> burned to death <due_to>"
+          melting: "<player> melted <due_to>"
+          lava: "<player> tried to swim in lava <due_to>"
+          drowning: "<player> drowned <due_to>"
+          block_explosion: "<player> was blown up by <block> <due_to>"
+          entity_explosion: "<player> was blown up by <killer> <due_to>"
+          void: "<player> fell out of the world <due_to>"
+          lightning: "<player> was struck by lightning <due_to>"
+          suicide: "<player> took their own life <due_to>"
+          starvation: "<player> starved to death <due_to>"
+          poison: "<player> died of poison <due_to>"
+          magic: "<player> was hit by <killer> <due_to>"
+          wither: "<player> withered away <due_to>"
+          falling_block: "<player> was squashed by a <killer> <due_to>"
+          thorns: "<player> was killed by thorns <due_to>"
+          dragon_breath: "<player> was roasted in dragon's breath <due_to>"
+          custom: "<player> died of unknown causes <due_to>"
+          fly_into_wall: "<player> experienced kinetic energy <due_to>"
+          hot_floor: "<player> discovered the floor was lava <due_to>"
+          cramming: "<player> was squished too much <due_to>"
+          dryout: "<player> died from dehydration <due_to>"
+          freeze: "<player> froze to death <due_to>"
+          sonic_boom: "<player> was obliterated by a sonically-charged shriek <due_to>"
+          kill: "<player> was killed <due_to>"
+        mob:
+          default: "<player> was slain by <killer> <due_to>"
+          player: "<player> was killed by player <killer> <by_item>"
+          zombie: "<player> was eaten by a <killer> <due_to>"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#a3a2a2"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    join:
+      enable: false
+
+      type:
+        usually: "→ <player>"
+        first: "→ <player> has logged on to the server for the first time, let's welcome!"
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#4eff52"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    quit:
+      enable: false
+
+      channel-id: ""
+
+      type:
+        usually: "← <player>"
+        first: "← <player> left the server for the first time"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    stream:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: true
+          text: "<urls>"
+          icon:
+            enable: false
+            url: ""
+
+        description:
+          enable: true
+          text: ""
+
+        author:
+          enable: true
+          text: "Player <player> started stream"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    ban:
+      enable: false
+
+      channel-id: ""
+
+      type:
+        usually: "\n⏵ Player <player> has been banned for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+        permanent: "You are banned, <time> left \nReason: <reason>"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    mute:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "\n⏵ Player <player> was muted for <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    warn:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "\n⏵ Player <player> received warning №<count> <time> \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    kick:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#ff4e4e"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "\n⏵ Player <player> was kicked \n⏵ Reason: <reason> \n⏵ Moderator: <moderator>\n"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    broadcast:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#fce303"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "🕫 Message for all from <player> \n<message>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    maintenance:
+      enable: false
+
+      channel-id: ""
+
+      type:
+        turn-on: "★ You have enabled maintenance on the server"
+        turn-off: "★ You have disabled maintenance on the server"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#42aaf5"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    poll:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#fce303"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "🗐 There's a poll #<id> going on right now \n❓ <message>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""

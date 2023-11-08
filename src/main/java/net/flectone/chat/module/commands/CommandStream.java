@@ -5,6 +5,7 @@ import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -85,6 +86,8 @@ public class CommandStream extends FCommand {
 
         }
 
+        String urls = MessageUtil.joinArray(args, 1, "\n");
+
         StringBuilder stringBuilder = new StringBuilder();
 
         locale.getVaultStringList(commandSender,this + ".start.message")
@@ -92,7 +95,7 @@ public class CommandStream extends FCommand {
 
                     string = string
                             .replace("<player>", commandSender.getName())
-                            .replace("<urls>", MessageUtil.joinArray(args, 1, "\n") + " ");
+                            .replace("<urls>", urls + " ");
 
                     stringBuilder.append(string);
                     stringBuilder.append("\n");
@@ -100,6 +103,9 @@ public class CommandStream extends FCommand {
                 });
 
         sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), stringBuilder.toString(), "", false);
+
+        IntegrationsModule.sendDiscordStream(cmdSettings.getSender(), urls);
+
         return true;
     }
 

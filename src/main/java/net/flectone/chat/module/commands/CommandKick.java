@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -100,5 +101,7 @@ public class CommandKick extends FCommand {
         playerMessage = MessageUtil.formatAll(cmdSettings.getSender(), playerMessage);
 
         toKick.kickPlayer(playerMessage);
+
+        IntegrationsModule.sendDiscordKick(toKick, reason, commandSender.getName());
     }
 }

@@ -44,5 +44,7 @@ public class AdvancementListener extends FListener {
         String configMessage = locale.getVaultString(player, getModule() + "." + fAdvancementType + ".name");
 
         ((AdvancementModule) getModule()).sendAll(player, fAdvancement, configMessage);
+
+        IntegrationsModule.sendDiscordAdvancement(player, fAdvancement);
     }
 }

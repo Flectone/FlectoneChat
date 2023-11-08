@@ -3,6 +3,7 @@ package net.flectone.chat.module.commands;
 import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -85,6 +86,8 @@ public class CommandMaintenance extends FCommand {
 
         commands.set(getName() + ".turned-on", isEnabled);
         commands.save();
+
+        IntegrationsModule.sendDiscordMaintenance(cmdSettings.getSender(), isEnabled ? "turn-on" : "turn-off");
 
         return true;
     }

@@ -80,7 +80,8 @@ public class DeathListener extends FListener {
         if (hasNoPermission(player)) return;
         if (IntegrationsModule.isVanished(player) || lastDamageEvent == null) return;
 
-        String configMessage = locale.getVaultString(player, getModule() + getDeathConfigMessage(player, lastDamageEvent));
+        String typeDeath = getDeathConfigMessage(player, lastDamageEvent);
+        String configMessage = locale.getVaultString(player, getModule() + typeDeath);
         if (configMessage.isEmpty()) return;
 
         if (!config.getVaultBoolean(player, getModule() + ".enable")) {
@@ -149,6 +150,8 @@ public class DeathListener extends FListener {
         }
 
         ((DeathModule) getModule()).sendAll(player, playerDamager, configMessage);
+
+        IntegrationsModule.sendDiscordDeath(player, playerDamager, typeDeath);
 
         event.setDeathMessage("");
         fPlayer.setLastDamager(new PlayerDamager());

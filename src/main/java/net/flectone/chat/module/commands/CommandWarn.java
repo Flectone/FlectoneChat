@@ -5,6 +5,7 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.apache.commons.lang.StringUtils;
@@ -96,6 +97,10 @@ public class CommandWarn extends FCommand {
                 : null;
 
         warnedFPlayer.warn(reason, time, moderator);
+
+        IntegrationsModule.sendDiscordWarn(warnedFPlayer.getOfflinePlayer(),
+                warnedFPlayer.getWarnList().get(warnedFPlayer.getWarnList().size() - 1),
+                warnedFPlayer.getCountWarns() + 1);
     }
 
     @Override

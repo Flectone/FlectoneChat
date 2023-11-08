@@ -7,6 +7,7 @@ import net.flectone.chat.model.poll.Poll;
 import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -106,6 +107,8 @@ public class CommandPoll extends FCommand {
 
             commands.set(getName() + ".last-id", poll.getId());
             commands.save();
+
+            IntegrationsModule.sendDiscordPoll(cmdSettings.getSender(), poll.getMessage(), poll.getId());
 
             return true;
         }

@@ -6,6 +6,7 @@ import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.apache.commons.lang.StringUtils;
@@ -121,6 +122,9 @@ public class CommandBan extends FCommand {
                 : null;
 
         banFPlayer.ban(reason, banTime, moderator);
+
+        IntegrationsModule.sendDiscordBan(banFPlayer.getOfflinePlayer(), banFPlayer.getBan());
+
         return true;
     }
 

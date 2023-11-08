@@ -1,6 +1,9 @@
 package net.flectone.chat.module.integrations;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.flectone.chat.model.advancement.FAdvancement;
+import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -10,10 +13,7 @@ import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static net.flectone.chat.manager.FileManager.integrations;
 
@@ -172,5 +172,84 @@ public class IntegrationsModule extends FModule {
         FIntegration fIntegration = get("PlasmoVoice");
         if (fIntegration == null) return;
         ((FPlasmoVoice) fIntegration).unmute(player);
+    }
+
+    public static void sendDiscord(@NotNull Player sender, @NotNull String typeMessage, @NotNull Map<String, String> replacements) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendMessage(sender, typeMessage, replacements);
+    }
+
+    public static void sendDiscordAdvancement(@NotNull Player sender, @NotNull FAdvancement fAdvancement) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendAdvancementMessage(sender, fAdvancement);
+    }
+
+    public static void sendDiscordDeath(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String typeDeath) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendDeathMessage(sender, playerDamager, typeDeath);
+    }
+
+    public static void sendDiscordJoin(@NotNull Player sender, @NotNull String type) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendJoinMessage(sender, type);
+    }
+
+    public static void sendDiscordQuit(@NotNull Player sender, @NotNull String type) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendQuitMessage(sender, type);
+    }
+
+    public static void sendDiscordStream(@Nullable Player sender, @NotNull String urls) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendStreamMessage(sender, urls);
+    }
+
+    public static void sendDiscordBan(@Nullable OfflinePlayer sender, @NotNull Moderation ban) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendBanMessage(sender, ban);
+    }
+
+    public static void sendDiscordMute(@Nullable OfflinePlayer sender, @NotNull Moderation mute) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendMuteMessage(sender, mute);
+    }
+
+    public static void sendDiscordWarn(@Nullable OfflinePlayer sender, @NotNull Moderation warn, int count) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendWarnMessage(sender, warn, count);
+    }
+
+    public static void sendDiscordKick(@Nullable OfflinePlayer sender, @NotNull String reason,
+                                       @NotNull String moderatorName) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendKickMessage(sender, reason, moderatorName);
+    }
+
+    public static void sendDiscordBroadcast(@Nullable OfflinePlayer sender, @NotNull String message) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendBroadcastMessage(sender, message);
+    }
+
+    public static void sendDiscordMaintenance(@Nullable OfflinePlayer sender, @NotNull String type) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendMaintenanceMessage(sender, type);
+    }
+
+    public static void sendDiscordPoll(@Nullable OfflinePlayer sender, @NotNull String message, int id) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendPollMessage(sender, message, id);
     }
 }

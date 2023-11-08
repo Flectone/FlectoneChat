@@ -28,11 +28,15 @@ public class QuitListener extends FListener {
         if (hasNoPermission(player)) return;
         if (IntegrationsModule.isVanished(player)) return;
 
-        String string = player.hasPlayedBefore() || !config.getVaultBoolean(player, getModule() + ".first-time.enable")
+        boolean hasPlayerBefore = player.hasPlayedBefore() || !config.getVaultBoolean(player, getModule() + ".first-time.enable");
+
+        String string = hasPlayerBefore
                 ? locale.getVaultString(player, getModule() + ".message")
                 : locale.getVaultString(player, getModule() + ".first-time.message");
 
         ((QuitModule) getModule()).sendAll(player, string);
+
+        IntegrationsModule.sendDiscordQuit(player, hasPlayerBefore ? "usually" : "first");
 
         event.setQuitMessage(null);
     }
