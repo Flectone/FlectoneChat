@@ -39,10 +39,8 @@ public class CommandFlectonechat extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        if (args.length < 1 ||
-                !args[0].equalsIgnoreCase("reload")
-                        && !args[0].equalsIgnoreCase("set")
-                        && args.length < 4) {
+        if (args.length < 1 || !args[0].equalsIgnoreCase("reload") &&
+                (args[0].equalsIgnoreCase("set") && args.length < 4)) {
 
             sendUsageMessage(commandSender, alias);
             return true;
