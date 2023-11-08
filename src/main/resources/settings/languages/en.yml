@@ -94,7 +94,7 @@ default:
         name: "#4eff52🌠 &&2<player> &&1has completed the task #4eff52[<advancement>]"
         hover: "#4eff52<name> \n<description>"
       goal:
-        name: "#f2d40f🌠 &&2<player> &&1completed the goal #f2d40f[<advancement>]"
+        name: "#f2d40f🌠 &&2<player> &&1has completed the goal #f2d40f[<advancement>]"
         hover: "#f2d40f<name> \n<description>"
       challenge:
         name: "#834eff🌠 &&2<player> &&1has completed the challenge #834eff[<advancement>]"
