@@ -24,18 +24,6 @@ public class FModuleManager {
 
     private static final HashMap<Class<?>, FModule> F_MODULE_MAP = new HashMap<>();
 
-    private CommandsModule commandsModule;
-    private ExtraModule extraModule;
-    private PlayerModule playerModule;
-    private SoundsModule soundsModule;
-    private ServerModule serverModule;
-    private IntegrationsModule integrationsModule;
-    private ChatBubbleModule chatBubbleModule;
-    private AutoMessageModule autoMessageModule;
-    private ServerMessageModule serverMessageModule;
-    private PlayerMessageModule playerMessageModule;
-    private ColorModule colorModule;
-
     public Collection<FModule> getModules() {
         return F_MODULE_MAP.values();
     }
@@ -45,17 +33,17 @@ public class FModuleManager {
     }
 
     public void init() {
-        commandsModule = new CommandsModule("commands");
-        extraModule = new ExtraModule("extra");
-        playerModule = new PlayerModule("player");
-        soundsModule = new SoundsModule("sounds");
-        serverModule = new ServerModule("server");
-        integrationsModule = new IntegrationsModule("integrations");
-        chatBubbleModule = new ChatBubbleModule("chat-bubble");
-        autoMessageModule = new AutoMessageModule("auto-message");
-        serverMessageModule = new ServerMessageModule("server-message");
-        playerMessageModule = new PlayerMessageModule("player-message");
-        colorModule = new ColorModule("color");
+        new CommandsModule("commands");
+        new ExtraModule("extra");
+        new PlayerModule("player");
+        new SoundsModule("sounds");
+        new ServerModule("server");
+        new IntegrationsModule("integrations");
+        new ChatBubbleModule("chat-bubble");
+        new AutoMessageModule("auto-message");
+        new ServerMessageModule("server-message");
+        new PlayerMessageModule("player-message");
+        new ColorModule("color");
 
         FActionManager.add(new FPlayerActionListener(null));
         FActionManager.add(new MarkSpawnListener(null));
