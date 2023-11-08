@@ -46,7 +46,7 @@ public class KnockingListener extends FListener {
         List<String> knockingTypes = config.getVaultStringList(player, getModule() + ".list");
         Optional<String> knockingBlock = knockingTypes.stream().filter(blockType::contains).findFirst();
         if (knockingBlock.isEmpty()) return;
-        if (hasNoPermission(player, blockType)) return;
+        if (hasNoPermission(player, knockingBlock.get())) return;
 
         FPlayer fPlayer = FPlayerManager.get(player);
         if (fPlayer == null) return;
