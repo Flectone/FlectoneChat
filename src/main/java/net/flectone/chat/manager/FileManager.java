@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,8 +37,11 @@ public class FileManager {
     public static void init() {
         config = Type.CONFIG.load();
 
-        Type.LOCALE.setFileName(config.getString("plugin.language"));
-        locale = Type.LOCALE.load();
+        Type.LOCALE_EN.load();
+        Type.LOCALE_RU.load();
+
+        Type localeType = Type.fromString(config.getString("plugin.language"));
+        locale = localeType != null ? localeType.getFile() : Type.LOCALE_EN.getFile();
 
         modules = Type.MODULES.load();
         commands = Type.COMMANDS.load();
@@ -128,7 +133,8 @@ public class FileManager {
     public enum Type {
 
         CONFIG("", "config"),
-        LOCALE(LANGUAGES_FOLDER, "en"),
+        LOCALE_EN(LANGUAGES_FOLDER, "en"),
+        LOCALE_RU(LANGUAGES_FOLDER, "ru"),
         MODULES(SETTINGS_FOLDER, "modules"),
         COMMANDS(SETTINGS_FOLDER, "commands"),
         SOUNDS(SETTINGS_FOLDER, "sounds"),
@@ -182,6 +188,14 @@ public class FileManager {
                     .forEach(string -> file.set(string, resourceFile.get(string)));
 
             file.save();
+        }
+
+        @Nullable
+        public static Type fromString(@NotNull String string) {
+            return Arrays.stream(Type.values())
+                    .filter(type -> type.getFileName().equalsIgnoreCase(string))
+                    .findAny()
+                    .orElse(null);
         }
     }
 }
