@@ -66,8 +66,6 @@ public class FormattingModule extends FModule {
     public void replace(@Nullable Player player, @NotNull String message, @NotNull String command,
                                @NotNull List<WordParams> messages, @Nullable ItemStack itemStack, boolean mentionEnabled,
                                boolean isEnabled) {
-        if (!isEnabledFor(player)) return;
-        if (hasNoPermission(player)) return;
 
         HashMap<String, String> formattingMap = load(player);
 
