@@ -119,6 +119,8 @@ default:
   player-message:
     formatting:
       list:
+        ping:
+          message: "&&1<player> ping - <ping>"
         cords:
           message: "&&1World:&&2<world> &&1Biome:&&2<biome> &&1X:&&2<block_x> &&1Y:&&2<block_y> &&1Z:&&2<block_z>"
         stats:

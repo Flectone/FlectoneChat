@@ -175,7 +175,7 @@ public class MessageBuilder {
                 }
 
             } else if (wordParams.isUrl()) {
-                wordComponent = new FURLComponent(sender, recipient, word, wordParams.getUrl());
+                wordComponent = new FURLComponent(sender, recipient, word, wordParams.getUrlText());
             } else if (wordParams.isHide()) {
                 wordComponent = new FComponent(MessageUtil.formatAll(sender, recipient, wordParams.getHideMessage()));
                 wordComponent.addHoverText(word);

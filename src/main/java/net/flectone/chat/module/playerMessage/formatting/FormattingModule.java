@@ -192,7 +192,8 @@ public class FormattingModule extends FModule {
                     word = config.getVaultString(sender, this + ".list.mention.format")
                             .replace("<message>", player.getName());
 
-                    wordParams.setClickable(true, player.getName());
+                    wordParams.setClickable(true);
+                    wordParams.setPlayerPingName(player.getName());
                     wordParams.setPlayerPing(true);
                     wordParams.setText(word);
 
@@ -208,7 +209,8 @@ public class FormattingModule extends FModule {
             if (formattingMap.containsKey("url")) {
                 Matcher urlMatcher = Pattern.compile(formattingMap.get("url")).matcher(word);
                 if (urlMatcher.find()) {
-                    wordParams.setUrl(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
+                    wordParams.setUrlText(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
+                    wordParams.setUrl(true);
 
                     word = config.getVaultString(sender, this + ".list.url.format")
                             .replace("<message>", word);
@@ -219,9 +221,37 @@ public class FormattingModule extends FModule {
 
             if (sender != null) {
 
-                switch (word) {
-                    case "%cords%" -> {
-                        if (!formattingMap.containsKey("cords")) break;
+                if (formattingMap.containsKey("ping")) {
+                    String value = formattingMap.get("ping");
+                    if (value.equals(word)) {
+                        wordParams.setPing(true);
+
+                        int ping = sender.getPing();
+                        int badPing = config.getVaultInt(sender, this + ".list.ping.bad.count");
+                        int mediumPing = config.getVaultInt(sender, this + ".list.ping.medium.count");
+
+                        String pingColor;
+                        if (ping > badPing) {
+                            pingColor = config.getVaultString(sender, this + ".list.ping.bad.color");
+                        } else if (ping > mediumPing) {
+                            pingColor = config.getVaultString(sender, this + ".list.ping.medium.color");
+                        } else {
+                            pingColor = config.getVaultString(sender, this + ".list.ping.good.color");
+                        }
+
+                        word = locale.getVaultString(sender, this + ".list.ping.message")
+                                .replace("<player>", sender.getName())
+                                .replace("<ping>", pingColor + ping);
+                        wordParams.setText(word);
+
+                        return wordParams;
+                    }
+                }
+
+                if (formattingMap.containsKey("cords")) {
+                    String value = formattingMap.get("cords");
+
+                    if (value.equals(word)) {
                         wordParams.setCords(true);
 
                         Location location = sender.getLocation();
@@ -236,9 +266,11 @@ public class FormattingModule extends FModule {
 
                         return wordParams;
                     }
-                    case "%stats%" -> {
-                        if (!formattingMap.containsKey("stats")) break;
+                }
 
+                if (formattingMap.containsKey("stats")) {
+                    String value = formattingMap.get("stats");
+                    if (value.equals(word)) {
                         wordParams.setStats(true);
 
                         AttributeInstance armor = sender.getAttribute(Attribute.GENERIC_ARMOR);
