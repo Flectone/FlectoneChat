@@ -41,6 +41,10 @@ public class FPlayerActionListener extends FListener {
         FPlayer fPlayer = new FPlayer(player);
         fPlayer.init();
 
+        if (!player.hasPlayedBefore()) {
+            FPlayerManager.getOFFLINE_PLAYERS().add(player.getName());
+        }
+
         for (Mail mail : fPlayer.getMailList()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(mail.getSender()));
             if (offlinePlayer.getName() == null) continue;
