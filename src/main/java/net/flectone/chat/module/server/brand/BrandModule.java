@@ -60,6 +60,8 @@ public class BrandModule extends FModule {
         List<String> brandList = GROUP_BRAND_LIST.get(playerGroup);
         if (brandList == null) {
             brandList = locale.getVaultStringList(player, this + ".message");
+            if (brandList.isEmpty()) return "";
+
             GROUP_BRAND_LIST.put(playerGroup, brandList);
         }
 

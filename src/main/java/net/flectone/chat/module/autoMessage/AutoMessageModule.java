@@ -65,6 +65,8 @@ public class AutoMessageModule extends FModule {
 
         List<String> tabList = getMessageMap(map, player);
 
+        if (tabList.isEmpty()) return "";
+
         Integer index = indexMap.get(player);
         if (index == null) index = 0;
 
@@ -90,6 +92,10 @@ public class AutoMessageModule extends FModule {
         messageList = new ArrayList<>();
 
         List<String> tempList = locale.getVaultStringList(player, this + "." + ".message");
+
+        if (tempList.isEmpty()) {
+            return messageList;
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
 

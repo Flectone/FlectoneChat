@@ -81,6 +81,8 @@ public class TabModule extends FModule {
 
         List<String> tabList = getTabMap(map, player, type);
 
+        if (tabList.isEmpty()) return "";
+
         Integer index = indexMap.get(player);
         if (index == null) index = 0;
 
@@ -99,6 +101,10 @@ public class TabModule extends FModule {
         tabList = new ArrayList<>();
 
         List<String> tempList = locale.getVaultStringList(player, this + "." + type + ".message");
+
+        if (tempList.isEmpty()) {
+            return tabList;
+        }
 
         StringBuilder stringBuilder = new StringBuilder();
 
