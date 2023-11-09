@@ -23,8 +23,8 @@ import static net.flectone.chat.manager.FileManager.locale;
 
 public class AutoMessageModule extends FModule {
 
-    private static final HashMap<Player, Integer> MESSAGE_INDEX_MAP = new HashMap<>();
-    private static final HashMap<String, List<String>> MESSAGE_MAP = new HashMap<>();
+    private final HashMap<Player, Integer> MESSAGE_INDEX_MAP = new HashMap<>();
+    private final HashMap<String, List<String>> MESSAGE_MAP = new HashMap<>();
 
     public AutoMessageModule(String name) {
         super(name);

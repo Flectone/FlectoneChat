@@ -22,7 +22,7 @@ import java.util.HashMap;
 @Getter
 public class FModuleManager {
 
-    private static final HashMap<Class<?>, FModule> F_MODULE_MAP = new HashMap<>();
+    private final HashMap<Class<?>, FModule> F_MODULE_MAP = new HashMap<>();
 
     public Collection<FModule> getModules() {
         return F_MODULE_MAP.values();
@@ -55,9 +55,5 @@ public class FModuleManager {
     @Nullable
     public FModule get(Class<?> clazz) {
         return F_MODULE_MAP.get(clazz);
-    }
-
-    public static void clear() {
-        F_MODULE_MAP.clear();
     }
 }

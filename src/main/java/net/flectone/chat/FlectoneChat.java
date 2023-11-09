@@ -96,7 +96,6 @@ public final class FlectoneChat extends JavaPlugin {
         FPlayerManager.terminateAll();
 
         FActionManager.clearAll();
-        FModuleManager.clear();
         database.getExecutor().close();
         database.disconnect();
     }

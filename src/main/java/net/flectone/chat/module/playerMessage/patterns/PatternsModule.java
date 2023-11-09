@@ -14,7 +14,7 @@ import static net.flectone.chat.manager.FileManager.config;
 
 public class PatternsModule extends FModule {
 
-    private static HashMap<String, HashMap<String, String>> PATTERN_MAP = new HashMap<>();
+    private HashMap<String, HashMap<String, String>> PATTERN_MAP = new HashMap<>();
 
     public PatternsModule(FModule module, String name) {
         super(module, name);

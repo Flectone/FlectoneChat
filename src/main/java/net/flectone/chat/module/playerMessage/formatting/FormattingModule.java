@@ -29,7 +29,7 @@ import static net.flectone.chat.manager.FileManager.locale;
 public class FormattingModule extends FModule {
 
     private final static List<String> patterns = List.of("||", "**", "__", "##", "??", "~~");
-    private final static HashMap<String, HashMap<String, String>> FORMATTING_MAP = new HashMap<>();
+    private final HashMap<String, HashMap<String, String>> FORMATTING_MAP = new HashMap<>();
 
     public FormattingModule(FModule module, String name) {
         super(module, name);

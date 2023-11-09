@@ -20,7 +20,7 @@ import static net.flectone.chat.manager.FileManager.locale;
 
 public class AfkTimeoutModule extends FModule {
 
-    private static final HashMap<UUID, Pair<Integer, Block>> LAST_BLOCK_MAP = new HashMap<>();
+    private final HashMap<UUID, Pair<Integer, Block>> LAST_BLOCK_MAP = new HashMap<>();
 
     public AfkTimeoutModule(FModule module, String name) {
         super(module, name);

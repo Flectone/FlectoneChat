@@ -18,10 +18,10 @@ import static net.flectone.chat.manager.FileManager.locale;
 
 public class TabModule extends FModule {
 
-    private static final HashMap<Player, Integer> HEADER_INDEX_MAP = new HashMap<>();
-    private static final HashMap<Player, Integer> FOOTER_INDEX_MAP = new HashMap<>();
-    private static final HashMap<String, List<String>> TAB_HEADER_MAP = new HashMap<>();
-    private static final HashMap<String, List<String>> TAB_FOOTER_MAP = new HashMap<>();
+    private final HashMap<Player, Integer> HEADER_INDEX_MAP = new HashMap<>();
+    private final HashMap<Player, Integer> FOOTER_INDEX_MAP = new HashMap<>();
+    private final HashMap<String, List<String>> TAB_HEADER_MAP = new HashMap<>();
+    private final HashMap<String, List<String>> TAB_FOOTER_MAP = new HashMap<>();
 
     public TabModule(FModule module, String name) {
         super(module, name);

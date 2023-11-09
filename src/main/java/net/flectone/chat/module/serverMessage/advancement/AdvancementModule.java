@@ -25,7 +25,7 @@ import static net.flectone.chat.manager.FileManager.locale;
 
 public class AdvancementModule extends FModule {
 
-    private static final HashMap<World, Object> LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP = new HashMap<>();
+    private final HashMap<World, Object> LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP = new HashMap<>();
 
     public AdvancementModule(FModule module, String name) {
         super(module, name);

@@ -93,7 +93,6 @@ public class CommandFlectonechat extends FCommand {
         // disable all
         IntegrationsModule.unregister();
         FActionManager.clearAll();
-        FModuleManager.clear();
 
         FPlayerManager.terminateAll();
 
