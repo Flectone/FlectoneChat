@@ -223,6 +223,8 @@ public class FDiscordSRV implements Listener, FIntegration {
     public void sendMessage(@Nullable OfflinePlayer sender, @NotNull String typeMessage, Map<String, String> replacements) {
         String path = "DiscordSRV.message." + typeMessage;
 
+        if (!integrations.getBoolean(path + ".enable")) return;
+
         String channelId = integrations.getString(path + ".channel-id");
 
         TextChannel textChannel = DiscordSRV.getPlugin().getJda().getTextChannelById(channelId);
