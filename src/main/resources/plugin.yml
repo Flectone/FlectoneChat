@@ -54,10 +54,12 @@ permissions:
     default: true
   flectonechat.player-message.chat.global:
     default: true
-  flectonechat.player-message.formatting:
+  flectonechat.player-message.colors:
     default: op
   flectonechat.player-message.placeholders:
     default: op
+  flectonechat.player-message.formatting:
+    default: true
   flectonechat.player-message.formatting.ping:
     default: true
   flectonechat.player-message.formatting.cords:

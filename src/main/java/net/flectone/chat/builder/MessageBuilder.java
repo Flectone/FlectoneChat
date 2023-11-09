@@ -87,7 +87,7 @@ public class MessageBuilder {
                 word = MessageUtil.formatPAPI(sender, sender, word, true);
             }
 
-            if (sender.hasPermission("flectonechat.player-message.formatting")) {
+            if (sender.hasPermission("flectonechat.player-message.colors")) {
                 word = MessageUtil.formatAll(sender, sender, word, true);
             }
 
@@ -151,7 +151,7 @@ public class MessageBuilder {
                 word = MessageUtil.formatPAPI(sender, recipient, word, true);
             }
 
-            if (sender == null || (sender.hasPermission("flectonechat.player-message.formatting") && !wordParams.isEdited())) {
+            if (sender == null || (sender.hasPermission("flectonechat.player-message.colors") && !wordParams.isEdited())) {
                 wordParams.setFormatted(true);
 
                 String newWord = MessageUtil.formatAll(sender, recipient, lastColor + wordParams.getText(), true);
