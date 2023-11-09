@@ -268,7 +268,6 @@ public class FDiscordSRV implements Listener, FIntegration {
                 embedBuilder.setAuthor(author);
                 if (sender != null && integrations.getBoolean(path + ".embed.author.icon")) {
                     String avatarUrl = DiscordSRV.getAvatarUrl(sender.getName(), sender.getUniqueId());
-                    Bukkit.broadcastMessage(avatarUrl);
                     embedBuilder.setAuthor(author, null, avatarUrl);
                 }
             }
