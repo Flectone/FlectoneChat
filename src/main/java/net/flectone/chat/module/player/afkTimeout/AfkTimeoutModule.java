@@ -57,10 +57,12 @@ public class AfkTimeoutModule extends FModule {
 
         fPlayer.setAfkSuffix(MessageUtil.formatAll(player, afkSuffix));
 
+        fPlayer.playSound(player, player, this.toString());
+
+        if (!config.getVaultBoolean(player, this + ".message.enable")) return;
+
         String afkMessage = locale.getVaultString(player, "commands.afk." + isAfk + "-message");
         player.sendMessage(MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
-
-        fPlayer.playSound(player, player, this.toString());
     }
 
     public void checkAfk(@NotNull Player player) {

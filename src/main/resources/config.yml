@@ -175,6 +175,9 @@ default:
 
       time: 3000
 
+      message:
+        enable: true
+
       take-out-actions:
         - /afk
         - commands
