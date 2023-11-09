@@ -13,7 +13,9 @@ public class FURLComponent extends FComponent{
     public FURLComponent(@Nullable Player sender, @NotNull Player recipient, @NotNull String text, @NotNull String url) {
         super(text);
 
-        addOpenURL(url);
+        if (config.getVaultBoolean(sender, "player-message.formatting.list.url.clickable")) {
+            addOpenURL(url);
+        }
 
         if (config.getVaultBoolean(sender, "player-message.formatting.list.url.hover.enable")) {
             String showText = locale.getVaultString(sender, "player-message.formatting.list.url.hover.message");

@@ -250,6 +250,7 @@ default:
           enable: true
           hover:
             enable: true
+          clickable: true
           trigger: ((https?|ftp|gopher|telnet|file):((//)|(\\))+[\w:#@%/;$()~_?+-=\\.&]*)
           format: "&&1<message>"
 
