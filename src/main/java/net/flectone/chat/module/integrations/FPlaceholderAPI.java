@@ -6,6 +6,7 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.player.name.NameModule;
+import net.flectone.chat.util.TimeUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +58,9 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
             };
         }
 
+        return switch (params.toLowerCase()) {
+            case "lastonline" -> TimeUtil.convertTime(fPlayer.getPlayer(), player.getLastPlayed());
+            case "firstonline" -> TimeUtil.convertTime(fPlayer.getPlayer(), player.getFirstPlayed());
             case "stream_prefix" -> fPlayer.getStreamPrefix();
             case "afk_suffix" -> fPlayer.getAfkSuffix();
             case "world_prefix" -> fPlayer.getWorldPrefix();
