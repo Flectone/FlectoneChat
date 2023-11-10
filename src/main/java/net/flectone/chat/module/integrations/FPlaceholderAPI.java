@@ -39,12 +39,24 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
 
     @Override
     public String onRequest(@Nullable OfflinePlayer player, @NotNull String params) {
-        if (player == null || !player.isOnline()) return null;
+        if (player == null) return null;
 
-        FPlayer fPlayer = FPlayerManager.get(player.getName());
+        FPlayer fPlayer = FPlayerManager.getOffline(player.getName());
         if(fPlayer == null) return null;
 
         String placeholder = switch (params.toLowerCase()) {
+
+        if (params.startsWith("moderation")) {
+            FlectoneChat.getDatabase().getWarns(fPlayer);
+
+            return switch (params.toLowerCase()) {
+                case "moderation_ban" -> FPlayerManager.getBANNED_PLAYERS().contains(fPlayer.getUuid()) ? "1" : "0";
+                case "moderation_mute" -> FPlayerManager.getMUTED_PLAYERS().contains(fPlayer.getMinecraftName()) ? "1" : "0";
+                case "moderation_warn" -> String.valueOf(fPlayer.getCountWarns());
+                default -> null;
+            };
+        }
+
             case "stream_prefix" -> fPlayer.getStreamPrefix();
             case "afk_suffix" -> fPlayer.getAfkSuffix();
             case "world_prefix" -> fPlayer.getWorldPrefix();
