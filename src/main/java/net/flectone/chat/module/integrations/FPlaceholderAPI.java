@@ -45,7 +45,21 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
         FPlayer fPlayer = FPlayerManager.getOffline(player.getName());
         if(fPlayer == null) return null;
 
-        String placeholder = switch (params.toLowerCase()) {
+        if (params.startsWith("player")) {
+            FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
+            if (!(fModule instanceof NameModule nameModule)) return null;
+            Player onlinePlayer = fPlayer.getPlayer();
+            if (onlinePlayer == null) return null;
+
+            return switch (params.toLowerCase()) {
+                case "player_name_real" -> nameModule.getReal(onlinePlayer);
+                case "player_name_display" -> nameModule.getDisplay(onlinePlayer);
+                case "player_name_tab" -> nameModule.getTab(onlinePlayer);
+                case "player_suffix" -> nameModule.getSuffix(onlinePlayer);
+                case "player_prefix" -> nameModule.getPrefix(onlinePlayer);
+                default -> null;
+            };
+        }
 
         if (params.startsWith("moderation")) {
             FlectoneChat.getDatabase().getWarns(fPlayer);
@@ -64,22 +78,6 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
             case "stream_prefix" -> fPlayer.getStreamPrefix();
             case "afk_suffix" -> fPlayer.getAfkSuffix();
             case "world_prefix" -> fPlayer.getWorldPrefix();
-            default -> null;
-        };
-
-        if (placeholder != null) return placeholder;
-
-        FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
-        if (!(fModule instanceof NameModule nameModule)) return null;
-        Player onlinePlayer = fPlayer.getPlayer();
-        if (onlinePlayer == null) return null;
-
-        return switch (params.toLowerCase()) {
-            case "player_name_real" -> nameModule.getReal(onlinePlayer);
-            case "player_name_display" -> nameModule.getDisplay(onlinePlayer);
-            case "player_name_tab" -> nameModule.getTab(onlinePlayer);
-            case "player_suffix" -> nameModule.getSuffix(onlinePlayer);
-            case "player_prefix" -> nameModule.getPrefix(onlinePlayer);
             default -> null;
         };
     }
