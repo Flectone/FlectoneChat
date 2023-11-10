@@ -2,10 +2,10 @@ package net.flectone.chat.module.serverMessage.death;
 
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
-import net.flectone.chat.model.player.FPlayer;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -17,10 +17,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
 import static net.flectone.chat.manager.FileManager.config;
@@ -28,7 +30,8 @@ import static net.flectone.chat.manager.FileManager.locale;
 
 public class DeathListener extends FListener {
 
-    private static Player lastInteractPlayer;
+    private static Entity lastInteractEntity;
+    private static Projectile lastInteractProjectile;
     private static Material lastBlockInteract;
 
     public DeathListener(FModule module) {
@@ -41,7 +44,20 @@ public class DeathListener extends FListener {
         register();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void playerProjectileHit(@NotNull ProjectileHitEvent event) {
+        if (event.isCancelled()) return;
+        if (event.getHitEntity() == null) return;
+
+        Projectile projectile = event.getEntity();
+        ProjectileSource projectileSource = projectile.getShooter();
+        if (!(projectileSource instanceof Entity entity)) return;
+
+        lastInteractEntity = entity;
+        lastInteractProjectile = projectile;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerClickOnBed(@NotNull PlayerInteractEvent event) {
         if (event.getClickedBlock() == null
                 || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -54,12 +70,12 @@ public class DeathListener extends FListener {
         if ((blockData instanceof Bed && !worldEnvironment.equals(World.Environment.NORMAL))
                 || (blockData instanceof RespawnAnchor && !worldEnvironment.equals(World.Environment.NETHER))) {
 
-            lastInteractPlayer = event.getPlayer();
+            lastInteractEntity = event.getPlayer();
             lastBlockInteract = block.getBlockData().getMaterial();
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerDamageEvent(@NotNull EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)
                 || IntegrationsModule.isVanished(player)
@@ -121,7 +137,7 @@ public class DeathListener extends FListener {
             }
             case BLOCK_EXPLOSION -> {
                 playerDamager.setFinalDamager(lastBlockInteract);
-                playerDamager.setKiller(lastInteractPlayer);
+                playerDamager.setKiller(lastInteractEntity);
             }
             case CONTACT -> {
                 Block block = ((EntityDamageByBlockEvent) lastDamageEvent).getDamager();
@@ -135,7 +151,8 @@ public class DeathListener extends FListener {
             }
             case MAGIC -> {
                 if (!(lastDamageEvent instanceof EntityDamageByEntityEvent)) {
-                    playerDamager.setKiller(null);
+                    playerDamager.setKiller(lastInteractEntity);
+                    playerDamager.setFinalDamager(lastInteractProjectile);
                     break;
                 }
 
