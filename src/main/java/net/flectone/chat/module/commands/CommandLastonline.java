@@ -62,12 +62,9 @@ public class CommandLastonline extends FCommand {
 
         OfflinePlayer player = fTarget.getOfflinePlayer();
 
-        long playedTime = player.getLastPlayed();
-        String timeInSeconds = String.valueOf((playedTime- System.currentTimeMillis()) / 1000).substring(1);
-
         String message = locale.getVaultString(commandSender, this + ".message")
                 .replace("<player>", targetPlayer)
-                .replace("<time>", TimeUtil.convertTime(cmdSettings.getSender(), Integer.parseInt(timeInSeconds)));
+                .replace("<time>", TimeUtil.convertTime(cmdSettings.getSender(), player.getLastPlayed()));
 
         message = IntegrationsModule.setPlaceholders(player, player, message);
         message = MessageUtil.formatAll(cmdSettings.getSender(), message);

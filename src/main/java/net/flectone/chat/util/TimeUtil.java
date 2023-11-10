@@ -12,6 +12,11 @@ public class TimeUtil {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
+    public static String convertTime(@Nullable Player player, long time) {
+        String timeInSeconds = String.valueOf((time- System.currentTimeMillis()) / 1000).substring(1);
+        return convertTime(player, Integer.parseInt(timeInSeconds));
+    }
+
     @NotNull
     public static String convertTime(@Nullable Player player, int timeInSeconds) {
         if (timeInSeconds < 0) return "";
