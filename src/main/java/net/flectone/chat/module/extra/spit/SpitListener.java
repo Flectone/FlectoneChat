@@ -1,7 +1,5 @@
 package net.flectone.chat.module.extra.spit;
 
-
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
@@ -12,13 +10,16 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class SpitListener extends FListener {
 
     public SpitListener(FModule module) {
         super(module);
         init();
+    }
+
+    @Override
+    public void init() {
+        register();
     }
 
     @EventHandler
@@ -36,7 +37,7 @@ public class SpitListener extends FListener {
         String configMaterial = config.getVaultString(player, getModule() + ".item");
         if (!item.getType().toString().equalsIgnoreCase(configMaterial)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
@@ -50,10 +51,5 @@ public class SpitListener extends FListener {
         }
 
         ((SpitModule) getModule()).spit(player);
-    }
-
-    @Override
-    public void init() {
-        register();
     }
 }

@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -15,9 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandFirstonline extends FCommand {
+
     public CommandFirstonline(FModule module, String name) {
         super(module, name);
         init();
@@ -38,7 +36,7 @@ public class CommandFirstonline extends FCommand {
         }
 
         String selectedPlayer = args[0];
-        FPlayer fPlayer = FPlayerManager.getOffline(selectedPlayer);
+        FPlayer fPlayer = playerManager.getOffline(selectedPlayer);
         if (fPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return true;

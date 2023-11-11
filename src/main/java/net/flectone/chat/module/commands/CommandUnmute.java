@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
@@ -14,9 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandUnmute extends FCommand {
+
     public CommandUnmute(FModule module, String name) {
         super(module, name);
         init();
@@ -32,8 +29,7 @@ public class CommandUnmute extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -46,14 +42,14 @@ public class CommandUnmute extends FCommand {
             return;
         }
 
-        FPlayer fPlayer = FPlayerManager.getOffline(args[0]);
+        FPlayer fPlayer = playerManager.getOffline(args[0]);
 
         if (fPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
-        FlectoneChat.getDatabase().getMute(fPlayer);
+        database.getMute(fPlayer);
 
         Moderation mute = fPlayer.getMute();
 
@@ -87,7 +83,7 @@ public class CommandUnmute extends FCommand {
 
         tabCompleteClear();
         if (args.length == 1) {
-            FPlayerManager.getMUTED_PLAYERS().forEach(string ->
+            playerManager.getMUTED_PLAYERS().forEach(string ->
                     isStartsWith(args[0], string));
         }
 

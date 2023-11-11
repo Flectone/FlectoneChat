@@ -1,7 +1,5 @@
 package net.flectone.chat.module.chatBubble;
 
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
@@ -31,12 +29,12 @@ public class ChatBubbleModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new ChatBubbleListener(this));
-        FActionManager.add(new ChatBubbleTicker(this));
+        actionManager.add(new ChatBubbleListener(this));
+        actionManager.add(new ChatBubbleTicker(this));
     }
 
     public void add(@NotNull Player player, @NotNull String message) {
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         message = IntegrationsModule.replaceInteractiveChatPlaceholders(message);

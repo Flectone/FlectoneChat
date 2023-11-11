@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
@@ -15,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandUnwarn extends FCommand {
+
     public CommandUnwarn(FModule module, String name) {
         super(module, name);
         init();
@@ -33,8 +30,7 @@ public class CommandUnwarn extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -47,13 +43,13 @@ public class CommandUnwarn extends FCommand {
             return;
         }
 
-        FPlayer unwarnedFPlayer = FPlayerManager.getOffline(args[0]);
+        FPlayer unwarnedFPlayer = playerManager.getOffline(args[0]);
         if (unwarnedFPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
-        FlectoneChat.getDatabase().getWarns(unwarnedFPlayer);
+        database.getWarns(unwarnedFPlayer);
 
         if (unwarnedFPlayer.getCountWarns() == 0) {
             sendMessage(commandSender, this + ".not-warned");
@@ -109,12 +105,12 @@ public class CommandUnwarn extends FCommand {
         tabCompleteClear();
         switch (args.length) {
             case 1 -> {
-                for (String playerName : FPlayerManager.getWARNS_PLAYERS().keySet()) {
+                for (String playerName : playerManager.getWARNS_PLAYERS().keySet()) {
                     isStartsWith(args[0], playerName);
                 }
             }
             case 2 -> {
-                List<Moderation> warns = FPlayerManager.getWARNS_PLAYERS().get(args[0]);
+                List<Moderation> warns = playerManager.getWARNS_PLAYERS().get(args[0]);
                 if (warns == null) break;
 
                 int k = 1;

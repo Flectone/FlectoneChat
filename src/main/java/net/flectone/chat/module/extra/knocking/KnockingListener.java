@@ -1,6 +1,5 @@
 package net.flectone.chat.module.extra.knocking;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
@@ -15,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
-
-import static net.flectone.chat.manager.FileManager.config;
 
 public class KnockingListener extends FListener {
 
@@ -48,7 +45,7 @@ public class KnockingListener extends FListener {
         if (knockingBlock.isEmpty()) return;
         if (hasNoPermission(player, knockingBlock.get())) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {

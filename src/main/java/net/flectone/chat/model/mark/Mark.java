@@ -1,6 +1,7 @@
 package net.flectone.chat.model.mark;
 
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.manager.FModuleManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.sound.FSound;
@@ -10,6 +11,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
@@ -26,10 +28,10 @@ public class Mark {
 
     static  {
         COLOR_VALUES.forEach(color -> {
-            Team team = FlectoneChat.getScoreBoard().getTeam(color);
+            Team team = FlectoneChat.getPlugin().getScoreBoard().getTeam(color);
             if (team != null) return;
 
-            team = FlectoneChat.getScoreBoard().registerNewTeam(color);
+            team = FlectoneChat.getPlugin().getScoreBoard().registerNewTeam(color);
 
             team.setCanSeeFriendlyInvisibles(false);
             team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
@@ -46,10 +48,20 @@ public class Mark {
 
     private ChatColor lastColor;
 
+    private final FlectoneChat plugin;
+    private final FPlayerManager playerManager;
+    private final FModuleManager moduleManager;
+    private final Scoreboard scoreboard;
+
     public Mark(Player player, Entity entity, String color) {
         this.player = player;
         this.entity = entity;
         this.color = color;
+
+        plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        scoreboard = plugin.getScoreBoard();
     }
 
     public Mark(Player player, Location location, String color) {
@@ -69,6 +81,11 @@ public class Mark {
             needRemove = true;
 
         } else this.entity = null;
+
+        plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        scoreboard = plugin.getScoreBoard();
     }
 
 
@@ -87,7 +104,8 @@ public class Mark {
 
     @Nullable
     public static Entity getEntityInLineOfSightVectorMath(@NotNull Player player, int range) {
-        RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(), player.getLocation().getDirection(), range, 0.35, entity -> {
+        RayTraceResult rayTraceResult = player.getWorld().rayTraceEntities(player.getEyeLocation(),
+                player.getLocation().getDirection(), range, 0.35, entity -> {
             // ignoring executor
             if (player.equals(entity)) return false;
 
@@ -102,17 +120,17 @@ public class Mark {
         markEntity();
         unMarkEntityScheduler();
 
-        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        FModule fModule = moduleManager.get(SoundsModule.class);
         if (fModule instanceof SoundsModule soundsModule) {
             soundsModule.play(new FSound(player, entity.getLocation(), "mark"));
         }
     }
 
     public void unMarkEntityScheduler() {
-        Bukkit.getScheduler().runTaskLater(FlectoneChat.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
             entity.setGlowing(false);
-            if (entity instanceof Player player) {
-                FPlayer fPlayer = FPlayerManager.get(player);
+            if (entity instanceof Player entityPlayer) {
+                FPlayer fPlayer = playerManager.get(entityPlayer);
                 if (fPlayer == null) return;
                 fPlayer.getTeam().setColor(lastColor);
                 return;
@@ -120,7 +138,7 @@ public class Mark {
 
             if (needRemove) entity.remove();
 
-            Team team = FlectoneChat.getScoreBoard().getTeam(color);
+            Team team = scoreboard.getTeam(color);
             if (team == null) return;
 
             team.removeEntry(entity.getUniqueId().toString());
@@ -129,8 +147,8 @@ public class Mark {
 
     public void markEntity() {
 
-        if (entity instanceof Player player) {
-            FPlayer fPlayer = FPlayerManager.get(player);
+        if (entity instanceof Player entityPlayer) {
+            FPlayer fPlayer = playerManager.get(entityPlayer);
             if (fPlayer == null) return;
 
             lastColor = fPlayer.getTeam().getColor();
@@ -138,7 +156,7 @@ public class Mark {
             return;
         }
 
-        Team team = FlectoneChat.getScoreBoard().getTeam(color);
+        Team team = scoreboard.getTeam(color);
         if (team == null) return;
 
         team.addEntry(entity.getUniqueId().toString());

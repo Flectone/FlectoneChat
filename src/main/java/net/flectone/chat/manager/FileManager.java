@@ -1,7 +1,6 @@
 package net.flectone.chat.manager;
 
 import lombok.Getter;
-import lombok.Setter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,23 +17,31 @@ import java.util.List;
 
 public class FileManager {
 
-    private static final String DATA_FOLDER = FlectoneChat.getInstance().getDataFolder().getAbsolutePath() + File.separator;
+    private static final String DATA_FOLDER = FlectoneChat.getPlugin().getDataFolder().getAbsolutePath() + File.separator;
     private static final String SETTINGS_FOLDER = "settings" + File.separator;
     private static final String LANGUAGES_FOLDER = SETTINGS_FOLDER + "languages" + File.separator;
     private static final String ICONS_FOLDER = SETTINGS_FOLDER + "icons" + File.separator;
 
-    private static final HashMap<String, File> ICONS_MAP = new HashMap<>();
+    private final HashMap<String, File> ICONS_MAP = new HashMap<>();
 
-    public static FConfiguration config;
-    public static FConfiguration locale;
-    public static FConfiguration modules;
-    public static FConfiguration commands;
-    public static FConfiguration sounds;
-    public static FConfiguration integrations;
-    public static FConfiguration swears;
-    public static FConfiguration cooldowns;
+    @Getter
+    private FConfiguration config;
+    @Getter
+    private FConfiguration locale;
+    @Getter
+    private FConfiguration modules;
+    @Getter
+    private FConfiguration commands;
+    @Getter
+    private FConfiguration sounds;
+    @Getter
+    private FConfiguration integrations;
+    @Getter
+    private FConfiguration swears;
+    @Getter
+    private FConfiguration cooldowns;
 
-    public static void init() {
+    public void init() {
         config = Type.CONFIG.load();
 
         Type.LOCALE_EN.load();
@@ -58,9 +65,9 @@ public class FileManager {
         checkMigration();
     }
 
-    public static void checkMigration() {
+    public void checkMigration() {
         String fileVersion = config.getString("plugin.version");
-        String projectVersion = FlectoneChat.getInstance().getDescription().getVersion();
+        String projectVersion = FlectoneChat.getPlugin().getDescription().getVersion();
 
         if (compareVersions(fileVersion, projectVersion) == -1) {
             Arrays.stream(Type.values()).forEach(Type::update);
@@ -78,7 +85,7 @@ public class FileManager {
 
         try {
             if (!file.exists()) {
-                FlectoneChat.getInstance().saveResource(filePath, false);
+                FlectoneChat.getPlugin().saveResource(filePath, false);
             }
 
             fileConfiguration = new FConfiguration(file, filePath);
@@ -91,7 +98,7 @@ public class FileManager {
         return fileConfiguration;
     }
 
-    public static File getIcon(String icon) {
+    public File getIcon(String icon) {
         if (ICONS_MAP.get(icon) != null) return ICONS_MAP.get(icon);
 
         File fileIcon = new File(DATA_FOLDER + ICONS_FOLDER + icon + ".png");
@@ -100,19 +107,19 @@ public class FileManager {
         return fileIcon;
     }
 
-    private static void loadIcons() {
+    private void loadIcons() {
         List<String> iconNames = config.getStringList("default.server.status.icon.names");
         iconNames.add("maintenance");
 
         iconNames.stream()
                 .filter(icon -> !getIcon(icon).exists()
-                        && FlectoneChat.getInstance().getResource(ICONS_FOLDER + icon + ".png") != null)
+                        && FlectoneChat.getPlugin().getResource(ICONS_FOLDER + icon + ".png") != null)
                 .forEach(icon ->
-                        FlectoneChat.getInstance().saveResource(ICONS_FOLDER + icon + ".png", false));
+                        FlectoneChat.getPlugin().saveResource(ICONS_FOLDER + icon + ".png", false));
 
     }
 
-    public static int compareVersions(@NotNull String firstVersion, @NotNull String secondVersion) {
+    public int compareVersions(@NotNull String firstVersion, @NotNull String secondVersion) {
         if (firstVersion.isEmpty()) return -1;
         if (secondVersion.isEmpty()) return 1;
 
@@ -145,9 +152,9 @@ public class FileManager {
         @Getter
         private FConfiguration file;
         private final String filePath;
-        @Setter
+
         @Getter
-        private String fileName;
+        private final String fileName;
         Type(@NotNull String filePath, @NotNull String fileName) {
             this.filePath = filePath;
             this.fileName = fileName;
@@ -168,7 +175,7 @@ public class FileManager {
 
         public void update() {
             if (this.file == null) return;
-            InputStream inputStream = FlectoneChat.getInstance().getResource(file.getResourceFilePath().replace('\\', '/'));
+            InputStream inputStream = FlectoneChat.getPlugin().getResource(file.getResourceFilePath().replace('\\', '/'));
 
             if (inputStream == null) return;
 

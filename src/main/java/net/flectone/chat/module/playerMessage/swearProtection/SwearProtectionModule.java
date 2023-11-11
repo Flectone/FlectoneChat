@@ -9,8 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class SwearProtectionModule extends FModule {
 
     public SwearProtectionModule(FModule module, String name) {

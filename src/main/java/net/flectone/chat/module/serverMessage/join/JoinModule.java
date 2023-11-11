@@ -2,8 +2,6 @@ package net.flectone.chat.module.serverMessage.join;
 
 import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FPlayerComponent;
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FModule;
@@ -13,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class JoinModule extends FModule {
+
     public JoinModule(FModule module, String name) {
         super(module, name);
         init();
@@ -23,7 +22,7 @@ public class JoinModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new JoinListener(this));
+        actionManager.add(new JoinListener(this));
     }
 
     public void sendAll(@NotNull Player sender, @NotNull String message) {
@@ -31,7 +30,7 @@ public class JoinModule extends FModule {
                 .stream()
                 .filter(this::isEnabledFor)
                 .forEach(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if (fPlayer == null) return;
                     if (fPlayer.getSettings() == null) return;
 

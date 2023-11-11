@@ -4,8 +4,6 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.util.PlayerUtil;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class AutoMessageTicker extends FTicker {
 
     public AutoMessageTicker(FModule module) {

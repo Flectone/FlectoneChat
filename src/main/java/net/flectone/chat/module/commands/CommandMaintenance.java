@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
@@ -13,10 +12,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandMaintenance extends FCommand {
+
     public CommandMaintenance(FModule module, String name) {
         super(module, name);
         init();
@@ -26,7 +23,7 @@ public class CommandMaintenance extends FCommand {
     public void init() {
         if (!isEnabled()) return;
 
-        FActionManager.add(new MaintenanceListener(null));
+        plugin.getActionManager().add(new MaintenanceListener(null));
         register();
     }
 

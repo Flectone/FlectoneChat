@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -13,9 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandSpy extends FCommand {
+
     public CommandSpy(FModule module, String name) {
         super(module, name);
         init();
@@ -25,7 +22,7 @@ public class CommandSpy extends FCommand {
     public void init() {
         if (!isEnabled()) return;
 
-        FActionManager.add(new SpyListener(null));
+        plugin.getActionManager().add(new SpyListener(null));
 
         register();
     }
@@ -46,8 +43,7 @@ public class CommandSpy extends FCommand {
 
         cmdSettings.getFPlayer().getSettings().set(Settings.Type.SPY, isEnabled ? "-1" : "1");
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateFPlayer("spy", cmdSettings.getFPlayer()));
+        database.execute(() -> database.updateFPlayer("spy", cmdSettings.getFPlayer()));
 
         String message = locale.getVaultString(commandSender, this + "." + !isEnabled + "-message");
         commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));

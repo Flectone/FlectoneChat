@@ -2,13 +2,12 @@ package net.flectone.chat.model.sound;
 
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static net.flectone.chat.manager.FileManager.sounds;
 
 public class FSound {
 
@@ -18,10 +17,14 @@ public class FSound {
     private final String name;
     private Location location;
 
+    private final FConfiguration sounds;
+
     public FSound(@Nullable Player sender, @Nullable Player recipient, @NotNull String name) {
         this.sender = sender;
         this.recipient = recipient;
         this.name = name;
+
+        sounds = FlectoneChat.getPlugin().getFileManager().getSounds();
     }
 
     public FSound(@Nullable Player player, @NotNull String name) {
@@ -32,6 +35,8 @@ public class FSound {
         this.sender = sender;
         this.location = location;
         this.name = name;
+
+        sounds = FlectoneChat.getPlugin().getFileManager().getSounds();
     }
 
     public void play() {

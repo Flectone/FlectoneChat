@@ -1,8 +1,5 @@
 package net.flectone.chat.module.autoMessage;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.model.sound.FSound;
@@ -17,9 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class AutoMessageModule extends FModule {
 
@@ -36,24 +30,20 @@ public class AutoMessageModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new AutoMessageTicker(this));
-    }
-
-    public void send(@NotNull Player player, @NotNull String string) {
-        player.sendMessage(string);
+        actionManager.add(new AutoMessageTicker(this));
     }
 
     public void send(@NotNull Player player) {
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         String autoMessage = fPlayer.getSettings().getValue(Settings.Type.AUTO_MESSAGE);
         boolean enabled = autoMessage == null || Integer.parseInt(autoMessage) != -1;
         if (!enabled) return;
 
-        send(player, incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player));
+        player.sendMessage(incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player));
 
-        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        FModule fModule = moduleManager.get(SoundsModule.class);
         if (fModule instanceof SoundsModule soundsModule) {
             soundsModule.play(new FSound(player, player, this.toString()));
         }

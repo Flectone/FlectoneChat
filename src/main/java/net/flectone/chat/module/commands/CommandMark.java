@@ -10,9 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-
 public class CommandMark extends FCommand {
+
     public CommandMark(FModule module, String name) {
         super(module, name);
         init();

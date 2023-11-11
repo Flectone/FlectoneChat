@@ -1,5 +1,6 @@
 package net.flectone.chat.model.spit;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import org.bukkit.Location;
@@ -17,6 +18,8 @@ public class Spit {
     private final Player player;
     private final String action;
 
+    private final FPlayerManager playerManager;
+
     public Spit(@NotNull Player player, @NotNull String action) {
         this.location = player.getEyeLocation();
         this.world = player.getWorld();
@@ -24,6 +27,8 @@ public class Spit {
         this.action = action;
 
         location.setY(location.getY() - 0.3);
+
+        playerManager = FlectoneChat.getPlugin().getPlayerManager();
     }
 
     public void spawn() {
@@ -31,7 +36,7 @@ public class Spit {
         spit.setVelocity(location.getDirection());
         spit.setShooter(player);
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         fPlayer.playSound(location, action);

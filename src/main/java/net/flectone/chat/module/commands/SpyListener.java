@@ -1,6 +1,7 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FListener;
@@ -14,10 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class SpyListener extends FListener {
+
     public SpyListener(FModule module) {
         super(module);
         init();
@@ -35,15 +34,21 @@ public class SpyListener extends FListener {
     }
 
     public static void send(@NotNull Player sender, @NotNull String action, @NotNull String message) {
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+
+        FConfiguration commands = plugin.getFileManager().getCommands();
         if (!commands.getBoolean("spy.enable")) return;
 
         List<String> commandSpyList = commands.getStringList("spy.list");
         if (!commandSpyList.contains(action)) return;
 
+        FConfiguration locale = plugin.getFileManager().getLocale();
+
         Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.hasPermission("flectonechat.commands.spy"))
                 .filter(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = plugin.getPlayerManager().get(player);
                     if (fPlayer == null) return false;
 
                     String value = fPlayer.getSettings().getValue(Settings.Type.SPY);

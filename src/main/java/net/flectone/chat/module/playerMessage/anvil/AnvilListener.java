@@ -1,7 +1,6 @@
 package net.flectone.chat.module.playerMessage.anvil;
 
 import net.flectone.chat.builder.MessageBuilder;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
@@ -17,9 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class AnvilListener extends FListener {
+
     public AnvilListener(FModule module) {
         super(module);
         init();
@@ -42,7 +40,7 @@ public class AnvilListener extends FListener {
         if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {

@@ -18,10 +18,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandBanlist extends FCommand {
+
     public CommandBanlist(FModule module, String name) {
         super(module, name);
         init();
@@ -37,7 +35,7 @@ public class CommandBanlist extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
+        FlectoneChat.getPlugin().getDatabase().execute(() ->
                 asyncOnCommand(commandSender, command, alias, args));
 
         return true;
@@ -51,7 +49,7 @@ public class CommandBanlist extends FCommand {
             throw new RuntimeException("Per-page setting for /" + command + " cannot be zero");
         }
 
-        int bansCount = FlectoneChat.getDatabase().getCountRow("bans");
+        int bansCount = database.getCountRow("bans");
         if (bansCount == 0) {
             sendMessage(commandSender, this + ".empty");
             return;
@@ -87,8 +85,7 @@ public class CommandBanlist extends FCommand {
         int page = args.length > 0 ? Math.max(1, Integer.parseInt(args[0])) : 1;
         page = Math.min(lastPage, page);
 
-        FlectoneChat.getDatabase()
-                .getModerationList("bans", perPage, (page - 1) * perPage, Moderation.Type.BAN)
+        database.getModerationList("bans", perPage, (page - 1) * perPage, Moderation.Type.BAN)
                 .forEach(dPlayer -> {
                     String playerBanFormat = ".player-ban";
                     if (dPlayer.getTime() == -1) playerBanFormat += "-permanently";

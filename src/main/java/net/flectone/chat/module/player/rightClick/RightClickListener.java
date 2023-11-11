@@ -8,8 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class RightClickListener extends FListener {
 
     public RightClickListener(FModule module) {

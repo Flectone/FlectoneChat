@@ -1,6 +1,7 @@
 package net.flectone.chat.util;
 
-import net.flectone.chat.manager.FileManager;
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,10 +82,12 @@ public class SwearUtil {
     }
 
     public static void loadSwears() {
-        if (FileManager.swears == null) return;
+        FConfiguration swearsFile = FlectoneChat.getPlugin().getFileManager().getSwears();
+
+        if (swearsFile == null) return;
 
         swears.clear();
-        swears.addAll(FileManager.swears.getStringList("list"));
+        swears.addAll(swearsFile.getStringList("list"));
     }
 
     public static Boolean contains(String text) {

@@ -5,7 +5,9 @@ import net.flectone.chat.component.FComponent;
 import net.flectone.chat.component.FLocaleComponent;
 import net.flectone.chat.component.FPlayerComponent;
 import net.flectone.chat.component.FURLComponent;
+import net.flectone.chat.manager.FModuleManager;
 import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.message.WordParams;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
@@ -24,8 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class MessageBuilder {
 
     private final List<WordParams> messages = new ArrayList<>();
@@ -33,24 +33,34 @@ public class MessageBuilder {
     private final ItemStack itemStack;
     private final Player sender;
 
+    private final FPlayerManager playerManager;
+    private final FConfiguration config;
+
     public MessageBuilder(@Nullable Player player, @Nullable ItemStack itemStack, @NotNull String message, @NotNull List<String> featuresList) {
         this.itemStack = itemStack;
         this.sender = player;
 
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+
+        playerManager = plugin.getPlayerManager();
+        config = plugin.getFileManager().getConfig();
+
+        FModuleManager moduleManager = plugin.getModuleManager();
+
         if (featuresList.contains("patterns")) {
-            FModule fModule = FlectoneChat.getModuleManager().get(PatternsModule.class);
+            FModule fModule = moduleManager.get(PatternsModule.class);
             if (fModule instanceof PatternsModule patternsModule) {
                 message = patternsModule.replace(sender, message);
             }
         }
         if (featuresList.contains("swear-protection")) {
-            FModule fModule = FlectoneChat.getModuleManager().get(SwearProtectionModule.class);
+            FModule fModule = moduleManager.get(SwearProtectionModule.class);
             if (fModule instanceof SwearProtectionModule swearProtectionModule) {
                 message = swearProtectionModule.replace(sender, message);
             }
         }
 
-        FModule fModule = FlectoneChat.getModuleManager().get(FormattingModule.class);
+        FModule fModule = moduleManager.get(FormattingModule.class);
         if (fModule instanceof FormattingModule formattingModule
                 && fModule.isEnabledFor(player) && !fModule.hasNoPermission(player)) {
 
@@ -169,7 +179,7 @@ public class MessageBuilder {
             }
 
             if (wordParams.isClickable()) {
-                FPlayer fPlayer = FPlayerManager.get(wordParams.getPlayerPingName());
+                FPlayer fPlayer = playerManager.get(wordParams.getPlayerPingName());
                 if (fPlayer != null) {
                     wordComponent = new FPlayerComponent(fPlayer.getPlayer(), recipient, word);
                 }

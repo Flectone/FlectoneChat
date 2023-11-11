@@ -1,6 +1,5 @@
 package net.flectone.chat.module.chatBubble;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.module.integrations.IntegrationsModule;
@@ -14,9 +13,8 @@ import org.bukkit.entity.Entity;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class ChatBubbleTicker extends FTicker {
+
     public ChatBubbleTicker(FModule module) {
         super(module);
         init();
@@ -35,7 +33,7 @@ public class ChatBubbleTicker extends FTicker {
                 .filter(player -> !player.isInsideVehicle() || !(player.getVehicle() instanceof AreaEffectCloud))
                 .forEach(player -> {
 
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if(fPlayer == null) return;
                     if (fPlayer.getChatBubbles().isEmpty()) return;
 

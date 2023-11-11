@@ -1,7 +1,6 @@
 package net.flectone.chat.listener;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
@@ -20,8 +19,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
-
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class FPlayerActionListener extends FListener {
 
@@ -42,7 +39,7 @@ public class FPlayerActionListener extends FListener {
         fPlayer.init();
 
         if (!player.hasPlayedBefore()) {
-            FPlayerManager.getOFFLINE_PLAYERS().add(player.getName());
+            playerManager.getOFFLINE_PLAYERS().add(player.getName());
         }
 
         for (Mail mail : fPlayer.getMailList()) {
@@ -57,7 +54,7 @@ public class FPlayerActionListener extends FListener {
 
             player.sendMessage(sendMessage);
 
-            FlectoneChat.getDatabase().removeMail(mail);
+            FlectoneChat.getPlugin().getDatabase().removeMail(mail);
         }
 
         fPlayer.getMailList().clear();
@@ -65,7 +62,7 @@ public class FPlayerActionListener extends FListener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void playerQuitEvent(@NotNull PlayerQuitEvent event) {
-        FPlayer fPlayer = FPlayerManager.get(event.getPlayer());
+        FPlayer fPlayer = playerManager.get(event.getPlayer());
         if (fPlayer == null) return;
         fPlayer.terminate();
     }
@@ -73,10 +70,10 @@ public class FPlayerActionListener extends FListener {
     @EventHandler
     public void onLoginPlayer(@NotNull AsyncPlayerPreLoginEvent event) {
 
-        if (!FPlayerManager.getBANNED_PLAYERS().contains(event.getUniqueId())) return;
+        if (!playerManager.getBANNED_PLAYERS().contains(event.getUniqueId())) return;
 
         String uuidString = event.getUniqueId().toString();
-        Moderation moderation = FlectoneChat.getDatabase()
+        Moderation moderation = FlectoneChat.getPlugin().getDatabase()
                     .getPlayerInfo("bans", "player", uuidString, Moderation.Type.BAN);
 
         if (moderation == null || moderation.isExpired()) return;

@@ -1,8 +1,6 @@
 package net.flectone.chat.module.playerMessage.chat;
 
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.chatBubble.ChatBubbleModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
@@ -23,7 +21,7 @@ public class ChatModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new ChatListener(this));
+        actionManager.add(new ChatListener(this));
     }
 
     public void send(@NotNull Player sender, @NotNull List<Player> recipientsList,
@@ -37,7 +35,7 @@ public class ChatModule extends FModule {
         recipientsList.forEach(player ->
                 player.spigot().sendMessage(messageBuilder.buildFormat(sender, player, chatFormat, true)));
 
-        FModule fModule = FlectoneChat.getModuleManager().get(ChatBubbleModule.class);
+        FModule fModule = moduleManager.get(ChatBubbleModule.class);
         if (fModule instanceof ChatBubbleModule chatBubbleModule) {
             chatBubbleModule.add(sender, messageBuilder.getMessage(""));
         }

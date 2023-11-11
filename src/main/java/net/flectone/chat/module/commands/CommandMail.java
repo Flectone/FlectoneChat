@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
@@ -15,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandMail extends FCommand {
+
     public CommandMail(FModule module, String name) {
         super(module, name);
         init();
@@ -33,8 +30,7 @@ public class CommandMail extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -55,7 +51,7 @@ public class CommandMail extends FCommand {
         }
 
         String targetPlayer = args[0];
-        FPlayer fTarget = FPlayerManager.getOffline(targetPlayer);
+        FPlayer fTarget = playerManager.getOffline(targetPlayer);
         if (fTarget == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
@@ -66,7 +62,7 @@ public class CommandMail extends FCommand {
             return;
         }
 
-        FlectoneChat.getDatabase().getSettings(fTarget);
+        database.getSettings(fTarget);
         String value = fTarget.getSettings().getValue(Settings.Type.COMMAND_MAIL);
 
         if (value != null && value.equals("-1")) {
@@ -81,7 +77,7 @@ public class CommandMail extends FCommand {
             return;
         }
 
-        FlectoneChat.getDatabase().getIgnores(fTarget);
+        database.getIgnores(fTarget);
 
         if (fTarget.getIgnoreList().contains(fSender.getUuid())) {
             sendMessage(commandSender, getModule() + ".he-ignore");
@@ -108,7 +104,7 @@ public class CommandMail extends FCommand {
         Mail mail = new Mail(fSender.getUuid().toString(), fTarget.getUuid().toString(), message);
         fTarget.getMailList().add(mail);
 
-        FlectoneChat.getDatabase().addMail(mail);
+        database.addMail(mail);
 
         String sendMessage = locale.getVaultString(commandSender, this + ".send")
                 .replace("<player>", fTarget.getMinecraftName())

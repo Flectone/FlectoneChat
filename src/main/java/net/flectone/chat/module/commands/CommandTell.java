@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FCommand;
@@ -16,10 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandTell extends FCommand {
+
     public CommandTell(FModule module, String name) {
         super(module, name);
         init();
@@ -35,8 +31,7 @@ public class CommandTell extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -50,7 +45,7 @@ public class CommandTell extends FCommand {
         }
 
         String receiver = args[0];
-        FPlayer fReceiver = FPlayerManager.getOffline(receiver);
+        FPlayer fReceiver = playerManager.getOffline(receiver);
         if (fReceiver == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
@@ -80,7 +75,7 @@ public class CommandTell extends FCommand {
             return;
         }
 
-        FlectoneChat.getDatabase().getSettings(fReceiver);
+        database.getSettings(fReceiver);
 
         String commandTellValue = fReceiver.getSettings().getValue(Settings.Type.COMMAND_TELL);
 

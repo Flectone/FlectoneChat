@@ -1,6 +1,5 @@
 package net.flectone.chat.module.extra.itemSign;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.model.player.FPlayer;
@@ -11,8 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
-
-import static net.flectone.chat.manager.FileManager.config;
 
 public class ItemSignListener extends FListener {
 
@@ -42,7 +39,7 @@ public class ItemSignListener extends FListener {
         String configBlock = config.getVaultString(player, getModule() + ".block");
         if (!clickedBlock.getType().toString().equalsIgnoreCase(configBlock)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {

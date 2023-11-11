@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FCommand;
@@ -16,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static net.flectone.chat.manager.FileManager.*;
 
 public class CommandChatcolor extends FCommand {
 
@@ -46,7 +42,7 @@ public class CommandChatcolor extends FCommand {
         }
 
         String possiblePlayerName = args[0];
-        FPlayer possibleFPlayer = FPlayerManager.getOffline(possiblePlayerName);
+        FPlayer possibleFPlayer = playerManager.getOffline(possiblePlayerName);
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
@@ -100,8 +96,7 @@ public class CommandChatcolor extends FCommand {
     public void setColors(@NotNull FPlayer fPlayer, @NotNull HashMap<String, String> colors) {
         fPlayer.getSettings().set(Settings.Type.COLORS, colors);
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateSettings(fPlayer, "colors"));
+        database.execute(() -> database.updateSettings(fPlayer, "colors"));
 
         Player player = fPlayer.getPlayer();
 

@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -11,9 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class CommandPing extends FCommand {
 
@@ -39,7 +35,7 @@ public class CommandPing extends FCommand {
 
         FPlayer fPlayer = args.length == 0
                 ? cmdSettings.getFPlayer()
-                : FPlayerManager.get(args[0]);
+                : playerManager.get(args[0]);
 
         if (fPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");

@@ -4,8 +4,6 @@ import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FColorComponent;
 import net.flectone.chat.component.FLocaleComponent;
 import net.flectone.chat.component.FPlayerComponent;
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
@@ -19,10 +17,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class DeathModule extends FModule {
+
     public DeathModule(FModule module, String name) {
         super(module, name);
         init();
@@ -32,8 +28,6 @@ public class DeathModule extends FModule {
     public void init() {
         if (!isEnabled()) return;
         register();
-
-        FActionManager.add(new DeathListener(this));
     }
 
     public void sendAll(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String message) {
@@ -42,7 +36,7 @@ public class DeathModule extends FModule {
                 .stream()
                 .filter(this::isEnabledFor)
                 .forEach(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if (fPlayer == null) return;
 
                     String death = fPlayer.getSettings().getValue(Settings.Type.DEATH);

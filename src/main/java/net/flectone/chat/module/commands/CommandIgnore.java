@@ -1,7 +1,6 @@
 package net.flectone.chat.module.commands;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -14,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandIgnore extends FCommand {
+
     public CommandIgnore(FModule module, String name) {
         super(module, name);
         init();
@@ -55,7 +53,7 @@ public class CommandIgnore extends FCommand {
             return true;
         }
 
-        FPlayer ignoredFPlayer = FPlayerManager.getOffline(ignoredPlayerName);
+        FPlayer ignoredFPlayer = playerManager.getOffline(ignoredPlayerName);
         if (ignoredFPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return true;
@@ -73,10 +71,10 @@ public class CommandIgnore extends FCommand {
         boolean isIgnored = senderIgnoreList.contains(ignoredFPlayer.getUuid());
         if (isIgnored) {
             senderIgnoreList.remove(ignoredFPlayer.getUuid());
-            FlectoneChat.getDatabase().removeIgnore(fSender.getUuid(), ignoredFPlayer.getUuid());
+            FlectoneChat.getPlugin().getDatabase().removeIgnore(fSender.getUuid(), ignoredFPlayer.getUuid());
         } else {
             senderIgnoreList.add(ignoredFPlayer.getUuid());
-            FlectoneChat.getDatabase().addIgnore(fSender.getUuid(), ignoredFPlayer.getUuid());
+            FlectoneChat.getPlugin().getDatabase().addIgnore(fSender.getUuid(), ignoredFPlayer.getUuid());
         }
 
         fSender.setIgnoreList(senderIgnoreList);

@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandHelper extends FCommand {
 
     private static final String OTHER_PERMISSION = "flectonechat.commands.helper.other";

@@ -1,7 +1,9 @@
 package net.flectone.chat.model.tictactoe;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.util.MessageUtil;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -13,8 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.UUID;
-
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class TicTacToe {
 
@@ -34,6 +34,9 @@ public class TicTacToe {
 
     private boolean isAccepted = false;
 
+    private final FPlayerManager playerManager;
+    private final FConfiguration locale;
+
     public TicTacToe(@NotNull UUID firstPlayer, @NotNull UUID secondPlayer) {
         this.uuid = UUID.randomUUID().toString();
         this.firstPlayer = firstPlayer;
@@ -49,6 +52,10 @@ public class TicTacToe {
         }
 
         ticTacToeHashMap.put(uuid, this);
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        locale = plugin.getFileManager().getLocale();
     }
 
     @Nullable
@@ -82,7 +89,7 @@ public class TicTacToe {
 
     @Nullable
     public FPlayer getSecondFPlayer(@NotNull UUID player) {
-        return FPlayerManager.get(player.equals(firstPlayer) ? secondPlayer : firstPlayer);
+        return playerManager.get(player.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
     public boolean isBusy(int number) {
@@ -97,7 +104,7 @@ public class TicTacToe {
 
     @Nullable
     public FPlayer getCurrentFPlayer() {
-        return FPlayerManager.get(nextPlayer.equals(firstPlayer) ? secondPlayer : firstPlayer);
+        return playerManager.get(nextPlayer.equals(firstPlayer) ? secondPlayer : firstPlayer);
     }
 
     @NotNull
@@ -106,8 +113,11 @@ public class TicTacToe {
 
         if (!isEnded) {
             componentBuilder.append("\n");
+
+            String playerName = getCurrentFPlayer() != null ? getCurrentFPlayer().getMinecraftName() : "";
+
             String moveMessage = locale.getVaultString(sender.getPlayer(), "commands.tictactoe.game.move")
-                    .replace("<player>", getCurrentFPlayer().getMinecraftName());
+                    .replace("<player>", playerName);
 
             moveMessage = MessageUtil.formatAll(sender.getPlayer(), moveMessage);
 

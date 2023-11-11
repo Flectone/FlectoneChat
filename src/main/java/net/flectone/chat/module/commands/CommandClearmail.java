@@ -1,7 +1,6 @@
 package net.flectone.chat.module.commands;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
@@ -16,9 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandClearmail extends FCommand {
+
     public CommandClearmail(FModule module, String name) {
         super(module, name);
         init();
@@ -34,7 +32,7 @@ public class CommandClearmail extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
+        FlectoneChat.getPlugin().getDatabase().execute(() ->
                 asyncOnCommand(commandSender, command, alias, args));
 
         return true;
@@ -56,13 +54,13 @@ public class CommandClearmail extends FCommand {
         }
 
         String targetPlayer = args[0];
-        FPlayer fTarget = FPlayerManager.getOffline(targetPlayer);
+        FPlayer fTarget = playerManager.getOffline(targetPlayer);
         if (fTarget == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
-        FlectoneChat.getDatabase().getMails(fTarget);
+        database.getMails(fTarget);
 
         if (fTarget.getOfflinePlayer().isOnline() || fTarget.getMailList().isEmpty()) {
             sendMessage(commandSender, this + ".empty");
@@ -91,7 +89,7 @@ public class CommandClearmail extends FCommand {
         }
 
         fTarget.getMailList().remove(mail);
-        FlectoneChat.getDatabase().removeMail(mail);
+        database.removeMail(mail);
 
         String playerMessage = locale.getVaultString(commandSender, this + ".message")
                 .replace("<player>", fTarget.getMinecraftName())
@@ -115,7 +113,7 @@ public class CommandClearmail extends FCommand {
             case 1 -> isOfflinePlayer(args[0]);
             case 2 -> {
                 String playerName = args[0];
-                FPlayer fPlayer = FPlayerManager.get(playerName);
+                FPlayer fPlayer = playerManager.get(playerName);
 
                 if (fPlayer == null) break;
 

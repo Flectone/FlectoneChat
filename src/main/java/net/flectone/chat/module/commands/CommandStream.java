@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FCommand;
@@ -14,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandStream extends FCommand {
+
     public CommandStream(FModule module, String name) {
         super(module, name);
         init();
@@ -114,8 +112,7 @@ public class CommandStream extends FCommand {
 
         fPlayer.reloadStreamPrefix();
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateFPlayer("stream", fPlayer));
+        database.execute(() -> database.updateFPlayer("stream", fPlayer));
     }
 
     @Override

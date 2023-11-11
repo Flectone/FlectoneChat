@@ -1,10 +1,10 @@
 package net.flectone.chat.util;
 
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class TimeUtil {
 
@@ -25,6 +25,8 @@ public class TimeUtil {
         int hours = (timeInSeconds / 3600) % 24;
         int minutes = (timeInSeconds / 60) % 60;
         int seconds = timeInSeconds % 60;
+
+        FConfiguration locale = FlectoneChat.getPlugin().getFileManager().getLocale();
 
         StringBuilder stringBuilder = new StringBuilder();
 

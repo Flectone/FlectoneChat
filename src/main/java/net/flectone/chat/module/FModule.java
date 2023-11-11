@@ -2,21 +2,36 @@ package net.flectone.chat.module;
 
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.manager.FActionManager;
+import net.flectone.chat.manager.FModuleManager;
+import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.file.FConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import static net.flectone.chat.manager.FileManager.modules;
-import static net.flectone.chat.manager.FileManager.config;
 
 @Getter
 public abstract class FModule {
 
     private FModule module;
     private final String name;
+    protected FPlayerManager playerManager;
+    protected FModuleManager moduleManager;
+    protected FActionManager actionManager;
+    protected FConfiguration config;
+    protected FConfiguration locale;
+    protected FConfiguration modules;
 
     public FModule(String name) {
         this.name = name;
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        actionManager = plugin.getActionManager();
+        config = plugin.getFileManager().getConfig();
+        locale = plugin.getFileManager().getLocale();
+        modules = plugin.getFileManager().getModules();
     }
 
     public FModule(FModule module, String name) {
@@ -27,7 +42,7 @@ public abstract class FModule {
     public abstract void init();
 
     public void register() {
-        FlectoneChat.getModuleManager().put(this);
+        moduleManager.put(this);
     }
 
     public boolean hasNoPermission(@Nullable Player player) {

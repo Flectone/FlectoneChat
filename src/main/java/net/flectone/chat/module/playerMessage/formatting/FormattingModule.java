@@ -1,7 +1,5 @@
 package net.flectone.chat.module.playerMessage.formatting;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.message.TextParameters;
 import net.flectone.chat.model.message.WordParams;
 import net.flectone.chat.model.player.FPlayer;
@@ -22,9 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class FormattingModule extends FModule {
 
@@ -185,7 +180,7 @@ public class FormattingModule extends FModule {
                     && formattingMap.containsKey("mention") && mentionEnabled) {
                 String playerName = word.replaceFirst(mentionPrefix, "");
 
-                FPlayer fPlayer = FPlayerManager.get(playerName);
+                FPlayer fPlayer = playerManager.get(playerName);
                 if (fPlayer != null && fPlayer.getPlayer() != null) {
                     Player player = fPlayer.getPlayer();
 
@@ -197,7 +192,7 @@ public class FormattingModule extends FModule {
                     wordParams.setPlayerPing(true);
                     wordParams.setText(word);
 
-                    FModule fModule1 = FlectoneChat.getModuleManager().get(SoundsModule.class);
+                    FModule fModule1 = moduleManager.get(SoundsModule.class);
                     if (fModule1 instanceof SoundsModule soundsModule) {
                         soundsModule.play(new FSound(player, "mention"));
                     }
@@ -257,7 +252,7 @@ public class FormattingModule extends FModule {
                         Location location = sender.getLocation();
 
                         word = locale.getVaultString(sender, this + ".list.cords.message")
-                                .replace("<world>", location.getWorld().getEnvironment().name())
+                                .replace("<world>", sender.getWorld().getEnvironment().name())
                                 .replace("<biome>", location.getBlock().getBiome().name())
                                 .replace("<block_x>", String.valueOf(location.getBlockX()))
                                 .replace("<block_y>", String.valueOf(location.getBlockY()))

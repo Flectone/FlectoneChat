@@ -1,5 +1,7 @@
 package net.flectone.chat.util;
 
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -10,8 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import static net.flectone.chat.manager.FileManager.config;
 
 public class PlayerUtil {
 
@@ -66,6 +66,8 @@ public class PlayerUtil {
 
     @NotNull
     public static Collection<? extends Player> getPlayersWithFeature(@NotNull Collection<? extends Player> playerCollection, @NotNull String path) {
+        FConfiguration config = FlectoneChat.getPlugin().getFileManager().getConfig();
+
         return playerCollection.stream()
                 .filter(player -> config.getVaultBoolean(player, path))
                 .collect(Collectors.toList());

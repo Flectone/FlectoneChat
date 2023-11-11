@@ -1,5 +1,7 @@
 package net.flectone.chat.component;
 
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
@@ -10,21 +12,27 @@ import java.util.Arrays;
 public class FComponent {
 
     private final BaseComponent component;
-
-    public FComponent(@NotNull String text) {
-        this.component = componentFromLegacyText(text);
-    }
-
-    public FComponent() {
-        this.component = new TextComponent();
-    }
+    protected final FConfiguration locale;
+    protected final FConfiguration config;
 
     public FComponent(@Nullable BaseComponent baseComponent) {
         this.component = baseComponent;
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        locale = plugin.getFileManager().getLocale();
+        config = plugin.getFileManager().getConfig();
+    }
+
+    public FComponent(@NotNull String text) {
+        this(new TextComponent(fromLegacyText(text)));
+    }
+
+    public FComponent() {
+        this(new TextComponent());
     }
 
     public FComponent(@NotNull FComponent fComponent) {
-        this.component = fComponent.get();
+        this(fComponent.get());
     }
 
     @NotNull
@@ -79,10 +87,5 @@ public class FComponent {
     public FComponent addSuggestCommand(@NotNull String command) {
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         return this;
-    }
-
-    @NotNull
-    protected TextComponent componentFromLegacyText(@NotNull String text) {
-        return new TextComponent(fromLegacyText(text));
     }
 }

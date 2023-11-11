@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.model.player.FPlayer;
@@ -20,11 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-import static net.flectone.chat.manager.FileManager.config;
-
 public class CommandChatsettings extends FCommand {
+
     public CommandChatsettings(FModule module, String name) {
         super(module, name);
         init();
@@ -54,8 +50,7 @@ public class CommandChatsettings extends FCommand {
                 return true;
             }
 
-            FlectoneChat.getDatabase().execute(() ->
-                    FlectoneChat.getDatabase().updateFPlayer("settings", fPlayer));
+            database.execute(() -> database.updateFPlayer("settings", fPlayer));
 
             Bukkit.dispatchCommand(commandSender, "chatsettings");
             return true;

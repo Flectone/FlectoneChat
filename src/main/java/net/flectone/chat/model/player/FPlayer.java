@@ -3,8 +3,11 @@ package net.flectone.chat.model.player;
 import lombok.Getter;
 import lombok.Setter;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.database.sqlite.Database;
+import net.flectone.chat.manager.FModuleManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
@@ -22,21 +25,20 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static net.flectone.chat.manager.FileManager.*;
-
 @Getter
 public class FPlayer {
 
     private Player player;
     private OfflinePlayer offlinePlayer;
-    private final UUID uuid;
-    private final String minecraftName;
+    private UUID uuid;
+    private String minecraftName;
     private String ip = "0.0.0.0";
     private Team team;
     @Setter
@@ -62,7 +64,27 @@ public class FPlayer {
     @Setter
     private String afkSuffix = "";
 
+    private final FPlayerManager playerManager;
+    private final FModuleManager moduleManager;
+    private final Scoreboard scoreboard;
+    private final Database database;
+    private final FConfiguration locale;
+    private final FConfiguration cooldowns;
+    private final FConfiguration commands;
+
+    private FPlayer() {
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        scoreboard = plugin.getScoreBoard();
+        database = plugin.getDatabase();
+        locale = plugin.getFileManager().getLocale();
+        cooldowns = plugin.getFileManager().getCooldowns();
+        commands = plugin.getFileManager().getCommands();
+    }
+
     public FPlayer(@NotNull Player player) {
+        this();
         this.player = player;
         this.offlinePlayer = player;
         this.uuid = player.getUniqueId();
@@ -71,23 +93,25 @@ public class FPlayer {
     }
 
     public FPlayer(@NotNull OfflinePlayer offlinePlayer) {
+        this();
         this.offlinePlayer = offlinePlayer;
         this.uuid = offlinePlayer.getUniqueId();
         this.minecraftName = offlinePlayer.getName() != null ? offlinePlayer.getName() : "Unknown";
     }
 
     public FPlayer(@NotNull String uuid, @NotNull String name, @NotNull String ip) {
+        this();
         this.uuid = UUID.fromString(uuid);
         this.minecraftName = name;
         this.ip = ip;
     }
 
     public void init() {
-        FPlayerManager.add(this);
+        playerManager.add(this);
 
         fromDatabase();
 
-        FlectoneChat.getDatabase().execute(this::reloadStreamPrefix);
+        database.execute(this::reloadStreamPrefix);
 
         registerTeam();
         registerWorldPrefix();
@@ -106,25 +130,25 @@ public class FPlayer {
 
     public void terminate() {
 
-        FModule fModule = FlectoneChat.getModuleManager().get(AfkTimeoutModule.class);
+        FModule fModule = moduleManager.get(AfkTimeoutModule.class);
         if (fModule instanceof AfkTimeoutModule afkTimeoutModule) {
             afkTimeoutModule.removePlayer(this.uuid);
         }
 
         toDatabase();
         unregisterTeam();
-        FPlayerManager.remove(this);
+        playerManager.remove(this);
     }
 
     public void registerTeam() {
-        FModule fModule = FlectoneChat.getModuleManager().get(NameTagModule.class);
+        FModule fModule = moduleManager.get(NameTagModule.class);
         if (fModule instanceof NameTagModule nameTagModule) {
             this.team = nameTagModule.getTeam(player);
             return;
         }
 
-        team = FlectoneChat.getScoreBoard().getTeam(player.getName());
-        if (team == null) team = FlectoneChat.getScoreBoard().registerNewTeam(player.getName());
+        team = scoreboard.getTeam(player.getName());
+        if (team == null) team = scoreboard.registerNewTeam(player.getName());
 
         if (!team.hasEntry(player.getName())) {
             team.addEntry(player.getName());
@@ -139,18 +163,18 @@ public class FPlayer {
     }
 
     public void registerWorldPrefix() {
-        FModule fModule = FlectoneChat.getModuleManager().get(WorldModule.class);
+        FModule fModule = moduleManager.get(WorldModule.class);
         if (fModule instanceof WorldModule worldModule) {
             worldModule.getPrefix(player, player.getWorld());
         }
     }
 
     public void toDatabase() {
-        FlectoneChat.getDatabase().toDatabase(this);
+        database.toDatabase(this);
     }
 
     public void fromDatabase() {
-        FlectoneChat.getDatabase().fromDatabase(this);
+        database.fromDatabase(this);
     }
 
     public boolean isMuted() {
@@ -165,10 +189,9 @@ public class FPlayer {
         int finalTime = time == -1 ? -1 : time + TimeUtil.getCurrentTime();
         setMute(new Moderation(this.uuid.toString(), finalTime, reason, moderator, Moderation.Type.MUTE));
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateFPlayer("mutes", mute));
+        database.execute(() -> database.updateFPlayer("mutes", mute));
 
-        FPlayerManager.getMUTED_PLAYERS().add(getMinecraftName());
+        playerManager.getMUTED_PLAYERS().add(getMinecraftName());
 
         if (player != null) {
             IntegrationsModule.mutePlasmoVoice(player, moderator == null ? null : UUID.fromString(moderator), time, reason);
@@ -177,10 +200,9 @@ public class FPlayer {
 
     public void unmute() {
         this.mute = null;
-        FPlayerManager.getMUTED_PLAYERS().remove(getMinecraftName());
+        playerManager.getMUTED_PLAYERS().remove(getMinecraftName());
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().deleteRow("mutes", "player", uuid.toString()));
+        database.execute(() -> database.deleteRow("mutes", "player", uuid.toString()));
 
         if (player != null) {
             IntegrationsModule.unmutePlasmoVoice(player);
@@ -192,10 +214,9 @@ public class FPlayer {
 
         setBan(new Moderation(this.uuid.toString(), finalTime, reason, moderator, Moderation.Type.BAN));
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateFPlayer("bans", ban));
+        database.execute(() -> database.updateFPlayer("bans", ban));
 
-        FPlayerManager.getBANNED_PLAYERS().add(getUuid());
+        playerManager.getBANNED_PLAYERS().add(getUuid());
 
         if (player == null) return;
 
@@ -208,16 +229,15 @@ public class FPlayer {
                 .replace("<reason>", reason)
                 .replace("<moderator>", ban.getModeratorName());
 
-        Bukkit.getScheduler().runTask(FlectoneChat.getInstance(), () ->
+        Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
                 player.kickPlayer(MessageUtil.formatAll(player, localMessage)));
     }
 
     public void unban() {
         this.ban = null;
-        FPlayerManager.getBANNED_PLAYERS().remove(getUuid());
+        playerManager.getBANNED_PLAYERS().remove(getUuid());
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().deleteRow("bans", "player", uuid.toString()));
+        database.execute(() -> database.deleteRow("bans", "player", uuid.toString()));
 
     }
 
@@ -227,27 +247,25 @@ public class FPlayer {
         Moderation warn = new Moderation(this.uuid.toString(), finalTime, reason, moderator, Moderation.Type.WARN);
         getWarnList().add(warn);
 
-        FPlayerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
+        playerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
 
         int count = getCountWarns();
         String warnAction = commands.getString("warn.action." + count);
         if (!warnAction.isEmpty()) {
-            Bukkit.getScheduler().runTask(FlectoneChat.getInstance(), () ->
+            Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), warnAction.replace("<player>", getMinecraftName())));
         }
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().updateFPlayer("warns", warn));
+        database.execute(() -> database.updateFPlayer("warns", warn));
     }
 
     public void unwarn(int index) {
         Moderation warn = warnList.get(index);
         warnList.remove(index);
 
-        FPlayerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
+        playerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
 
-        FlectoneChat.getDatabase().execute(() ->
-                FlectoneChat.getDatabase().removeWarn(warn));
+        database.execute(() -> database.removeWarn(warn));
     }
 
     public int getCountWarns() {
@@ -322,7 +340,7 @@ public class FPlayer {
     }
 
     public void playSound(@NotNull Location location, @NotNull String action) {
-        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        FModule fModule = moduleManager.get(SoundsModule.class);
         if (fModule instanceof SoundsModule soundsModule) {
             soundsModule.play(new FSound(player, location, action));
         }
@@ -333,8 +351,7 @@ public class FPlayer {
     }
 
     public void playSound(@Nullable Player sender, @NotNull Player recipient, @NotNull String action) {
-
-        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+        FModule fModule = moduleManager.get(SoundsModule.class);
         if (fModule instanceof SoundsModule soundsModule) {
             soundsModule.play(new FSound(sender, recipient, action));
         }

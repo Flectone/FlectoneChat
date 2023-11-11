@@ -1,7 +1,5 @@
 package net.flectone.chat.module.server.tab;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.player.name.NameModule;
 import net.flectone.chat.util.MessageUtil;
@@ -12,9 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class TabModule extends FModule {
 
@@ -33,11 +28,11 @@ public class TabModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new TabListener(this));
-        FActionManager.add(new TabTicker(this));
+        actionManager.add(new TabListener(this));
+        actionManager.add(new TabTicker(this));
 
         if (config.getBoolean("default.server.tab.player-ping.enable")) {
-            FActionManager.add(new TabPlayerPingTicker(this));
+            actionManager.add(new TabPlayerPingTicker(this));
         }
     }
 
@@ -70,7 +65,7 @@ public class TabModule extends FModule {
         if (config.getVaultBoolean(player, this + ".player-list-name.enable")
                 && !hasNoPermission(player, "player-list-name")) {
 
-            FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
+            FModule fModule = moduleManager.get(NameModule.class);
             if (fModule instanceof NameModule nameModule) {
                 setPlayerListName(player, nameModule.getTab(player));
             }

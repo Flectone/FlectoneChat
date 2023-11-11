@@ -1,7 +1,6 @@
 package net.flectone.chat.module.extra.mark;
 
 
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.model.mark.Mark;
 import net.flectone.chat.module.FModule;
 import org.bukkit.entity.Entity;
@@ -22,7 +21,7 @@ public class MarkModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new MarkListener(this));
+        actionManager.add(new MarkListener(this));
     }
 
     public void removeBugEntities(@NotNull Player player) {

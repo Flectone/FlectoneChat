@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.manager.PollManager;
 import net.flectone.chat.model.poll.Poll;
@@ -19,9 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class CommandPoll extends FCommand {
 
@@ -72,7 +68,6 @@ public class CommandPoll extends FCommand {
             String formatString = locale.getVaultString(commandSender, this + ".message")
                     .replace("<id>", String.valueOf(poll.getId()));
 
-
             sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, poll.getMessage(), false);
 
             String voteId = String.valueOf(poll.getId());
@@ -99,7 +94,7 @@ public class CommandPoll extends FCommand {
 
                         player.spigot().sendMessage(componentBuilder.create());
 
-                        FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+                        FModule fModule = moduleManager.get(SoundsModule.class);
                         if (fModule instanceof SoundsModule soundsModule) {
                             soundsModule.play(new FSound(cmdSettings.getSender(), player, this.toString()));
                         }

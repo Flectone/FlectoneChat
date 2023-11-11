@@ -5,8 +5,6 @@ import net.flectone.chat.component.FColorComponent;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.component.FLocaleComponent;
 import net.flectone.chat.component.FPlayerComponent;
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
@@ -21,12 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class AdvancementModule extends FModule {
 
     private final HashMap<World, Object> LAST_WORLD_ANNOUNCE_ADVANCEMENT_MAP = new HashMap<>();
-
     public AdvancementModule(FModule module, String name) {
         super(module, name);
         init();
@@ -37,7 +32,8 @@ public class AdvancementModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new AdvancementListener(this));
+        actionManager.add(new AdvancementListener(this));
+
         initAnnounce();
     }
 
@@ -69,7 +65,7 @@ public class AdvancementModule extends FModule {
                 .stream()
                 .filter(this::isEnabledFor)
                 .forEach(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if (fPlayer == null) return;
 
                     String advancement = fPlayer.getSettings().getValue(Settings.Type.ADVANCEMENT);

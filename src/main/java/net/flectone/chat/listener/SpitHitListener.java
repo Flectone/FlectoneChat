@@ -13,9 +13,8 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class SpitHitListener extends FListener {
+
     public SpitHitListener(FModule module) {
         super(module);
         init();

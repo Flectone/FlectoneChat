@@ -1,7 +1,6 @@
 package net.flectone.chat.module.extra.itemSign;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.ColorUtil;
 import net.flectone.chat.util.ItemUtil;
@@ -22,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.modules;
-
 public class ItemSignModule extends FModule {
 
-    public final static NamespacedKey signKey = new NamespacedKey(FlectoneChat.getInstance(), "flectonechat.sign");
+    public final static NamespacedKey signKey = new NamespacedKey(FlectoneChat.getPlugin(), "flectonechat.sign");
 
     public ItemSignModule(FModule module, String name) {
         super(module, name);
@@ -38,10 +35,10 @@ public class ItemSignModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new ItemSignListener(this));
+        actionManager.add(new ItemSignListener(this));
 
         if (!modules.getBoolean(this + ".unsign.enable")) return;
-        FActionManager.add(new ItemUnsignListener(this));
+        actionManager.add(new ItemUnsignListener(this));
     }
 
     public boolean unsign(@NotNull Player player, @NotNull Location location, @NotNull PlayerInventory playerInventory,

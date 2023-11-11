@@ -11,8 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandBall extends FCommand {
 
     public CommandBall(FModule module, String name) {

@@ -18,9 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandWarnlist extends FCommand {
     public CommandWarnlist(FModule module, String name) {
         super(module, name);
@@ -37,8 +34,7 @@ public class CommandWarnlist extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -51,7 +47,7 @@ public class CommandWarnlist extends FCommand {
             throw new RuntimeException("Per-page setting for /" + command + " cannot be zero");
         }
 
-        int countWarns = FlectoneChat.getDatabase().getCountRow("warns");
+        int countWarns = FlectoneChat.getPlugin().getDatabase().getCountRow("warns");
         if (countWarns == 0) {
             sendMessage(commandSender, this + ".empty");
             return;
@@ -87,8 +83,7 @@ public class CommandWarnlist extends FCommand {
         int page = args.length > 0 ? Math.max(1, Integer.parseInt(args[0])) : 1;
         page = Math.min(lastPage, page);
 
-        FlectoneChat.getDatabase()
-                .getModerationList("warns", perPage, (page - 1) * perPage, Moderation.Type.WARN)
+        database.getModerationList("warns", perPage, (page - 1) * perPage, Moderation.Type.WARN)
                 .forEach(dPlayer -> {
 
                     String playerWarnFormat = locale.getVaultString(commandSender, this + ".player-warn")

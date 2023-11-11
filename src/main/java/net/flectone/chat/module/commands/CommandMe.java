@@ -9,8 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandMe extends FCommand {
 
     public CommandMe(FModule module, String name) {

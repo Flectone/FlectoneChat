@@ -1,8 +1,10 @@
 package net.flectone.chat.module.integrations;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FModule;
 import org.bukkit.Bukkit;
@@ -15,12 +17,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-import static net.flectone.chat.manager.FileManager.integrations;
-
 
 public class IntegrationsModule extends FModule {
 
     private static final HashMap<String, FIntegration> INTEGRATIONS_MAP = new HashMap<>();
+
+    private FConfiguration integrations;
 
     public IntegrationsModule(String name) {
         super(name);
@@ -31,6 +33,8 @@ public class IntegrationsModule extends FModule {
     public void init() {
         if (!isEnabled()) return;
         register();
+
+        integrations = FlectoneChat.getPlugin().getFileManager().getIntegrations();
 
         if (isPluginEnabled("DiscordSRV")) {
             INTEGRATIONS_MAP.put("DiscordSRV", new FDiscordSRV());

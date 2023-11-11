@@ -2,8 +2,6 @@ package net.flectone.chat.module.serverMessage.quit;
 
 import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FPlayerComponent;
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.module.FModule;
@@ -13,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class QuitModule extends FModule {
+
     public QuitModule(FModule module, String name) {
         super(module, name);
         init();
@@ -23,7 +22,7 @@ public class QuitModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new QuitListener(this));
+        actionManager.add(new QuitListener(this));
     }
 
     public void sendAll(@NotNull Player sender, @NotNull String message) {
@@ -31,7 +30,7 @@ public class QuitModule extends FModule {
                 .stream()
                 .filter(this::isEnabledFor)
                 .forEach(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if (fPlayer == null) return;
 
                     String quit = fPlayer.getSettings().getValue(Settings.Type.QUIT);

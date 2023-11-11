@@ -7,8 +7,10 @@ import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class TabPlayerPingTicker extends FTicker {
+
     public TabPlayerPingTicker(FModule module) {
         super(module);
         init();
@@ -22,13 +24,14 @@ public class TabPlayerPingTicker extends FTicker {
     }
 
     public static void registerPingObjective() {
-        if (FlectoneChat.getScoreBoard().getObjective("ping") != null) return;
-        Objective objective = FlectoneChat.getScoreBoard().registerNewObjective("ping", "dummy", "ping");
+        Scoreboard scoreboard = FlectoneChat.getPlugin().getScoreBoard();
+        if (scoreboard.getObjective("ping") != null) return;
+        Objective objective = scoreboard.registerNewObjective("ping", "dummy", "ping");
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
     public static void unregisterPingObjective() {
-        Objective objective = FlectoneChat.getScoreBoard().getObjective("ping");
+        Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("ping");
         if (objective == null) return;
         objective.unregister();
     }
@@ -36,7 +39,7 @@ public class TabPlayerPingTicker extends FTicker {
     @Override
     public void run() {
         PlayerUtil.getPlayersWithFeature(getModule() + ".player-ping.enable").forEach(player -> {
-            Objective objective = FlectoneChat.getScoreBoard().getObjective("ping");
+            Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("ping");
             if (objective == null) return;
             Score score = objective.getScore(player.getName());
 

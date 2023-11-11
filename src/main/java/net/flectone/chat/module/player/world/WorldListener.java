@@ -1,7 +1,6 @@
 package net.flectone.chat.module.player.world;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.model.player.FPlayer;
@@ -14,6 +13,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
 public class WorldListener extends FListener {
+
     public WorldListener(FModule module) {
         super(module);
         init();
@@ -23,7 +23,7 @@ public class WorldListener extends FListener {
     public void init() {
         register();
 
-        Bukkit.getScheduler().runTaskLater(FlectoneChat.getInstance(), () ->
+        Bukkit.getScheduler().runTaskLater(FlectoneChat.getPlugin(), () ->
                 Bukkit.getOnlinePlayers().forEach(this::setWorld), 20L);
     }
 
@@ -43,7 +43,7 @@ public class WorldListener extends FListener {
     public void setWorld(@NotNull Player player) {
         World world = player.getWorld();
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         fPlayer.setWorldPrefix(((WorldModule) getModule()).getPrefix(player, world));

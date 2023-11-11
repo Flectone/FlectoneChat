@@ -1,6 +1,7 @@
 package net.flectone.chat.manager;
 
 import lombok.Getter;
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.listener.*;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.autoMessage.AutoMessageModule;
@@ -45,11 +46,12 @@ public class FModuleManager {
         new PlayerMessageModule("player-message");
         new ColorModule("color");
 
-        FActionManager.add(new FPlayerActionListener(null));
-        FActionManager.add(new MarkSpawnListener(null));
-        FActionManager.add(new ChatBubbleSpawnListener(null));
-        FActionManager.add(new FPlayerTicker(null));
-        FActionManager.add(new SpitHitListener(null));
+        FActionManager actionManager = FlectoneChat.getPlugin().getActionManager();
+        actionManager.add(new FPlayerActionListener(null));
+        actionManager.add(new MarkSpawnListener(null));
+        actionManager.add(new ChatBubbleSpawnListener(null));
+        actionManager.add(new FPlayerTicker(null));
+        actionManager.add(new SpitHitListener(null));
     }
 
     @Nullable

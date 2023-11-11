@@ -1,5 +1,6 @@
 package net.flectone.chat.module.playerMessage.sign;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
@@ -14,9 +15,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class SignListener extends FListener {
+
+    private FPlayerManager playerManager;
+
     public SignListener(FModule module) {
         super(module);
         init();
@@ -25,6 +27,8 @@ public class SignListener extends FListener {
     @Override
     public void init() {
         register();
+
+        playerManager = FlectoneChat.getPlugin().getPlayerManager();
     }
 
     @EventHandler
@@ -34,7 +38,7 @@ public class SignListener extends FListener {
         if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {

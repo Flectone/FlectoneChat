@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -16,9 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandWarn extends FCommand {
+
     public CommandWarn(FModule module, String name) {
         super(module, name);
         init();
@@ -34,8 +31,7 @@ public class CommandWarn extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+        database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -56,7 +52,7 @@ public class CommandWarn extends FCommand {
         }
 
         String warnedPlayerName = args[0];
-        FPlayer warnedFPlayer = FPlayerManager.getOffline(warnedPlayerName);
+        FPlayer warnedFPlayer = playerManager.getOffline(warnedPlayerName);
 
         if (warnedFPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
@@ -77,7 +73,7 @@ public class CommandWarn extends FCommand {
             return;
         }
 
-        FlectoneChat.getDatabase().getWarns(warnedFPlayer);
+        database.getWarns(warnedFPlayer);
 
         String reason = args.length > 2
                 ? MessageUtil.joinArray(args, 2, " ")

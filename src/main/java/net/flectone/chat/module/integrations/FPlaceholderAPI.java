@@ -2,6 +2,8 @@ package net.flectone.chat.module.integrations;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.database.sqlite.Database;
+import net.flectone.chat.manager.FModuleManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
@@ -14,8 +16,23 @@ import org.jetbrains.annotations.Nullable;
 
 public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegration {
 
+    private FPlayerManager playerManager;
+    private FModuleManager moduleManager;
+    private Database database;
+
     public FPlaceholderAPI() {
         init();
+    }
+
+    @Override
+    public void init() {
+        register();
+        FlectoneChat.info("PlaceholderAPI detected and hooked");
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        database = plugin.getDatabase();
     }
 
     @Override
@@ -30,7 +47,7 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
 
     @Override
     public @NotNull String getVersion() {
-        return FlectoneChat.getInstance().getDescription().getVersion();
+        return FlectoneChat.getPlugin().getDescription().getVersion();
     }
 
     @Override
@@ -42,11 +59,11 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
     public String onRequest(@Nullable OfflinePlayer player, @NotNull String params) {
         if (player == null) return null;
 
-        FPlayer fPlayer = FPlayerManager.getOffline(player.getName());
+        FPlayer fPlayer = playerManager.getOffline(player.getName());
         if(fPlayer == null) return null;
 
         if (params.startsWith("player")) {
-            FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
+            FModule fModule = moduleManager.get(NameModule.class);
             if (!(fModule instanceof NameModule nameModule)) return null;
             Player onlinePlayer = fPlayer.getPlayer();
             if (onlinePlayer == null) return null;
@@ -62,11 +79,11 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
         }
 
         if (params.startsWith("moderation")) {
-            FlectoneChat.getDatabase().getWarns(fPlayer);
+            database.getWarns(fPlayer);
 
             return switch (params.toLowerCase()) {
-                case "moderation_ban" -> FPlayerManager.getBANNED_PLAYERS().contains(fPlayer.getUuid()) ? "1" : "0";
-                case "moderation_mute" -> FPlayerManager.getMUTED_PLAYERS().contains(fPlayer.getMinecraftName()) ? "1" : "0";
+                case "moderation_ban" -> playerManager.getBANNED_PLAYERS().contains(fPlayer.getUuid()) ? "1" : "0";
+                case "moderation_mute" -> playerManager.getMUTED_PLAYERS().contains(fPlayer.getMinecraftName()) ? "1" : "0";
                 case "moderation_warn" -> String.valueOf(fPlayer.getCountWarns());
                 default -> null;
             };
@@ -80,11 +97,5 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
             case "world_prefix" -> fPlayer.getWorldPrefix();
             default -> null;
         };
-    }
-
-    @Override
-    public void init() {
-        register();
-        FlectoneChat.info("PlaceholderAPI detected and hooked");
     }
 }

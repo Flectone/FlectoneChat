@@ -1,7 +1,6 @@
 package net.flectone.chat.module.server.brand;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
@@ -15,8 +14,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class BrandModule extends FModule {
 
@@ -44,15 +41,16 @@ public class BrandModule extends FModule {
         }
 
         try {
-            Method registerMethod = FlectoneChat.getInstance().getServer().getMessenger().getClass().getDeclaredMethod("addToOutgoing", Plugin.class, String.class);
+            Method registerMethod = FlectoneChat.getPlugin().getServer().getMessenger().getClass()
+                    .getDeclaredMethod("addToOutgoing", Plugin.class, String.class);
             registerMethod.setAccessible(true);
-            registerMethod.invoke(FlectoneChat.getInstance().getServer().getMessenger(), FlectoneChat.getInstance(), channel);
+            registerMethod.invoke(FlectoneChat.getPlugin().getServer().getMessenger(), FlectoneChat.getPlugin(), channel);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Error while attempting to register plugin message channel", e);
         }
 
-        FActionManager.add(new BrandListener(this));
-        FActionManager.add(new BrandTicker(this));
+        actionManager.add(new BrandListener(this));
+        actionManager.add(new BrandTicker(this));
     }
 
     public String incrementIndexAndGet(Player player) {
@@ -97,7 +95,7 @@ public class BrandModule extends FModule {
 
     public void updateBrand(@NotNull Player player, @NotNull String brandString) {
         try {
-            player.sendPluginMessage(FlectoneChat.getInstance(), channel,
+            player.sendPluginMessage(FlectoneChat.getPlugin(), channel,
                     new PacketSerializer(brandString + ChatColor.RESET).toArray());
         } catch (Throwable e) {
             FlectoneChat.warning("Failed to send a custom server brand. If the error is repeated, disable the server.brand module");

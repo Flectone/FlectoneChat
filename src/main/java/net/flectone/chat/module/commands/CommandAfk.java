@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -13,9 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.locale;
-
 
 public class CommandAfk extends FCommand {
 
@@ -50,7 +46,7 @@ public class CommandAfk extends FCommand {
 
         boolean isAfk = !fPlayer.isAfk();
 
-        FModule fModule = FlectoneChat.getModuleManager().get(AfkTimeoutModule.class);
+        FModule fModule = moduleManager.get(AfkTimeoutModule.class);
         if (fModule instanceof AfkTimeoutModule afkTimeoutModule) {
             afkTimeoutModule.setAfk(player, isAfk, "/afk");
             return true;

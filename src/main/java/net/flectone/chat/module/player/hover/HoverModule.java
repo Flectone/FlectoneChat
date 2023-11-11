@@ -8,9 +8,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class HoverModule extends FModule {
 
     public HoverModule(FModule module, String name) {

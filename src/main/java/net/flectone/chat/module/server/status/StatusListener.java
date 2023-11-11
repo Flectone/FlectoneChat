@@ -1,7 +1,6 @@
 package net.flectone.chat.module.server.status;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FileManager;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
@@ -16,9 +15,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.*;
-
 public class StatusListener extends FListener {
+
     public StatusListener(FModule module) {
         super(module);
         init();
@@ -78,7 +76,7 @@ public class StatusListener extends FListener {
 
     public void setIcon(@NotNull ServerListPingEvent event, @NotNull String iconName) {
         try {
-            CachedServerIcon serverIcon = Bukkit.loadServerIcon(FileManager.getIcon(iconName));
+            CachedServerIcon serverIcon = Bukkit.loadServerIcon(FlectoneChat.getPlugin().getFileManager().getIcon(iconName));
             event.setServerIcon(serverIcon);
         } catch (Exception exception) {
             FlectoneChat.warning("Unable to load and install " + iconName + ".png image");

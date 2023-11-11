@@ -1,7 +1,6 @@
 package net.flectone.chat.module.playerMessage.anvil;
 
 
-import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.module.FModule;
 
 public class AnvilModule extends FModule {
@@ -15,6 +14,6 @@ public class AnvilModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new AnvilListener(this));
+        actionManager.add(new AnvilListener(this));
     }
 }

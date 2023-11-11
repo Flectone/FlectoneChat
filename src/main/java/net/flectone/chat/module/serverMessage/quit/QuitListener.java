@@ -8,10 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class QuitListener extends FListener {
+
     public QuitListener(FModule module) {
         super(module);
         init();

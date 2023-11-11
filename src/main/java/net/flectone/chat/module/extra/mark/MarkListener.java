@@ -1,7 +1,6 @@
 package net.flectone.chat.module.extra.mark;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
@@ -13,11 +12,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.config;
 import static net.flectone.chat.model.mark.Mark.COLOR_VALUES;
 
 public class MarkListener extends FListener {
-
 
     public MarkListener(FModule module) {
         super(module);
@@ -55,7 +52,7 @@ public class MarkListener extends FListener {
 
         if (!itemStack.getType().equals(triggerMaterial)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {

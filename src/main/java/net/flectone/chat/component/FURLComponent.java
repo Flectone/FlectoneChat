@@ -5,9 +5,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class FURLComponent extends FComponent{
 
     public FURLComponent(@Nullable Player sender, @NotNull Player recipient, @NotNull String text, @NotNull String url) {

@@ -1,6 +1,5 @@
 package net.flectone.chat.module.serverMessage.death;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
@@ -24,9 +23,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 import org.jetbrains.annotations.NotNull;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class DeathListener extends FListener {
 
@@ -82,7 +78,7 @@ public class DeathListener extends FListener {
                 || player.getHealth() <= event.getFinalDamage()
                 || !(event instanceof EntityDamageByEntityEvent entityDamageByEntityEvent)) return;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         fPlayer.setLastDamager(entityDamageByEntityEvent.getDamager());
@@ -105,7 +101,7 @@ public class DeathListener extends FListener {
             return;
         }
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
 
         PlayerDamager playerDamager = fPlayer.getPlayerDamager();

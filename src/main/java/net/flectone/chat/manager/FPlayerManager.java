@@ -16,27 +16,23 @@ import java.sql.ResultSet;
 import java.util.*;
 
 
+@Getter
 public class FPlayerManager {
 
-    @Getter
-    private static final ArrayList<UUID> BANNED_PLAYERS = new ArrayList<>();
-    @Getter
-    private static final ArrayList<String> MUTED_PLAYERS = new ArrayList<>();
-    @Getter
-    private static final HashMap<String, List<Moderation>> WARNS_PLAYERS = new HashMap<>();
-    @Getter
-    private static final ArrayList<String> OFFLINE_PLAYERS = new ArrayList<>();
-    @Getter
-    private static final HashMap<String, FPlayer> F_PLAYER_MAP = new HashMap<>();
+    private final ArrayList<UUID> BANNED_PLAYERS = new ArrayList<>();
+    private final ArrayList<String> MUTED_PLAYERS = new ArrayList<>();
+    private final HashMap<String, List<Moderation>> WARNS_PLAYERS = new HashMap<>();
+    private final ArrayList<String> OFFLINE_PLAYERS = new ArrayList<>();
+    private final HashMap<String, FPlayer> F_PLAYER_MAP = new HashMap<>();
 
-    public static void loadOfflinePlayers() {
+    public void loadOfflinePlayers() {
         OFFLINE_PLAYERS.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName).toList());
     }
 
     // ONLY FOR TABCOMPLETE /unwarn /unmute /unban /warnlist because TABCOMPLETE is sync method (spigot)
-    public static void loadTabCompleteData() {
-        FlectoneChat.getDatabase().execute(connection -> {
+    public void loadTabCompleteData() {
+        FlectoneChat.getPlugin().getDatabase().execute(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT `player` FROM `bans` WHERE `time`>? OR `time`=-1");
             preparedStatement.setInt(1, TimeUtil.getCurrentTime());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -82,16 +78,16 @@ public class FPlayerManager {
         });
     }
 
-    public static void add(FPlayer fPlayer) {
+    public void add(FPlayer fPlayer) {
         F_PLAYER_MAP.put(fPlayer.getMinecraftName(), fPlayer);
     }
 
-    public static void remove(@NotNull FPlayer fPlayer) {
+    public void remove(@NotNull FPlayer fPlayer) {
         F_PLAYER_MAP.remove(fPlayer.getMinecraftName());
     }
 
     @Nullable
-    public static FPlayer get(@Nullable String name) {
+    public FPlayer get(@Nullable String name) {
         if (name == null) return null;
 
         FPlayer fPlayer = F_PLAYER_MAP.get(name);
@@ -106,7 +102,7 @@ public class FPlayerManager {
     }
 
     @Nullable
-    public static FPlayer get(@Nullable UUID uuid) {
+    public FPlayer get(@Nullable UUID uuid) {
         if (uuid == null) return null;
 
         return F_PLAYER_MAP.values()
@@ -118,7 +114,7 @@ public class FPlayerManager {
     }
 
     @Nullable
-    public static FPlayer getOffline(@Nullable String name) {
+    public FPlayer getOffline(@Nullable String name) {
         FPlayer fPlayer = get(name);
         if (fPlayer != null) return fPlayer;
 
@@ -134,7 +130,7 @@ public class FPlayerManager {
         }
 
         OfflinePlayer offlinePlayer = offlinePlayerList.stream()
-                .filter(player -> player.getName().equals(name))
+                .filter(player -> Objects.equals(player.getName(), name))
                 .findFirst()
                 .orElse(null);
 
@@ -147,16 +143,16 @@ public class FPlayerManager {
     }
 
     @Nullable
-    public static FPlayer get(@NotNull Player player) {
+    public FPlayer get(@NotNull Player player) {
         return get(player.getName());
     }
 
-    public static void loadOnlinePlayers() {
+    public void loadOnlinePlayers() {
         Bukkit.getOnlinePlayers().forEach(player ->
                 new FPlayer(player).init());
     }
 
-    public static void terminateAll() {
+    public void terminateAll() {
         F_PLAYER_MAP.values().forEach(fPlayer -> {
             if (fPlayer == null) return;
             fPlayer.toDatabase();

@@ -12,9 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandDice extends FCommand {
 
     private final int min = commands.getInt(getName() + ".min");

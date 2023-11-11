@@ -2,7 +2,7 @@ package net.flectone.chat.util;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.color.ColorModule;
@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static net.flectone.chat.manager.FileManager.config;
 
 public class MessageUtil {
 
@@ -40,7 +38,7 @@ public class MessageUtil {
         if (sender != null && recipient != null) {
             string = formatPAPI(sender, recipient, string, needPapiPerm);
 
-            FModule fModule = FlectoneChat.getModuleManager().get(ColorModule.class);
+            FModule fModule = FlectoneChat.getPlugin().getModuleManager().get(ColorModule.class);
             if (fModule instanceof ColorModule colorModule) {
                 colors = colorModule.getColors(recipient);
             }
@@ -48,6 +46,8 @@ public class MessageUtil {
 
         if (colors == null) {
             colors = new HashMap<>();
+
+            FConfiguration config = FlectoneChat.getPlugin().getFileManager().getConfig();
 
             List<String> colorsKey = config.getCustomList(recipient, "color.list");
 
@@ -87,10 +87,10 @@ public class MessageUtil {
                     .replace("<afk_suffix>", "");
         }
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = FlectoneChat.getPlugin().getPlayerManager().get(player);
         if (fPlayer == null) return string;
 
-        FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
+        FModule fModule = FlectoneChat.getPlugin().getModuleManager().get(NameModule.class);
         if (fModule instanceof NameModule nameModule) {
             if (string.contains("<player_name_tab")) {
                 string = string.replace("<player_name_tab>", nameModule.getTab(player));

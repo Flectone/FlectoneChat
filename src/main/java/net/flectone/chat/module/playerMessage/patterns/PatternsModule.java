@@ -10,11 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class PatternsModule extends FModule {
 
-    private HashMap<String, HashMap<String, String>> PATTERN_MAP = new HashMap<>();
+    private final HashMap<String, HashMap<String, String>> PATTERN_MAP = new HashMap<>();
 
     public PatternsModule(FModule module, String name) {
         super(module, name);

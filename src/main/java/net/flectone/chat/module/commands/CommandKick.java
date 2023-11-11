@@ -13,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandKick extends FCommand {
+
     public CommandKick(FModule module, String name) {
         super(module, name);
         init();

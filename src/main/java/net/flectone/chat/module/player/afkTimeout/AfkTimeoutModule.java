@@ -1,7 +1,5 @@
 package net.flectone.chat.module.player.afkTimeout;
 
-import net.flectone.chat.manager.FActionManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
@@ -14,9 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class AfkTimeoutModule extends FModule {
 
@@ -32,8 +27,8 @@ public class AfkTimeoutModule extends FModule {
         if (!isEnabled()) return;
         register();
 
-        FActionManager.add(new AfkTimeoutTicker(this));
-        FActionManager.add(new AfkTimeoutListener(this));
+        actionManager.add(new AfkTimeoutTicker(this));
+        actionManager.add(new AfkTimeoutListener(this));
     }
 
     public void setAfk(@NotNull Player player, boolean isAfk, @NotNull String takeOutAction) {
@@ -47,7 +42,7 @@ public class AfkTimeoutModule extends FModule {
             LAST_BLOCK_MAP.put(player.getUniqueId(), new Pair<>(TimeUtil.getCurrentTime(), player.getLocation().getBlock()));
         }
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
         if (fPlayer.isAfk() == isAfk) return;
 
@@ -66,7 +61,7 @@ public class AfkTimeoutModule extends FModule {
     }
 
     public void checkAfk(@NotNull Player player) {
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if(fPlayer == null) return;
 
         if (!isMoved(player)) {

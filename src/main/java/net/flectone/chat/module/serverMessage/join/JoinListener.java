@@ -1,17 +1,16 @@
 package net.flectone.chat.module.serverMessage.join;
 
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.component.FComponent;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
-
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class JoinListener extends FListener {
     public JoinListener(FModule module) {
@@ -36,7 +35,7 @@ public class JoinListener extends FListener {
                 ? locale.getVaultString(player, getModule() + ".message")
                 : locale.getVaultString(player, getModule() + ".first-time.message");
 
-        FlectoneChat.getDatabase().execute(() -> ((JoinModule) getModule()).sendAll(player, string));
+        FlectoneChat.getPlugin().getDatabase().execute(() -> ((JoinModule) getModule()).sendAll(player, string));
 
         IntegrationsModule.sendDiscordJoin(player, hasPlayerBefore ? "usually" : "first");
 

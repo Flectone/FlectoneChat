@@ -2,7 +2,6 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.builder.FComponentBuilder;
 import net.flectone.chat.component.FComponent;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -18,10 +17,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandIgnorelist extends FCommand {
+
     public CommandIgnorelist(FModule module, String name) {
         super(module, name);
         init();
@@ -43,6 +40,7 @@ public class CommandIgnorelist extends FCommand {
             sendMessage(commandSender, getModule() + ".console");
             return true;
         }
+
         FPlayer fSender = cmdSettings.getFPlayer();
 
         int ignoreListSize = fSender.getIgnoreList().size();
@@ -159,7 +157,7 @@ public class CommandIgnorelist extends FCommand {
         tabCompleteClear();
 
         if (args.length == 1) {
-            FPlayer fPlayer = FPlayerManager.get(commandSender.getName());
+            FPlayer fPlayer = playerManager.get(commandSender.getName());
             if (fPlayer == null) return getTAB_COMPLETE();
 
             int perPage = commands.getInt(getName() + ".per-page");

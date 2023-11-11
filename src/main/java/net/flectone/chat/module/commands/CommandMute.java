@@ -1,6 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -15,9 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandMute extends FCommand {
+
     public CommandMute(FModule module, String name) {
         super(module, name);
         init();
@@ -46,7 +44,7 @@ public class CommandMute extends FCommand {
         }
 
         String targetPlayerName = args[0];
-        FPlayer mutedFPlayer = FPlayerManager.getOffline(targetPlayerName);
+        FPlayer mutedFPlayer = playerManager.getOffline(targetPlayerName);
 
         if (mutedFPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");

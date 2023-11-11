@@ -1,7 +1,6 @@
 package net.flectone.chat.module.commands;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
@@ -19,8 +18,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class CommandGeolocate extends FCommand {
 
@@ -41,7 +38,7 @@ public class CommandGeolocate extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getInstance(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () ->
                 asyncOnCommand(commandSender, command, alias, args));
 
         return true;
@@ -91,7 +88,7 @@ public class CommandGeolocate extends FCommand {
         commandSender.sendMessage(message);
 
         if (sender == null) {
-            FPlayer fPlayer = FPlayerManager.get(player);
+            FPlayer fPlayer = playerManager.get(player);
             if (fPlayer == null) return;
             fPlayer.playSound(player, player, this.toString());
         }

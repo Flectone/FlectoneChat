@@ -8,13 +8,14 @@ import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 public class NameTagModule extends FModule {
+
+    private Scoreboard scoreboard;
 
     public NameTagModule(FModule module, String name) {
         super(module, name);
@@ -25,6 +26,8 @@ public class NameTagModule extends FModule {
     public void init() {
         if (!isEnabled()) return;
         register();
+
+        scoreboard = FlectoneChat.getPlugin().getScoreBoard();
     }
 
     @NotNull
@@ -35,11 +38,9 @@ public class NameTagModule extends FModule {
             sortName = getSortName(player);
         }
 
-        Team bukkitTeam = FlectoneChat.getScoreBoard().getTeam(sortName);
+        Team bukkitTeam = scoreboard.getTeam(sortName);
 
-        Team team = bukkitTeam != null
-                ? bukkitTeam
-                : FlectoneChat.getScoreBoard().registerNewTeam(sortName);
+        Team team = bukkitTeam != null ? bukkitTeam : scoreboard.registerNewTeam(sortName);
 
         if (!team.hasEntry(playerName)) {
             team.addEntry(playerName);
@@ -49,7 +50,7 @@ public class NameTagModule extends FModule {
 
         team.setColor(ChatColor.WHITE);
 
-        FModule fModule = FlectoneChat.getModuleManager().get(NameModule.class);
+        FModule fModule = moduleManager.get(NameModule.class);
         if (!(fModule instanceof NameModule nameModule)) return team;
 
         if (config.getVaultBoolean(player, this + ".prefix.enable")) {

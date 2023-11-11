@@ -10,9 +10,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandBroadcast extends FCommand {
+
     public CommandBroadcast(FModule module, String name) {
         super(module, name);
         init();

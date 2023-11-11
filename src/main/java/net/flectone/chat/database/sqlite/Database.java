@@ -2,11 +2,13 @@ package net.flectone.chat.database.sqlite;
 
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.util.TimeUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,14 +16,17 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.*;
 import java.util.*;
 
-import static net.flectone.chat.manager.FileManager.config;
-
 @Getter
 public class Database extends SQLHandler {
 
     private SQLiteExecutor executor;
+
+    private final FConfiguration config;
     public Database(FlectoneChat plugin) {
         super(plugin.getDataFolder().getAbsolutePath());
+
+        config = FlectoneChat.getPlugin().getFileManager().getConfig();
+
         connect();
 
         clearExpiredData();
@@ -716,5 +721,11 @@ public class Database extends SQLHandler {
                 exception.printStackTrace();
             }
         });
+    }
+
+    public void loadOfflinePlayersToDatabase() {
+        for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+            this.offlineToDatabase(offlinePlayer);
+        }
     }
 }

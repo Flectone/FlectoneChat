@@ -3,6 +3,8 @@ package net.flectone.chat.module;
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
+import net.flectone.chat.database.sqlite.Database;
+import net.flectone.chat.manager.FModuleManager;
 import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
@@ -26,9 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 @Getter
 public abstract class FCommand implements CommandExecutor, TabCompleter, FAction {
 
@@ -41,9 +40,25 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     private final String name;
     private Command command;
 
+    protected final FlectoneChat plugin;
+    protected final FPlayerManager playerManager;
+    protected final FModuleManager moduleManager;
+    protected final Database database;
+    protected final FConfiguration locale;
+    protected final FConfiguration config;
+    protected final FConfiguration commands;
+
     public FCommand(FModule module, String name) {
         this.module = module;
         this.name = name;
+
+        plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        moduleManager = plugin.getModuleManager();
+        database = plugin.getDatabase();
+        locale = plugin.getFileManager().getLocale();
+        config = plugin.getFileManager().getConfig();
+        commands = plugin.getFileManager().getCommands();
     }
 
     public boolean isEnabled() {
@@ -52,7 +67,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
 
     public void register() {
         List<String> aliases = commands.getStringList(name + ".aliases");
-        PluginCommand pluginCommand = CommandsUtil.createCommand(FlectoneChat.getInstance(), name, aliases);
+        PluginCommand pluginCommand = CommandsUtil.createCommand(FlectoneChat.getPlugin(), name, aliases);
         CommandsUtil.getCommandMap().register(PLUGIN_NAME, pluginCommand);
 
         pluginCommand.setPermission(PLUGIN_NAME + "." + module + "." + name);
@@ -130,7 +145,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         recipients.parallelStream().forEach(recipient -> {
             recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
 
-            FModule fModule = FlectoneChat.getModuleManager().get(SoundsModule.class);
+            FModule fModule = moduleManager.get(SoundsModule.class);
             if (fModule instanceof SoundsModule soundsModule) {
                 soundsModule.play(new FSound(player, recipient, this.toString()));
             }
@@ -159,7 +174,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
 
         playerSet = playerSet.parallelStream()
                 .filter(player -> {
-                    FPlayer fPlayer = FPlayerManager.get(player);
+                    FPlayer fPlayer = playerManager.get(player);
                     if (fPlayer == null) return true;
 
                     Settings settings = fPlayer.getSettings();
@@ -202,7 +217,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     }
 
     public void isOfflinePlayer(@NotNull String arg) {
-        FPlayerManager.getOFFLINE_PLAYERS()
+        playerManager.getOFFLINE_PLAYERS()
                 .parallelStream()
                 .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer));
     }
@@ -272,14 +287,14 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     }
 
     public void dispatchCommand(@NotNull CommandSender commandSender, @NotNull String command) {
-        Bukkit.getScheduler().runTask(FlectoneChat.getInstance(), () ->
+        Bukkit.getScheduler().runTask(FlectoneChat.getPlugin(), () ->
                 Bukkit.dispatchCommand(commandSender, command));
     }
 
     @Getter
     public class CmdSettings {
 
-        private boolean isConsole = false;
+        private final boolean isConsole;
         private boolean isDisabled = false;
         private Player sender;
         private ItemStack itemStack;
@@ -296,7 +311,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
 
             if (!isConsole) {
                 this.sender = (Player) commandSender;
-                this.fPlayer = FPlayerManager.get(sender);
+                this.fPlayer = playerManager.get(sender);
 
                 this.itemStack = sender.getInventory().getItemInMainHand();
 
@@ -317,5 +332,4 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
             return fPlayer.isMuted();
         }
     }
-
 }

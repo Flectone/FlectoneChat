@@ -3,6 +3,7 @@ package net.flectone.chat.model.poll;
 import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.PollManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
@@ -12,9 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
 
 public class Poll {
 
@@ -29,13 +27,18 @@ public class Poll {
     public Poll(@Nullable Player commandSender, @NotNull String message) {
         this.message = message;
 
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+
+        FConfiguration commands = plugin.getFileManager().getCommands();
+
         this.id = commands.getInt("poll.last-id") + 1;
         int time = commands.getInt("poll.time");
         PollManager.add(this);
 
-        Bukkit.getScheduler().runTaskLater(FlectoneChat.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(FlectoneChat.getPlugin(), () -> {
             isExpired = true;
 
+            FConfiguration locale = plugin.getFileManager().getLocale();
             String formatMessage = locale.getVaultString(commandSender, "commands.poll.over-message")
                     .replace("<id>", String.valueOf(id))
                     .replace("<message>", message)

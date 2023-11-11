@@ -11,9 +11,9 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.damager.PlayerDamager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.util.TimeUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -27,8 +27,6 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static net.flectone.chat.manager.FileManager.integrations;
 
 /*
 
@@ -55,8 +53,18 @@ License along with this program.  If not, see
 
 public class FDiscordSRV implements Listener, FIntegration {
 
+    private FConfiguration integrations;
+
     public FDiscordSRV() {
         init();
+    }
+
+    @Override
+    public void init() {
+        DiscordSRV.api.subscribe(this);
+        FlectoneChat.info("DiscordSRV detected and hooked");
+
+        integrations = FlectoneChat.getPlugin().getFileManager().getIntegrations();
     }
 
     public void sendDeathMessage(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String typeDeath) {
@@ -201,6 +209,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     public void sendMaintenanceMessage(@Nullable OfflinePlayer sender, @NotNull String type) {
         String senderName = sender == null ? "CONSOLE" : sender.getName();
 
+        assert senderName != null;
         String message = integrations.getString("DiscordSRV.message.maintenance.type." + type)
                 .replace("<player>", senderName);
 
@@ -316,12 +325,6 @@ public class FDiscordSRV implements Listener, FIntegration {
         message = messageBuilder.getMessage("");
 
         event.setMessage(message);
-    }
-
-    @Override
-    public void init() {
-        DiscordSRV.api.subscribe(this);
-        FlectoneChat.info("DiscordSRV detected and hooked");
     }
 
     public void unsubscribe() {

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FPlayerComponent extends FComponent{
+public class FPlayerComponent extends FComponent {
 
     public FPlayerComponent(@Nullable CommandSender sender, @Nullable CommandSender recipient, @NotNull String text) {
         super(text);
@@ -19,7 +19,7 @@ public class FPlayerComponent extends FComponent{
 
         Pair<String, Pair<String, HoverModule.CommandType>> hoverInfo = null;
 
-        FModule fModule = FlectoneChat.getModuleManager().get(HoverModule.class);
+        FModule fModule = FlectoneChat.getPlugin().getModuleManager().get(HoverModule.class);
         if (fModule instanceof HoverModule hoverModule) {
             hoverInfo = hoverModule.get(player);
         }

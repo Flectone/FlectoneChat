@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
@@ -15,9 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandUnban extends FCommand {
+
     public CommandUnban(FModule module, String name) {
         super(module, name);
         init();
@@ -33,8 +30,7 @@ public class CommandUnban extends FCommand {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String alias,
                              @NotNull String[] args) {
 
-        FlectoneChat.getDatabase().execute(() ->
-                asyncOnCommand(commandSender, command, alias, args));
+       database.execute(() -> asyncOnCommand(commandSender, command, alias, args));
 
         return true;
     }
@@ -47,14 +43,14 @@ public class CommandUnban extends FCommand {
             return;
         }
 
-        FPlayer fPlayer = FPlayerManager.getOffline(args[0]);
+        FPlayer fPlayer = playerManager.getOffline(args[0]);
 
         if (fPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
-        FlectoneChat.getDatabase().getBan(fPlayer);
+        database.getBan(fPlayer);
 
         Moderation ban = fPlayer.getBan();
 
@@ -87,7 +83,7 @@ public class CommandUnban extends FCommand {
                                                 @NotNull String alias, @NotNull String[] args) {
         tabCompleteClear();
         if (args.length == 1) {
-            FPlayerManager.getBANNED_PLAYERS()
+            playerManager.getBANNED_PLAYERS()
                     .stream()
                     .map(Bukkit::getOfflinePlayer)
                     .filter(offlinePlayer -> offlinePlayer.getName() != null)

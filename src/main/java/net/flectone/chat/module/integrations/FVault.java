@@ -18,7 +18,7 @@ public class FVault implements FIntegration {
 
     @Override
     public void init() {
-        RegisteredServiceProvider<Chat> chatProvider = FlectoneChat.getInstance().getServer().getServicesManager()
+        RegisteredServiceProvider<Chat> chatProvider = FlectoneChat.getPlugin().getServer().getServicesManager()
                 .getRegistration(net.milkbowl.vault.chat.Chat.class);
 
         if (chatProvider == null) {

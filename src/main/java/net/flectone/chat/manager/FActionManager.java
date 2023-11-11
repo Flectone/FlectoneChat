@@ -14,49 +14,51 @@ import java.util.List;
 
 public class FActionManager {
 
-    private static final List<FListener> F_LISTENER_LIST = new ArrayList<>();
-    private static final List<FTicker> F_TICKER_LIST = new ArrayList<>();
-    private static final List<FInfo> F_INFO_LIST = new ArrayList<>();
-    private static final List<FCommand> F_COMMAND_LIST = new ArrayList<>();
+    private final List<FListener> F_LISTENER_LIST = new ArrayList<>();
+    private final List<FTicker> F_TICKER_LIST = new ArrayList<>();
+    private final List<FInfo> F_INFO_LIST = new ArrayList<>();
+    private final List<FCommand> F_COMMAND_LIST = new ArrayList<>();
 
-    public static void add(FCommand fCommand) {
+    public FActionManager() {}
+
+    public void add(FCommand fCommand) {
         F_COMMAND_LIST.add(fCommand);
     }
 
-    public static void add(FListener fListener) {
+    public void add(FListener fListener) {
         F_LISTENER_LIST.add(fListener);
     }
 
-    public static void add(FTicker fTicker) {
+    public void add(FTicker fTicker) {
         F_TICKER_LIST.add(fTicker);
     }
 
-    public static void add(FInfo fInfo) {
+    public void add(FInfo fInfo) {
         F_INFO_LIST.add(fInfo);
     }
 
-    public static void clearAll() {
+    public void clearAll() {
         clearCommands();
         clearInfos();
         clearListeners();
         clearTickers();
     }
 
-    public static void clearCommands() {
+    public void clearCommands() {
         F_COMMAND_LIST.forEach(fCommand ->
                 CommandsUtil.unregisterCommand(fCommand.getCommand()));
     }
 
-    public static void clearInfos() {
+    public void clearInfos() {
         F_INFO_LIST.clear();
     }
 
-    public static void clearListeners() {
-        HandlerList.unregisterAll(FlectoneChat.getInstance());
+    public void clearListeners() {
+        HandlerList.unregisterAll(FlectoneChat.getPlugin());
         F_LISTENER_LIST.clear();
     }
 
-    public static void clearTickers() {
+    public void clearTickers() {
         if (F_TICKER_LIST.isEmpty()) return;
         F_TICKER_LIST.stream().filter(fTicker -> !fTicker.isCancelled()).forEach(BukkitRunnable::cancel);
 

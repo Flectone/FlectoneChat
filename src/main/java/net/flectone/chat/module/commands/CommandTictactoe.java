@@ -1,7 +1,6 @@
 package net.flectone.chat.module.commands;
 
 import net.flectone.chat.component.FComponent;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.tictactoe.TicTacToe;
 import net.flectone.chat.module.FCommand;
@@ -15,9 +14,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandTictactoe extends FCommand {
+
     public CommandTictactoe(FModule module, String name) {
         super(module, name);
         init();
@@ -51,7 +49,7 @@ public class CommandTictactoe extends FCommand {
             return true;
         }
 
-        FPlayer secondFPlayer = FPlayerManager.getOffline(args[0]);
+        FPlayer secondFPlayer = playerManager.getOffline(args[0]);
 
         if ((secondFPlayer == null && ticTacToe == null) || cmdSettings.getFPlayer() == secondFPlayer) {
             sendMessage(commandSender, getModule() + ".null-player");

@@ -1,13 +1,10 @@
 package net.flectone.chat.module.player.name;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import static net.flectone.chat.manager.FileManager.config;
 
 public class NameModule extends FModule {
 
@@ -26,7 +23,7 @@ public class NameModule extends FModule {
     public String getPrefix(@NotNull Player player) {
         if (!isEnabledFor(player)) return "";
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return "";
 
         String prefix = config.getVaultString(player, this + ".prefix");
@@ -38,7 +35,7 @@ public class NameModule extends FModule {
     public String getSuffix(@NotNull Player player) {
         if (!isEnabledFor(player)) return "";
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return "";
 
         String suffix = config.getVaultString(player, this + ".suffix");
@@ -52,7 +49,7 @@ public class NameModule extends FModule {
 
         String playerName = player.getName();
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return playerName;
 
         String configString = config.getVaultString(player, this + ".real");
@@ -66,7 +63,7 @@ public class NameModule extends FModule {
 
         String playerName = player.getName();
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return playerName;
 
         String configString = config.getVaultString(player, this + ".display");
@@ -80,7 +77,7 @@ public class NameModule extends FModule {
 
         String playerName = player.getName();
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return playerName;
 
         String configString = config.getVaultString(player, this + ".tab");

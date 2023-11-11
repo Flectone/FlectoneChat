@@ -1,5 +1,6 @@
 package net.flectone.chat.model.damager;
 
+import lombok.Getter;
 import net.flectone.chat.util.NMSUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Material;
@@ -10,7 +11,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlayerDamager {
 
+    @Getter
     private int time;
+    @Getter
     private Entity killer;
     private String killerItemName;
     private String killerItemAsJson;
@@ -24,10 +27,6 @@ public class PlayerDamager {
     public void replaceDamager(@Nullable Entity damager) {
         killer = damager;
         time = TimeUtil.getCurrentTime();
-    }
-
-    public Entity getKiller() {
-        return killer;
     }
 
     public void setKiller(@Nullable Entity killer) {
@@ -53,10 +52,6 @@ public class PlayerDamager {
     @Nullable
     public String getKillerItemAsJson() {
         return killerItemAsJson;
-    }
-
-    public int getTime() {
-        return time;
     }
 
     public void setFinalDamager(Entity finalDamager) {

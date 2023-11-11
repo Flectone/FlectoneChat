@@ -4,7 +4,6 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.database.sqlite.Database;
 import net.flectone.chat.manager.FActionManager;
 import net.flectone.chat.manager.FModuleManager;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.manager.FileManager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.module.FCommand;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class CommandFlectonechat extends FCommand {
+
     public CommandFlectonechat(FModule module, String name) {
         super(module, name);
         init();
@@ -92,25 +92,28 @@ public class CommandFlectonechat extends FCommand {
 
         // disable all
         IntegrationsModule.unregister();
-        FActionManager.clearAll();
+        plugin.getActionManager().clearAll();
 
-        FPlayerManager.terminateAll();
+        plugin.getPlayerManager().terminateAll();
 
-        FlectoneChat.getDatabase().getExecutor().close();
-        FlectoneChat.getDatabase().disconnect();
+        plugin.getDatabase().getExecutor().close();
+        plugin.getDatabase().disconnect();
 
         // enable all
-        FileManager.init();
-        FlectoneChat.setScoreBoard();
+        plugin.setFileManager(new FileManager());
+        plugin.getFileManager().init();
 
-        FlectoneChat.setDatabase(new Database(FlectoneChat.getInstance()));
+        plugin.setScoreBoard();
 
-        FlectoneChat.setModuleManager(new FModuleManager());
-        FlectoneChat.getModuleManager().init();
+        plugin.setDatabase(new Database(FlectoneChat.getPlugin()));
 
-        FPlayerManager.loadOfflinePlayers();
-        FPlayerManager.loadOnlinePlayers();
-        FPlayerManager.loadTabCompleteData();
+        plugin.setActionManager(new FActionManager());
+        plugin.setModuleManager(new FModuleManager());
+        plugin.getModuleManager().init();
+
+        plugin.getPlayerManager().loadOfflinePlayers();
+        plugin.getPlayerManager().loadOnlinePlayers();
+        plugin.getPlayerManager().loadTabCompleteData();
 
         sendMessage(commandSender, this + ".message");
 

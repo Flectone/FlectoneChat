@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.manager.FileManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.MessageUtil;
@@ -13,10 +14,11 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class MaintenanceListener extends FListener {
+
+    private FileManager fileManager;
+    private FConfiguration commands;
+
     public MaintenanceListener(FModule module) {
         super(module);
         init();
@@ -25,6 +27,9 @@ public class MaintenanceListener extends FListener {
     @Override
     public void init() {
         register();
+
+        fileManager = FlectoneChat.getPlugin().getFileManager();
+        commands = fileManager.getCommands();
     }
 
     @EventHandler
@@ -35,7 +40,7 @@ public class MaintenanceListener extends FListener {
         event.setMotd(MessageUtil.formatAll(null, motd));
 
         try {
-            CachedServerIcon serverIcon = Bukkit.loadServerIcon(FileManager.getIcon("maintenance"));
+            CachedServerIcon serverIcon = Bukkit.loadServerIcon(fileManager.getIcon("maintenance"));
             event.setServerIcon(serverIcon);
         } catch (Exception e) {
             FlectoneChat.warning("Unable to load maintenance icon");

@@ -1,6 +1,5 @@
 package net.flectone.chat.module.color;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FModule;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class ColorModule extends FModule {
     public HashMap<String, String> getColors(@NotNull Player player) {
         if (!isEnabledFor(player)) return null;
 
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if (fPlayer != null) {
             if (fPlayer.getSettings() != null)
                 return fPlayer.getSettings().getColors();

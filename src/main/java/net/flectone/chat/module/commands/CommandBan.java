@@ -1,7 +1,5 @@
 package net.flectone.chat.module.commands;
 
-import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Moderation;
 import net.flectone.chat.module.FCommand;
@@ -20,10 +18,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.commands;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class CommandBan extends FCommand {
+
     public CommandBan(FModule module, String name) {
         super(module, name);
         init();
@@ -57,8 +53,7 @@ public class CommandBan extends FCommand {
 
             Moderation playerMod = new Moderation(offlinePlayer.getUniqueId().toString(), -1, reason, source, Moderation.Type.BAN);
 
-            FlectoneChat.getDatabase().execute(() ->
-                    FlectoneChat.getDatabase().updateFPlayer("bans", playerMod));
+            database.execute(() -> database.updateFPlayer("bans", playerMod));
 
             banList.pardon(offlinePlayer.getName());
         });
@@ -83,7 +78,7 @@ public class CommandBan extends FCommand {
         }
 
         String banPlayer = args[0];
-        FPlayer banFPlayer = FPlayerManager.getOffline(banPlayer);
+        FPlayer banFPlayer = playerManager.getOffline(banPlayer);
         if (banFPlayer == null) {
             sendMessage(commandSender, getModule() + ".null-player");
             return true;

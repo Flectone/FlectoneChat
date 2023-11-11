@@ -1,6 +1,5 @@
 package net.flectone.chat.module.playerMessage.chat;
 
-import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
@@ -19,10 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.flectone.chat.manager.FileManager.config;
-import static net.flectone.chat.manager.FileManager.locale;
-
 public class ChatListener extends FListener {
+
     public ChatListener(FModule module) {
         super(module);
         init();
@@ -38,7 +35,7 @@ public class ChatListener extends FListener {
         if (event.isCancelled()) return;
 
         Player sender = event.getPlayer();
-        FPlayer fPlayer = FPlayerManager.get(sender);
+        FPlayer fPlayer = playerManager.get(sender);
         if (fPlayer == null) return;
         if (!getModule().isEnabledFor(sender)) return;
 
@@ -122,7 +119,7 @@ public class ChatListener extends FListener {
         }
 
         recipientsList.removeIf(player -> {
-            FPlayer fRecipient = FPlayerManager.get(player);
+            FPlayer fRecipient = playerManager.get(player);
             return fRecipient != null && fRecipient.getIgnoreList().contains(fPlayer.getUuid());
         });
 

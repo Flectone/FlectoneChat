@@ -8,18 +8,19 @@ import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.component.FComponent;
 import net.flectone.chat.manager.FPlayerManager;
+import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import net.md_5.bungee.api.ChatMessageType;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static net.flectone.chat.manager.FileManager.locale;
-
 
 public class FSimpleVoiceChat implements FIntegration, VoicechatPlugin {
+
+    private FPlayerManager playerManager;
+    private FConfiguration locale;
 
     public FSimpleVoiceChat() {
         init();
@@ -27,12 +28,16 @@ public class FSimpleVoiceChat implements FIntegration, VoicechatPlugin {
 
     @Override
     public void init() {
-        BukkitVoicechatService service = FlectoneChat.getInstance().getServer().getServicesManager().load(BukkitVoicechatService.class);
+        BukkitVoicechatService service = FlectoneChat.getPlugin().getServer().getServicesManager().load(BukkitVoicechatService.class);
         if (service == null) return;
 
         service.registerPlugin(this);
 
         FlectoneChat.info("SimpleVoiceChat detected and hooked");
+
+        FlectoneChat plugin = FlectoneChat.getPlugin();
+        playerManager = plugin.getPlayerManager();
+        locale = plugin.getFileManager().getLocale();
     }
 
     public static VoicechatApi voicechatApi;
@@ -70,7 +75,7 @@ public class FSimpleVoiceChat implements FIntegration, VoicechatPlugin {
         if (event.getSenderConnection() == null) return;
 
         Player player = (Player) event.getSenderConnection().getPlayer().getPlayer();
-        FPlayer fPlayer = FPlayerManager.get(player);
+        FPlayer fPlayer = playerManager.get(player);
         if(fPlayer == null || !fPlayer.isMuted()) return;
 
         event.cancel();
