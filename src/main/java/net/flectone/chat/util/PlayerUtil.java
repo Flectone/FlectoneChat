@@ -25,10 +25,6 @@ public class PlayerUtil {
         }
     }
 
-    public static String getPing(Player player) {
-        return String.valueOf(player.getPing());
-    }
-
     @NotNull
     public static String getPrefix(@NotNull Player player) {
         String prefix = IntegrationsModule.getPrefix(player);

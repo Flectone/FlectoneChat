@@ -49,11 +49,6 @@ public class PlayerDamager {
         return killerItemName;
     }
 
-    @Nullable
-    public String getKillerItemAsJson() {
-        return killerItemAsJson;
-    }
-
     public void setFinalDamager(Entity finalDamager) {
         this.finalEntityDamager = finalDamager;
         this.damagerTranslateName = NMSUtil.getMinecraftName(finalDamager);

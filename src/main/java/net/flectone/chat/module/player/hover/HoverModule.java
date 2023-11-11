@@ -41,10 +41,7 @@ public class HoverModule extends FModule {
         SUGGEST("suggest"),
         RUN("run");
 
-        private final String name;
-        CommandType(String name) {
-            this.name = name;
-        }
+        CommandType(String name) {}
 
         public static CommandType fromString(String string) {
             if (string.equalsIgnoreCase("run")) return RUN;

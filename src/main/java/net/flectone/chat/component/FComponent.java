@@ -2,8 +2,10 @@ package net.flectone.chat.component;
 
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
-import net.md_5.bungee.api.chat.*;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,11 +49,6 @@ public class FComponent {
     @NotNull
     public static BaseComponent[] fromLegacyText(@NotNull String text) {
         return TextComponent.fromLegacyText(text);
-    }
-
-    @NotNull
-    protected String getLastColor(@NotNull String lastColor, @NotNull ComponentBuilder componentBuilder) {
-        return ChatColor.getLastColors(lastColor + componentBuilder.getCurrentComponent().toString());
     }
 
     @NotNull

@@ -1,10 +1,12 @@
 package net.flectone.chat.model.message;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class TextParameters {
 
     private final String text;
@@ -22,14 +24,6 @@ public class TextParameters {
     public void add(List<String> parameters) {
         if (parameters == null || parameters.isEmpty()) return;
         this.parameters.addAll(parameters);
-    }
-
-    public List<String> getParameters() {
-        return parameters;
-    }
-
-    public String getText() {
-        return text;
     }
 
     public void remove(String parameter) {

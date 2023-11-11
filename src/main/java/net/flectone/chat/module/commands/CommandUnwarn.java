@@ -114,7 +114,7 @@ public class CommandUnwarn extends FCommand {
                 if (warns == null) break;
 
                 int k = 1;
-                for (Moderation warn : warns) {
+                for (Moderation ignored : warns) {
                     isStartsWith(args[1], String.valueOf(k++));
                 }
             }

@@ -1,11 +1,9 @@
 package net.flectone.chat.module.serverMessage.join;
 
 import net.flectone.chat.FlectoneChat;
-import net.flectone.chat.component.FComponent;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
-import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

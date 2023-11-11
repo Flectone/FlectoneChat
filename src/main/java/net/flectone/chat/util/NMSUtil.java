@@ -55,6 +55,7 @@ public class NMSUtil {
 
             Object nmsStack = asNMSCopy(is);
 
+            assert nmsStack != null;
             Object item = nmsStack.getClass().getMethod("getItem").invoke(nmsStack);
 
             // We can do a simple version check like this which should work for future versions
