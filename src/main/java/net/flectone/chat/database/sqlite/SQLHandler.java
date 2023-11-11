@@ -1,7 +1,7 @@
 package net.flectone.chat.database.sqlite;
 
 import net.flectone.chat.FlectoneChat;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public class SQLHandler {
         }
     }
 
-    @Nullable
+    @NotNull
     public Connection getConnection() {
         try {
             if (connection != null && !connection.isClosed()) {
@@ -48,10 +48,11 @@ public class SQLHandler {
             ex.printStackTrace();
 
         } catch (ClassNotFoundException ex) {
-            FlectoneChat.warning("You need the SQLite JBDC library. Google it. Put it in /lib folder.");
+            FlectoneChat.warning("You need the SQLite JBDC library");
             ex.printStackTrace();
         }
-        return null;
+
+        throw new RuntimeException();
     }
 
     public void onConnect() {
