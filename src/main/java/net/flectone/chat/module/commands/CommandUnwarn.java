@@ -105,12 +105,12 @@ public class CommandUnwarn extends FCommand {
         tabCompleteClear();
         switch (args.length) {
             case 1 -> {
-                for (String playerName : playerManager.getWARNS_PLAYERS().keySet()) {
+                for (String playerName : playerManager.getWarnsPlayers().keySet()) {
                     isStartsWith(args[0], playerName);
                 }
             }
             case 2 -> {
-                List<Moderation> warns = playerManager.getWARNS_PLAYERS().get(args[0]);
+                List<Moderation> warns = playerManager.getWarnsPlayers().get(args[0]);
                 if (warns == null) break;
 
                 int k = 1;

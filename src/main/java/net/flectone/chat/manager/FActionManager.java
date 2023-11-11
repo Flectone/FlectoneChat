@@ -13,22 +13,20 @@ import java.util.List;
 
 public class FActionManager {
 
-    private final List<FListener> F_LISTENER_LIST = new ArrayList<>();
-    private final List<FTicker> F_TICKER_LIST = new ArrayList<>();
-    private final List<FCommand> F_COMMAND_LIST = new ArrayList<>();
-
-    public FActionManager() {}
+    private final List<FListener> listenerList = new ArrayList<>();
+    private final List<FTicker> tickerList = new ArrayList<>();
+    private final List<FCommand> commandList = new ArrayList<>();
 
     public void add(FCommand fCommand) {
-        F_COMMAND_LIST.add(fCommand);
+        commandList.add(fCommand);
     }
 
     public void add(FListener fListener) {
-        F_LISTENER_LIST.add(fListener);
+        listenerList.add(fListener);
     }
 
     public void add(FTicker fTicker) {
-        F_TICKER_LIST.add(fTicker);
+        tickerList.add(fTicker);
     }
 
 
@@ -39,19 +37,19 @@ public class FActionManager {
     }
 
     public void clearCommands() {
-        F_COMMAND_LIST.forEach(fCommand ->
+        commandList.forEach(fCommand ->
                 CommandsUtil.unregisterCommand(fCommand.getCommand()));
     }
     
     public void clearListeners() {
         HandlerList.unregisterAll(FlectoneChat.getPlugin());
-        F_LISTENER_LIST.clear();
+        listenerList.clear();
     }
 
     public void clearTickers() {
-        if (F_TICKER_LIST.isEmpty()) return;
-        F_TICKER_LIST.stream().filter(fTicker -> !fTicker.isCancelled()).forEach(BukkitRunnable::cancel);
+        if (tickerList.isEmpty()) return;
+        tickerList.stream().filter(fTicker -> !fTicker.isCancelled()).forEach(BukkitRunnable::cancel);
 
-        F_TICKER_LIST.clear();
+        tickerList.clear();
     }
 }

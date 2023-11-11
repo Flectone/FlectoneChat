@@ -83,7 +83,7 @@ public class CommandUnban extends FCommand {
                                                 @NotNull String alias, @NotNull String[] args) {
         tabCompleteClear();
         if (args.length == 1) {
-            playerManager.getBANNED_PLAYERS()
+            playerManager.getBannedPlayers()
                     .stream()
                     .map(Bukkit::getOfflinePlayer)
                     .filter(offlinePlayer -> offlinePlayer.getName() != null)

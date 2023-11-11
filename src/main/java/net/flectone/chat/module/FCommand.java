@@ -210,7 +210,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     }
 
     public void isOfflinePlayer(@NotNull String arg) {
-        playerManager.getOFFLINE_PLAYERS()
+        playerManager.getOfflinePlayers()
                 .parallelStream()
                 .forEachOrdered(offlinePlayer -> isStartsWith(arg, offlinePlayer));
     }

@@ -83,7 +83,7 @@ public class CommandUnmute extends FCommand {
 
         tabCompleteClear();
         if (args.length == 1) {
-            playerManager.getMUTED_PLAYERS().forEach(string ->
+            playerManager.getMutedPlayers().forEach(string ->
                     isStartsWith(args[0], string));
         }
 

@@ -184,7 +184,7 @@ public class FPlayer {
 
         database.execute(() -> database.updateFPlayer("mutes", mute));
 
-        playerManager.getMUTED_PLAYERS().add(getMinecraftName());
+        playerManager.getMutedPlayers().add(getMinecraftName());
 
         if (player != null) {
             IntegrationsModule.mutePlasmoVoice(player, moderator == null ? null : UUID.fromString(moderator), time, reason);
@@ -193,7 +193,7 @@ public class FPlayer {
 
     public void unmute() {
         this.mute = null;
-        playerManager.getMUTED_PLAYERS().remove(getMinecraftName());
+        playerManager.getMutedPlayers().remove(getMinecraftName());
 
         database.execute(() -> database.deleteRow("mutes", "player", uuid.toString()));
 
@@ -209,7 +209,7 @@ public class FPlayer {
 
         database.execute(() -> database.updateFPlayer("bans", ban));
 
-        playerManager.getBANNED_PLAYERS().add(getUuid());
+        playerManager.getBannedPlayers().add(getUuid());
 
         if (player == null) return;
 
@@ -228,7 +228,7 @@ public class FPlayer {
 
     public void unban() {
         this.ban = null;
-        playerManager.getBANNED_PLAYERS().remove(getUuid());
+        playerManager.getBannedPlayers().remove(getUuid());
 
         database.execute(() -> database.deleteRow("bans", "player", uuid.toString()));
 
@@ -240,7 +240,7 @@ public class FPlayer {
         Moderation warn = new Moderation(this.uuid.toString(), finalTime, reason, moderator, Moderation.Type.WARN);
         getWarnList().add(warn);
 
-        playerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
+        playerManager.getWarnsPlayers().put(getMinecraftName(), getWarnList());
 
         int count = getCountWarns();
         String warnAction = commands.getString("warn.action." + count);
@@ -256,7 +256,7 @@ public class FPlayer {
         Moderation warn = warnList.get(index);
         warnList.remove(index);
 
-        playerManager.getWARNS_PLAYERS().put(getMinecraftName(), getWarnList());
+        playerManager.getWarnsPlayers().put(getMinecraftName(), getWarnList());
 
         database.execute(() -> database.removeWarn(warn));
     }

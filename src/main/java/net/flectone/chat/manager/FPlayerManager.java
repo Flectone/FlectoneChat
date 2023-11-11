@@ -19,14 +19,14 @@ import java.util.*;
 @Getter
 public class FPlayerManager {
 
-    private final ArrayList<UUID> BANNED_PLAYERS = new ArrayList<>();
-    private final ArrayList<String> MUTED_PLAYERS = new ArrayList<>();
-    private final HashMap<String, List<Moderation>> WARNS_PLAYERS = new HashMap<>();
-    private final ArrayList<String> OFFLINE_PLAYERS = new ArrayList<>();
-    private final HashMap<String, FPlayer> F_PLAYER_MAP = new HashMap<>();
+    private final ArrayList<UUID> bannedPlayers = new ArrayList<>();
+    private final ArrayList<String> mutedPlayers = new ArrayList<>();
+    private final HashMap<String, List<Moderation>> warnsPlayers = new HashMap<>();
+    private final ArrayList<String> offlinePlayers = new ArrayList<>();
+    private final HashMap<String, FPlayer> playerHashMap = new HashMap<>();
 
     public void loadOfflinePlayers() {
-        OFFLINE_PLAYERS.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
+        offlinePlayers.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
                 .map(OfflinePlayer::getName).toList());
     }
 
@@ -41,7 +41,7 @@ public class FPlayerManager {
                 String playerUUID = resultSet.getString("player");
                 if (playerUUID == null) continue;
 
-                BANNED_PLAYERS.add(UUID.fromString(playerUUID));
+                bannedPlayers.add(UUID.fromString(playerUUID));
             }
 
             preparedStatement = connection.prepareStatement("SELECT `player` FROM `mutes` WHERE `time`>?");
@@ -52,7 +52,7 @@ public class FPlayerManager {
                 String playerUUID = resultSet.getString("player");
                 if (playerUUID == null) continue;
 
-                MUTED_PLAYERS.add(Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName());
+                mutedPlayers.add(Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName());
             }
 
             preparedStatement = connection.prepareStatement("SELECT * FROM `warns` WHERE `time`>?");
@@ -64,7 +64,7 @@ public class FPlayerManager {
                 if (playerUUID == null) continue;
 
                 String playerName = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName();
-                List<Moderation> warns = WARNS_PLAYERS.get(playerName);
+                List<Moderation> warns = warnsPlayers.get(playerName);
                 if (warns == null) warns = new ArrayList<>();
 
                 int id = resultSet.getInt("id");
@@ -73,27 +73,27 @@ public class FPlayerManager {
                 String moderator = resultSet.getString("moderator");
                 warns.add(new Moderation(id, playerUUID, time, reason, moderator, Moderation.Type.WARN));
 
-                WARNS_PLAYERS.put(playerName, warns);
+                warnsPlayers.put(playerName, warns);
             }
         });
     }
 
     public void add(FPlayer fPlayer) {
-        F_PLAYER_MAP.put(fPlayer.getMinecraftName(), fPlayer);
+        playerHashMap.put(fPlayer.getMinecraftName(), fPlayer);
     }
 
     public void remove(@NotNull FPlayer fPlayer) {
-        F_PLAYER_MAP.remove(fPlayer.getMinecraftName());
+        playerHashMap.remove(fPlayer.getMinecraftName());
     }
 
     @Nullable
     public FPlayer get(@Nullable String name) {
         if (name == null) return null;
 
-        FPlayer fPlayer = F_PLAYER_MAP.get(name);
+        FPlayer fPlayer = playerHashMap.get(name);
         if (fPlayer != null) return fPlayer;
 
-        return F_PLAYER_MAP.entrySet()
+        return playerHashMap.entrySet()
                 .stream()
                 .filter(entry -> entry.getKey().equalsIgnoreCase(name))
                 .findFirst()
@@ -105,7 +105,7 @@ public class FPlayerManager {
     public FPlayer get(@Nullable UUID uuid) {
         if (uuid == null) return null;
 
-        return F_PLAYER_MAP.values()
+        return playerHashMap.values()
                 .stream()
                 .filter(Objects::nonNull)
                 .filter(fPlayer -> fPlayer.getUuid().equals(uuid))
@@ -138,7 +138,7 @@ public class FPlayerManager {
                 ? new FPlayer(offlinePlayer)
                 : null;
 
-        F_PLAYER_MAP.put(name, fPlayer);
+        playerHashMap.put(name, fPlayer);
         return fPlayer;
     }
 
@@ -153,16 +153,16 @@ public class FPlayerManager {
     }
 
     public void terminateAll() {
-        F_PLAYER_MAP.values().forEach(fPlayer -> {
+        playerHashMap.values().forEach(fPlayer -> {
             if (fPlayer == null) return;
             fPlayer.toDatabase();
             fPlayer.unregisterTeam();
         });
 
-        F_PLAYER_MAP.clear();
-        OFFLINE_PLAYERS.clear();
-        BANNED_PLAYERS.clear();
-        MUTED_PLAYERS.clear();
-        WARNS_PLAYERS.clear();
+        playerHashMap.clear();
+        offlinePlayers.clear();
+        bannedPlayers.clear();
+        mutedPlayers.clear();
+        warnsPlayers.clear();
     }
 }

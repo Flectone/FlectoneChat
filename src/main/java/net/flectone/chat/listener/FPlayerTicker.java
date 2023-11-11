@@ -25,15 +25,15 @@ public class FPlayerTicker extends FTicker {
         FlectoneChat.getPlugin().getDatabase().execute(() ->
                 FlectoneChat.getPlugin().getDatabase().clearExpiredData());
 
-        var temp = new HashMap<>(playerManager.getF_PLAYER_MAP());
+        var temp = new HashMap<>(playerManager.getPlayerHashMap());
 
-        playerManager.getF_PLAYER_MAP().forEach((key, fPlayer) -> {
+        playerManager.getPlayerHashMap().forEach((key, fPlayer) -> {
             if (fPlayer == null || !fPlayer.getOfflinePlayer().isOnline()) {
                 temp.remove(key);
             }
         });
 
-        playerManager.getF_PLAYER_MAP().clear();
-        playerManager.getF_PLAYER_MAP().putAll(temp);
+        playerManager.getPlayerHashMap().clear();
+        playerManager.getPlayerHashMap().putAll(temp);
     }
 }

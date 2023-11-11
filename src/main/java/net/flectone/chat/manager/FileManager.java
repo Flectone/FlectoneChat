@@ -22,7 +22,7 @@ public class FileManager {
     private static final String LANGUAGES_FOLDER = SETTINGS_FOLDER + "languages" + File.separator;
     private static final String ICONS_FOLDER = SETTINGS_FOLDER + "icons" + File.separator;
 
-    private final HashMap<String, File> ICONS_MAP = new HashMap<>();
+    private final HashMap<String, File> iconsMap = new HashMap<>();
 
     @Getter
     private FConfiguration config;
@@ -99,10 +99,10 @@ public class FileManager {
     }
 
     public File getIcon(String icon) {
-        if (ICONS_MAP.get(icon) != null) return ICONS_MAP.get(icon);
+        if (iconsMap.get(icon) != null) return iconsMap.get(icon);
 
         File fileIcon = new File(DATA_FOLDER + ICONS_FOLDER + icon + ".png");
-        ICONS_MAP.put(icon, fileIcon);
+        iconsMap.put(icon, fileIcon);
 
         return fileIcon;
     }

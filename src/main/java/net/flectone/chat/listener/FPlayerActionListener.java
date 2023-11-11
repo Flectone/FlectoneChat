@@ -39,7 +39,7 @@ public class FPlayerActionListener extends FListener {
         fPlayer.init();
 
         if (!player.hasPlayedBefore()) {
-            playerManager.getOFFLINE_PLAYERS().add(player.getName());
+            playerManager.getOfflinePlayers().add(player.getName());
         }
 
         for (Mail mail : fPlayer.getMailList()) {
@@ -70,7 +70,7 @@ public class FPlayerActionListener extends FListener {
     @EventHandler
     public void onLoginPlayer(@NotNull AsyncPlayerPreLoginEvent event) {
 
-        if (!playerManager.getBANNED_PLAYERS().contains(event.getUniqueId())) return;
+        if (!playerManager.getBannedPlayers().contains(event.getUniqueId())) return;
 
         String uuidString = event.getUniqueId().toString();
         Moderation moderation = FlectoneChat.getPlugin().getDatabase()

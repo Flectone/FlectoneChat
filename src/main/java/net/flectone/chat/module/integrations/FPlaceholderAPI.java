@@ -82,8 +82,8 @@ public class FPlaceholderAPI extends PlaceholderExpansion implements FIntegratio
             database.getWarns(fPlayer);
 
             return switch (params.toLowerCase()) {
-                case "moderation_ban" -> playerManager.getBANNED_PLAYERS().contains(fPlayer.getUuid()) ? "1" : "0";
-                case "moderation_mute" -> playerManager.getMUTED_PLAYERS().contains(fPlayer.getMinecraftName()) ? "1" : "0";
+                case "moderation_ban" -> playerManager.getBannedPlayers().contains(fPlayer.getUuid()) ? "1" : "0";
+                case "moderation_mute" -> playerManager.getMutedPlayers().contains(fPlayer.getMinecraftName()) ? "1" : "0";
                 case "moderation_warn" -> String.valueOf(fPlayer.getCountWarns());
                 default -> null;
             };
