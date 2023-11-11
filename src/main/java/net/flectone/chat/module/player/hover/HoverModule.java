@@ -38,10 +38,10 @@ public class HoverModule extends FModule {
 
     public enum CommandType {
 
-        SUGGEST("suggest"),
-        RUN("run");
+        SUGGEST(),
+        RUN();
 
-        CommandType(String name) {}
+        CommandType() {}
 
         public static CommandType fromString(String string) {
             if (string.equalsIgnoreCase("run")) return RUN;

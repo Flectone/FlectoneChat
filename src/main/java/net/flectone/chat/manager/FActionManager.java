@@ -2,7 +2,6 @@ package net.flectone.chat.manager;
 
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FCommand;
-import net.flectone.chat.module.FInfo;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.util.CommandsUtil;
@@ -16,7 +15,6 @@ public class FActionManager {
 
     private final List<FListener> F_LISTENER_LIST = new ArrayList<>();
     private final List<FTicker> F_TICKER_LIST = new ArrayList<>();
-    private final List<FInfo> F_INFO_LIST = new ArrayList<>();
     private final List<FCommand> F_COMMAND_LIST = new ArrayList<>();
 
     public FActionManager() {}
@@ -33,13 +31,9 @@ public class FActionManager {
         F_TICKER_LIST.add(fTicker);
     }
 
-    public void add(FInfo fInfo) {
-        F_INFO_LIST.add(fInfo);
-    }
 
     public void clearAll() {
         clearCommands();
-        clearInfos();
         clearListeners();
         clearTickers();
     }
@@ -48,11 +42,7 @@ public class FActionManager {
         F_COMMAND_LIST.forEach(fCommand ->
                 CommandsUtil.unregisterCommand(fCommand.getCommand()));
     }
-
-    public void clearInfos() {
-        F_INFO_LIST.clear();
-    }
-
+    
     public void clearListeners() {
         HandlerList.unregisterAll(FlectoneChat.getPlugin());
         F_LISTENER_LIST.clear();

@@ -92,11 +92,7 @@ public class AdvancementModule extends FModule {
             FComponent advancementComponent = new FLocaleComponent(fAdvancement.getTranslateKey());
 
             String hover = locale.getVaultString(sender, this + "." + fAdvancement.getType() + ".hover");
-            FComponentBuilder hoverComponentBuilder = new FComponentBuilder(hover);
-            hoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
-                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateKey()), hoverColor).get()));
-            hoverComponentBuilder.replace("<description>", (hoverBuilder, hoverColor) ->
-                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateDesc()), hoverColor).get()));
+            FComponentBuilder hoverComponentBuilder = getfComponentBuilder(fAdvancement, hover);
 
             advancementComponent.addHoverText(hoverComponentBuilder.build(sender, player));
 
@@ -108,5 +104,15 @@ public class AdvancementModule extends FModule {
         } else {
             FPlayer.sendToConsole(fComponentBuilder.build(sender, null));
         }
+    }
+
+    @NotNull
+    private FComponentBuilder getfComponentBuilder(@NotNull FAdvancement fAdvancement, String hover) {
+        FComponentBuilder hoverComponentBuilder = new FComponentBuilder(hover);
+        hoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
+                hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateKey()), hoverColor).get()));
+        hoverComponentBuilder.replace("<description>", (hoverBuilder, hoverColor) ->
+                hoverBuilder.append(new FColorComponent(new FLocaleComponent(fAdvancement.getTranslateDesc()), hoverColor).get()));
+        return hoverComponentBuilder;
     }
 }

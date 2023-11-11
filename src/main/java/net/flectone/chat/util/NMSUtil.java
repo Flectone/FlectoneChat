@@ -95,44 +95,6 @@ public class NMSUtil {
         return getMinecraftType(entity);
     }
 
-    /**
-     * @return 0 if the item has never been repaired or -1 if it is no longer repairable.
-     */
-    public static int getXPForRepair(ItemStack is) {
-        try {
-            Object nmsStack = asNMSCopy(is);
-
-            if (version >= 1.18) {
-                int cost = (int) is.getItemMeta().serialize().getOrDefault("repair-cost", 0);
-                boolean repairable = cost <= 40;
-                return repairable ? cost : -1;
-            }
-
-            boolean hasTag = (boolean) nmsStack.getClass().getMethod("hasTag").invoke(nmsStack);
-
-            if (!hasTag)
-                return 0;
-
-            Object tag = nmsStack.getClass().getMethod("getTag").invoke(nmsStack);
-
-            boolean hasKey = (boolean) tag.getClass().getMethod("hasKey", String.class).invoke(tag, "RepairCost");
-
-            if (!hasKey)
-                return 0;
-
-            int cost = (int) tag.getClass().getMethod("getInt", String.class).invoke(tag, "RepairCost");
-
-            boolean repairable = cost <= 40;
-
-            if (repairable)
-                return cost;
-            else
-                return -1;
-        } catch (Exception ex) {
-            return 0;
-        }
-    }
-
     public static String getItemAsJson(ItemStack is) {
         String itemJson;
 

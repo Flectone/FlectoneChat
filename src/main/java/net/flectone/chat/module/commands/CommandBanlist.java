@@ -119,6 +119,18 @@ public class CommandBanlist extends FCommand {
 
         pageLine = MessageUtil.formatAll(cmdSettings.getSender(), pageLine);
 
+        FComponentBuilder fComponentBuilder = getfComponentBuilder(pageLine, page, cmdSettings);
+
+        componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
+        commandSender.spigot().sendMessage(componentBuilder.create());
+
+        if (!cmdSettings.isConsole()) {
+            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+        }
+    }
+
+    @NotNull
+    private FComponentBuilder getfComponentBuilder(String pageLine, int page, CmdSettings cmdSettings) {
         FComponentBuilder fComponentBuilder = new FComponentBuilder(pageLine);
 
         AtomicInteger prevNumber = new AtomicInteger(page);
@@ -144,13 +156,7 @@ public class CommandBanlist extends FCommand {
 
             nextBuilder.append(fComponent.get(), ComponentBuilder.FormatRetention.NONE);
         });
-
-        componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
-        commandSender.spigot().sendMessage(componentBuilder.create());
-
-        if (!cmdSettings.isConsole()) {
-            cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
-        }
+        return fComponentBuilder;
     }
 
     @Override

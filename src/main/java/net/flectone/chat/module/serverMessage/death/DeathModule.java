@@ -28,6 +28,8 @@ public class DeathModule extends FModule {
     public void init() {
         if (!isEnabled()) return;
         register();
+
+        actionManager.add(new DeathListener(this));
     }
 
     public void sendAll(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String message) {
@@ -123,17 +125,23 @@ public class DeathModule extends FModule {
 
             formatHoverMessage = MessageUtil.formatAll(sender, player, formatHoverMessage);
 
-            FComponentBuilder entityHoverComponentBuilder = new FComponentBuilder(formatHoverMessage);
-
-            entityHoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
-                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(NMSUtil.getMinecraftName(entity)), hoverColor).get()));
-
-            entityHoverComponentBuilder.replace("<type>", (hoverBuilder, hoverColor) ->
-                    hoverBuilder.append(new FColorComponent(new FLocaleComponent(NMSUtil.getMinecraftType(entity)), hoverColor).get()));
+            FComponentBuilder entityHoverComponentBuilder = getfComponentBuilder(entity, formatHoverMessage);
 
             fLocaleComponent.addHoverText(entityHoverComponentBuilder.build(sender, player));
         }
 
         componentBuilder.append(new FColorComponent(fLocaleComponent, color).get());
+    }
+
+    @NotNull
+    private static FComponentBuilder getfComponentBuilder(@NotNull Entity entity, String formatHoverMessage) {
+        FComponentBuilder entityHoverComponentBuilder = new FComponentBuilder(formatHoverMessage);
+
+        entityHoverComponentBuilder.replace("<name>", (hoverBuilder, hoverColor) ->
+                hoverBuilder.append(new FColorComponent(new FLocaleComponent(NMSUtil.getMinecraftName(entity)), hoverColor).get()));
+
+        entityHoverComponentBuilder.replace("<type>", (hoverBuilder, hoverColor) ->
+                hoverBuilder.append(new FColorComponent(new FLocaleComponent(NMSUtil.getMinecraftType(entity)), hoverColor).get()));
+        return entityHoverComponentBuilder;
     }
 }

@@ -33,10 +33,6 @@ public class FComponent {
         this(new TextComponent());
     }
 
-    public FComponent(@NotNull FComponent fComponent) {
-        this(fComponent.get());
-    }
-
     @NotNull
     public BaseComponent get() {
         return component;

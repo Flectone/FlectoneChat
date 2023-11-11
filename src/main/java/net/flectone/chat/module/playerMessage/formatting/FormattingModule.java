@@ -64,39 +64,7 @@ public class FormattingModule extends FModule {
 
         HashMap<String, String> formattingMap = load(player);
 
-        List<Pair<String, Integer>> sortedPairs = new ArrayList<>();
-        Map<String, Integer> patternIndexes = new HashMap<>();
-
-        int charIndex = 0;
-        while (charIndex < message.length()) {
-            if (message.startsWith("\\", charIndex)) {
-                charIndex += 2;
-                continue;
-            }
-
-            String matchedPattern = null;
-            for (String pattern : patterns) {
-                if (!formattingMap.containsValue(pattern)) continue;
-
-                if (message.startsWith(pattern, charIndex)) {
-                    matchedPattern = pattern;
-                    break;
-                }
-            }
-
-            if (matchedPattern != null) {
-                if (patternIndexes.containsKey(matchedPattern)) {
-                    sortedPairs.add(new Pair<>(matchedPattern, patternIndexes.get(matchedPattern)));
-                    sortedPairs.add(new Pair<>(matchedPattern, charIndex));
-                    patternIndexes.remove(matchedPattern);
-                } else {
-                    patternIndexes.put(matchedPattern, charIndex);
-                }
-                charIndex += matchedPattern.length();
-            } else {
-                charIndex++;
-            }
-        }
+        List<Pair<String, Integer>> sortedPairs = getPairs(message, formattingMap);
 
         sortedPairs.sort(Comparator.comparingInt(Pair::right));
 
@@ -144,6 +112,44 @@ public class FormattingModule extends FModule {
             }
         }
 
+    }
+
+    @NotNull
+    private List<Pair<String, Integer>> getPairs(@NotNull String message, HashMap<String, String> formattingMap) {
+        List<Pair<String, Integer>> sortedPairs = new ArrayList<>();
+        Map<String, Integer> patternIndexes = new HashMap<>();
+
+        int charIndex = 0;
+        while (charIndex < message.length()) {
+            if (message.startsWith("\\", charIndex)) {
+                charIndex += 2;
+                continue;
+            }
+
+            String matchedPattern = null;
+            for (String pattern : patterns) {
+                if (!formattingMap.containsValue(pattern)) continue;
+
+                if (message.startsWith(pattern, charIndex)) {
+                    matchedPattern = pattern;
+                    break;
+                }
+            }
+
+            if (matchedPattern != null) {
+                if (patternIndexes.containsKey(matchedPattern)) {
+                    sortedPairs.add(new Pair<>(matchedPattern, patternIndexes.get(matchedPattern)));
+                    sortedPairs.add(new Pair<>(matchedPattern, charIndex));
+                    patternIndexes.remove(matchedPattern);
+                } else {
+                    patternIndexes.put(matchedPattern, charIndex);
+                }
+                charIndex += matchedPattern.length();
+            } else {
+                charIndex++;
+            }
+        }
+        return sortedPairs;
     }
 
     private void splitStringToWordParams(@Nullable Player sender, @NotNull String command,

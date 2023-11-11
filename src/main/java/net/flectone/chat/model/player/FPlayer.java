@@ -99,13 +99,6 @@ public class FPlayer {
         this.minecraftName = offlinePlayer.getName() != null ? offlinePlayer.getName() : "Unknown";
     }
 
-    public FPlayer(@NotNull String uuid, @NotNull String name, @NotNull String ip) {
-        this();
-        this.uuid = UUID.fromString(uuid);
-        this.minecraftName = name;
-        this.ip = ip;
-    }
-
     public void init() {
         playerManager.add(this);
 

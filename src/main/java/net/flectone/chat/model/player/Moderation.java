@@ -3,7 +3,6 @@ package net.flectone.chat.model.player;
 import lombok.Getter;
 import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -50,11 +49,6 @@ public class Moderation {
     private String getName(@NotNull String uuid) {
         String name = Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
         return name != null ? name : "Unknown";
-    }
-
-    @NotNull
-    public OfflinePlayer getPlayer() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
     }
 
     public int getRemainingTime() {

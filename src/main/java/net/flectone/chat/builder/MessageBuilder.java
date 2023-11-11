@@ -29,7 +29,6 @@ import java.util.List;
 public class MessageBuilder {
 
     private final List<WordParams> messages = new ArrayList<>();
-    private final ComponentBuilder componentBuilder = new ComponentBuilder();
     private final ItemStack itemStack;
     private final Player sender;
 
@@ -211,10 +210,5 @@ public class MessageBuilder {
                 .append(FComponent.fromLegacyText(MessageUtil.formatAll(sender, recipient, componentsStrings[1])))
                 .append(color)
                 .create();
-    }
-
-    @NotNull
-    public BaseComponent[] create() {
-        return componentBuilder.create();
     }
 }

@@ -16,7 +16,6 @@ public class PlayerDamager {
     @Getter
     private Entity killer;
     private String killerItemName;
-    private String killerItemAsJson;
     private Entity finalEntityDamager;
     private Material finalBlockDamager;
     private String damagerTranslateName;
@@ -41,7 +40,6 @@ public class PlayerDamager {
     public void setKillerItem(@NotNull ItemStack itemStack) {
         this.killerItem = itemStack;
         this.killerItemName = NMSUtil.getMinecraftName(itemStack);
-        this.killerItemAsJson = NMSUtil.getItemAsJson(itemStack);
     }
 
     @Nullable

@@ -185,39 +185,6 @@ public class Database extends SQLHandler {
         });
     }
 
-    @Nullable
-    public FPlayer getPlayer(@Nullable String name) throws SQLException {
-        if (name == null) return null;
-
-        PreparedStatement playerStatement = connection.prepareStatement("SELECT `uuid`, `ip` FROM `players` WHERE `name` = ?");
-        playerStatement.setString(1, name);
-        ResultSet playerResult = playerStatement.executeQuery();
-
-        if (!playerResult.next()) return null;
-
-        String uuid = playerResult.getString("uuid");
-        String ip = playerResult.getString("ip");
-
-        return new FPlayer(name, uuid, ip);
-    }
-
-    @Nullable
-    public FPlayer getPlayer(@Nullable UUID uuid) throws SQLException {
-        if (uuid == null) return null;
-        String uuidString = uuid.toString();
-
-        PreparedStatement playerStatement = connection.prepareStatement("SELECT `name`, `ip` FROM `players` WHERE `uuid` = ?");
-        playerStatement.setString(1, uuidString);
-        ResultSet playerResult = playerStatement.executeQuery();
-
-        if (!playerResult.next()) return null;
-
-        String name = playerResult.getString("name");
-        String ip = playerResult.getString("ip");
-
-        return new FPlayer(name, uuidString, ip);
-    }
-
     public void getMute(FPlayer fPlayer) {
         try {
             String uuid = fPlayer.getUuid().toString();

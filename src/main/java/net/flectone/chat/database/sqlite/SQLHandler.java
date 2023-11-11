@@ -73,9 +73,4 @@ public class SQLHandler {
     public void onDisconnect() {
 
     }
-
-    public boolean isConnected() {
-        return connection != null;
-    }
-
 }

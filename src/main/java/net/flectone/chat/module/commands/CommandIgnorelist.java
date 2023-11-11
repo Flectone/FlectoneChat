@@ -116,6 +116,19 @@ public class CommandIgnorelist extends FCommand {
 
         pageLine = MessageUtil.formatAll(cmdSettings.getSender(), pageLine);
 
+        FComponentBuilder fComponentBuilder = getfComponentBuilder(pageLine, page, cmdSettings);
+
+        componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
+
+        commandSender.spigot().sendMessage(componentBuilder.create());
+
+        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
+
+        return true;
+    }
+
+    @NotNull
+    private FComponentBuilder getfComponentBuilder(String pageLine, int page, CmdSettings cmdSettings) {
         FComponentBuilder fComponentBuilder = new FComponentBuilder(pageLine);
 
         AtomicInteger prevNumber = new AtomicInteger(page);
@@ -141,14 +154,7 @@ public class CommandIgnorelist extends FCommand {
 
             nextBuilder.append(fComponent.get(), ComponentBuilder.FormatRetention.NONE);
         });
-
-        componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
-
-        commandSender.spigot().sendMessage(componentBuilder.create());
-
-        cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
-
-        return true;
+        return fComponentBuilder;
     }
 
     @Override

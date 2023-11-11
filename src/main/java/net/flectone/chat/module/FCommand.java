@@ -118,13 +118,6 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         commandSender.sendMessage(message);
     }
 
-    public void sendMessage(@NotNull Player player, @NotNull String string) {
-        String message = locale.getVaultString(player, string);
-        message = MessageUtil.formatAll(null, message);
-
-        player.sendMessage(message);
-    }
-
     public void sendGlobalMessage(@Nullable Player player, @Nullable ItemStack itemStack, @NotNull String format,
                                   @NotNull String message, boolean isClickable) {
 
