@@ -13,7 +13,7 @@
 </p>
 
 # Video Tutorial (Russian)
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7_WOJbr51Cg?si=O4Q2xPzsPnNLLijf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Russian Video Tutorial](https://i.ytimg.com/vi/7_WOJbr51Cg/maxresdefault.jpg)](https://www.youtube.com/watch?v=7_WOJbr51Cg)
 
 # Features
 
