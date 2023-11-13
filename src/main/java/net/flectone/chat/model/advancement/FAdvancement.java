@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Optional;
 
 // Thanks, @CroaBeast, for these methods
 // Source https://github.com/CroaBeast/AdvancementInfo
@@ -20,14 +21,30 @@ public class FAdvancement {
 
     private String title;
 
+    private static final boolean IS_19_4;
+    private static final boolean IS_20_2;
+
+    static {
+        double value = NMSUtil.getVersion();
+        IS_19_4 = value >= 19.4;
+        IS_20_2 = value >= 20.2;
+    }
+
     public FAdvancement(@NotNull Advancement adv) {
 
         Class<?> craftClass = NMSUtil.getBukkitClass("advancement.CraftAdvancement");
         if (craftClass == null) return;
 
         Object nmsAdv = NMSUtil.getObject(craftClass, craftClass.cast(adv), "getHandle");
-        Object display = NMSUtil.getObject(nmsAdv, is_19_4() ? "d" : "c");
+        if (IS_20_2) nmsAdv = NMSUtil.getObject(nmsAdv, "b");
+
+        Object display = NMSUtil.getObject(nmsAdv, IS_19_4 ? "d" : "c");
         if (display == null) return;
+
+        if (IS_20_2) {
+            Optional<?> o = ((Optional<?>) display);
+            if (o.isPresent()) display = o.get();
+        }
 
         Object rawTitle = NMSUtil.getObject(display, "a");
         Object rawDesc = NMSUtil.getObject(display, "b");
@@ -49,10 +66,6 @@ public class FAdvancement {
             String method = NMSUtil.getVersion() < 13 ? "toPlainText" : "getString";
             title = String.valueOf(NMSUtil.getObject(chatClass, rawTitle, method));
         }
-    }
-
-    private static boolean is_19_4() {
-        return NMSUtil.getVersion() >= 19.4;
     }
 
     private static boolean getBool(String string) {
