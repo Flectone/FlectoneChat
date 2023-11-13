@@ -25,10 +25,14 @@ public class FPlasmoVoice implements FIntegration, AddonInitializer {
     }
 
     public void mute(@NotNull Player player, @Nullable UUID moderator, int time, @NotNull String reason) {
+        if (voiceServer == null) return;
+
         voiceServer.getMuteManager().mute(player.getUniqueId(), moderator, time, MuteDurationUnit.SECOND, reason, true);
     }
 
     public void unmute(@NotNull Player player) {
+        if (voiceServer == null) return;
+
         voiceServer.getMuteManager().unmute(player.getUniqueId(), true);
     }
 
