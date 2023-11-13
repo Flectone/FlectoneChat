@@ -77,12 +77,16 @@ public class CommandFlectonechat extends FCommand {
                 } else object = string;
             }
 
-            if (StringUtils.isNumeric(args[3])) {
-                object = Integer.parseInt(args[3]);
-            } else if (NumberUtils.isNumber(args[3])) {
-                object = Double.parseDouble(args[3]);
-            } else if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
-                object = Boolean.parseBoolean(args[3]);
+            try {
+                if (StringUtils.isNumeric(args[3])) {
+                    object = Integer.parseInt(args[3]);
+                } else if (NumberUtils.isNumber(args[3])) {
+                    object = Double.parseDouble(args[3]);
+                } else if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
+                    object = Boolean.parseBoolean(args[3]);
+                }
+            } catch (Exception e) {
+                object = args[3];
             }
 
             FConfiguration file = fileType.get().getFile();
