@@ -65,7 +65,7 @@ public final class FlectoneChat extends JavaPlugin {
         playerManager.loadTabCompleteData();
 
         if (fileManager.getConfig().getBoolean("plugin.bStats.enable")) {
-            Metrics bStats = new Metrics(this, 20209);
+            Metrics bStats = new Metrics(this, 20290);
             bStats.addCustomChart(new Metrics.SimplePie("plugin_language", () ->
                     fileManager.getConfig().getString("plugin.language")));
             bStats.addCustomChart(new Metrics.AdvancedPie("modules", () -> {
