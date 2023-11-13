@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.RandomUtil;
 import org.apache.commons.lang.StringUtils;
@@ -79,8 +80,9 @@ public class CommandDice extends FCommand {
                     .append(locale.getVaultString(commandSender, this + ".format." + cubeType))
                     .append(" ");
         }
+        String type = (sum >= Integer.parseInt(args[0]) * winCoef) + "-message";
 
-        String formatString = locale.getVaultString(commandSender, this + "." + (sum >= Integer.parseInt(args[0]) * winCoef) + "-message")
+        String formatString = locale.getVaultString(commandSender, this + "." + type)
                 .replace("<cube>", stringBuilder.toString());
 
         formatString = MessageUtil.formatPlayerString(commandSender, formatString);
@@ -88,6 +90,9 @@ public class CommandDice extends FCommand {
         String message = MessageUtil.joinArray(args, 1, " ");
 
         sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
+
+        IntegrationsModule.sendDiscordDice(cmdSettings.getSender(), stringBuilder.toString(), type);
+
         return true;
     }
 

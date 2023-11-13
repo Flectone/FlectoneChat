@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.RandomUtil;
 import org.bukkit.command.Command;
@@ -54,14 +55,18 @@ public class CommandBall extends FCommand {
         if (answers.isEmpty()) return true;
 
         int randomPer = RandomUtil.nextInt(0, answers.size());
+        String answer = answers.get(randomPer);
 
         String formatString = locale.getVaultString(commandSender, this + ".message");
         formatString = MessageUtil.formatPlayerString(commandSender, formatString)
-                .replace("<answer>", answers.get(randomPer));
+                .replace("<answer>", answer);
 
         String message = String.join(" ", args);
 
         sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
+
+        IntegrationsModule.sendDiscordBall(cmdSettings.getSender(), message, answer);
+
         return true;
     }
 

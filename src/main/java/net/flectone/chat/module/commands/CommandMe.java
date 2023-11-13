@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -50,6 +51,8 @@ public class CommandMe extends FCommand {
         String message = String.join(" ", args);
 
         sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
+
+        IntegrationsModule.sendDiscordMe(cmdSettings.getSender(), message);
 
         return true;
     }

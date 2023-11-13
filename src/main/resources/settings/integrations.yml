@@ -638,3 +638,171 @@ DiscordSRV:
           icon:
             enable: true
             url: ""
+
+    me:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#42aaf5"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "✎ <player> <message>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    try:
+      enable: false
+
+      channel-id: ""
+
+      type:
+        true-message: "☺ <player> <message> <percent>%"
+        false-message: "☹ <player> <message> <percent>%"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#42aaf5"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    dice:
+      enable: false
+
+      channel-id: ""
+
+      type:
+        true-message: "☺ <player> successfully rolled <cube>"
+        false-message: "☹ <player> failed to roll <cube>"
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#42aaf5"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "<type>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+    ball:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#bb63f2"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "❓ <player> asked: <message> \n🔮 Ball answered: <answer>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""

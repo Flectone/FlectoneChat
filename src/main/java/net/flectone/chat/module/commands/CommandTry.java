@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.RandomUtil;
 import org.bukkit.command.Command;
@@ -55,8 +56,9 @@ public class CommandTry extends FCommand {
         int good = commands.getInt(getName() + ".good-%");
 
         int randomPer = RandomUtil.nextInt(min, max);
+        String type = (randomPer >= good) + "-message";
 
-        String formatString = locale.getVaultString(cmdSettings.getSender(), this + "." + (randomPer >= good) + "-message")
+        String formatString = locale.getVaultString(cmdSettings.getSender(), this + "." + type)
                 .replace("<percent>", String.valueOf(randomPer));
 
         formatString = MessageUtil.formatPlayerString(commandSender, formatString);
@@ -64,6 +66,9 @@ public class CommandTry extends FCommand {
         String message = MessageUtil.joinArray(args, 0, " ");
 
         sendGlobalMessage(cmdSettings.getSender(), cmdSettings.getItemStack(), formatString, message, true);
+
+        IntegrationsModule.sendDiscordTry(cmdSettings.getSender(), message, String.valueOf(randomPer), type);
+
         return true;
     }
 

@@ -229,6 +229,54 @@ public class FDiscordSRV implements Listener, FIntegration {
         sendMessage(sender, "poll", replacements);
     }
 
+    public void sendMeMessage(@Nullable OfflinePlayer sender, @NotNull String message) {
+        String senderName = sender == null ? "CONSOLE" : sender.getName();
+
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("<player>", senderName);
+        replacements.put("<message>", message);
+        sendMessage(sender, "me", replacements);
+    }
+
+    public void sendTryMessage(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent, @NotNull String type) {
+        String senderName = sender == null ? "CONSOLE" : sender.getName();
+
+        assert senderName != null;
+        String messageConfig = integrations.getString("DiscordSRV.message.try.type." + type)
+                .replace("<player>", senderName)
+                .replace("<message>", message)
+                .replace("<percent>", percent);
+
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("<player>", senderName);
+        replacements.put("<type>", messageConfig);
+        sendMessage(sender, "try", replacements);
+    }
+
+    public void sendDiceMessage(@Nullable OfflinePlayer sender, @NotNull String cube, @NotNull String type) {
+        String senderName = sender == null ? "CONSOLE" : sender.getName();
+
+        assert senderName != null;
+        String messageConfig = integrations.getString("DiscordSRV.message.dice.type." + type)
+                .replace("<player>", senderName)
+                .replace("<cube>", cube);
+
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("<player>", senderName);
+        replacements.put("<type>", messageConfig);
+        sendMessage(sender, "dice", replacements);
+    }
+
+    public void sendBallMessage(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String answer) {
+        String senderName = sender == null ? "CONSOLE" : sender.getName();
+
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("<player>", senderName);
+        replacements.put("<message>", message);
+        replacements.put("<answer>", answer);
+        sendMessage(sender, "ball", replacements);
+    }
+
     public void sendMessage(@Nullable OfflinePlayer sender, @NotNull String typeMessage, Map<String, String> replacements) {
         String path = "DiscordSRV.message." + typeMessage;
 

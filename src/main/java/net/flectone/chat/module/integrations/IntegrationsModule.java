@@ -256,4 +256,28 @@ public class IntegrationsModule extends FModule {
         if (fIntegration == null) return;
         ((FDiscordSRV) fIntegration).sendPollMessage(sender, message, id);
     }
+
+    public static void sendDiscordMe(@Nullable OfflinePlayer sender, @NotNull String message) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendMeMessage(sender, message);
+    }
+
+    public static void sendDiscordTry(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent, @NotNull String type) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendTryMessage(sender, message, percent, type);
+    }
+
+    public static void sendDiscordDice(@Nullable OfflinePlayer sender, @NotNull String cube, @NotNull String type) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendDiceMessage(sender, cube, type);
+    }
+
+    public static void sendDiscordBall(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String answer) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendBallMessage(sender, message, answer);
+    }
 }
