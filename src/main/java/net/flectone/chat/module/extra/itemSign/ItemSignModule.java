@@ -4,6 +4,7 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.util.ColorUtil;
 import net.flectone.chat.util.ItemUtil;
+import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.Pair;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -109,7 +110,7 @@ public class ItemSignModule extends FModule {
         if (colorHex == null) return false;
 
         signFormat = signFormat.replace("<dye>", colorHex);
-        signFormat = ColorUtil.translateHexToColor(signFormat);
+        signFormat = MessageUtil.formatAll(player, signFormat);
 
         ItemStack itemToDrop = mainHandItem.clone();
         itemToDrop.setAmount(1);
