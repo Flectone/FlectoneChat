@@ -29,9 +29,12 @@ public class TabModule extends FModule {
         register();
 
         actionManager.add(new TabListener(this));
-        actionManager.add(new TabTicker(this));
 
-        if (config.getBoolean("default.server.tab.player-ping.enable")) {
+        if (config.getBoolean("default." + this + ".update.enable")) {
+            actionManager.add(new TabTicker(this));
+        }
+
+        if (config.getBoolean("default." + this + ".player-ping.enable")) {
             actionManager.add(new TabPlayerPingTicker(this));
         }
     }
