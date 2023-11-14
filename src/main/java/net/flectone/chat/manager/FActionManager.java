@@ -37,8 +37,9 @@ public class FActionManager {
     }
 
     public void clearCommands() {
-        commandList.forEach(fCommand ->
-                CommandsUtil.unregisterCommand(fCommand.getCommand()));
+        commandList.stream()
+                .filter(fCommand -> fCommand.getCommand() != null)
+                .forEach(fCommand -> CommandsUtil.unregisterCommand(fCommand.getCommand()));
     }
     
     public void clearListeners() {
