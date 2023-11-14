@@ -13,8 +13,6 @@ public class BrandTicker extends FTicker {
 
     @Override
     public void init() {
-        if (!config.getBoolean("default." + getModule() + ".update.enable")) return;
-
         super.period = config.getInt("default." + getModule() + ".update.rate");
         runTaskTimer();
     }

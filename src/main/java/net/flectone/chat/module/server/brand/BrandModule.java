@@ -50,7 +50,10 @@ public class BrandModule extends FModule {
         }
 
         actionManager.add(new BrandListener(this));
-        actionManager.add(new BrandTicker(this));
+
+        if (config.getBoolean("default." + this + ".update.enable")) {
+            actionManager.add(new BrandTicker(this));
+        }
     }
 
     public String incrementIndexAndGet(Player player) {
