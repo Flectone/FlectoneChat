@@ -73,6 +73,13 @@ public class FileManager {
             Arrays.stream(Type.values()).forEach(Type::update);
         } else return;
 
+        if (compareVersions(fileVersion, "4.1.2") == -1) {
+            List<String> chatSettingsDefault = commands.getStringList("chatsettings.change-list");
+            chatSettingsDefault.add("default");
+            commands.set("chatsettings.change-list", chatSettingsDefault);
+            commands.save();
+        }
+
         config.set("plugin.version", projectVersion);
         config.save();
 

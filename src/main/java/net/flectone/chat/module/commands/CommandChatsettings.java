@@ -77,7 +77,8 @@ public class CommandChatsettings extends FCommand {
             if (!typeName.equalsIgnoreCase(Settings.Type.CHAT.toString())) {
                 fPlayer.getSettings().set(type, Boolean.parseBoolean(enabled) ? -1 : 1);
             } else {
-                fPlayer.getSettings().set(Settings.Type.CHAT, name);
+                if (name.equals("default")) fPlayer.getSettings().set(Settings.Type.CHAT, null);
+                else fPlayer.getSettings().set(Settings.Type.CHAT, name);
             }
 
             String message = locale.getVaultString(commandSender, this + ".message-changed");
@@ -104,9 +105,10 @@ public class CommandChatsettings extends FCommand {
         fComponentBuilder.replace("<chat>", (chatBuilder, color) -> {
             Player player = cmdSettings.getSender();
             String currentChat = fPlayer.getSettings().getChat();
-            if (currentChat == null || currentChat.isEmpty()) currentChat = "local";
+            if (currentChat == null || currentChat.isEmpty()) currentChat = "default";
 
             List<String> chatTypeList = config.getCustomList(player, "player-message.chat.list");
+            chatTypeList.add("default");
 
             for (String chatType : chatTypeList) {
                 String formatName = locale.getVaultString(player, this + ".format.chat");

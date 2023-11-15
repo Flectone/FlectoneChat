@@ -168,6 +168,8 @@ permissions:
     default: true
   flectonechat.commands.chatsettings.global:
     default: true
+  flectonechat.commands.chatsettings.default:
+    default: true
   flectonechat.commands.clearchat:
     default: true
   flectonechat.commands.clearchat.other:

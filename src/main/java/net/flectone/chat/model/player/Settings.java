@@ -65,10 +65,10 @@ public class Settings {
 
     @Nullable
     public String getChat() {
-        return String.valueOf(SETTINGS_MAP.get(Type.CHAT));
+        return (String) SETTINGS_MAP.get(Type.CHAT);
     }
 
-    public void set(@NotNull Type type, @NotNull Object o) {
+    public void set(@NotNull Type type, @Nullable Object o) {
         SETTINGS_MAP.put(type, o);
     }
 }
