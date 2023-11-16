@@ -104,13 +104,12 @@ public class FPlayer {
 
         fromDatabase();
 
-        database.execute(this::reloadStreamPrefix);
-
-        registerWorldPrefix();
         registerTeam();
+
+        database.execute(() -> setStreamPrefix());
     }
 
-    public void reloadStreamPrefix() {
+    public void setStreamPrefix() {
         if (!getPlayer().hasPermission("flectonechat.commands.stream")) return;
         if (getSettings() == null) return;
 
@@ -119,6 +118,7 @@ public class FPlayer {
 
         String prefix = locale.getVaultString(getPlayer(), "commands.stream." + typePrefix + "-prefix");
         setStreamPrefix(MessageUtil.formatAll(getPlayer(), prefix));
+        updateTeam();
     }
 
     public void terminate() {
@@ -145,6 +145,13 @@ public class FPlayer {
 
         if (!team.hasEntry(player.getName())) {
             team.addEntry(player.getName());
+        }
+    }
+
+    public void updateTeam() {
+        FModule fModule = moduleManager.get(NameTagModule.class);
+        if (fModule instanceof NameTagModule nameTagModule) {
+            nameTagModule.updateTeam(player, team);
         }
     }
 

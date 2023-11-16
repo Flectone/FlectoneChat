@@ -110,7 +110,7 @@ public class CommandStream extends FCommand {
     private void setStreaming(@NotNull FPlayer fPlayer, @NotNull String value) {
         fPlayer.getSettings().set(Settings.Type.STREAM, value);
 
-        fPlayer.reloadStreamPrefix();
+        fPlayer.setStreamPrefix();
 
         database.execute(() -> database.updateFPlayer("stream", fPlayer));
     }

@@ -62,6 +62,7 @@ public class CommandAfk extends FCommand {
         player.sendMessage(MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
 
         fPlayer.playSound(player, player, this.toString());
+        fPlayer.updateTeam();
         return true;
     }
 

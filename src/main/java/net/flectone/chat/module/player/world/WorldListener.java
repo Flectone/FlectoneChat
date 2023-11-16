@@ -47,5 +47,6 @@ public class WorldListener extends FListener {
         if (fPlayer == null) return;
 
         fPlayer.setWorldPrefix(((WorldModule) getModule()).getPrefix(player, world));
+        fPlayer.updateTeam();
     }
 }

@@ -53,6 +53,7 @@ public class AfkTimeoutModule extends FModule {
         fPlayer.setAfkSuffix(MessageUtil.formatAll(player, afkSuffix));
 
         fPlayer.playSound(player, player, this.toString());
+        fPlayer.updateTeam();
 
         if (!config.getVaultBoolean(player, this + ".message.enable")) return;
 

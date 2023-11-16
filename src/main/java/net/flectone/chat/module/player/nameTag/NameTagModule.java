@@ -50,8 +50,14 @@ public class NameTagModule extends FModule {
 
         team.setColor(ChatColor.WHITE);
 
+        updateTeam(player, team);
+
+        return team;
+    }
+
+    public void updateTeam(@NotNull Player player, @NotNull Team team) {
         FModule fModule = moduleManager.get(NameModule.class);
-        if (!(fModule instanceof NameModule nameModule)) return team;
+        if (!(fModule instanceof NameModule nameModule)) return;
 
         if (config.getVaultBoolean(player, this + ".prefix.enable")) {
             team.setPrefix(nameModule.getPrefix(player));
@@ -60,8 +66,6 @@ public class NameTagModule extends FModule {
         if (config.getVaultBoolean(player, this + ".suffix.enable")) {
             team.setSuffix(nameModule.getSuffix(player));
         }
-
-        return team;
     }
 
     @NotNull
