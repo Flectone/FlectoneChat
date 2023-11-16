@@ -106,8 +106,8 @@ public class FPlayer {
 
         database.execute(this::reloadStreamPrefix);
 
-        registerTeam();
         registerWorldPrefix();
+        registerTeam();
     }
 
     public void reloadStreamPrefix() {
@@ -158,7 +158,7 @@ public class FPlayer {
     public void registerWorldPrefix() {
         FModule fModule = moduleManager.get(WorldModule.class);
         if (fModule instanceof WorldModule worldModule) {
-            worldModule.getPrefix(player, player.getWorld());
+            setWorldPrefix(worldModule.getPrefix(player, player.getWorld()));
         }
     }
 
