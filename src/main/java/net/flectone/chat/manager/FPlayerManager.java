@@ -27,7 +27,8 @@ public class FPlayerManager {
 
     public void loadOfflinePlayers() {
         offlinePlayers.addAll(Arrays.stream(Bukkit.getOfflinePlayers())
-                .map(OfflinePlayer::getName).toList());
+                .map(OfflinePlayer::getName)
+                .filter(Objects::nonNull).toList());
     }
 
     // ONLY FOR TABCOMPLETE /unwarn /unmute /unban /warnlist because TABCOMPLETE is sync method (spigot)
