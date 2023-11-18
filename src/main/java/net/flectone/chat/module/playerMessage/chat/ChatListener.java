@@ -52,19 +52,20 @@ public class ChatListener extends FListener {
         String playerChat = fPlayer.getSettings().getChat();
         if (playerChat == null || !availableChatsList.contains(playerChat)) {
 
-            int priority = -1;
+            int priority = Integer.MIN_VALUE;
 
             for (String chatType : availableChatsList) {
+                if (!config.getVaultBoolean(sender, getModule() + ".list." + chatType + ".enable")) continue;
                 String chatTrigger = config.getVaultString(sender, getModule() + ".list." + chatType + ".prefix.trigger");
                 if (!chatTrigger.isEmpty() && !message.startsWith(chatTrigger)) continue;
                 if (message.equals(chatTrigger)) continue;
 
                 int chatPriority = config.getVaultInt(sender, getModule() + ".list." + chatType + ".priority");
                 if (chatPriority <= priority) continue;
-
                 if (hasNoPermission(sender, chatType)) continue;
 
                 playerChat = chatType;
+                priority = chatPriority;
             }
         }
 
