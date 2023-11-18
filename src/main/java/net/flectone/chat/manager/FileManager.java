@@ -80,6 +80,12 @@ public class FileManager {
             commands.save();
         }
 
+        if (compareVersions(fileVersion, "4.2.0") == -1) {
+            boolean value = config.getBoolean("default.server.tab.player-ping.enable");
+            modules.set("server.tab.player-list.enable", value);
+            modules.save();
+        }
+
         config.set("plugin.version", projectVersion);
         config.save();
 
