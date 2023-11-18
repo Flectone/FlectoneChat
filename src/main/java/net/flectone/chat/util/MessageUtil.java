@@ -71,7 +71,8 @@ public class MessageUtil {
 
     @NotNull
     public static String formatPlayerString(@Nullable CommandSender commandSender, @NotNull String string) {
-        if (!(commandSender instanceof Player player)) {
+        if (!(commandSender instanceof Player player)
+                || FlectoneChat.getPlugin().getPlayerManager().get(player) == null) {
             String commandSenderName = commandSender == null ? "CONSOLE" : commandSender.getName();
             return string
                     .replace("<player_name_tab>", commandSenderName)
@@ -86,9 +87,6 @@ public class MessageUtil {
                     .replace("<vault_suffix>", "")
                     .replace("<afk_suffix>", "");
         }
-
-        FPlayer fPlayer = FlectoneChat.getPlugin().getPlayerManager().get(player);
-        if (fPlayer == null) return string;
 
         FModule fModule = FlectoneChat.getPlugin().getModuleManager().get(NameModule.class);
         if (fModule instanceof NameModule nameModule) {
@@ -113,7 +111,9 @@ public class MessageUtil {
             }
         }
 
-       return string
+        FPlayer fPlayer = FlectoneChat.getPlugin().getPlayerManager().get(player);
+
+        return string
                 .replace("<vault_prefix>", PlayerUtil.getPrefix(player))
                 .replace("<world_prefix>", fPlayer.getWorldPrefix())
                 .replace("<stream_prefix>", fPlayer.getStreamPrefix())
