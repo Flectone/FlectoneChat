@@ -2,6 +2,7 @@ package net.flectone.chat.module.player;
 
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
+import net.flectone.chat.module.player.belowName.BelowNameModule;
 import net.flectone.chat.module.player.hover.HoverModule;
 import net.flectone.chat.module.player.name.NameModule;
 import net.flectone.chat.module.player.nameTag.NameTagModule;
@@ -26,5 +27,6 @@ public class PlayerModule extends FModule {
         new NameModule(this, "name");
         new WorldModule(this, "world");
         new AfkTimeoutModule(this, "afk-timeout");
+        new BelowNameModule(this, "below-name");
     }
 }

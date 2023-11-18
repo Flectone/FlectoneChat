@@ -194,6 +194,10 @@ default:
       command-type: "suggest"
       command: "/msg <player> "
 
+    below-name:
+
+      mode: health
+
   player-message:
     enable: true
 

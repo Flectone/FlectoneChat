@@ -115,6 +115,8 @@ default:
   player:
     hover:
       message: "&&1Click to write to &&2<player>"
+    below-name:
+      message: "&bValue"
 
   player-message:
     formatting:

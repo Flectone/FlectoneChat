@@ -58,6 +58,9 @@ player:
   name-tag:
     enable: true
 
+  below-name:
+    enable: false
+
   world:
     enable: true
 

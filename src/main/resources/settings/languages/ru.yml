@@ -115,6 +115,8 @@ default:
   player:
     hover:
       message: "&&1Написать игроку &&2<player>"
+    below-name:
+      message: "&bЗначение"
 
   player-message:
     formatting:
