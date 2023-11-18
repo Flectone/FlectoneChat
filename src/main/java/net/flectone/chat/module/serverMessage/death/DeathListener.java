@@ -91,12 +91,13 @@ public class DeathListener extends FListener {
 
         if (hasNoPermission(player)) return;
         if (IntegrationsModule.isVanished(player) || lastDamageEvent == null) return;
+        if (!config.getVaultBoolean(player, getModule() + ".enable")) return;
 
         String typeDeath = getDeathConfigMessage(player, lastDamageEvent);
         String configMessage = locale.getVaultString(player, getModule() + typeDeath);
         if (configMessage.isEmpty()) return;
 
-        if (!config.getVaultBoolean(player, getModule() + ".enable")) {
+        if (!config.getVaultBoolean(player, getModule() + ".visible")) {
             event.setDeathMessage("");
             return;
         }
