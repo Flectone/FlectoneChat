@@ -1,17 +1,18 @@
-package net.flectone.chat.module.server.tab;
+package net.flectone.chat.module.server.tab.playerList;
 
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.util.PlayerUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-public class TabPlayerPingTicker extends FTicker {
+public class PlayerListTicker extends FTicker {
 
-    public TabPlayerPingTicker(FModule module) {
+    public PlayerListTicker(FModule module) {
         super(module);
         init();
     }
@@ -23,27 +24,28 @@ public class TabPlayerPingTicker extends FTicker {
         runTaskTimer();
     }
 
-    public static void registerPingObjective() {
+    public void registerPingObjective() {
         Scoreboard scoreboard = FlectoneChat.getPlugin().getScoreBoard();
-        if (scoreboard.getObjective("ping") != null) return;
-        Objective objective = scoreboard.registerNewObjective("ping", "dummy", "ping");
+        if (scoreboard.getObjective("playerList") != null) return;
+        Objective objective = scoreboard.registerNewObjective("playerList", "dummy", "FlectoneChat");
         objective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
     }
 
-    public static void unregisterPingObjective() {
-        Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("ping");
+    public void unregisterPingObjective() {
+        Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("playerList");
         if (objective == null) return;
         objective.unregister();
     }
 
     @Override
     public void run() {
-        PlayerUtil.getPlayersWithFeature(getModule() + ".player-ping.enable").forEach(player -> {
-            Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("ping");
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            Objective objective = FlectoneChat.getPlugin().getScoreBoard().getObjective("playerList");
             if (objective == null) return;
             Score score = objective.getScore(player.getName());
 
-            score.setScore(player.getPing());
+            String mode = config.getVaultString(player, getModule() + ".mode");
+            score.setScore(PlayerUtil.getObjectiveScore(player, mode));
         });
     }
 

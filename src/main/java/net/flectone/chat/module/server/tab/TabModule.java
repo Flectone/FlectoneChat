@@ -2,6 +2,7 @@ package net.flectone.chat.module.server.tab;
 
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.player.name.NameModule;
+import net.flectone.chat.module.server.tab.playerList.PlayerListModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.entity.Player;
@@ -28,14 +29,12 @@ public class TabModule extends FModule {
         if (!isEnabled()) return;
         register();
 
+        new PlayerListModule(this, "player-list");
+
         actionManager.add(new TabListener(this));
 
         if (config.getBoolean("default." + this + ".update.enable")) {
             actionManager.add(new TabTicker(this));
-        }
-
-        if (config.getBoolean("default." + this + ".player-ping.enable")) {
-            actionManager.add(new TabPlayerPingTicker(this));
         }
     }
 

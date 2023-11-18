@@ -4,6 +4,8 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.Bukkit;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +25,24 @@ public class PlayerUtil {
         } catch (Throwable e) {
             return "0.0.0.0";
         }
+    }
+
+    public static int getObjectiveScore(@NotNull Player player, @NotNull String mode) {
+        return switch (mode.toLowerCase()) {
+            case "health" -> (int) Math.round(player.getHealth() * 10.0)/10;
+            case "level" -> player.getLevel();
+            case "food" -> player.getFoodLevel();
+            case "ping" -> player.getPing();
+            case "armor" -> {
+                AttributeInstance armor = player.getAttribute(Attribute.GENERIC_ARMOR);
+                yield armor != null ? (int) Math.round(armor.getValue() * 10.0)/10 : 0;
+            }
+            case "attack" -> {
+                AttributeInstance damage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+                yield damage != null ? (int) Math.round(damage.getValue() * 10.0)/10 : 0;
+            }
+            default -> 0;
+        };
     }
 
     @NotNull

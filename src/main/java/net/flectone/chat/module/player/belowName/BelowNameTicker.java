@@ -4,15 +4,12 @@ import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.FTicker;
 import net.flectone.chat.util.MessageUtil;
+import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.jetbrains.annotations.NotNull;
 
 public class BelowNameTicker extends FTicker {
 
@@ -51,26 +48,9 @@ public class BelowNameTicker extends FTicker {
             objective.setDisplayName(MessageUtil.formatAll(player, message));
 
             Score score = objective.getScore(player.getName());
-            score.setScore(getObjectiveScore(player));
+            String mode = config.getVaultString(player, getModule() + ".mode");
+            score.setScore(PlayerUtil.getObjectiveScore(player, mode));
         });
-    }
-
-    public int getObjectiveScore(@NotNull Player player) {
-        return switch (config.getVaultString(player, getModule() + ".mode").toLowerCase()) {
-            case "health" -> (int) Math.round(player.getHealth() * 10.0)/10;
-            case "level" -> player.getLevel();
-            case "food" -> player.getFoodLevel();
-            case "ping" -> player.getPing();
-            case "armor" -> {
-                AttributeInstance armor = player.getAttribute(Attribute.GENERIC_ARMOR);
-                yield armor != null ? (int) Math.round(armor.getValue() * 10.0)/10 : 0;
-            }
-            case "attack" -> {
-                AttributeInstance damage = player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-                yield damage != null ? (int) Math.round(damage.getValue() * 10.0)/10 : 0;
-            }
-            default -> 0;
-        };
     }
 
     @Override

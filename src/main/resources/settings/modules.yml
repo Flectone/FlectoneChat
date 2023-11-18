@@ -31,6 +31,9 @@ server:
   tab:
     enable: true
 
+    player-list:
+      enable: true
+
   status:
     enable: true
 
