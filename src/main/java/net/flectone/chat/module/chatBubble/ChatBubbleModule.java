@@ -47,7 +47,7 @@ public class ChatBubbleModule extends FModule {
 
         int duration = (message.length() + 8 * messageStrings.size()) * 1200 / readSpeed;
 
-        Entity lastVehicle = spawnStringBubble(player, "", player.getLocation(), duration);
+        Entity lastVehicle = player;
 
         for (int x = messageStrings.size() - 1; x > -1; x--) {
             if(lastVehicle == null) return;
