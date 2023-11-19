@@ -42,12 +42,19 @@ public class ChatBubbleModule extends FModule {
         fPlayer.addChatBubble(message);
     }
 
-    public void spawn(@NotNull Player player, @NotNull String message, @NotNull String color, int maxPerLine, int readSpeed) {
+    public void spawn(@NotNull Player player, @NotNull String message, @NotNull String color, int height, int maxPerLine, int readSpeed) {
         List<String> messageStrings = divideText(message, maxPerLine);
 
         int duration = (message.length() + 8 * messageStrings.size()) * 1200 / readSpeed;
 
         Entity lastVehicle = player;
+
+        while (height > 0) {
+            if (lastVehicle == null) return;
+
+            lastVehicle = spawnStringBubble(lastVehicle, "", lastVehicle.getLocation(), duration);
+            height--;
+        }
 
         for (int x = messageStrings.size() - 1; x > -1; x--) {
             if(lastVehicle == null) return;

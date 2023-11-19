@@ -352,6 +352,7 @@ default:
   chat-bubble:
     enable: true
     color: "#999999"
+    height: 1
     max-per-line: 35
     read-speed: 800
 

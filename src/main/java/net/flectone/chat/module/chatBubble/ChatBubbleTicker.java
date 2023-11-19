@@ -59,9 +59,10 @@ public class ChatBubbleTicker extends FTicker {
                     int maxPerLine = config.getVaultInt(player, getModule() + ".max-per-line");
                     String color = config.getVaultString(player, getModule() + ".color");
                     int readSpeed = config.getVaultInt(player, getModule() + ".read-speed");
+                    int height = config.getVaultInt(player, getModule() + ".height");
 
                     ((ChatBubbleModule) getModule()).spawn(player, message, MessageUtil.formatAll(player, color),
-                            maxPerLine, readSpeed);
+                            height, maxPerLine, readSpeed);
                 });
     }
 }
