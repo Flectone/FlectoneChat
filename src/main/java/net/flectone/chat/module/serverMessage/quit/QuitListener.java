@@ -5,6 +5,7 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,7 @@ public class QuitListener extends FListener {
         register();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void playerQuitEvent(@NotNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (hasNoPermission(player)) return;

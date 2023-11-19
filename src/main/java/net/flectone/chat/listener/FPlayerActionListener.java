@@ -60,7 +60,7 @@ public class FPlayerActionListener extends FListener {
         fPlayer.getMailList().clear();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void playerQuitEvent(@NotNull PlayerQuitEvent event) {
         FPlayer fPlayer = playerManager.get(event.getPlayer());
         if (fPlayer == null) return;
