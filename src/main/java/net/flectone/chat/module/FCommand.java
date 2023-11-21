@@ -300,7 +300,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
             this.commandSender = commandSender;
             this.command = command;
             this.commandName = command.getName();
-            this.isConsole = commandSender instanceof ConsoleCommandSender;
+            this.isConsole = !(commandSender instanceof Player);
 
             if (!isConsole) {
                 this.sender = (Player) commandSender;
