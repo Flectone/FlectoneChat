@@ -156,6 +156,9 @@ default:
     stream:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+    translateto:
+      enable: false
+      type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     try:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
