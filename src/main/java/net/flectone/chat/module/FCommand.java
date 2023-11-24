@@ -128,7 +128,9 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                                   @Nullable ItemStack itemStack, @NotNull String format,
                                   @NotNull String message, boolean isClickable) {
 
-        FPlayer.sendToConsole(format.replace("<message>", message));
+        FPlayer.sendToConsole(format
+                .replace("<message>", message)
+                .replace("<player>", player != null ? player.getName() : "CONSOLE"));
 
         if (player != null) {
             message = IntegrationsModule.interactiveChatMark(message, player.getUniqueId());
