@@ -120,6 +120,9 @@ default:
     stream:
       enable: false
       time: 5
+    translateto:
+      enable: false
+      time: 5
     try:
       enable: false
       time: 5
