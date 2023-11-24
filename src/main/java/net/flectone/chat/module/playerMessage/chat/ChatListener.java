@@ -6,6 +6,7 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.commands.SpyListener;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
+import net.flectone.chat.util.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -69,7 +70,7 @@ public class ChatListener extends FListener {
             }
         }
 
-        if (playerChat == null) {
+        if (playerChat == null || !sender.hasPermission(getPermission())) {
             String chatNotFound = locale.getVaultString(sender, getModule() + ".not-found");
             sender.sendMessage(MessageUtil.formatAll(sender, chatNotFound));
 
@@ -99,7 +100,12 @@ public class ChatListener extends FListener {
             }
         }
 
-        List<Player> recipientsList = new ArrayList<>(Bukkit.getOnlinePlayers());
+        List<Player> recipientsList = (List<Player>) PlayerUtil.getPlayersWithFeature(getModule() + ".enable");
+        recipientsList = (List<Player>) PlayerUtil.getPlayersWithFeature(recipientsList, getModule() + ".list." + playerChat + ".enable");
+
+        String finalPlayerChat = playerChat;
+        recipientsList.removeIf(player -> !player.hasPermission(getPermission())
+                || !player.hasPermission(getPermission() + "." + finalPlayerChat));
 
         List<String> chatWorldsList = config.getVaultStringList(sender, getModule() + ".list." + playerChat + ".worlds");
         if (!chatWorldsList.isEmpty()) {

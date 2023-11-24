@@ -50,6 +50,8 @@ permissions:
     default: true
   flectonechat.player-message.book:
     default: true
+  flectonechat.player-message.chat:
+    default: true
   flectonechat.player-message.chat.local:
     default: true
   flectonechat.player-message.chat.global:
