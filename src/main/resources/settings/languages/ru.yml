@@ -172,6 +172,8 @@ default:
       message: "(сообщение)"
       reason: "(причина)"
       stream-url: "https://flectone.net"
+      source-language: "(исходный)"
+      target-language: "(выбранный)"
 
     afk:
       suffix: " #f2d40f💤"
