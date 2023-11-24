@@ -76,6 +76,7 @@ chatsettings:
     - mail
     - tictactoe
     - kick
+    - translateto
 
 clearchat:
   enable: true
@@ -199,6 +200,12 @@ stream:
 tictactoe:
   enable: true
   aliases: [ ttt ]
+
+translateto:
+  enable: true
+  aliases: []
+
+  range: 0
 
 try:
   enable: true

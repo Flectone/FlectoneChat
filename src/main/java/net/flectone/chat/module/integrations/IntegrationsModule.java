@@ -263,7 +263,15 @@ public class IntegrationsModule extends FModule {
         ((FDiscordSRV) fIntegration).sendMeMessage(sender, message);
     }
 
-    public static void sendDiscordTry(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent, @NotNull String type) {
+    public static void sendDiscordTranslateto(@Nullable OfflinePlayer sender, @NotNull String targetLanguage,
+                                              @NotNull String message) {
+        FIntegration fIntegration = get("DiscordSRV");
+        if (fIntegration == null) return;
+        ((FDiscordSRV) fIntegration).sendTranslatetoMessage(sender, targetLanguage, message);
+    }
+
+    public static void sendDiscordTry(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent,
+                                      @NotNull String type) {
         FIntegration fIntegration = get("DiscordSRV");
         if (fIntegration == null) return;
         ((FDiscordSRV) fIntegration).sendTryMessage(sender, message, percent, type);

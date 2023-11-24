@@ -238,6 +238,16 @@ public class FDiscordSRV implements Listener, FIntegration {
         sendMessage(sender, "me", replacements);
     }
 
+    public void sendTranslatetoMessage(@Nullable OfflinePlayer sender, @NotNull String targetLanguage, @NotNull String message) {
+        String senderName = sender == null ? "CONSOLE" : sender.getName();
+
+        HashMap<String, String> replacements = new HashMap<>();
+        replacements.put("<language>", targetLanguage);
+        replacements.put("<player>", senderName);
+        replacements.put("<message>", message);
+        sendMessage(sender, "translateto", replacements);
+    }
+
     public void sendTryMessage(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent, @NotNull String type) {
         String senderName = sender == null ? "CONSOLE" : sender.getName();
 

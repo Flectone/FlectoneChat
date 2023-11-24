@@ -172,6 +172,8 @@ default:
       message: "(message)"
       reason: "(reason)"
       stream-url: "https://flectone.net"
+      source-language: "(source)"
+      target-language: "(target)"
 
     afk:
       suffix: " #f2d40f💤"
@@ -263,6 +265,7 @@ default:
         reply: "&&2/reply"
         mail: "&&2/mail"
         tictactoe: "&&2/tictactoe"
+        translateto: "&&2/translateto"
 
       color:
         false: "#ff4e4e[❌] "
@@ -275,7 +278,7 @@ default:
         - "&&1------------------------"
         - "&&1Server messages: \n <advancement> \n <death> \n <join> \n <quit> \n <auto-message>"
         - "&&1------------------------"
-        - "&&1Command alerts: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe>"
+        - "&&1Command alerts: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe> \n <translateto>"
         - "&&1------------------------"
         - "&&1Be sure to save your settings with /chatsettings save"
 
@@ -460,6 +463,11 @@ default:
         empty: "&&2☐"
         first: "&&1☑"
         second: "&&1☒"
+
+    translateto:
+      usage: "&&1⚑ Usage: &&2/<command> (source lang) (target lang) (message)"
+      message: "&&1📖 [<language>] &&2<player> &&1→ &&2<message>"
+      error: "#ff4e4e⁉ Error, you may have specified an unsupported language"
 
     try:
       usage: "&&1⚑ Usage: &&2/<command> (message)"

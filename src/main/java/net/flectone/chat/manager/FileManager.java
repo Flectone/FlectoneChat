@@ -25,6 +25,9 @@ public class FileManager {
     private final HashMap<String, File> iconsMap = new HashMap<>();
 
     @Getter
+    private boolean isLess420;
+
+    @Getter
     private FConfiguration config;
     @Getter
     private FConfiguration locale;
@@ -84,6 +87,13 @@ public class FileManager {
             boolean value = config.getBoolean("default.server.tab.player-ping.enable");
             modules.set("server.tab.player-list.enable", value);
             modules.save();
+
+            List<String> chatSettingsDefault = commands.getStringList("chatsettings.change-list");
+            chatSettingsDefault.add("translateto");
+            commands.set("chatsettings.change-list", chatSettingsDefault);
+            commands.save();
+
+            isLess420 = true;
         }
 
         config.set("plugin.version", projectVersion);

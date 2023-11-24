@@ -263,6 +263,7 @@ default:
         reply: "&&2/reply"
         mail: "&&2/mail"
         tictactoe: "&&2/tictactoe"
+        translateto: "&&2/translateto"
 
       color:
         false: "#ff4e4e[❌] "
@@ -275,7 +276,7 @@ default:
         - "&&1------------------------"
         - "&&1Действия игроков: \n <advancement> \n <death> \n <join> \n <quit> \n <auto-message>"
         - "&&1------------------------"
-        - "&&1Оповещения команд: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe>"
+        - "&&1Оповещения команд: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe> \n <translateto>"
         - "&&1------------------------"
         - "&&1Обязательно сохраняй настройки с помощью /chatsettings save"
 
@@ -460,6 +461,11 @@ default:
         empty: "&&2☐"
         first: "&&1☑"
         second: "&&1☒"
+
+    translateto:
+      usage: "&&1⚑ Использование: &&2/<command> (исходный язык) (выбранный язык) (сообщение)"
+      message: "&&1📖 [<language>] &&2<player> &&1→ &&2<message>"
+      error: "#ff4e4e⁉ Ошибка, возможно ты указал неправильный язык"
 
     try:
       usage: "&&1⚑ Использование: &&2/<command> (сообщение)"

@@ -679,6 +679,46 @@ DiscordSRV:
             enable: true
             url: ""
 
+    translateto:
+      enable: false
+
+      channel-id: ""
+
+      content:
+        enable: false
+        text: ""
+
+      embed:
+        enable: true
+        color: "#42aaf5"
+
+        image:
+          enable: false
+          url: ""
+
+        title:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
+        description:
+          enable: false
+          text: ""
+
+        author:
+          enable: true
+          text: "📖 [<language>] <player> → <message>"
+          icon: true
+
+        footer:
+          enable: false
+          text: ""
+          icon:
+            enable: true
+            url: ""
+
     try:
       enable: false
 

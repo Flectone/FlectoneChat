@@ -131,6 +131,7 @@ public class Database extends SQLHandler {
                     "`enable_command_mail` INTEGER, " +
                     "`enable_command_tictactoe` INTEGER, " +
                     "`enable_command_kick` INTEGER, " +
+                    "`enable_command_translateto` INTEGER," +
                     "PRIMARY KEY (`uuid`), " +
                     "FOREIGN KEY (`uuid`) REFERENCES `players`(`uuid`)" +
                     ");");
@@ -141,11 +142,30 @@ public class Database extends SQLHandler {
             statement.executeUpdate("PRAGMA SYNCHRONOUS=EXTRA");
             statement.executeUpdate("PRAGMA WAL_CHECKPOINT(TRUNCATE)");
             statement.executeUpdate("PRAGMA WAL_AUTOCHECKPOINT=100");
-
             statement.close();
+
+            if (FlectoneChat.getPlugin().getFileManager().isLess420()) {
+                migrate420();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void migrate420() {
+        try (Connection conn = getConnection()) {
+            Statement statement = conn.createStatement();
+
+            addColumn(statement, "settings", "enable_command_translateto", "INTEGER");
+
+        } catch (SQLException ex) {
+            FlectoneChat.warning("Couldn't execute MySQL statement: " + ex);
+        }
+    }
+
+    private void addColumn(@NotNull Statement statement, @NotNull String table, @NotNull String column, @NotNull String type) throws SQLException {
+        statement.executeUpdate("ALTER TABLE " + table + " ADD COLUMN " + column + " " + type);
     }
 
     public void offlineToDatabase(OfflinePlayer offlinePlayer) {
@@ -388,6 +408,7 @@ public class Database extends SQLHandler {
                 getSettingInt(playerResult, Settings.Type.COMMAND_MAIL, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_TICTACTOE, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_KICK, settings);
+                getSettingInt(playerResult, Settings.Type.COMMAND_TRANSLATETO, settings);
             }
 
             fPlayer.setSettings(settings);

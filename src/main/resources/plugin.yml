@@ -222,6 +222,8 @@ permissions:
     default: false
   flectonechat.commands.tictactoe:
     default: true
+  flectonechat.commands.translateto:
+    default: true
   flectonechat.commands.try:
     default: true
   flectonechat.commands.dice:
