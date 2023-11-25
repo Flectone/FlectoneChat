@@ -1,12 +1,16 @@
 package net.flectone.chat.model.advancement;
 
 import net.flectone.chat.util.NMSUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.advancement.Advancement;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // Thanks, @CroaBeast, for these methods
 // Source https://github.com/CroaBeast/AdvancementInfo
@@ -49,8 +53,8 @@ public class FAdvancement {
         Object rawTitle = NMSUtil.getObject(display, "a");
         Object rawDesc = NMSUtil.getObject(display, "b");
 
-        translateKey = String.valueOf(NMSUtil.getObject(NMSUtil.getObject(rawTitle, "b"), "a"));
-        translateDesc = String.valueOf(NMSUtil.getObject(NMSUtil.getObject(rawDesc, "b"), "a"));
+        translateKey = getTranslateString(rawTitle);
+        translateDesc = getTranslateString(rawDesc);
 
         String typeName = NMSUtil.checkValue(NMSUtil.getObject(display, "e"), "PROGRESS");
         this.type = Type.getType(typeName);
@@ -68,7 +72,13 @@ public class FAdvancement {
         }
     }
 
-    private static boolean getBool(String string) {
+    @NotNull
+    private String getTranslateString(@Nullable Object object) {
+        String string = String.valueOf(object);
+        return string.substring(string.indexOf("key='") + 5, string.indexOf("',"));
+    }
+
+    private boolean getBool(String string) {
         return string.matches("(?i)true|false") && string.matches("(?i)true");
     }
 
