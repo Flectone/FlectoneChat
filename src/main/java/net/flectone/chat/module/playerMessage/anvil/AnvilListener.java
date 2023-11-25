@@ -25,7 +25,7 @@ public class AnvilListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

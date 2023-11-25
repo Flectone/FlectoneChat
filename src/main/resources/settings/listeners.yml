@@ -1,0 +1,85 @@
+#  █▀ █   ██▀ ▄▀▀ ▀█▀ ▄▀▄ █▄ █ ██▀ ▄▀▀ █▄█ ▄▀▄ ▀█▀
+#  █▀ █▄▄ █▄▄ ▀▄▄  █  ▀▄▀ █ ▀█ █▄▄ ▀▄▄ █ █ █▀█  █
+#
+# You are advised to check out our plugin documentation
+# https://chat.flectone.net/docs
+#
+#  LOWEST - Event call is of very low importance and should be run first, to allow other plugins to further customise the outcome
+#  LOW - Event call is of low importance
+#  NORMAL - Event call is neither important nor unimportant, and may be run normally
+#  HIGH - Event call is of high importance
+#  HIGHEST - Event call is critical and must have the final say in what happens to the event
+#  MONITOR - Event is listened to purely for monitoring the outcome of an event
+
+extra:
+  knocking:
+    PlayerInteractEvent: "MONITOR"
+
+  spit:
+    PlayerInteractEvent: "MONITOR"
+
+  mark:
+    PlayerJoinEvent: "LOWEST"
+    PlayerInteractEvent: "MONITOR"
+
+  item-sign:
+    PlayerInteractEvent: "LOWEST"
+
+    unsign:
+      PlayerInteractEvent: "LOWEST"
+
+player:
+  right-click:
+    PlayerInteractAtEntityEvent: "MONITOR"
+
+  world:
+    PlayerJoinEvent: "LOWEST"
+    PlayerChangedWorldEvent: "MONITOR"
+
+  afk-timeout:
+    AsyncPlayerChatEvent: "LOWEST"
+    PlayerCommandPreprocessEvent: "LOWEST"
+    PlayerInteractEvent: "LOWEST"
+
+server:
+  status:
+    ServerListPingEvent: "LOWEST"
+    PlayerLoginEvent: "LOWEST"
+
+  tab:
+    PlayerJoinEvent: "LOWEST"
+
+  brand:
+    PlayerJoinEvent: "LOWEST"
+
+chat-bubble:
+  AsyncPlayerChatEvent: "HIGHEST"
+
+server-message:
+  join:
+    PlayerJoinEvent: "HIGHEST"
+
+  quit:
+    PlayerQuitEvent: "LOWEST"
+
+  advancement:
+    PlayerAdvancementDoneEvent: "LOWEST"
+
+  death:
+    ProjectileHitEvent: "LOWEST"
+    PlayerInteractEvent: "LOWEST"
+    EntityDamageEvent: "LOWEST"
+    PlayerDeathEvent: "NORMAL"
+
+player-message:
+  chat:
+    AsyncPlayerChatEvent: "NORMAL"
+
+  sign:
+    SignChangeEvent: "NORMAL"
+
+  book:
+    PlayerEditBookEvent: "NORMAL"
+
+  anvil:
+    InventoryClickEvent: "NORMAL"

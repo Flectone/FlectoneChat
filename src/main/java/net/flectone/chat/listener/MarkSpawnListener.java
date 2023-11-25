@@ -19,7 +19,7 @@ public class MarkSpawnListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

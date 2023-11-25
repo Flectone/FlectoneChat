@@ -20,7 +20,7 @@ public class ItemSignListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

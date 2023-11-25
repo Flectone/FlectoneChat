@@ -29,7 +29,7 @@ public class FPlayerActionListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

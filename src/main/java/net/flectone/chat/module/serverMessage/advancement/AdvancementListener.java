@@ -18,7 +18,7 @@ public class AdvancementListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

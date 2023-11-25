@@ -17,11 +17,12 @@ public class RightClickListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler
     public void rightClickEvent(@NotNull PlayerInteractAtEntityEvent event) {
+        if (event.isCancelled()) return;
         if (!(event.getRightClicked() instanceof Player player)) return;
         if (!getModule().isEnabledFor(player)) return;
         if (hasNoPermission(player)) return;

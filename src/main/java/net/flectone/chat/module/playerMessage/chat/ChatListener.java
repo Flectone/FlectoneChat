@@ -12,7 +12,6 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +27,10 @@ public class ChatListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void playerChatEvent(@NotNull AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
 

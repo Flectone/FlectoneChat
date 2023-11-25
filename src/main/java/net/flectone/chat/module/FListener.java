@@ -6,8 +6,13 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.file.FConfiguration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
+import org.bukkit.event.*;
+import org.bukkit.plugin.EventExecutor;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 @Getter
 public abstract class FListener implements Listener, FAction {
@@ -41,7 +46,50 @@ public abstract class FListener implements Listener, FAction {
         return "flectonechat." + getModule();
     }
 
-    public void register() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, FlectoneChat.getPlugin());
+    // https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/browse/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java#228
+    public void registerEvents() {
+        PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+
+        for (final Method method : this.getClass().getMethods()) {
+            final EventHandler eh = method.getAnnotation(EventHandler.class);
+            if (eh == null) continue;
+
+            if (method.isBridge() || method.isSynthetic()) {
+                continue;
+            }
+
+            final Class<? extends Event> eventClass = method.getParameterTypes()[0].asSubclass(Event.class);
+            method.setAccessible(true);
+
+            EventExecutor executor = (listener, event) -> {
+                try {
+                    if (!eventClass.isAssignableFrom(event.getClass())) {
+                        return;
+                    }
+                    method.invoke(listener, event);
+                } catch (InvocationTargetException ex) {
+                    throw new EventException(ex.getCause());
+                } catch (Throwable t) {
+                    throw new EventException(t);
+                }
+            };
+
+            EventPriority eventPriority = getEventPriority(eventClass.getSimpleName());
+
+            pluginManager.registerEvent(eventClass, this, eventPriority, executor,
+                    FlectoneChat.getPlugin(), false);
+        }
     }
+
+    public EventPriority getEventPriority(@NotNull String eventName) {
+
+        if (getModule() == null || eventName.isEmpty()) return EventPriority.NORMAL;
+
+        String priorityName = plugin.getFileManager().getListeners().getString(getModule() + "." + eventName);
+
+        return !priorityName.isEmpty()
+                ? EventPriority.valueOf(priorityName.toUpperCase())
+                : EventPriority.NORMAL;
+    }
+
 }

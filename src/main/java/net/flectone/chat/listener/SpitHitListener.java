@@ -22,7 +22,7 @@ public class SpitHitListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

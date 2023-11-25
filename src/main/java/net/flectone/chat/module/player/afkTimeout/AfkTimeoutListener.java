@@ -3,7 +3,6 @@ package net.flectone.chat.module.player.afkTimeout;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -17,10 +16,10 @@ public class AfkTimeoutListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void playerChatEvent(@NotNull AsyncPlayerChatEvent event) {
         ((AfkTimeoutModule) getModule()).setAfk(event.getPlayer(), false, "chat");
     }

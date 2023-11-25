@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
@@ -24,10 +23,10 @@ public class KnockingListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void playerKnockingEvent(@NotNull PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK)) return;

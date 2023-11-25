@@ -26,7 +26,7 @@ public class MaintenanceListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
 
         fileManager = FlectoneChat.getPlugin().getFileManager();
         commands = fileManager.getCommands();

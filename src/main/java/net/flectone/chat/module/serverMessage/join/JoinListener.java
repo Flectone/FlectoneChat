@@ -6,7 +6,6 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,10 +17,10 @@ public class JoinListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void playerJoinEvent(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (hasNoPermission(player)) return;

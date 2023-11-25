@@ -24,7 +24,7 @@ public class SpyListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

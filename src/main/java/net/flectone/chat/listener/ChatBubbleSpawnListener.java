@@ -20,7 +20,7 @@ public class ChatBubbleSpawnListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
     @EventHandler

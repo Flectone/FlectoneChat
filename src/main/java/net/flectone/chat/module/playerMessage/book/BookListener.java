@@ -28,7 +28,7 @@ public class BookListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
 
         playerManager = FlectoneChat.getPlugin().getPlayerManager();
     }

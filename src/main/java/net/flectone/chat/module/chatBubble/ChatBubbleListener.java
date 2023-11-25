@@ -5,7 +5,6 @@ import net.flectone.chat.module.FModule;
 import net.flectone.chat.builder.MessageBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,10 +18,10 @@ public class ChatBubbleListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void playerChatEvent(@NotNull AsyncPlayerChatEvent event) {
         if (event.isCancelled() || event.getRecipients().isEmpty()) return;
 

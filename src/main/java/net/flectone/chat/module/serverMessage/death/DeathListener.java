@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -37,10 +36,10 @@ public class DeathListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void playerProjectileHit(@NotNull ProjectileHitEvent event) {
         if (event.isCancelled()) return;
         if (event.getHitEntity() == null) return;
@@ -53,7 +52,7 @@ public class DeathListener extends FListener {
         lastInteractProjectile = projectile;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void onPlayerClickOnBed(@NotNull PlayerInteractEvent event) {
         if (event.getClickedBlock() == null
                 || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -71,7 +70,7 @@ public class DeathListener extends FListener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler
     public void onPlayerDamageEvent(@NotNull EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)
                 || IntegrationsModule.isVanished(player)

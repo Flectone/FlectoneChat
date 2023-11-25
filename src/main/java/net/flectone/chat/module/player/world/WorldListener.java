@@ -21,7 +21,7 @@ public class WorldListener extends FListener {
 
     @Override
     public void init() {
-        register();
+        registerEvents();
 
         Bukkit.getScheduler().runTaskLater(FlectoneChat.getPlugin(), () ->
                 Bukkit.getOnlinePlayers().forEach(this::setWorld), 20L);
