@@ -36,6 +36,7 @@ public class AutoMessageModule extends FModule {
     public void send(@NotNull Player player) {
         FPlayer fPlayer = playerManager.get(player);
         if (fPlayer == null) return;
+        if (hasNoPermission(player)) return;
 
         String autoMessage = fPlayer.getSettings().getValue(Settings.Type.AUTO_MESSAGE);
         boolean enabled = autoMessage == null || Integer.parseInt(autoMessage) != -1;
