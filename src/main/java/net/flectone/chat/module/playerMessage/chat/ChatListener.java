@@ -3,7 +3,7 @@ package net.flectone.chat.module.playerMessage.chat;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.commands.SpyListener;
+import net.flectone.chat.module.commands.CommandSpy;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
@@ -39,12 +39,6 @@ public class ChatListener extends FListener {
         if (fPlayer == null) return;
         if (!getModule().isEnabledFor(sender)) return;
 
-        if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
-            event.setCancelled(true);
-            return;
-        }
-
         String message = event.getMessage();
 
         List<String> availableChatsList = config.getCustomList(sender, getModule() + ".list");
@@ -77,13 +71,17 @@ public class ChatListener extends FListener {
             return;
         }
 
-        if (fPlayer.isHaveCooldown(getModule() + "." + playerChat)) {
-            fPlayer.sendCDMessage(playerChat);
+        if (fPlayer.isMuted()) {
+            fPlayer.sendMutedMessage(playerChat);
             event.setCancelled(true);
             return;
         }
 
-        SpyListener.send(sender, playerChat, event.getMessage());
+        if (fPlayer.isHaveCooldown(getModule() + "." + playerChat)) {
+            fPlayer.sendCDMessage(playerChat, playerChat);
+            event.setCancelled(true);
+            return;
+        }
 
         List<String> featuresList = config.getVaultStringList(sender, getModule() + ".list." + playerChat + ".features");
         if (featuresList.contains("mention")) {
@@ -133,6 +131,8 @@ public class ChatListener extends FListener {
         chatFormat = MessageUtil.formatPlayerString(sender, chatFormat);
 
         ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList);
+
+        CommandSpy.send(sender, playerChat, recipientsList, CommandSpy.Type.DEFAULT, message);
 
         fPlayer.playSound(sender, recipientsList, getModule() + "." + playerChat);
 

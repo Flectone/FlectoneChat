@@ -41,12 +41,12 @@ public class SpitListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("spit");
             return;
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("spit");
+            fPlayer.sendCDMessage("spit", "spit");
             return;
         }
 

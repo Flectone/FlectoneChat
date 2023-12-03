@@ -39,14 +39,14 @@ public class CommandLastonline extends FCommand {
         String targetPlayer = args[0];
         FPlayer fTarget = playerManager.getOffline(targetPlayer);
         if (fTarget == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -67,7 +67,7 @@ public class CommandLastonline extends FCommand {
         message = IntegrationsModule.setPlaceholders(player, player, message);
         message = MessageUtil.formatAll(cmdSettings.getSender(), message);
 
-        commandSender.sendMessage(message);
+        sendFormattedMessage(commandSender, message);
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

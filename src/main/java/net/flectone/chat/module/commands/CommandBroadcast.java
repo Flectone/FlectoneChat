@@ -33,12 +33,12 @@ public class CommandBroadcast extends FCommand {
 
         CmdSettings cmdSettings = processCommand(commandSender, command);
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return true;
         }
 

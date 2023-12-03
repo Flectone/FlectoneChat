@@ -42,12 +42,12 @@ public class ItemUnsignListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("unsign");
             return;
         }
 
         if (fPlayer.isHaveCooldown(getModule() + ".unsign")) {
-            fPlayer.sendCDMessage("unsign");
+            fPlayer.sendCDMessage("unsign", "unsign");
             return;
         }
 

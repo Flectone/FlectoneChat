@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class CommandTranslateto extends FCommand {
@@ -52,24 +53,24 @@ public class CommandTranslateto extends FCommand {
 
         CmdSettings cmdSettings = processCommand(commandSender, command);
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return;
         }
 
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return;
         }
 
         String messageToTranslate = MessageUtil.joinArray(args, 2, " ");
         String message = translate(args[0], args[1], messageToTranslate);
         if (message.isEmpty() || message.equalsIgnoreCase(messageToTranslate)) {
-            sendMessage(commandSender, this + ".error");
+            sendErrorMessage(commandSender, this + ".error");
             return;
         }
 
@@ -102,14 +103,14 @@ public class CommandTranslateto extends FCommand {
     public String translate(@NotNull String sourceLang, @NotNull String targetLang, String msg) {
 
         try {
-            msg = URLEncoder.encode(msg, "UTF-8");
+            msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
             URL url = new URL("http://translate.googleapis.com/translate_a/single?client=gtx&sl=" + sourceLang + "&tl="
                     + targetLang + "&dt=t&q=" + msg + "&ie=UTF-8&oe=UTF-8");
 
             URLConnection uc = url.openConnection();
             uc.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), "UTF-8"));
+            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream(), StandardCharsets.UTF_8));
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {

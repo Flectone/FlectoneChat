@@ -52,12 +52,12 @@ public class CommandPoll extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return true;
         }
 
@@ -119,12 +119,12 @@ public class CommandPoll extends FCommand {
         Poll poll = PollManager.get(id);
 
         if (poll == null || poll.isExpired()) {
-            sendMessage(commandSender, this + ".expired-message");
+            sendErrorMessage(commandSender, this + ".expired-message");
             return true;
         }
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, this + ".console");
+            sendErrorMessage(commandSender, this + ".console");
             return true;
         }
 
@@ -132,7 +132,7 @@ public class CommandPoll extends FCommand {
 
         int voteCounts = poll.vote(cmdSettings.getFPlayer(), voteType);
         if (voteCounts == 0) {
-            sendMessage(commandSender, this + ".already-message");
+            sendErrorMessage(commandSender, this + ".already-message");
             return true;
         }
 
@@ -141,7 +141,7 @@ public class CommandPoll extends FCommand {
                 .replace("<id>", String.valueOf(id))
                 .replace("<count>", String.valueOf(voteCounts));
 
-        commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));
+        sendFormattedMessage(commandSender, MessageUtil.formatAll(cmdSettings.getSender(), message));
 
         return true;
     }

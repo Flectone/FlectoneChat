@@ -186,8 +186,13 @@ spy:
   enable: true
   aliases: []
 
+  message-type:
+    default: true
+    usage: true
+    error: true
+
   list:
-    - msg
+    - tell
     - local
     - anvil
     - book

@@ -31,12 +31,12 @@ public class CommandAfk extends FCommand {
                              @NotNull String[] strings) {
         CmdSettings commandCmdSettings = processCommand(commandSender, command);
         if (commandCmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
         if (commandCmdSettings.isHaveCooldown()) {
-            commandCmdSettings.getFPlayer().sendCDMessage(s);
+            commandCmdSettings.getFPlayer().sendCDMessage(s, command.getName());
             return true;
         }
 
@@ -59,7 +59,7 @@ public class CommandAfk extends FCommand {
         fPlayer.setAfkSuffix(MessageUtil.formatAll(player, afkSuffix));
 
         String afkMessage = locale.getVaultString(player, "commands.afk." + isAfk + "-message");
-        player.sendMessage(MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
+        sendFormattedMessage(player, MessageUtil.formatAll(player, MessageUtil.formatPlayerString(player, afkMessage)));
 
         fPlayer.playSound(player, player, this.toString());
         fPlayer.updateTeam();

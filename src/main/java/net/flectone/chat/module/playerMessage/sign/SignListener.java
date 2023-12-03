@@ -6,13 +6,14 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.commands.SpyListener;
+import net.flectone.chat.module.commands.CommandSpy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SignListener extends FListener {
@@ -42,12 +43,12 @@ public class SignListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("sign");
             event.setCancelled(true);
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("sign");
+            fPlayer.sendCDMessage("sign", "sign");
             event.setCancelled(true);
             return;
         }
@@ -66,7 +67,8 @@ public class SignListener extends FListener {
             MessageBuilder messageBuilder = new MessageBuilder(player, itemInHand, string, features);
             event.setLine(x, messageBuilder.getMessage(""));
 
-            SpyListener.send(player, "sign", messageBuilder.getMessage(""));
+            CommandSpy.send(player, "sign", new ArrayList<>(), CommandSpy.Type.DEFAULT,
+                    messageBuilder.getMessage(""));
         }
     }
 }

@@ -46,19 +46,19 @@ public class CommandMail extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return;
         }
 
         String targetPlayer = args[0];
         FPlayer fTarget = playerManager.getOffline(targetPlayer);
         if (fTarget == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return;
         }
 
@@ -66,31 +66,31 @@ public class CommandMail extends FCommand {
         String value = fTarget.getSettings().getValue(Settings.Type.COMMAND_MAIL);
 
         if (value != null && value.equals("-1")) {
-            sendMessage(commandSender, getModule() + ".he-disabled");
+            sendErrorMessage(commandSender, getModule() + ".he-disabled");
             return;
         }
 
         FPlayer fSender = cmdSettings.getFPlayer();
 
         if (fSender.getIgnoreList().contains(fTarget.getUuid())) {
-            sendMessage(commandSender, getModule() + ".you-ignore");
+            sendErrorMessage(commandSender, getModule() + ".you-ignore");
             return;
         }
 
         database.getIgnores(fTarget);
 
         if (fTarget.getIgnoreList().contains(fSender.getUuid())) {
-            sendMessage(commandSender, getModule() + ".he-ignore");
+            sendErrorMessage(commandSender, getModule() + ".he-ignore");
             return;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
         if (cmdSettings.isMuted()) {
-            fSender.sendMutedMessage();
+            fSender.sendMutedMessage(command.getName());
             return;
         }
 
@@ -112,7 +112,7 @@ public class CommandMail extends FCommand {
 
         sendMessage = MessageUtil.formatAll(cmdSettings.getSender(), sendMessage);
 
-        commandSender.sendMessage(sendMessage);
+        sendFormattedMessage(commandSender, sendMessage);
 
         cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
     }

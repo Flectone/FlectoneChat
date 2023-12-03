@@ -48,12 +48,12 @@ public class KnockingListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("knocking_" + knockingBlock.get());
             return;
         }
 
         if (fPlayer.isHaveCooldown(getModule() + "." + knockingBlock.get())) {
-            fPlayer.sendCDMessage("knocking_" + knockingBlock.get());
+            fPlayer.sendCDMessage("knocking_" + knockingBlock.get(), "knocking_" + knockingBlock.get());
             return;
         }
 

@@ -30,13 +30,13 @@ public class CommandReply extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
         Player lastWriter = cmdSettings.getFPlayer().getLastWriter();
         if (lastWriter == null) {
-            sendMessage(commandSender, this + ".no-receiver");
+            sendErrorMessage(commandSender, this + ".no-receiver");
             return true;
         }
 

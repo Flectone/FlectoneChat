@@ -49,42 +49,42 @@ public class CommandClearmail extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return;
         }
 
         String targetPlayer = args[0];
         FPlayer fTarget = playerManager.getOffline(targetPlayer);
         if (fTarget == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
         database.getMails(fTarget);
 
         if (fTarget.getOfflinePlayer().isOnline() || fTarget.getMailList().isEmpty()) {
-            sendMessage(commandSender, this + ".empty");
+            sendErrorMessage(commandSender, this + ".empty");
             return;
         }
 
         if (!StringUtils.isNumeric(args[1]) || Integer.parseInt(args[1]) > fTarget.getMailList().size() - 1) {
-            sendMessage(commandSender, getModule() + ".wrong-number");
+            sendErrorMessage(commandSender, getModule() + ".wrong-number");
             return;
         }
 
         Mail mail = fTarget.getMailList().get(Integer.parseInt(args[1]));
         if (mail == null || !mail.getSender().equals(cmdSettings.getFPlayer().getUuid().toString())) {
-            sendMessage(commandSender, getModule() + ".wrong-number");
+            sendErrorMessage(commandSender, getModule() + ".wrong-number");
             return;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
         if (cmdSettings.isMuted()) {
-            sendMessage(commandSender, getModule() + ".muted");
+            sendErrorMessage(commandSender, getModule() + ".muted");
             return;
         }
 
@@ -98,7 +98,7 @@ public class CommandClearmail extends FCommand {
         playerMessage = MessageUtil.formatPlayerString(commandSender, playerMessage);
         playerMessage = MessageUtil.formatAll(cmdSettings.getSender(), playerMessage);
 
-        commandSender.sendMessage(playerMessage);
+        sendFormattedMessage(commandSender, playerMessage);
         cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
     }
 

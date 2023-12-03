@@ -4,7 +4,7 @@ import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.commands.SpyListener;
+import net.flectone.chat.module.commands.CommandSpy;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnvilListener extends FListener {
@@ -44,12 +45,12 @@ public class AnvilListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("anvil");
             event.setCancelled(true);
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("anvil");
+            fPlayer.sendCDMessage("anvil", "anvil");
             event.setCancelled(true);
             return;
         }
@@ -68,7 +69,7 @@ public class AnvilListener extends FListener {
 
         if (ChatColor.stripColor(displayName).isEmpty()) return;
 
-        SpyListener.send(player, "anvil", displayName);
+        CommandSpy.send(player, "anvil", new ArrayList<>(), CommandSpy.Type.DEFAULT, displayName);
 
         itemMeta.setDisplayName(displayName);
         itemStack.setItemMeta(itemMeta);

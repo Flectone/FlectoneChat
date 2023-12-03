@@ -39,36 +39,35 @@ public class CommandTictactoe extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
         TicTacToe ticTacToe = TicTacToe.get(args[0]);
         if (ticTacToe != null && ticTacToe.isEnded()) {
-            sendMessage(commandSender, this + ".game.ended");
+            sendErrorMessage(commandSender, this + ".game.ended");
             return true;
         }
 
         FPlayer secondFPlayer = playerManager.getOffline(args[0]);
 
         if ((secondFPlayer == null && ticTacToe == null) || cmdSettings.getFPlayer() == secondFPlayer) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return true;
         }
 
-
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return true;
         }
 
@@ -115,7 +114,7 @@ public class CommandTictactoe extends FCommand {
         if (secondFPlayer == null) return true;
 
         if (!secondFPlayer.getOfflinePlayer().isOnline()) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             ticTacToe.setEnded(true);
             return true;
         }
@@ -129,7 +128,7 @@ public class CommandTictactoe extends FCommand {
         }
 
         if (ticTacToe.isBusy(Integer.parseInt(args[1])) || !ticTacToe.isNextPlayer(secondFPlayer.getUuid())) {
-            sendMessage(commandSender, this + ".game.wrong");
+            sendErrorMessage(commandSender, this + ".game.wrong");
             return true;
         }
 
@@ -152,8 +151,8 @@ public class CommandTictactoe extends FCommand {
             secondFPlayer.getPlayer().sendMessage(MessageUtil.formatAll(secondFPlayer.getPlayer(), message));
         }
 
-        cmdSettings.getFPlayer().getPlayer().spigot().sendMessage(ticTacToe.build(cmdSettings.getFPlayer()));
-        secondFPlayer.getPlayer().spigot().sendMessage(ticTacToe.build(secondFPlayer));
+        sendFormattedMessage(cmdSettings.getFPlayer().getPlayer(), ticTacToe.build(cmdSettings.getFPlayer()));
+        sendFormattedMessage(secondFPlayer.getPlayer(), ticTacToe.build(secondFPlayer));
 
         cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
         secondFPlayer.playSound(secondFPlayer.getPlayer(), secondFPlayer.getPlayer(), this.toString());

@@ -10,10 +10,12 @@ import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.model.sound.FSound;
+import net.flectone.chat.module.commands.CommandSpy;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.CommandsUtil;
 import net.flectone.chat.util.MessageUtil;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
@@ -109,13 +111,33 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
         message = MessageUtil.formatAll(player, message);
 
         commandSender.sendMessage(message);
+        sendToSpy(player, new ArrayList<>(), CommandSpy.Type.USAGE, message);
     }
 
-    public void sendMessage(@NotNull CommandSender commandSender, @NotNull String string) {
+    public void sendErrorMessage(@NotNull CommandSender commandSender, @NotNull String string) {
         String message = locale.getVaultString(commandSender, string);
         message = MessageUtil.formatAll(null, message);
 
         commandSender.sendMessage(message);
+        sendToSpy(commandSender, new ArrayList<>(), CommandSpy.Type.ERROR, message);
+    }
+
+    public void sendDefaultMessage(@NotNull CommandSender commandSender, @NotNull String string) {
+        String message = locale.getVaultString(commandSender, string);
+        message = MessageUtil.formatAll(null, message);
+
+        commandSender.sendMessage(message);
+        sendToSpy(commandSender, new ArrayList<>(), CommandSpy.Type.DEFAULT, message);
+    }
+
+    public void sendFormattedMessage(@NotNull CommandSender commandSender, @NotNull String string) {
+        commandSender.sendMessage(string);
+        sendToSpy(commandSender, new ArrayList<>(), CommandSpy.Type.DEFAULT, string);
+    }
+
+    public void sendFormattedMessage(@NotNull CommandSender commandSender, @NotNull BaseComponent... components) {
+        commandSender.spigot().sendMessage(components);
+        sendToSpy(commandSender, new ArrayList<>(), CommandSpy.Type.DEFAULT, "");
     }
 
     public void sendGlobalMessage(@Nullable Player player, @Nullable ItemStack itemStack, @NotNull String format,
@@ -134,6 +156,7 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
 
         if (player != null) {
             message = IntegrationsModule.interactiveChatMark(message, player.getUniqueId());
+            sendToSpy(player, recipients, CommandSpy.Type.DEFAULT, message);
         }
 
         MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, message, getFeatures());
@@ -145,6 +168,12 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                 soundsModule.play(new FSound(player, recipient, this.toString()));
             }
         });
+    }
+
+    private void sendToSpy(@Nullable CommandSender commandSender, @NotNull Collection<Player> recipients,
+                           @NotNull CommandSpy.Type type, @NotNull String message) {
+        if (!(commandSender instanceof Player player)) return;
+        CommandSpy.send(player, command.getName(), recipients, type, message);
     }
 
     @NotNull

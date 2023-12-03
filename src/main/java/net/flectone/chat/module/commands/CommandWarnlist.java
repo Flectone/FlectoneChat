@@ -49,21 +49,21 @@ public class CommandWarnlist extends FCommand {
 
         int countWarns = FlectoneChat.getPlugin().getDatabase().getCountRow("warns");
         if (countWarns == 0) {
-            sendMessage(commandSender, this + ".empty");
+            sendErrorMessage(commandSender, this + ".empty");
             return;
         }
 
         int lastPage = (int) Math.ceil((double) countWarns / perPage);
         if (args.length != 0 &&
                 (!StringUtils.isNumeric(args[0]) || Integer.parseInt(args[0]) < 1 || Integer.parseInt(args[0]) > lastPage)) {
-            sendMessage(commandSender, this + ".page-not-exist");
+            sendErrorMessage(commandSender, this + ".page-not-exist");
             return;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
@@ -119,7 +119,7 @@ public class CommandWarnlist extends FCommand {
 
         componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
 
-        commandSender.spigot().sendMessage(componentBuilder.create());
+        sendFormattedMessage(commandSender, componentBuilder.create());
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

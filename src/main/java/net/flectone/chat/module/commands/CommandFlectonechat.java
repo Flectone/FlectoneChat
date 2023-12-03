@@ -49,7 +49,7 @@ public class CommandFlectonechat extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -61,7 +61,7 @@ public class CommandFlectonechat extends FCommand {
                     .findAny();
 
             if (fileType.isEmpty() || fileType.get().getFile() == null) {
-                sendMessage(commandSender, this + ".wrong-file");
+                sendErrorMessage(commandSender, this + ".wrong-file");
                 return true;
             }
 
@@ -119,7 +119,7 @@ public class CommandFlectonechat extends FCommand {
         plugin.getPlayerManager().loadOnlinePlayers();
         plugin.getPlayerManager().loadTabCompleteData();
 
-        sendMessage(commandSender, this + ".message");
+        sendDefaultMessage(commandSender, this + ".message");
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

@@ -32,7 +32,7 @@ public class CommandClearchat extends FCommand {
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -42,7 +42,7 @@ public class CommandClearchat extends FCommand {
         }
 
         commandSender.sendMessage(CLEARED_STRING);
-        sendMessage(commandSender, this + ".message");
+        sendDefaultMessage(commandSender, this + ".message");
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

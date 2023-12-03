@@ -11,6 +11,7 @@ import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.mail.Mail;
 import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.commands.CommandSpy;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
 import net.flectone.chat.module.player.nameTag.NameTagModule;
@@ -162,13 +163,6 @@ public class FPlayer {
         } catch (IllegalStateException ignore) {}
     }
 
-    public void registerWorldPrefix() {
-        FModule fModule = moduleManager.get(WorldModule.class);
-        if (fModule instanceof WorldModule worldModule) {
-            setWorldPrefix(worldModule.getPrefix(player, player.getWorld()));
-        }
-    }
-
     public void toDatabase() {
         database.toDatabase(this);
     }
@@ -315,17 +309,19 @@ public class FPlayer {
         return isHaveCooldown;
     }
 
-    public void sendCDMessage(@NotNull String action) {
+    public void sendCDMessage(@NotNull String alias, @NotNull String action) {
         String message = locale.getVaultString(player, "commands.cooldown");
         message = message
-                .replace("<alias>", action)
+                .replace("<alias>", alias)
                 .replace("<time>", TimeUtil.convertTime(player, cooldownTime - TimeUtil.getCurrentTime()));
         message = MessageUtil.formatAll(player, message);
 
         player.sendMessage(message);
+
+        CommandSpy.send(player, action, new ArrayList<>(), CommandSpy.Type.ERROR, message);
     }
 
-    public void sendMutedMessage() {
+    public void sendMutedMessage(@NotNull String action) {
         String message = locale.getVaultString(player, "commands.muted");
 
         Moderation mute = getMute();
@@ -337,6 +333,8 @@ public class FPlayer {
         message = MessageUtil.formatAll(player, message);
 
         player.sendMessage(message);
+
+        CommandSpy.send(player, action, new ArrayList<>(), CommandSpy.Type.ERROR, message);
     }
 
     public void playSound(@NotNull Location location, @NotNull String action) {

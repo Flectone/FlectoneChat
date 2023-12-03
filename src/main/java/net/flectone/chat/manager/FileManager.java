@@ -99,6 +99,16 @@ public class FileManager {
             isLess420 = true;
         }
 
+        if (compareVersions(fileVersion, "4.3.0") == -1) {
+            List<String> spyList = commands.getStringList("spy.list");
+            if (spyList.contains("msg")) {
+                spyList.remove("msg");
+                spyList.add("tell");
+                commands.set("spy.list", spyList);
+                commands.save();
+            }
+        }
+
         config.set("plugin.version", projectVersion);
         config.save();
 

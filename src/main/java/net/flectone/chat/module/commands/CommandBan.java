@@ -80,19 +80,19 @@ public class CommandBan extends FCommand {
         String banPlayer = args[0];
         FPlayer banFPlayer = playerManager.getOffline(banPlayer);
         if (banFPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         int banTime = stringToTime(time);
         if (banTime < -1) {
-            sendMessage(commandSender, getModule() + ".long-number");
+            sendErrorMessage(commandSender, getModule() + ".long-number");
             return true;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 

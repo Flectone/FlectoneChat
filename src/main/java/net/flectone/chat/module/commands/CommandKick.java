@@ -38,12 +38,12 @@ public class CommandKick extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return true;
         }
 
@@ -58,7 +58,7 @@ public class CommandKick extends FCommand {
 
         Player toKick = Bukkit.getPlayer(args[0]);
         if (toKick == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 

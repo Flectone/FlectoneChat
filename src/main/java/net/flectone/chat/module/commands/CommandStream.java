@@ -43,7 +43,7 @@ public class CommandStream extends FCommand {
         }
 
         if (args.length == 1 && trigger.equals("start")) {
-            sendMessage(commandSender, this + ".start.need-url");
+            sendErrorMessage(commandSender, this + ".start.need-url");
             return true;
         }
 
@@ -53,12 +53,12 @@ public class CommandStream extends FCommand {
             FPlayer fPlayer = cmdSettings.getFPlayer();
 
             if (!fPlayer.isStreaming() && trigger.equals("end")) {
-                sendMessage(commandSender, this + ".end.not");
+                sendErrorMessage(commandSender, this + ".end.not");
                 return true;
             }
 
             if (fPlayer.isStreaming() && trigger.equals("start")) {
-                sendMessage(commandSender, this + ".start.already");
+                sendErrorMessage(commandSender, this + ".start.already");
                 return true;
             }
 
@@ -66,17 +66,17 @@ public class CommandStream extends FCommand {
 
                 setStreaming(fPlayer, "-1");
 
-                sendMessage(commandSender, this + ".end.message");
+                sendDefaultMessage(commandSender, this + ".end.message");
                 return true;
             }
 
             if (cmdSettings.isHaveCooldown()) {
-                cmdSettings.getFPlayer().sendCDMessage(alias);
+                cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
                 return true;
             }
 
             if (cmdSettings.isMuted()) {
-                cmdSettings.getFPlayer().sendMutedMessage();
+                cmdSettings.getFPlayer().sendMutedMessage(command.getName());
                 return true;
             }
 

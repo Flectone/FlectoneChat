@@ -47,21 +47,21 @@ public class CommandMute extends FCommand {
         FPlayer mutedFPlayer = playerManager.getOffline(targetPlayerName);
 
         if (mutedFPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         int muteTime = stringToTime(time);
 
         if (muteTime < -1) {
-            sendMessage(commandSender, getModule() + ".long-number");
+            sendErrorMessage(commandSender, getModule() + ".long-number");
             return true;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 

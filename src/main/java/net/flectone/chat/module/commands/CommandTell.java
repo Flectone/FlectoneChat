@@ -47,24 +47,24 @@ public class CommandTell extends FCommand {
         String receiver = args[0];
         FPlayer fReceiver = playerManager.getOffline(receiver);
         if (fReceiver == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return;
         }
 
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return;
         }
 
@@ -80,7 +80,7 @@ public class CommandTell extends FCommand {
         String commandTellValue = fReceiver.getSettings().getValue(Settings.Type.COMMAND_TELL);
 
         if (commandTellValue != null && commandTellValue.equals("-1")) {
-            sendMessage(commandSender, getModule() + ".he-disabled");
+            sendErrorMessage(commandSender, getModule() + ".he-disabled");
             return;
         }
 
@@ -90,17 +90,17 @@ public class CommandTell extends FCommand {
                 String myselfMessage = locale.getVaultString(commandSender, this + ".myself")
                         .replace("<message>", message);
 
-                commandSender.sendMessage(MessageUtil.formatAll(sender, myselfMessage));
+                sendFormattedMessage(commandSender, MessageUtil.formatAll(sender, myselfMessage));
                 return;
             }
 
             if (cmdSettings.getFPlayer().getIgnoreList().contains(fReceiver.getUuid())) {
-                sendMessage(commandSender, getModule() + ".you-ignore");
+                sendErrorMessage(commandSender, getModule() + ".you-ignore");
                 return;
             }
 
             if (fReceiver.getIgnoreList().contains(sender.getUniqueId())) {
-                sendMessage(commandSender, getModule() + ".he-ignore");
+                sendErrorMessage(commandSender, getModule() + ".he-ignore");
                 return;
             }
         }

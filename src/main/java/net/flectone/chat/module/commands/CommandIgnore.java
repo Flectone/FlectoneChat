@@ -38,29 +38,29 @@ public class CommandIgnore extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         String ignoredPlayerName = args[0];
         if (ignoredPlayerName.equalsIgnoreCase(commandSender.getName())) {
-            sendMessage(commandSender, this + ".myself");
+            sendErrorMessage(commandSender, this + ".myself");
             return true;
         }
 
         FPlayer ignoredFPlayer = playerManager.getOffline(ignoredPlayerName);
         if (ignoredFPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            sendMessage(commandSender, getModule() + ".cooldown");
+            sendErrorMessage(commandSender, getModule() + ".cooldown");
             return true;
         }
 
@@ -83,7 +83,7 @@ public class CommandIgnore extends FCommand {
                 .replace("<player>", ignoredFPlayer.getMinecraftName());
         message = MessageUtil.formatAll(cmdSettings.getSender(), message);
 
-        commandSender.sendMessage(message);
+        sendFormattedMessage(commandSender, message);
 
         cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
 

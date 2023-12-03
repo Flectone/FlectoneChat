@@ -54,19 +54,26 @@ public class CommandGeolocate extends FCommand {
 
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
+            return;
+        }
+
+        CmdSettings cmdSettings = new CmdSettings(commandSender, command);
+
+        if (cmdSettings.isHaveCooldown()) {
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
         if (player.getAddress() == null || player.getAddress().getHostName() == null) {
-            sendMessage(commandSender, this + ".fail");
+            sendErrorMessage(commandSender, this + ".fail");
             return;
         }
 
         String playerIP = player.getAddress().getHostName();
         List<String> request = getHttp(HTTP_URL.replace("<ip>", playerIP));
         if (request.isEmpty() || request.get(0).equals("fail")) {
-            sendMessage(commandSender, this + ".fail");
+            sendErrorMessage(commandSender, this + ".fail");
             return;
         }
 
@@ -85,7 +92,7 @@ public class CommandGeolocate extends FCommand {
         message = MessageUtil.formatPlayerString(player, message);
         message = MessageUtil.formatAll(sender, player, message);
 
-        commandSender.sendMessage(message);
+        sendFormattedMessage(commandSender, message);
 
         if (sender == null) {
             FPlayer fPlayer = playerManager.get(player);

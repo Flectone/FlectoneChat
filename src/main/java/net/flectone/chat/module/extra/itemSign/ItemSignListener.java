@@ -43,12 +43,12 @@ public class ItemSignListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("item-sign");
             return;
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("item-sign");
+            fPlayer.sendCDMessage("item-sign", "item-sign");
             return;
         }
 

@@ -56,12 +56,12 @@ public class MarkListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("mark");
             return;
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("mark");
+            fPlayer.sendCDMessage("mark", "mark");
             return;
         }
 

@@ -41,31 +41,31 @@ public class CommandDice extends FCommand {
         }
 
         if (!StringUtils.isNumeric(args[0])) {
-            sendMessage(commandSender, this + ".only-number");
+            sendErrorMessage(commandSender, this + ".only-number");
             return true;
         }
 
         int amount = Integer.parseInt(args[0]);
 
         if (amount > max || amount < min) {
-            sendMessage(commandSender, getModule() + ".wrong-number");
+            sendErrorMessage(commandSender, getModule() + ".wrong-number");
             return true;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return true;
         }
 
         if (cmdSettings.isDisabled()) {
-            sendMessage(commandSender, getModule() + ".you-disabled");
+            sendErrorMessage(commandSender, getModule() + ".you-disabled");
             return true;
         }
 

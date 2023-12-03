@@ -55,21 +55,21 @@ public class CommandWarn extends FCommand {
         FPlayer warnedFPlayer = playerManager.getOffline(warnedPlayerName);
 
         if (warnedFPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
         int time = stringToTime(stringTime);
 
         if (time < -1) {
-            sendMessage(commandSender, getModule() + ".long-number");
+            sendErrorMessage(commandSender, getModule() + ".long-number");
             return;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 

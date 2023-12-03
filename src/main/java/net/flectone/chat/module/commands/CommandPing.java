@@ -38,12 +38,12 @@ public class CommandPing extends FCommand {
                 : playerManager.get(args[0]);
 
         if (fPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -75,7 +75,7 @@ public class CommandPing extends FCommand {
 
         message = MessageUtil.formatPlayerString(fPlayer.getPlayer(), message);
 
-        commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), fPlayer.getPlayer(), message));
+        sendFormattedMessage(commandSender, MessageUtil.formatAll(cmdSettings.getSender(), fPlayer.getPlayer(), message));
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

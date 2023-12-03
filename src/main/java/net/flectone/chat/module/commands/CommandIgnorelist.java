@@ -37,7 +37,7 @@ public class CommandIgnorelist extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
@@ -46,7 +46,7 @@ public class CommandIgnorelist extends FCommand {
         int ignoreListSize = fSender.getIgnoreList().size();
 
         if (ignoreListSize == 0) {
-            sendMessage(commandSender, this + ".empty");
+            sendErrorMessage(commandSender, this + ".empty");
             return true;
         }
 
@@ -59,12 +59,12 @@ public class CommandIgnorelist extends FCommand {
 
         if (args.length != 0 &&
                 (!StringUtils.isNumeric(args[0]) || Integer.parseInt(args[0]) < 1 || Integer.parseInt(args[0]) > lastPage)) {
-            sendMessage(commandSender, this + ".page-not-exist");
+            sendErrorMessage(commandSender, this + ".page-not-exist");
             return true;
         }
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -120,7 +120,7 @@ public class CommandIgnorelist extends FCommand {
 
         componentBuilder.append(fComponentBuilder.build(cmdSettings.getSender(), cmdSettings.getSender()));
 
-        commandSender.spigot().sendMessage(componentBuilder.create());
+        sendFormattedMessage(commandSender, componentBuilder.create());
 
         cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
 

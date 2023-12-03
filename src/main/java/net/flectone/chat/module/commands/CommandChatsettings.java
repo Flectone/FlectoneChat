@@ -37,7 +37,7 @@ public class CommandChatsettings extends FCommand {
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
@@ -46,7 +46,7 @@ public class CommandChatsettings extends FCommand {
         if (args.length == 1 && args[0].equals("save")) {
 
             if (cmdSettings.isHaveCooldown()) {
-                cmdSettings.getFPlayer().sendCDMessage(alias);
+                cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
                 return true;
             }
 
@@ -70,7 +70,7 @@ public class CommandChatsettings extends FCommand {
             List<String> possibleChangeList = commands.getStringList(getName() + ".change-list");
             if (!possibleChangeList.contains(name)
                     || !commandSender.hasPermission("flectonechat.commands.chatsettings." + name)) {
-                sendMessage(commandSender, this + ".not-available");
+                sendErrorMessage(commandSender, this + ".not-available");
                 return true;
             }
 
@@ -85,7 +85,7 @@ public class CommandChatsettings extends FCommand {
 
             FComponent fComponent = new FComponent(MessageUtil.formatAll(cmdSettings.getSender(), message));
             fComponent.addRunCommand("/chatsettings save");
-            cmdSettings.getSender().spigot().sendMessage(fComponent.get());
+            sendFormattedMessage(cmdSettings.getSender(), fComponent.get());
             return true;
         }
 
@@ -149,7 +149,7 @@ public class CommandChatsettings extends FCommand {
 
 
         Player player = fPlayer.getPlayer();
-        player.spigot().sendMessage(fComponentBuilder.build(player, player));
+        sendFormattedMessage(player, fComponentBuilder.build(player, player));
 
         fPlayer.playSound(player, player, this.toString());
 

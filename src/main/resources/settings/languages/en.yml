@@ -424,7 +424,10 @@ default:
       message: "&&1🫐 You were spit on by &&2<player>"
 
     spy:
-      message: "#ff9729[👁] &&2<player> &&1used <action> ⏵ &&2<message>"
+      default-message: "#ff9729[👁] #4eff52☑ &&2<player> #4eff52<action> &&2→ &&2<message>"
+      usage-message: "#ff9729[👁] #fce303☐ &&2<player> #fce303<action> &&2→ &&2<message>"
+      error-message: "#ff9729[👁] #ff4e4e☒ &&2<player> #ff4e4e<action> &&2→ &&2<message>"
+
       true-message: "#ff9729[👁] You #4eff52turned on #ff9729spy mode"
       false-message: "#ff9729[👁] You #ff4e4eturned off #ff9729spy mode"
 

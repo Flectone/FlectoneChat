@@ -7,7 +7,7 @@ import net.flectone.chat.manager.FPlayerManager;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.module.FListener;
 import net.flectone.chat.module.FModule;
-import net.flectone.chat.module.commands.SpyListener;
+import net.flectone.chat.module.commands.CommandSpy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerEditBookEvent;
@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookListener extends FListener {
@@ -44,12 +45,12 @@ public class BookListener extends FListener {
         if (fPlayer == null) return;
 
         if (fPlayer.isMuted()) {
-            fPlayer.sendMutedMessage();
+            fPlayer.sendMutedMessage("book");
             event.setCancelled(true);
         }
 
         if (fPlayer.isHaveCooldown(getModule().toString())) {
-            fPlayer.sendCDMessage("book");
+            fPlayer.sendCDMessage("book", "book");
             event.setCancelled(true);
             return;
         }
@@ -68,13 +69,13 @@ public class BookListener extends FListener {
 
             MessageBuilder messageBuilder = new MessageBuilder(player, itemInHand, string, features);
             bookMeta.setPage(x, messageBuilder.getMessage(""));
-            SpyListener.send(player, "book", messageBuilder.getMessage(""));
+            CommandSpy.send(player, "book", new ArrayList<>(), CommandSpy.Type.DEFAULT, messageBuilder.getMessage(""));
         }
 
         if (event.isSigning() && bookMeta.getTitle() != null) {
             MessageBuilder messageBuilder = new MessageBuilder(player, itemInHand, bookMeta.getTitle(), features);
             bookMeta.setTitle(messageBuilder.getMessage(""));
-            SpyListener.send(player, "book", messageBuilder.getMessage(""));
+            CommandSpy.send(player, "book", new ArrayList<>(), CommandSpy.Type.DEFAULT, messageBuilder.getMessage(""));
         }
 
         event.setNewBookMeta(bookMeta);

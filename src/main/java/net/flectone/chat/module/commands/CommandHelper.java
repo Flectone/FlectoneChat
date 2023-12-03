@@ -39,8 +39,18 @@ public class CommandHelper extends FCommand {
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
+        if (cmdSettings.isMuted()) {
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
+            return true;
+        }
+
+        if (cmdSettings.isHaveCooldown()) {
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
+            return true;
+        }
+
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
@@ -50,7 +60,7 @@ public class CommandHelper extends FCommand {
                 .toList();
 
         if (playerList.isEmpty()) {
-            sendMessage(commandSender, this + ".no-helpers");
+            sendErrorMessage(commandSender, this + ".no-helpers");
             return true;
         }
 
@@ -60,7 +70,7 @@ public class CommandHelper extends FCommand {
         sendGlobalMessage(playerList, cmdSettings.getSender(), cmdSettings.getItemStack(), serverMessage,
                 message, true);
 
-        sendMessage(commandSender, this + ".player-message");
+        sendDefaultMessage(commandSender, this + ".player-message");
 
         return true;
     }

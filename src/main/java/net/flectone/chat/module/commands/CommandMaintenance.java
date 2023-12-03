@@ -46,24 +46,24 @@ public class CommandMaintenance extends FCommand {
         boolean isEnabled = commands.getBoolean(getName() + ".turned-on");
 
         if (arg.equals("on") && isEnabled) {
-            sendMessage(commandSender, this + ".already");
+            sendErrorMessage(commandSender, this + ".already");
             return true;
         }
 
         if (arg.equals("off") && !isEnabled) {
-            sendMessage(commandSender, this + ".not");
+            sendErrorMessage(commandSender, this + ".not");
             return true;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
         if (cmdSettings.isMuted()) {
-            cmdSettings.getFPlayer().sendMutedMessage();
+            cmdSettings.getFPlayer().sendMutedMessage(command.getName());
             return true;
         }
 

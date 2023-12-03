@@ -46,7 +46,7 @@ public class CommandUnban extends FCommand {
         FPlayer fPlayer = playerManager.getOffline(args[0]);
 
         if (fPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
@@ -55,14 +55,14 @@ public class CommandUnban extends FCommand {
         Moderation ban = fPlayer.getBan();
 
         if (ban == null || ban.isExpired()) {
-            sendMessage(commandSender, this + ".not-banned");
+            sendErrorMessage(commandSender, this + ".not-banned");
             return;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()){
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
@@ -71,7 +71,7 @@ public class CommandUnban extends FCommand {
         String message = locale.getVaultString(cmdSettings.getSender(), this + ".message")
                 .replace("<player>", fPlayer.getMinecraftName());
 
-        commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));
+        sendFormattedMessage(commandSender, MessageUtil.formatAll(cmdSettings.getSender(), message));
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());

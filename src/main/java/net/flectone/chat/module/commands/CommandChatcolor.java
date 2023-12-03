@@ -47,7 +47,7 @@ public class CommandChatcolor extends FCommand {
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return true;
         }
 
@@ -64,7 +64,7 @@ public class CommandChatcolor extends FCommand {
         }
 
         if (cmdSettings.isConsole()) {
-            sendMessage(commandSender, getModule() + ".console");
+            sendErrorMessage(commandSender, getModule() + ".console");
             return true;
         }
 
@@ -80,7 +80,7 @@ public class CommandChatcolor extends FCommand {
             if (args.length < minimumColors) {
                 String minimumMessage = locale.getVaultString(commandSender, this + ".minimum-message");
                 minimumMessage = minimumMessage.replace("<minimum>", String.valueOf(minimumColors));
-                commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), minimumMessage));
+                sendFormattedMessage(commandSender, MessageUtil.formatAll(cmdSettings.getSender(), minimumMessage));
                 return true;
             }
 
@@ -110,7 +110,7 @@ public class CommandChatcolor extends FCommand {
         }
 
         message = message.replace("<colors>", colorsMessage);
-        player.sendMessage(MessageUtil.formatAll(player, player, message, true));
+        sendFormattedMessage(player, MessageUtil.formatAll(player, player, message, true));
 
         fPlayer.playSound(fPlayer.getPlayer(), fPlayer.getPlayer(), this.toString());
     }

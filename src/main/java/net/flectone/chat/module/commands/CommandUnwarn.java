@@ -45,14 +45,14 @@ public class CommandUnwarn extends FCommand {
 
         FPlayer unwarnedFPlayer = playerManager.getOffline(args[0]);
         if (unwarnedFPlayer == null) {
-            sendMessage(commandSender, getModule() + ".null-player");
+            sendErrorMessage(commandSender, getModule() + ".null-player");
             return;
         }
 
         database.getWarns(unwarnedFPlayer);
 
         if (unwarnedFPlayer.getCountWarns() == 0) {
-            sendMessage(commandSender, this + ".not-warned");
+            sendErrorMessage(commandSender, this + ".not-warned");
             return;
         }
 
@@ -74,14 +74,14 @@ public class CommandUnwarn extends FCommand {
         }
 
         if (index < 1 || index > unwarnedFPlayer.getCountWarns()) {
-            sendMessage(commandSender, getModule() + ".long-number");
+            sendErrorMessage(commandSender, getModule() + ".long-number");
             return;
         }
 
         CmdSettings cmdSettings = new CmdSettings(commandSender, command);
 
         if (cmdSettings.isHaveCooldown()) {
-            cmdSettings.getFPlayer().sendCDMessage(alias);
+            cmdSettings.getFPlayer().sendCDMessage(alias, command.getName());
             return;
         }
 
@@ -91,7 +91,7 @@ public class CommandUnwarn extends FCommand {
         String message = locale.getVaultString(cmdSettings.getSender(), this + ".message")
                 .replace("<player>", unwarnedFPlayer.getMinecraftName());
 
-        commandSender.sendMessage(MessageUtil.formatAll(cmdSettings.getSender(), message));
+        sendFormattedMessage(commandSender, MessageUtil.formatAll(cmdSettings.getSender(), message));
 
         if (!cmdSettings.isConsole()) {
             cmdSettings.getFPlayer().playSound(cmdSettings.getSender(), cmdSettings.getSender(), this.toString());
