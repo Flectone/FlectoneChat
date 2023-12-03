@@ -14,7 +14,7 @@ import su.plo.voice.api.server.mute.MuteDurationUnit;
 
 import java.util.UUID;
 
-@Addon(id = "FlectoneChat", scope = AddonLoaderScope.SERVER, version = "1.0.0", authors = {"TheFaser, fxd"})
+@Addon(id = "flectonechat", scope = AddonLoaderScope.SERVER, version = "1.0.0", authors = {"TheFaser, fxd"})
 public class FPlasmoVoice implements FIntegration, AddonInitializer {
 
     @Inject
