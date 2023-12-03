@@ -15,7 +15,6 @@ import net.flectone.chat.module.commands.CommandSpy;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.player.afkTimeout.AfkTimeoutModule;
 import net.flectone.chat.module.player.nameTag.NameTagModule;
-import net.flectone.chat.module.player.world.WorldModule;
 import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;

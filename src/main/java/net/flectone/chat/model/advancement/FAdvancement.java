@@ -1,16 +1,12 @@
 package net.flectone.chat.model.advancement;
 
 import net.flectone.chat.util.NMSUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.advancement.Advancement;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // Thanks, @CroaBeast, for these methods
 // Source https://github.com/CroaBeast/AdvancementInfo

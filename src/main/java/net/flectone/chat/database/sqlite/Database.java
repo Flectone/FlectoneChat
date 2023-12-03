@@ -594,10 +594,6 @@ public class Database extends SQLHandler {
                         insertStatement.executeUpdate();
                     }
                 }
-//                case "warns" -> {
-//                    PlayerWarn playerWarn = (PlayerWarn) playerInfo;
-//                    deleteRow("warns", "uuid", playerWarn.getUUID().toString());
-//                }
                 case "settings" -> {
 
                     PreparedStatement preparedStatement = connection.prepareStatement("UPDATE `settings` SET " +
