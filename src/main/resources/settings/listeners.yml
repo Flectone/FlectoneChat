@@ -33,7 +33,7 @@ player:
     PlayerInteractAtEntityEvent: "MONITOR"
 
   world:
-    PlayerJoinEvent: "LOWEST"
+    PlayerJoinEvent: "MONITOR"
     PlayerChangedWorldEvent: "MONITOR"
 
   afk-timeout:
