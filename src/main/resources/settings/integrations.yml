@@ -12,6 +12,8 @@ LuckPerms:
   enable: true
 SuperVanish:
   enable: true
+PremiumVanish:
+  enable: true
 Vault:
   enable: true
 PlasmoVoice:

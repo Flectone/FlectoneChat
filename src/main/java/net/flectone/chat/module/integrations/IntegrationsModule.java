@@ -48,7 +48,7 @@ public class IntegrationsModule extends FModule {
         if (isPluginEnabled("LuckPerms")) {
             INTEGRATIONS_MAP.put("LuckPerms", new FLuckPerms());
         }
-        if (isPluginEnabled("SuperVanish")) {
+        if (isPluginEnabled("SuperVanish") || isPluginEnabled("PremiumVanish")) {
             INTEGRATIONS_MAP.put("SuperVanish", new FSuperVanish());
         }
         if (isPluginEnabled("Vault")) {
