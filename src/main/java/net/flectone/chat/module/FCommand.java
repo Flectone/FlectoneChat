@@ -1,6 +1,7 @@
 package net.flectone.chat.module;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.database.sqlite.Database;
@@ -41,6 +42,9 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
     private final FModule module;
     private final String name;
     private Command command;
+
+    @Setter
+    private boolean isSilent;
 
     protected final FlectoneChat plugin;
     protected final FPlayerManager playerManager;
@@ -150,12 +154,14 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                                   @Nullable ItemStack itemStack, @NotNull String format,
                                   @NotNull String message, boolean isClickable) {
 
-        FPlayer.sendToConsole(format
-                .replace("<message>", message)
-                .replace("<player>", player != null ? player.getName() : "CONSOLE"));
-
         if (player != null) {
             message = IntegrationsModule.interactiveChatMark(message, player.getUniqueId());
+        }
+
+        if (!isSilent) {
+            FPlayer.sendToConsole(format
+                    .replace("<message>", message)
+                    .replace("<player>", player != null ? player.getName() : "CONSOLE"));
             sendToSpy(player, recipients, CommandSpy.Type.DEFAULT, message);
         }
 

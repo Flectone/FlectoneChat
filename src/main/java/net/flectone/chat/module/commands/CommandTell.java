@@ -111,6 +111,8 @@ public class CommandTell extends FCommand {
         sendGlobalMessage(new ArrayList<>(List.of(fReceiver.getPlayer())), cmdSettings.getSender(),
                 cmdSettings.getItemStack(), getMessage, message, true);
 
+        setSilent(true);
+
         String sendMessage = locale.getVaultString(cmdSettings.getSender(), this + ".send");
         sendMessage = MessageUtil.formatPlayerString(fReceiver.getPlayer(), sendMessage);
 
