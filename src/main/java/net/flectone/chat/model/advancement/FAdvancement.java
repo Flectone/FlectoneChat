@@ -54,7 +54,10 @@ public class FAdvancement {
         Object rawDesc = NMSUtil.getObject(display, "b");
 
         translateKey = getTranslateString(rawTitle);
+        if (translateKey.isEmpty()) return;
+
         translateDesc = getTranslateString(rawDesc);
+        if (translateDesc.isEmpty()) return;
 
         String typeName = NMSUtil.checkValue(NMSUtil.getObject(display, "e"), "PROGRESS");
         this.type = Type.getType(typeName);
@@ -75,7 +78,12 @@ public class FAdvancement {
     @NotNull
     private String getTranslateString(@Nullable Object object) {
         String string = String.valueOf(object);
-        return string.substring(string.indexOf("key='") + 5, string.indexOf("',"));
+        int start = string.indexOf("key='");
+        int end = string.indexOf("',");
+
+        if (start == -1 || end == -1) return "";
+
+        return string.substring(start + 5, end);
     }
 
     private boolean getBool(String string) {
