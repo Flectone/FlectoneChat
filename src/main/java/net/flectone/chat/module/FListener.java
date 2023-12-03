@@ -74,7 +74,9 @@ public abstract class FListener implements Listener, FAction {
                 }
             };
 
-            EventPriority eventPriority = getEventPriority(eventClass.getSimpleName());
+            EventPriority eventPriority = getModule() != null
+                    ? getEventPriority(eventClass.getSimpleName())
+                    : eh.priority();
 
             pluginManager.registerEvent(eventClass, this, eventPriority, executor,
                     FlectoneChat.getPlugin(), false);

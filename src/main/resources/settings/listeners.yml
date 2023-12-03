@@ -19,7 +19,7 @@ extra:
     PlayerInteractEvent: "MONITOR"
 
   mark:
-    PlayerJoinEvent: "LOWEST"
+    PlayerJoinEvent: "MONITOR"
     PlayerInteractEvent: "MONITOR"
 
   item-sign:
@@ -43,14 +43,14 @@ player:
 
 server:
   status:
-    ServerListPingEvent: "LOWEST"
-    PlayerLoginEvent: "LOWEST"
+    ServerListPingEvent: "NORMAL"
+    PlayerLoginEvent: "NORMAL"
 
   tab:
-    PlayerJoinEvent: "LOWEST"
+    PlayerJoinEvent: "MONITOR"
 
   brand:
-    PlayerJoinEvent: "LOWEST"
+    PlayerJoinEvent: "MONITOR"
 
 chat-bubble:
   AsyncPlayerChatEvent: "HIGHEST"
