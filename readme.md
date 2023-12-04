@@ -7,7 +7,7 @@
 # FlectoneChat - personalize your minecraft server!
 
 FlectoneChat is a modern plugin for Spigot servers that is designed to improve gameplay without interfering with it, and
-focuses on improving chat.
+focuses on improving chat.\
 **[Features](#Features)** | **[Integrations](#Integrations)** | **[Commands](#Commands)** | **[bStats](#bStats)**
 
   </div>
@@ -76,9 +76,6 @@ Warns, bans, mutes, kicks
 
 ![warns](https://i.imgur.com/TT3B76U.png)
 ![banlist](https://i.imgur.com/jg4c8gO.png)
-
-
-### Spy
 
 Spy for any inputs (chat, commands, signs, books, anvil)
 
