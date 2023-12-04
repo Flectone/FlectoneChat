@@ -60,7 +60,7 @@ Chat, books, item names, signs
 
 ## Server personalization!
 
-Motd, tab, f3, icons, etc.
+F3, Motd, icons, TAB, etc.
 
 ![f3](https://i.imgur.com/pexsRpl.png)\
 ![motd](https://i.imgur.com/LTnLCyF.png)
@@ -91,7 +91,7 @@ Check out all modules in the **[official documentation](https://chat.flectone.ne
 - [LuckPerms](https://chat.flectone.net/docs/configuration/settings/integrations/#luckperms) - group weights
 - [SuperVanish & PremiumVanish](https://chat.flectone.net/docs/configuration/settings/integrations/#supervanish) - hide all interactions
 - [Vault](https://chat.flectone.net/docs/configuration/settings/integrations/#vault) - per group configuration
-- [Plasmo Voice](https://chat.flectone.net/docs/configuration/settings/integrations/#plasmovoice) - mutes sync
+- [Plasmo Voice & Simple Voice](https://chat.flectone.net/docs/configuration/settings/integrations/#plasmovoice) - mutes sync
 - [DiscordSRV](https://chat.flectone.net/docs/configuration/settings/integrations/#discordsrv) - send flectonechat's actions to discord
 
 # Commands
