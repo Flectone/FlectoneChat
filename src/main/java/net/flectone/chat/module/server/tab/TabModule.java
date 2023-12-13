@@ -114,7 +114,7 @@ public class TabModule extends FModule {
             }
         }
 
-        tabList.add(stringBuilder.substring(0, stringBuilder.length() - 1));
+        tabList.add(!stringBuilder.isEmpty() ? stringBuilder.substring(0, stringBuilder.length() - 1) : stringBuilder.toString());
 
         map.put(playerGroup, tabList);
         return tabList;
