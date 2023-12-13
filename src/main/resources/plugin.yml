@@ -8,6 +8,8 @@ softdepend: [ DiscordSRV, PlaceholderAPI, InteractiveChat, LuckPerms, SuperVanis
 
 permissions:
 
+  flectonechat.auto-message:
+    default: true
   flectonechat.chat-bubble:
     default: true
   flectonechat.extra.item-sign:
