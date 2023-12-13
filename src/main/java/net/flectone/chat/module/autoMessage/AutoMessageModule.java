@@ -99,7 +99,7 @@ public class AutoMessageModule extends FModule {
             }
         }
 
-        messageList.add(stringBuilder.substring(0, stringBuilder.length() - 1));
+        messageList.add(!stringBuilder.isEmpty() ? stringBuilder.substring(0, stringBuilder.length() - 1) : stringBuilder.toString());
 
         map.put(playerGroup, messageList);
         return messageList;
