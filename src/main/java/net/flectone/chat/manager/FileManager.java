@@ -222,6 +222,8 @@ public class FileManager {
 
             resourceFile.getKeys(true).parallelStream()
                     .filter(string -> {
+                        if (string.contains("default.player-message.patterns.list.")
+                                || string.contains("default.color.list.")) return false;
                         if (!file.contains(string)) return true;
 
                         Object objectA = file.get(string);
