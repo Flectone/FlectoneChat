@@ -208,6 +208,20 @@ public class FormattingModule extends FModule {
             }
 
             if (formattingMap.containsKey("url")) {
+
+                if (config.getVaultBoolean(sender, this + ".list.url.markdown-support")) {
+                    Matcher urlMatcher = Pattern.compile("\\[(?<text>[^\\]]*)\\]\\((?<link>[^\\)]*)\\)").matcher(word);
+                    if (urlMatcher.find()) {
+                        wordParams.setUrlText(urlMatcher.group(2));
+                        wordParams.setUrl(true);
+
+                        word = config.getVaultString(sender, this + ".list.url.format")
+                                .replace("<message>", urlMatcher.group(1));
+                        wordParams.setText(word);
+                        return wordParams;
+                    }
+                }
+
                 Matcher urlMatcher = Pattern.compile(formattingMap.get("url")).matcher(word);
                 if (urlMatcher.find()) {
                     wordParams.setUrlText(word.substring(urlMatcher.start(0), urlMatcher.end(0)));

@@ -259,7 +259,11 @@ default:
           hover:
             enable: true
           clickable: true
+
+          markdown-support: true
+
           trigger: ((https?|ftp|gopher|telnet|file):((//)|(\\))+[\w:#@%/;$()~_?+-=\\.&]*)
+
           format: "&&1<message>"
 
         item:
