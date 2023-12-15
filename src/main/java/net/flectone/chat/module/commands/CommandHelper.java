@@ -2,6 +2,7 @@ package net.flectone.chat.module.commands;
 
 import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
+import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -57,6 +58,7 @@ public class CommandHelper extends FCommand {
         Collection<Player> playerList = (Collection<Player>) Bukkit.getOnlinePlayers()
                 .stream()
                 .filter(player -> player.hasPermission(OTHER_PERMISSION))
+                .filter(player -> !IntegrationsModule.isVanished(player))
                 .toList();
 
         if (playerList.isEmpty()) {

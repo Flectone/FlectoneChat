@@ -70,7 +70,7 @@ public class CommandTell extends FCommand {
 
         String message = MessageUtil.joinArray(args, 1, " ");
 
-        if (!fReceiver.getOfflinePlayer().isOnline() && commands.getBoolean("mail.enable")) {
+        if (!fReceiver.isOnline() && commands.getBoolean("mail.enable")) {
             dispatchCommand(commandSender, "mail " + receiver + " " + message);
             return;
         }

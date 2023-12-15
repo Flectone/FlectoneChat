@@ -37,7 +37,7 @@ public class CommandPing extends FCommand {
                 ? cmdSettings.getFPlayer()
                 : playerManager.get(args[0]);
 
-        if (fPlayer == null) {
+        if (fPlayer == null || !fPlayer.isOnline()) {
             sendErrorMessage(commandSender, getModule() + ".null-player");
             return true;
         }

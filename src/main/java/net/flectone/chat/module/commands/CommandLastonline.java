@@ -50,7 +50,7 @@ public class CommandLastonline extends FCommand {
             return true;
         }
 
-        if (fTarget.getOfflinePlayer().isOnline()) {
+        if (fTarget.isOnline()) {
             String message = locale.getVaultString(commandSender, this + ".currently");
             message = MessageUtil.formatPlayerString(fTarget.getPlayer(), message);
             message = MessageUtil.formatAll(cmdSettings.getSender(), message);

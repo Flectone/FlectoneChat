@@ -96,7 +96,7 @@ public class CommandMail extends FCommand {
 
         String message = MessageUtil.joinArray(args, 1, " ");
 
-        if (fTarget.getOfflinePlayer().isOnline()) {
+        if (fTarget.isOnline()) {
             dispatchCommand(commandSender, "tell " + targetPlayer + " " + message);
             return;
         }

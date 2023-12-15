@@ -365,4 +365,10 @@ public class FPlayer {
     public static void sendToConsole(@NotNull BaseComponent[] baseComponents) {
         Bukkit.getConsoleSender().spigot().sendMessage(baseComponents);
     }
+
+    public boolean isOnline() {
+        return player != null
+                ? player.isOnline() && !IntegrationsModule.isVanished(player)
+                : offlinePlayer != null && offlinePlayer.isOnline();
+    }
 }

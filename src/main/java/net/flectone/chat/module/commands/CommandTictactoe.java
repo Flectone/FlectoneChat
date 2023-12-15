@@ -113,7 +113,7 @@ public class CommandTictactoe extends FCommand {
         secondFPlayer = ticTacToe.getSecondFPlayer(cmdSettings.getFPlayer().getUuid());
         if (secondFPlayer == null) return true;
 
-        if (!secondFPlayer.getOfflinePlayer().isOnline()) {
+        if (!secondFPlayer.isOnline()) {
             sendErrorMessage(commandSender, getModule() + ".null-player");
             ticTacToe.setEnded(true);
             return true;
