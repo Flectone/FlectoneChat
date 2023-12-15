@@ -1,5 +1,6 @@
 package net.flectone.chat.module.autoMessage;
 
+import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
 import net.flectone.chat.model.sound.FSound;
@@ -42,7 +43,11 @@ public class AutoMessageModule extends FModule {
         boolean enabled = autoMessage == null || Integer.parseInt(autoMessage) != -1;
         if (!enabled) return;
 
-        player.sendMessage(incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player));
+        List<String> features = config.getVaultStringList(player, this + ".features");
+        String message = incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player);
+        MessageBuilder messageBuilder = new MessageBuilder(player, null, message, features);
+
+        player.spigot().sendMessage(messageBuilder.buildMessage(null, player, ""));
 
         FModule fModule = moduleManager.get(SoundsModule.class);
         if (fModule instanceof SoundsModule soundsModule) {

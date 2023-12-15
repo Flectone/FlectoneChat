@@ -364,6 +364,8 @@ default:
   auto-message:
     enable: true
 
+    features: [patterns, formatting]
+
     random: false
 
     period: 600

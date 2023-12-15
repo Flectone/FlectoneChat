@@ -138,7 +138,7 @@ default:
   auto-message:
     message:
       - "&&1-------------- "
-      - "&&2This server uses FlectoneChat "
+      - "&&2This server uses [FlectoneChat](https://chat.flectone.net/) "
       - "&&1-------------- "
       - "<next>"
       - "&&1❝ "
