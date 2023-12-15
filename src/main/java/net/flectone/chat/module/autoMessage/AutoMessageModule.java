@@ -82,7 +82,7 @@ public class AutoMessageModule extends FModule {
 
         messageList = new ArrayList<>();
 
-        List<String> tempList = locale.getVaultStringList(player, this + "." + ".message");
+        List<String> tempList = locale.getVaultStringList(player, this + ".message");
 
         if (tempList.isEmpty()) {
             return messageList;
