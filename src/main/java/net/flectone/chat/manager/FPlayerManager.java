@@ -121,6 +121,21 @@ public class FPlayerManager {
 
         List<OfflinePlayer> offlinePlayerList = Arrays.asList(Bukkit.getOfflinePlayers());
 
+        if (name != null && name.length() == 36) {
+            try {
+                UUID uuid = UUID.fromString(name);
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+
+                if (offlinePlayerList.contains(offlinePlayer)) {
+                    fPlayer = new FPlayer(offlinePlayer);
+
+                    playerHashMap.put(name, fPlayer);
+
+                    return fPlayer;
+                }
+            } catch (IllegalArgumentException ignored) {}
+        }
+
         offlinePlayerList = offlinePlayerList
                 .parallelStream()
                 .filter(player -> player.getName() != null && player.getName().equalsIgnoreCase(name))
