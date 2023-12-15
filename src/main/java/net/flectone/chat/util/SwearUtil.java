@@ -2,6 +2,7 @@ package net.flectone.chat.util;
 
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,11 +36,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 public class SwearUtil {
 
-    private static final List<String> swears = new ArrayList<>();
+    private static final List<String> swearsList = new ArrayList<>();
+    private static final List<Pattern> swearsRegex = new ArrayList<>();
     private static final HashMap<Character, List<Character>> synonymousChars = new HashMap<>();
 
     static {
-        loadSwears();
+        loadSwearsList();
+        loadSwearsRegex();
 
         synonymousChars.put('h', (Arrays.asList('x', 'х', 'н', 'n')));
         synonymousChars.put('n', (Arrays.asList('н', 'й', 'и')));
@@ -81,16 +84,32 @@ public class SwearUtil {
         synonymousChars.put('9', (Arrays.asList('r', 'я')));
     }
 
-    public static void loadSwears() {
+    public static void loadSwearsList() {
         FConfiguration swearsFile = FlectoneChat.getPlugin().getFileManager().getSwears();
 
         if (swearsFile == null) return;
 
-        swears.clear();
-        swears.addAll(swearsFile.getStringList("list"));
+        swearsList.clear();
+        swearsList.addAll(swearsFile.getStringList("list"));
     }
 
-    public static Boolean contains(String text) {
+    public static void loadSwearsRegex() {
+        FConfiguration swearsFile = FlectoneChat.getPlugin().getFileManager().getSwears();
+
+        if (swearsFile == null) return;
+
+        swearsRegex.clear();
+        swearsRegex.addAll(swearsFile.getStringList("regex").stream().map(Pattern::compile).toList());
+    }
+
+    public static String replaceRegex(@NotNull String text, @NotNull String replacement) {
+        for (Pattern pattern : swearsRegex) {
+            text = pattern.matcher(text).replaceAll(replacement);
+        }
+        return text;
+    }
+
+    public static Boolean containsInList(@NotNull String text) {
 
         String validationText = text.toLowerCase();
 
@@ -118,7 +137,7 @@ public class SwearUtil {
             return true;
         }
 
-        for (String ss : swears) {
+        for (String ss : swearsList) {
             for (int i = 0; i <= validationText.length() - ss.length(); i++) {
                 int tempi = i;
                 for (int j = 0; j <= ss.length(); j++) {

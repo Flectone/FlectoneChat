@@ -6,10 +6,16 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SwearProtectionModule extends FModule {
+
+    private static final List<String> regexList = new ArrayList<>();
 
     public SwearProtectionModule(FModule module, String name) {
         super(module, name);
@@ -26,8 +32,14 @@ public class SwearProtectionModule extends FModule {
         if (hasNoPermission(player)) return string;
         if (!hasNoPermission(player, "bypass")) return string;
 
+        String swearHideSymbol = config.getVaultString(player, this + ".symbol").repeat(3);
+        String swearMode = config.getVaultString(player, this + ".mode");
+
+        if (swearMode.equals("regex")) {
+            return SwearUtil.replaceRegex(string, swearHideSymbol);
+        }
+
         String[] words = string.split(" ");
-        String swearHideSymbol = config.getVaultString(player, this + ".symbol");
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -37,7 +49,7 @@ public class SwearProtectionModule extends FModule {
             String word = words[x];
 
             stringBuilder.append(word);
-            if (SwearUtil.contains(stringBuilder.toString())) {
+            if (SwearUtil.containsInList(stringBuilder.toString())) {
                 String textWithSwear = stringBuilder.toString();
 
                 boolean remove = false;
@@ -48,7 +60,7 @@ public class SwearProtectionModule extends FModule {
                     }
 
                     textWithSwear = textWithSwear.substring(words[y].length());
-                    if (!SwearUtil.contains(textWithSwear)) {
+                    if (!SwearUtil.containsInList(textWithSwear)) {
                         words[y] = "";
                         remove = true;
                     }

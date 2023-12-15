@@ -203,6 +203,7 @@ default:
 
     swear-protection:
       enable: false
+      mode: list
       symbol: "❤"
 
     patterns:
