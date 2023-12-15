@@ -92,11 +92,11 @@ public class MessageBuilder {
                 word = ChatColor.stripColor(word);
             }
 
-            if (sender.hasPermission("flectonechat.player-message.placeholders")) {
+            if (sender != null && sender.hasPermission("flectonechat.player-message.placeholders")) {
                 word = MessageUtil.formatPAPI(sender, sender, word, true);
             }
 
-            if (sender.hasPermission("flectonechat.player-message.colors")) {
+            if (sender != null && sender.hasPermission("flectonechat.player-message.colors")) {
                 word = MessageUtil.formatAll(sender, sender, word, true);
             }
 
