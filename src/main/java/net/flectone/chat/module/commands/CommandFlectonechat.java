@@ -10,6 +10,7 @@ import net.flectone.chat.module.FCommand;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.util.MessageUtil;
+import net.flectone.chat.util.SwearUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.command.Command;
@@ -118,6 +119,9 @@ public class CommandFlectonechat extends FCommand {
         plugin.getPlayerManager().loadOfflinePlayers();
         plugin.getPlayerManager().loadOnlinePlayers();
         plugin.getPlayerManager().loadTabCompleteData();
+
+        SwearUtil.loadSwearsList();
+        SwearUtil.loadSwearsRegex();
 
         sendDefaultMessage(commandSender, this + ".message");
 
