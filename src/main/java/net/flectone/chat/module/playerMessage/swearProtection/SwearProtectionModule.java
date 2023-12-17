@@ -66,7 +66,7 @@ public class SwearProtectionModule extends FModule {
                     }
                 }
 
-                words[x] = swearHideSymbol.repeat(3);
+                words[x] = swearHideSymbol;
 
                 stringBuilder = new StringBuilder();
                 lastX = x + 1;
