@@ -133,7 +133,6 @@ public final class FlectoneChat extends JavaPlugin {
 
                     } catch (ParseException e) {
                         warning("⚠ Failed to get latest plugin version");
-                        e.printStackTrace();
                     }
 
                 });
