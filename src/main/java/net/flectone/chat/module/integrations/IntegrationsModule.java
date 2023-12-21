@@ -93,6 +93,14 @@ public class IntegrationsModule extends FModule {
         return null;
     }
 
+    public static boolean hasPermission(@NotNull OfflinePlayer player, @NotNull String permission) {
+        FIntegration luckPerms = get("LuckPerms");
+        if (luckPerms != null) return ((FLuckPerms) luckPerms).hasPermission(player, permission);
+        FIntegration vault = get("Vault");
+        if (vault != null) return ((FVault) vault).hasPermission(player, permission);
+        return false;
+    }
+
     public static int getPrimaryGroupWeight(@NotNull Player player) {
         FIntegration fIntegration = get("LuckPerms");
         if (fIntegration == null) return 0;

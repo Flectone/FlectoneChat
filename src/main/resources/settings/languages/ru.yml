@@ -162,6 +162,8 @@ default:
     wrong-number: "#ff4e4e⁉ Введено неправильное число"
     long-number: "#ff4e4e⁉ Введено слишком большое число"
 
+    player-bypass: "#ff4e4e⁉ Это невозможно сделать с этим игроком"
+
     format:
       day: "д"
       hour: "ч"

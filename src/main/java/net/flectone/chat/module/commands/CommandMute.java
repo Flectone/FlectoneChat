@@ -51,6 +51,11 @@ public class CommandMute extends FCommand {
             return true;
         }
 
+        if (IntegrationsModule.hasPermission(mutedFPlayer.getOfflinePlayer(), getPermission() + ".bypass")) {
+            sendErrorMessage(commandSender, getModule() + ".player-bypass");
+            return true;
+        }
+
         int muteTime = stringToTime(time);
 
         if (muteTime < -1) {

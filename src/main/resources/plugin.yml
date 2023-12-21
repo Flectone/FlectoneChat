@@ -126,6 +126,8 @@ permissions:
     default: true
   flectonechat.commands.ban:
     default: op
+  flectonechat.commands.ban.bypass:
+    default: false
   flectonechat.commands.banlist:
     default: op
   flectonechat.commands.me:
@@ -196,6 +198,8 @@ permissions:
     default: true
   flectonechat.commands.kick:
     default: op
+  flectonechat.commands.kick.bypass:
+    default: false
   flectonechat.commands.lastonline:
     default: true
   flectonechat.commands.mail:
@@ -210,6 +214,8 @@ permissions:
     default: true
   flectonechat.commands.mute:
     default: op
+  flectonechat.commands.mute.bypass:
+    default: false
   flectonechat.commands.mutelist:
     default: op
   flectonechat.commands.ping:
@@ -240,6 +246,8 @@ permissions:
     default: op
   flectonechat.commands.warn:
     default: op
+  flectonechat.commands.warn.bypass:
+    default: false
   flectonechat.commands.unwarn:
     default: op
   flectonechat.commands.warnlist:

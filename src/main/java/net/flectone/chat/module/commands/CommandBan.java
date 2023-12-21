@@ -84,6 +84,11 @@ public class CommandBan extends FCommand {
             return true;
         }
 
+        if (IntegrationsModule.hasPermission(banFPlayer.getOfflinePlayer(), getPermission() + ".bypass")) {
+            sendErrorMessage(commandSender, getModule() + ".player-bypass");
+            return true;
+        }
+
         int banTime = stringToTime(time);
         if (banTime < -1) {
             sendErrorMessage(commandSender, getModule() + ".long-number");

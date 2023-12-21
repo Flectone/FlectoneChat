@@ -1,17 +1,19 @@
 package net.flectone.chat.module.integrations;
 
-import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.user.UserManager;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 public class FLuckPerms implements FIntegration {
 
@@ -19,8 +21,7 @@ public class FLuckPerms implements FIntegration {
         init();
     }
 
-    @Getter
-    private static LuckPerms provider;
+    private LuckPerms provider;
 
 
     @Override
@@ -78,5 +79,17 @@ public class FLuckPerms implements FIntegration {
                 .stream()
                 .map(Group::getName)
                 .toList());
+    }
+
+    public boolean hasPermission(@NotNull OfflinePlayer player, @NotNull String permission) {
+        UserManager userManager = provider.getUserManager();
+        CompletableFuture<User> userFuture = userManager.loadUser(player.getUniqueId());
+
+        try {
+            return userFuture.get().getCachedData().getPermissionData().checkPermission(permission).asBoolean();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

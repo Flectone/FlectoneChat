@@ -162,6 +162,8 @@ default:
     wrong-number: "#ff4e4e⁉ Wrong number entered"
     long-number: "#ff4e4e⁉ The number you entered is too large"
 
+    player-bypass: "#ff4e4e⁉ This cannot be done with this player"
+
     format:
       day: "d"
       hour: "h"

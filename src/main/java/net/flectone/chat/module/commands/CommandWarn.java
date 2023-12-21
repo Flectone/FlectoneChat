@@ -59,6 +59,11 @@ public class CommandWarn extends FCommand {
             return;
         }
 
+        if (IntegrationsModule.hasPermission(warnedFPlayer.getOfflinePlayer(), getPermission() + ".bypass")) {
+            sendErrorMessage(commandSender, getModule() + ".player-bypass");
+            return;
+        }
+
         int time = stringToTime(stringTime);
 
         if (time < -1) {

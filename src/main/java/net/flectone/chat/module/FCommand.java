@@ -90,6 +90,13 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
                 : name;
     }
 
+    @NotNull
+    public String getPermission() {
+        return module != null
+                ? module.getPermission() + "." + name
+                : name;
+    }
+
     @Override
     public abstract boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command,
                                       @NotNull String alias, @NotNull String[] args);

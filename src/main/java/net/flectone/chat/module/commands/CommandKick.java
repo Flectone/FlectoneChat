@@ -52,13 +52,20 @@ public class CommandKick extends FCommand {
                 : MessageUtil.joinArray(args, 1, " ");
 
         if (args[0].equals("@a")) {
-            Bukkit.getOnlinePlayers().forEach(player -> kick(player, commandSender, cmdSettings, reason));
+            Bukkit.getOnlinePlayers().stream()
+                    .filter(player -> !player.hasPermission(getPermission() + ".bypass"))
+                    .forEach(player -> kick(player, commandSender, cmdSettings, reason));
             return true;
         }
 
         Player toKick = Bukkit.getPlayer(args[0]);
         if (toKick == null) {
             sendErrorMessage(commandSender, getModule() + ".null-player");
+            return true;
+        }
+
+        if (IntegrationsModule.hasPermission(toKick, getPermission() + ".bypass")) {
+            sendErrorMessage(commandSender, getModule() + ".player-bypass");
             return true;
         }
 
