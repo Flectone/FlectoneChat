@@ -14,11 +14,12 @@ import java.util.Arrays;
 
 public class FComponent {
 
-    private final BaseComponent component;
+    private BaseComponent component;
     protected final FConfiguration locale;
     protected final FConfiguration config;
     @Getter
     private HoverEvent hoverEvent;
+    private ClickEvent clickEvent;
 
     public FComponent(@Nullable BaseComponent baseComponent) {
         this.component = baseComponent;
@@ -30,6 +31,12 @@ public class FComponent {
 
     public FComponent(@NotNull String text) {
         this(new TextComponent(fromLegacyText(text)));
+    }
+
+    public void set(@NotNull String text) {
+        component = new TextComponent(fromLegacyText(text));
+        component.setClickEvent(clickEvent);
+        component.setHoverEvent(hoverEvent);
     }
 
     public FComponent() {
@@ -63,7 +70,7 @@ public class FComponent {
 
     @NotNull
     public FComponent addOpenURL(@NotNull String url) {
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+        setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         return this;
     }
 
@@ -75,18 +82,23 @@ public class FComponent {
 
     @NotNull
     public FComponent addRunCommand(@NotNull String command) {
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
         return this;
     }
 
     @NotNull
     public FComponent addSuggestCommand(@NotNull String command) {
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+        setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         return this;
     }
 
     public void setHoverEvent(@NotNull HoverEvent hoverEvent) {
         component.setHoverEvent(hoverEvent);
         this.hoverEvent = hoverEvent;
+    }
+
+    public void setClickEvent(@NotNull ClickEvent clickEvent) {
+        component.setClickEvent(clickEvent);
+        this.clickEvent = clickEvent;
     }
 }

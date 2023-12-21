@@ -113,6 +113,8 @@ default:
         message: "#ff4e4e← &&2<player> &&1впервые вышел с сервера"
 
   player:
+    name:
+      invisible: "? Невидимка"
     hover:
       message: "&&1Написать игроку &&2<player>"
     below-name:

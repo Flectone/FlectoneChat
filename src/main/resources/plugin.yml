@@ -30,6 +30,8 @@ permissions:
     default: true
   flectonechat.player.hover:
     default: true
+  flectonechat.player.name.invisible:
+    default: true
   flectonechat.player.name.prefix:
     default: true
   flectonechat.player.name.suffix:

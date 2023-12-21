@@ -7,6 +7,7 @@ import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.Pair;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,6 +17,14 @@ public class FPlayerComponent extends FComponent {
         super(text);
 
         if (!(sender instanceof Player player) || !(recipient instanceof Player recip)) return;
+
+        if (config.getVaultBoolean(player, "player.name.hide-invisible")
+                && player.hasPotionEffect(PotionEffectType.INVISIBILITY)
+                && player.hasPermission("flectonechat.player.name.invisible")) {
+            text = text.replace(player.getName(), locale.getVaultString(player, "player.name.invisible"));
+            set(text);
+            return;
+        }
 
         Pair<String, Pair<String, HoverModule.CommandType>> hoverInfo = null;
 

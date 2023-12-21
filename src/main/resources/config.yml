@@ -143,6 +143,8 @@ default:
       real: "<GRADIENT:11b8f0><player></GRADIENT:87cee6>"
       suffix: "<afk_suffix><vault_suffix>"
 
+      hide-invisible: true
+
     name-tag:
       enable: true
 

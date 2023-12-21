@@ -10,6 +10,7 @@ import net.flectone.chat.module.integrations.IntegrationsModule;
 import net.flectone.chat.module.player.name.NameModule;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,11 +91,11 @@ public class MessageUtil {
 
         FModule fModule = FlectoneChat.getPlugin().getModuleManager().get(NameModule.class);
         if (fModule instanceof NameModule nameModule) {
-            if (string.contains("<player_name_tab")) {
+            if (string.contains("<player_name_tab>")) {
                 string = string.replace("<player_name_tab>", nameModule.getTab(player));
             }
 
-            if (string.contains("<player_name_real")) {
+            if (string.contains("<player_name_real>")) {
                 string = string.replace("<player_name_real>", nameModule.getReal(player));
             }
 
@@ -109,6 +110,20 @@ public class MessageUtil {
             if (string.contains("<player_suffix>")) {
                 string = string.replace("<player_suffix>", nameModule.getSuffix(player));
             }
+        }
+
+        if (isInvisible(player)) {
+            String invisibleName = FlectoneChat.getPlugin().getFileManager().getLocale().getVaultString(player, "player.name.invisible");
+
+            return string
+                    .replace("<player_prefix>", "")
+                    .replace("<player_suffix>", "")
+                    .replace("<vault_prefix>", "")
+                    .replace("<world_prefix>", "")
+                    .replace("<stream_prefix>", "")
+                    .replace("<player>", invisibleName)
+                    .replace("<vault_suffix>", "")
+                    .replace("<afk_suffix>", "");
         }
 
         FPlayer fPlayer = FlectoneChat.getPlugin().getPlayerManager().get(player);
@@ -127,4 +142,9 @@ public class MessageUtil {
                 .collect(Collectors.joining(delimiter));
     }
 
+    public static boolean isInvisible(@NotNull Player player) {
+        return FlectoneChat.getPlugin().getFileManager().getConfig().getVaultBoolean(player, "player.name.hide-invisible")
+                && player.hasPotionEffect(PotionEffectType.INVISIBILITY)
+                && player.hasPermission("flectonechat.player.name.invisible");
+    }
 }

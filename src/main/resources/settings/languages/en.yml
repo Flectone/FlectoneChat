@@ -113,6 +113,8 @@ default:
         message: "#ff4e4e← &&2<player> &&1left the server for the first time"
 
   player:
+    name:
+      invisible: "? Invisible"
     hover:
       message: "&&1Click to write to &&2<player>"
     below-name:
