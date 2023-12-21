@@ -187,8 +187,8 @@ public class MessageBuilder {
                     wordComponent = new FPlayerComponent(fPlayer.getPlayer(), recipient, word);
                 }
             } else if (wordParams.getImageComponent() != null) {
-                wordComponent = new FComponent(MessageUtil.formatAll(sender, recipient, wordParams.getText()));
-                wordComponent.setHoverEvent(wordParams.getImageComponent().getHoverEvent());
+                wordComponent = wordParams.getImageComponent();
+                wordComponent.set(MessageUtil.formatAll(sender, recipient, wordParams.getText() + ChatColor.RESET));
             } else if (wordParams.isUrl()) {
                 wordComponent = new FURLComponent(sender, recipient, word, wordParams.getUrlText());
             } else if (wordParams.isHide()) {

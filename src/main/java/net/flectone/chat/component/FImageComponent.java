@@ -89,6 +89,7 @@ public class FImageComponent extends FComponent {
             stringBuilder.append(translatedColor).append("\n");
         }
 
+        addOpenURL(imageUrl);
         addHoverText(stringBuilder.toString());
 
         return true;

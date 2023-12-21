@@ -19,6 +19,7 @@ public class FComponent {
     protected final FConfiguration config;
     @Getter
     private HoverEvent hoverEvent;
+    @Getter
     private ClickEvent clickEvent;
 
     public FComponent(@Nullable BaseComponent baseComponent) {
