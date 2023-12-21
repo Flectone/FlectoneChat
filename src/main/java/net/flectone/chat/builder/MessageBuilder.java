@@ -36,6 +36,10 @@ public class MessageBuilder {
     private final FConfiguration config;
 
     public MessageBuilder(@Nullable Player player, @Nullable ItemStack itemStack, @NotNull String message, @NotNull List<String> featuresList) {
+        this(player, itemStack, message, featuresList, false);
+    }
+
+    public MessageBuilder(@Nullable Player player, @Nullable ItemStack itemStack, @NotNull String message, @NotNull List<String> featuresList, boolean isAsync) {
         this.itemStack = itemStack;
         this.sender = player;
 
@@ -64,7 +68,7 @@ public class MessageBuilder {
                 && fModule.isEnabledFor(player) && !fModule.hasNoPermission(player)) {
 
             boolean mentionEnabled = featuresList.contains("mention");
-            formattingModule.replace(sender, message, "", messages, itemStack, mentionEnabled, featuresList.contains("formatting"));
+            formattingModule.replace(sender, message, "", messages, itemStack, mentionEnabled, featuresList.contains("formatting"), isAsync);
         } else {
             WordParams wordParams = new WordParams();
             wordParams.setText(message);
@@ -182,7 +186,9 @@ public class MessageBuilder {
                 if (fPlayer != null) {
                     wordComponent = new FPlayerComponent(fPlayer.getPlayer(), recipient, word);
                 }
-
+            } else if (wordParams.getImageComponent() != null) {
+                wordComponent = new FComponent(MessageUtil.formatAll(sender, recipient, wordParams.getText()));
+                wordComponent.setHoverEvent(wordParams.getImageComponent().getHoverEvent());
             } else if (wordParams.isUrl()) {
                 wordComponent = new FURLComponent(sender, recipient, word, wordParams.getUrlText());
             } else if (wordParams.isHide()) {

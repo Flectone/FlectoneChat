@@ -1,5 +1,6 @@
 package net.flectone.chat.module.autoMessage;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.model.player.FPlayer;
 import net.flectone.chat.model.player.Settings;
@@ -9,6 +10,7 @@ import net.flectone.chat.module.sounds.SoundsModule;
 import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.PlayerUtil;
 import net.flectone.chat.util.RandomUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,14 +47,17 @@ public class AutoMessageModule extends FModule {
 
         List<String> features = config.getVaultStringList(player, this + ".features");
         String message = incrementIndexAndGet(MESSAGE_MAP, MESSAGE_INDEX_MAP, player);
-        MessageBuilder messageBuilder = new MessageBuilder(player, null, message, features);
 
-        player.spigot().sendMessage(messageBuilder.buildMessage(null, player, ""));
+        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
+            MessageBuilder messageBuilder = new MessageBuilder(player, null, message, features, true);
 
-        FModule fModule = moduleManager.get(SoundsModule.class);
-        if (fModule instanceof SoundsModule soundsModule) {
-            soundsModule.play(new FSound(player, player, this.toString()));
-        }
+            player.spigot().sendMessage(messageBuilder.buildMessage(null, player, ""));
+
+            FModule fModule = moduleManager.get(SoundsModule.class);
+            if (fModule instanceof SoundsModule soundsModule) {
+                soundsModule.play(new FSound(player, player, this.toString()));
+            }
+        });
     }
 
     @NotNull

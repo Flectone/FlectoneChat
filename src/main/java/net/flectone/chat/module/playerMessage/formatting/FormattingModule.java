@@ -1,5 +1,7 @@
 package net.flectone.chat.module.playerMessage.formatting;
 
+import net.flectone.chat.FlectoneChat;
+import net.flectone.chat.component.FImageComponent;
 import net.flectone.chat.model.message.TextParameters;
 import net.flectone.chat.model.message.WordParams;
 import net.flectone.chat.model.player.FPlayer;
@@ -12,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -58,9 +61,14 @@ public class FormattingModule extends FModule {
         return groupFormattingMap;
     }
 
-    public void replace(@Nullable Player player, @NotNull String message, @NotNull String command,
-                               @NotNull List<WordParams> messages, @Nullable ItemStack itemStack, boolean mentionEnabled,
-                               boolean isEnabled) {
+    public void replace(@Nullable Player player,
+                        @NotNull String message,
+                        @NotNull String command,
+                        @NotNull List<WordParams> messages,
+                        @Nullable ItemStack itemStack,
+                        boolean mentionEnabled,
+                        boolean isEnabled,
+                        boolean isAsync) {
 
         HashMap<String, String> formattingMap = load(player);
 
@@ -72,12 +80,12 @@ public class FormattingModule extends FModule {
 
         if (sortedPairs.isEmpty()) {
             lastTextParamaters = new TextParameters(message);
-            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
+            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled, isAsync);
 
         } else if (sortedPairs.get(0).getValue() != 0) {
             String startText = message.substring(0, sortedPairs.get(0).getValue());
             lastTextParamaters = new TextParameters(startText);
-            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
+            splitStringToWordParams(player, command, lastTextParamaters, messages, itemStack, formattingMap, mentionEnabled, isEnabled, isAsync);
         }
 
         for (int x = 0; x < sortedPairs.size() - 1; x++) {
@@ -98,7 +106,7 @@ public class FormattingModule extends FModule {
 
             lastTextParamaters = textParameters;
 
-            splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
+            splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled, isAsync);
         }
 
         if (!sortedPairs.isEmpty()) {
@@ -108,7 +116,7 @@ public class FormattingModule extends FModule {
                 String endText = message.substring(pairA.getValue() + pairA.getKey().length());
                 TextParameters textParameters = new TextParameters(endText);
 
-                splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled);
+                splitStringToWordParams(player, command, textParameters, messages, itemStack, formattingMap, mentionEnabled, isEnabled, isAsync);
             }
         }
 
@@ -152,10 +160,15 @@ public class FormattingModule extends FModule {
         return sortedPairs;
     }
 
-    private void splitStringToWordParams(@Nullable Player sender, @NotNull String command,
-                                         @NotNull TextParameters textParameters, @NotNull List<WordParams> messages,
-                                         @Nullable ItemStack itemStack, @NotNull HashMap<String, String> formattingMap,
-                                         boolean mentionEnabled, boolean isEnabled) {
+    private void splitStringToWordParams(@Nullable Player sender,
+                                         @NotNull String command,
+                                         @NotNull TextParameters textParameters,
+                                         @NotNull List<WordParams> messages,
+                                         @Nullable ItemStack itemStack,
+                                         @NotNull HashMap<String, String> formattingMap,
+                                         boolean mentionEnabled,
+                                         boolean isEnabled,
+                                         boolean isAsync) {
         String text = textParameters.getText();
 
         if (text.equals(" ")) {

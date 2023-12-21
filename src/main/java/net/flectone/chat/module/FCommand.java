@@ -165,14 +165,17 @@ public abstract class FCommand implements CommandExecutor, TabCompleter, FAction
             sendToSpy(player, recipients, CommandSpy.Type.DEFAULT, message);
         }
 
-        MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, message, getFeatures());
-        recipients.parallelStream().forEach(recipient -> {
-            recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
+        @NotNull String finalMessage = message;
+        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
+            MessageBuilder messageBuilder = new MessageBuilder(player, itemStack, finalMessage, getFeatures(), true);
+            recipients.parallelStream().forEach(recipient -> {
+                recipient.spigot().sendMessage(messageBuilder.buildFormat(player, recipient, format, isClickable));
 
-            FModule fModule = moduleManager.get(SoundsModule.class);
-            if (fModule instanceof SoundsModule soundsModule) {
-                soundsModule.play(new FSound(player, recipient, this.toString()));
-            }
+                FModule fModule = moduleManager.get(SoundsModule.class);
+                if (fModule instanceof SoundsModule soundsModule) {
+                    soundsModule.play(new FSound(player, recipient, this.toString()));
+                }
+            });
         });
     }
 

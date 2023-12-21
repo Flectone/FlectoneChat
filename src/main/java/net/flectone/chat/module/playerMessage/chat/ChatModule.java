@@ -1,9 +1,11 @@
 package net.flectone.chat.module.playerMessage.chat;
 
+import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.builder.MessageBuilder;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.chatBubble.ChatBubbleModule;
 import net.flectone.chat.module.integrations.IntegrationsModule;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,14 +32,17 @@ public class ChatModule extends FModule {
 
         message = IntegrationsModule.interactiveChatMark(message, sender.getUniqueId());
 
-        MessageBuilder messageBuilder = new MessageBuilder(sender, sender.getInventory().getItemInMainHand(), message, featuresList);
+        @NotNull String finalMessage = message;
+        Bukkit.getScheduler().runTaskAsynchronously(FlectoneChat.getPlugin(), () -> {
+            MessageBuilder messageBuilder = new MessageBuilder(sender, sender.getInventory().getItemInMainHand(), finalMessage, featuresList, true);
 
-        recipientsList.forEach(player ->
-                player.spigot().sendMessage(messageBuilder.buildFormat(sender, player, chatFormat, true)));
+            recipientsList.forEach(player ->
+                    player.spigot().sendMessage(messageBuilder.buildFormat(sender, player, chatFormat, true)));
 
-        FModule fModule = moduleManager.get(ChatBubbleModule.class);
-        if (fModule instanceof ChatBubbleModule chatBubbleModule) {
-            chatBubbleModule.add(sender, messageBuilder.getMessage(""));
-        }
+            FModule fModule = moduleManager.get(ChatBubbleModule.class);
+            if (fModule instanceof ChatBubbleModule chatBubbleModule) {
+                chatBubbleModule.add(sender, messageBuilder.getMessage(""));
+            }
+        });
     }
 }
