@@ -262,6 +262,15 @@ default:
 
           markdown-support: true
 
+          image:
+            enable: true
+
+            format: "&&1🎨<image>"
+
+            whitelist-site:
+              - "cdn.discordapp.com"
+              - "i.imgur.com"
+
           trigger: ((https?|ftp|gopher|telnet|file):((//)|(\\))+[\w:#@%/;$()~_?+-=\\.&]*)
 
           format: "&&1<message>"

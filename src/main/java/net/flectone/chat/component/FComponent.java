@@ -1,5 +1,6 @@
 package net.flectone.chat.component;
 
+import lombok.Getter;
 import net.flectone.chat.FlectoneChat;
 import net.flectone.chat.model.file.FConfiguration;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -16,6 +17,8 @@ public class FComponent {
     private final BaseComponent component;
     protected final FConfiguration locale;
     protected final FConfiguration config;
+    @Getter
+    private HoverEvent hoverEvent;
 
     public FComponent(@Nullable BaseComponent baseComponent) {
         this.component = baseComponent;
@@ -54,7 +57,7 @@ public class FComponent {
 
     @NotNull
     public FComponent addHoverText(@NotNull BaseComponent[] baseComponents) {
-        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, baseComponents));
+        setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, baseComponents));
         return this;
     }
 
@@ -66,7 +69,7 @@ public class FComponent {
 
     @NotNull
     public FComponent addHoverItem(@NotNull String itemJson) {
-        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(itemJson)}));
+        setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(itemJson)}));
         return this;
     }
 
@@ -80,5 +83,10 @@ public class FComponent {
     public FComponent addSuggestCommand(@NotNull String command) {
         component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
         return this;
+    }
+
+    public void setHoverEvent(@NotNull HoverEvent hoverEvent) {
+        component.setHoverEvent(hoverEvent);
+        this.hoverEvent = hoverEvent;
     }
 }

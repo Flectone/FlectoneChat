@@ -222,6 +222,21 @@ public class FormattingModule extends FModule {
                     }
                 }
 
+                if (isAsync
+                        && isUrlAllowed(sender, word)
+                        && config.getVaultBoolean(sender, this + ".list.url.image.enable")
+                        && !hasNoPermission(sender, "url.image")) {
+                    FImageComponent fImageComponent = new FImageComponent(word);
+                    if (fImageComponent.isCorrect()) {
+                        word = config.getVaultString(sender, this + ".list.url.image.format")
+                                .replace("<image>", fImageComponent.getText());
+                        wordParams.setText(word);
+                        wordParams.setImageComponent(fImageComponent);
+                        wordParams.setImage(true);
+                        return wordParams;
+                    }
+                }
+
                 Matcher urlMatcher = Pattern.compile(formattingMap.get("url")).matcher(word);
                 if (urlMatcher.find()) {
                     wordParams.setUrlText(word.substring(urlMatcher.start(0), urlMatcher.end(0)));
@@ -328,4 +343,18 @@ public class FormattingModule extends FModule {
         }
     }
 
+    public boolean isUrlAllowed(@Nullable CommandSender player, @NotNull String urlString) {
+        Pattern pattern = Pattern.compile("^(?:https?://)?([^/]+)");
+        Matcher matcher = pattern.matcher(urlString);
+
+        if (matcher.find()) {
+            String host = matcher.group(1).toLowerCase();
+            return FlectoneChat.getPlugin().getFileManager()
+                    .getConfig()
+                    .getVaultStringList(player, this + ".list.url.image.whitelist-site")
+                    .contains(host);
+        }
+
+        return false;
+    }
 }

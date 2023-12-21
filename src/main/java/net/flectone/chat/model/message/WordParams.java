@@ -2,6 +2,7 @@ package net.flectone.chat.model.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.flectone.chat.component.FImageComponent;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class WordParams {
     private String playerPingName;
     private String urlText;
     private String hideMessage;
+    private FImageComponent imageComponent;
+    private boolean isImage;
     private boolean clickable;
     private boolean isHide;
     private boolean isPlayerPing;
@@ -45,7 +48,7 @@ public class WordParams {
     }
 
     public boolean isEdited() {
-        return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isCords() || isStats() || isPing();
+        return isPlayerPing() || isHide() || isUrl() || isClickable() || isItem() || isCords() || isStats() || isPing() || isImage();
     }
 
     public void addParameters(List<String> parameters) {
