@@ -144,7 +144,8 @@ public class FileManager {
             File fileIcon = new File(DATA_FOLDER + ICONS_FOLDER + icon + ".png");
             iconsMap.put(icon, ImageIO.read(fileIcon));
         } catch (IOException ignored) {}
-        return null;
+
+        return iconsMap.get(icon);
     }
 
     private void loadIcons() {
