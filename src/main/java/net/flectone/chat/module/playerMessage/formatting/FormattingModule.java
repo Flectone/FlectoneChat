@@ -222,7 +222,8 @@ public class FormattingModule extends FModule {
 
             if (formattingMap.containsKey("url")) {
 
-                if (config.getVaultBoolean(sender, this + ".list.url.markdown-support")) {
+                if (config.getVaultBoolean(sender, this + ".list.url.markdown-support")
+                        && !hasNoPermission(sender, "markdown-url")) {
                     Matcher urlMatcher = Pattern.compile("\\[(?<text>[^\\]]*)\\]\\((?<link>[^\\)]*)\\)").matcher(word);
                     if (urlMatcher.find()) {
                         wordParams.setUrlText(urlMatcher.group(2));
