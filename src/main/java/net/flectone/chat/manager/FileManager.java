@@ -7,7 +7,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +25,7 @@ public class FileManager {
     private static final String LANGUAGES_FOLDER = SETTINGS_FOLDER + "languages" + File.separator;
     private static final String ICONS_FOLDER = SETTINGS_FOLDER + "icons" + File.separator;
 
-    private final HashMap<String, File> iconsMap = new HashMap<>();
+    private final HashMap<String, BufferedImage> iconsMap = new HashMap<>();
 
     @Getter
     private boolean isLess420;
@@ -134,13 +137,14 @@ public class FileManager {
         return fileConfiguration;
     }
 
-    public File getIcon(String icon) {
+    public BufferedImage getIcon(String icon) {
         if (iconsMap.get(icon) != null) return iconsMap.get(icon);
 
-        File fileIcon = new File(DATA_FOLDER + ICONS_FOLDER + icon + ".png");
-        iconsMap.put(icon, fileIcon);
-
-        return fileIcon;
+        try {
+            File fileIcon = new File(DATA_FOLDER + ICONS_FOLDER + icon + ".png");
+            iconsMap.put(icon, ImageIO.read(fileIcon));
+        } catch (IOException ignored) {}
+        return null;
     }
 
     private void loadIcons() {
@@ -148,7 +152,7 @@ public class FileManager {
         iconNames.add("maintenance");
 
         iconNames.stream()
-                .filter(icon -> !getIcon(icon).exists()
+                .filter(icon -> getIcon(icon) == null
                         && FlectoneChat.getPlugin().getResource(ICONS_FOLDER + icon + ".png") != null)
                 .forEach(icon ->
                         FlectoneChat.getPlugin().saveResource(ICONS_FOLDER + icon + ".png", false));

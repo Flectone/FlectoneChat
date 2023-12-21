@@ -13,6 +13,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class StatusListener extends FListener {
@@ -76,7 +77,14 @@ public class StatusListener extends FListener {
 
     public void setIcon(@NotNull ServerListPingEvent event, @NotNull String iconName) {
         try {
-            CachedServerIcon serverIcon = Bukkit.loadServerIcon(FlectoneChat.getPlugin().getFileManager().getIcon(iconName));
+
+            BufferedImage bufferedImage = FlectoneChat.getPlugin().getFileManager().getIcon(iconName);
+            if (bufferedImage.getWidth() != 64 || bufferedImage.getHeight() != 64) {
+                FlectoneChat.warning("Unable to set icon " + iconName + ".png, size should be 64x64");
+                return;
+            }
+
+            CachedServerIcon serverIcon = Bukkit.loadServerIcon(bufferedImage);
             event.setServerIcon(serverIcon);
         } catch (Exception exception) {
             FlectoneChat.warning("Unable to load and install " + iconName + ".png image");
