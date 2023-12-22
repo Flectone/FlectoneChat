@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class PlayerUtil {
 
-    private static final String WEBSITE_AVATAR_URL = "https://cravatar.eu/avatar/<player>/8.png";
+    private static final String WEBSITE_AVATAR_URL = "https://mc-heads.net/avatar/<player>/8.png";
 
     public static String getIP(Player player) {
         try {
@@ -93,6 +93,9 @@ public class PlayerUtil {
 
     @NotNull
     public static String constructAvatarUrl(@NotNull Player player) {
-        return WEBSITE_AVATAR_URL.replace("<player>", player.getUniqueId().toString());
+        String replacement = IntegrationsModule.getTextureId(player);
+        if (replacement == null) replacement = player.getUniqueId().toString();
+
+        return WEBSITE_AVATAR_URL.replace("<player>", replacement);
     }
 }

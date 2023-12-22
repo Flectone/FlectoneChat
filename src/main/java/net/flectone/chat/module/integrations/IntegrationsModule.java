@@ -63,6 +63,9 @@ public class IntegrationsModule extends FModule {
         if (isPluginEnabled("VoiceChat")) {
             INTEGRATIONS_MAP.put("VoiceChat", new FSimpleVoiceChat());
         }
+        if (isPluginEnabled("SkinsRestorer")) {
+            INTEGRATIONS_MAP.put("SkinsRestorer", new FSkinsRestorer());
+        }
     }
 
     private static FIntegration get(String integration) {
@@ -72,6 +75,13 @@ public class IntegrationsModule extends FModule {
     private boolean isPluginEnabled(String plugin) {
         return Bukkit.getPluginManager().getPlugin(plugin) != null
                 && integrations.getBoolean(plugin + ".enable");
+    }
+
+    @Nullable
+    public static String getTextureId(@NotNull Player player) {
+        FIntegration skinsRestorer = get("SkinsRestorer");
+        if (skinsRestorer != null) return ((FSkinsRestorer) skinsRestorer).getTextureId(player);
+        return null;
     }
 
     public static boolean isVanished(@NotNull Player player) {

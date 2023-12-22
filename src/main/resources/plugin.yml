@@ -4,7 +4,7 @@ main: net.flectone.chat.FlectoneChat
 api-version: '1.16'
 authors: [ TheFaser, fxd ]
 website: https://chat.flectone.net/
-softdepend: [ DiscordSRV, PlaceholderAPI, InteractiveChat, LuckPerms, SuperVanish, Vault, PlasmoVoice, voicechat ]
+softdepend: [ DiscordSRV, PlaceholderAPI, InteractiveChat, LuckPerms, SuperVanish, Vault, PlasmoVoice, voicechat, SkinsRestorer ]
 
 permissions:
 

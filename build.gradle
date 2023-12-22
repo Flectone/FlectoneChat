@@ -13,6 +13,10 @@ repositories {
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
     maven {
+        name 'codemc'
+        url 'https://repo.codemc.org/repository/maven-public/'
+    }
+    maven {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
@@ -55,6 +59,8 @@ dependencies {
     implementation 'org.jetbrains:annotations:24.0.0'
 
     compileOnly "su.plo.voice.api:server:2.0.3"
+
+    compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.4'
 
     compileOnly "com.loohp:InteractiveChat:4.2.7.2"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7.1"
