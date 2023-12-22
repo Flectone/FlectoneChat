@@ -18,9 +18,12 @@ public class FImageComponent extends FComponent {
 
     private String text;
 
+    private String convertedImage;
+
     public FImageComponent(@NotNull String imageUrl) {
         try {
             this.isCorrect = convertImageUrl(imageUrl);
+            addOpenURL(imageUrl);
         } catch (Exception ignored) {}
     }
 
@@ -89,8 +92,8 @@ public class FImageComponent extends FComponent {
             stringBuilder.append(translatedColor).append("\n");
         }
 
-        addOpenURL(imageUrl);
-        addHoverText(stringBuilder.toString());
+        convertedImage = stringBuilder.toString();
+        addHoverText(convertedImage);
 
         return true;
     }

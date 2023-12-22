@@ -29,6 +29,8 @@ public class FileManager {
 
     @Getter
     private boolean isLess420;
+    @Getter
+    private boolean isLess450;
 
     @Getter
     private FConfiguration config;
@@ -110,6 +112,15 @@ public class FileManager {
                 commands.set("spy.list", spyList);
                 commands.save();
             }
+        }
+
+        if (compareVersions(fileVersion, "4.5.0") == -1) {
+            List<String> chatSettingsDefault = commands.getStringList("chatsettings.change-list");
+            chatSettingsDefault.add("greeting");
+            commands.set("chatsettings.change-list", chatSettingsDefault);
+            commands.save();
+
+            isLess450 = true;
         }
 
         config.set("plugin.version", projectVersion);

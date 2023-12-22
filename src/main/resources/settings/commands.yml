@@ -62,6 +62,7 @@ chatsettings:
     - advancement
     - death
     - join
+    - greeting
     - quit
     - auto-message
     - me

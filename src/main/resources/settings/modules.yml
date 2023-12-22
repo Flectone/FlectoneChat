@@ -49,6 +49,9 @@ server-message:
   join:
     enable: true
 
+  greeting:
+    enable: true
+
   quit:
     enable: true
 

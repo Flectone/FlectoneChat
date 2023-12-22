@@ -106,6 +106,19 @@ default:
       first-time:
         message: "#4eff52→ &&2<player> &&1впервые зашёл на сервер, поприветствуем его!"
 
+    greeting:
+      message:
+        - " "
+        - "########"
+        - "########"
+        - "########   Привет <player>!"
+        - "########"
+        - "########"
+        - "########"
+        - "########"
+        - "########"
+        - " "
+
     quit:
       message: "#ff4e4e← &&2<player>"
 
@@ -255,6 +268,7 @@ default:
         advancement: "&&2Достижения"
         death: "&&2Смерти"
         join: "&&2Подключения"
+        greeting: "&&2Приветствие"
         quit: "&&2Отключения"
         auto-message: "&&2Авто-сообщения"
         me: "&&2/me"
@@ -280,7 +294,7 @@ default:
         - "&&1════ Chat settings ════"
         - "&&1Типы чатов: <chat>"
         - "&&1------------------------"
-        - "&&1Действия игроков: \n <advancement> \n <death> \n <join> \n <quit> \n <auto-message>"
+        - "&&1Действия игроков: \n <advancement> \n <death> \n <join> \n <greeting> \n <quit> \n <auto-message>"
         - "&&1------------------------"
         - "&&1Оповещения команд: \n <me> \n <try> \n <dice> \n <ball> \n <kick> \n <ban> \n <mute> \n <warn> \n <tell> \n <reply> \n <mail> \n <tictactoe> \n <translateto>"
         - "&&1------------------------"

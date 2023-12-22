@@ -74,6 +74,9 @@ default:
     join:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"
+    greeting:
+      enable: false
+      type: "BLOCK_NOTE_BLOCK_BELL:1:1"
     quit:
       enable: false
       type: "BLOCK_NOTE_BLOCK_BELL:1:1"

@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 public class PlayerUtil {
 
+    private static final String WEBSITE_AVATAR_URL = "https://cravatar.eu/avatar/<player>/8.png";
+
     public static String getIP(Player player) {
         try {
             InetSocketAddress playerAddress = player.getAddress();
@@ -87,5 +89,10 @@ public class PlayerUtil {
         return playerCollection.stream()
                 .filter(player -> config.getVaultBoolean(player, path))
                 .collect(Collectors.toList());
+    }
+
+    @NotNull
+    public static String constructAvatarUrl(@NotNull Player player) {
+        return WEBSITE_AVATAR_URL.replace("<player>", player.getUniqueId().toString());
     }
 }

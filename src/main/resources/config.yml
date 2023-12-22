@@ -124,6 +124,9 @@ default:
       first-time:
         enable: true
 
+    greeting:
+      enable: true
+
     quit:
       enable: true
 

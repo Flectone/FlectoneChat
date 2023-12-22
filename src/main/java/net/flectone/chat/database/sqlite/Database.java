@@ -117,6 +117,7 @@ public class Database extends SQLHandler {
                     "`enable_advancement` INTEGER, " +
                     "`enable_death` INTEGER, " +
                     "`enable_join` INTEGER, " +
+                    "`enable_greeting` INTEGER, " +
                     "`enable_quit` INTEGER, " +
                     "`enable_auto_message` INTEGER, " +
                     "`enable_command_me` INTEGER, " +
@@ -148,6 +149,10 @@ public class Database extends SQLHandler {
                 migrate420();
             }
 
+            if (FlectoneChat.getPlugin().getFileManager().isLess450()) {
+                migrate450();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -158,6 +163,17 @@ public class Database extends SQLHandler {
             Statement statement = conn.createStatement();
 
             addColumn(statement, "settings", "enable_command_translateto", "INTEGER");
+
+        } catch (SQLException ex) {
+            FlectoneChat.warning("Couldn't execute MySQL statement: " + ex);
+        }
+    }
+
+    public void migrate450() {
+        try (Connection conn = getConnection()) {
+            Statement statement = conn.createStatement();
+
+            addColumn(statement, "settings", "enable_greeting", "INTEGER");
 
         } catch (SQLException ex) {
             FlectoneChat.warning("Couldn't execute MySQL statement: " + ex);
@@ -394,6 +410,7 @@ public class Database extends SQLHandler {
                 getSettingInt(playerResult, Settings.Type.ADVANCEMENT, settings);
                 getSettingInt(playerResult, Settings.Type.DEATH, settings);
                 getSettingInt(playerResult, Settings.Type.JOIN, settings);
+                getSettingInt(playerResult, Settings.Type.GREETING, settings);
                 getSettingInt(playerResult, Settings.Type.QUIT, settings);
                 getSettingInt(playerResult, Settings.Type.AUTO_MESSAGE, settings);
                 getSettingInt(playerResult, Settings.Type.COMMAND_ME, settings);
@@ -600,6 +617,7 @@ public class Database extends SQLHandler {
                             "enable_advancement=?," +
                             "enable_death=?," +
                             "enable_join=?," +
+                            "enable_greeting=?," +
                             "enable_quit=?," +
                             "enable_command_me=?," +
                             "enable_command_try=?," +
@@ -627,6 +645,7 @@ public class Database extends SQLHandler {
                                 "enable_advancement," +
                                 "enable_death," +
                                 "enable_join," +
+                                "enable_greeting," +
                                 "enable_quit," +
                                 "enable_command_me," +
                                 "enable_command_try," +
@@ -659,22 +678,23 @@ public class Database extends SQLHandler {
         preparedStatement.setString(1, settings.getValue(Settings.Type.ADVANCEMENT));
         preparedStatement.setString(2, settings.getValue(Settings.Type.DEATH));
         preparedStatement.setString(3, settings.getValue(Settings.Type.JOIN));
-        preparedStatement.setString(4, settings.getValue(Settings.Type.QUIT));
-        preparedStatement.setString(5, settings.getValue(Settings.Type.COMMAND_ME));
-        preparedStatement.setString(6, settings.getValue(Settings.Type.COMMAND_TRY));
-        preparedStatement.setString(7, settings.getValue(Settings.Type.COMMAND_DICE));
-        preparedStatement.setString(8, settings.getValue(Settings.Type.COMMAND_BALL));
-        preparedStatement.setString(9, settings.getValue(Settings.Type.COMMAND_BAN));
-        preparedStatement.setString(10, settings.getValue(Settings.Type.COMMAND_MUTE));
-        preparedStatement.setString(11, settings.getValue(Settings.Type.COMMAND_WARN));
-        preparedStatement.setString(12, settings.getValue(Settings.Type.COMMAND_TELL));
-        preparedStatement.setString(13, settings.getValue(Settings.Type.COMMAND_REPLY));
-        preparedStatement.setString(14, settings.getValue(Settings.Type.COMMAND_MAIL));
-        preparedStatement.setString(15, settings.getValue(Settings.Type.COMMAND_TICTACTOE));
-        preparedStatement.setString(16, settings.getValue(Settings.Type.COMMAND_KICK));
-        preparedStatement.setString(17, settings.getValue(Settings.Type.AUTO_MESSAGE));
-        preparedStatement.setString(18, settings.getValue(Settings.Type.CHAT));
-        preparedStatement.setString(19, uuid);
+        preparedStatement.setString(4, settings.getValue(Settings.Type.GREETING));
+        preparedStatement.setString(5, settings.getValue(Settings.Type.QUIT));
+        preparedStatement.setString(6, settings.getValue(Settings.Type.COMMAND_ME));
+        preparedStatement.setString(7, settings.getValue(Settings.Type.COMMAND_TRY));
+        preparedStatement.setString(9, settings.getValue(Settings.Type.COMMAND_DICE));
+        preparedStatement.setString(9, settings.getValue(Settings.Type.COMMAND_BALL));
+        preparedStatement.setString(10, settings.getValue(Settings.Type.COMMAND_BAN));
+        preparedStatement.setString(11, settings.getValue(Settings.Type.COMMAND_MUTE));
+        preparedStatement.setString(12, settings.getValue(Settings.Type.COMMAND_WARN));
+        preparedStatement.setString(13, settings.getValue(Settings.Type.COMMAND_TELL));
+        preparedStatement.setString(14, settings.getValue(Settings.Type.COMMAND_REPLY));
+        preparedStatement.setString(15, settings.getValue(Settings.Type.COMMAND_MAIL));
+        preparedStatement.setString(16, settings.getValue(Settings.Type.COMMAND_TICTACTOE));
+        preparedStatement.setString(17, settings.getValue(Settings.Type.COMMAND_KICK));
+        preparedStatement.setString(18, settings.getValue(Settings.Type.AUTO_MESSAGE));
+        preparedStatement.setString(19, settings.getValue(Settings.Type.CHAT));
+        preparedStatement.setString(20, uuid);
     }
 
     public void deleteRow(@NotNull String table, @NotNull String column, @NotNull String filter) {

@@ -116,6 +116,8 @@ permissions:
     default: true
   flectonechat.server-message.join:
     default: true
+  flectonechat.server-message.greeting:
+    default: true
   flectonechat.server-message.quit:
     default: true
   flectonechat.sounds:
@@ -157,6 +159,8 @@ permissions:
   flectonechat.sounds.server-message.death:
     default: true
   flectonechat.sounds.server-message.join:
+    default: true
+  flectonechat.sounds.server-message.greeting:
     default: true
   flectonechat.sounds.server-message.quit:
     default: true
@@ -261,6 +265,8 @@ permissions:
   flectonechat.commands.chatsettings.death:
     default: true
   flectonechat.commands.chatsettings.join:
+    default: true
+  flectonechat.commands.chatsettings.greeting:
     default: true
   flectonechat.commands.chatsettings.quit:
     default: true

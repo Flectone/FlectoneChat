@@ -3,6 +3,7 @@ package net.flectone.chat.module.serverMessage;
 import net.flectone.chat.module.FModule;
 import net.flectone.chat.module.serverMessage.advancement.AdvancementModule;
 import net.flectone.chat.module.serverMessage.death.DeathModule;
+import net.flectone.chat.module.serverMessage.greeting.GreetingModule;
 import net.flectone.chat.module.serverMessage.join.JoinModule;
 import net.flectone.chat.module.serverMessage.quit.QuitModule;
 
@@ -22,5 +23,6 @@ public class ServerMessageModule extends FModule {
         new QuitModule(this, "quit");
         new AdvancementModule(this, "advancement");
         new DeathModule(this, "death");
+        new GreetingModule(this, "greeting");
     }
 }

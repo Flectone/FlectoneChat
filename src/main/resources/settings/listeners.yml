@@ -59,6 +59,9 @@ server-message:
   join:
     PlayerJoinEvent: "HIGHEST"
 
+  greeting:
+    PlayerJoinEvent: "MONITOR"
+
   quit:
     PlayerQuitEvent: "LOWEST"
 
