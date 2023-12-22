@@ -259,6 +259,11 @@ default:
           enable: true
           trigger: "%stats%"
 
+        skin:
+          enable: true
+          trigger: "%skin%"
+          format: "&&1🎨<message>.png"
+
         url:
           enable: true
           hover:

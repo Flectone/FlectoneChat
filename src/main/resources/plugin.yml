@@ -72,6 +72,8 @@ permissions:
     default: true
   flectonechat.player-message.formatting.stats:
     default: true
+  flectonechat.player-message.formatting.skin:
+    default: true
   flectonechat.player-message.formatting.url:
     default: true
   flectonechat.player-message.formatting.markdown-url:

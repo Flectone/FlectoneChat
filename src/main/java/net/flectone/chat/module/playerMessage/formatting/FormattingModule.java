@@ -250,6 +250,11 @@ public class FormattingModule extends FModule {
                 if (valueStats != null && valueStats.equals(word)) {
                     return processStats(wordParams, sender);
                 }
+
+                String valueSkin = formattingMap.get("skin");
+                if (isAsync && valueSkin != null && valueSkin.equals(word)) {
+                    return processSkin(wordParams, sender);
+                }
             }
 
             wordParams.addParameters(textParameters.getParameters());
@@ -381,6 +386,19 @@ public class FormattingModule extends FModule {
                 .replace("<food>", sender.getFoodLevel() + ".0")
                 .replace("<attack>", String.valueOf(damage != null ? Math.round(damage.getValue() * 10.0)/10.0 : 0.0));
 
+        wordParams.setText(word);
+        return wordParams;
+    }
+
+    public WordParams processSkin(@NotNull WordParams wordParams, @NotNull Player sender) {
+        String playerAvatar = PlayerUtil.constructAvatarUrl(sender);
+        FImageComponent fImageComponent = new FImageComponent(playerAvatar);
+        if (!fImageComponent.isCorrect()) return wordParams;
+        wordParams.setImageComponent(fImageComponent);
+        wordParams.setImage(true);
+
+        String word = config.getVaultString(sender, this + ".list.skin.format")
+                .replace("<message>", sender.getName());
         wordParams.setText(word);
         return wordParams;
     }
