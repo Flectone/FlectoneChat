@@ -14,6 +14,7 @@ public class FSound {
     @Getter
     private final Player sender;
     private Player recipient;
+    @Getter
     private final String name;
     private Location location;
 

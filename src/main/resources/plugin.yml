@@ -120,6 +120,120 @@ permissions:
     default: true
   flectonechat.sounds:
     default: true
+  flectonechat.sounds.mention:
+    default: true
+  flectonechat.sounds.auto-message:
+    default: true
+  flectonechat.sounds.player.afk-timeout-true:
+    default: true
+  flectonechat.sounds.player.afk-timeout-false:
+    default: true
+  flectonechat.sounds.player.right-click:
+    default: true
+  flectonechat.sounds.player-message.anvil:
+    default: true
+  flectonechat.sounds.player-message.book:
+    default: true
+  flectonechat.sounds.player-message.sign:
+    default: true
+  flectonechat.sounds.player-message.chat.local:
+    default: true
+  flectonechat.sounds.player-message.chat.global:
+    default: true
+  flectonechat.sounds.extra.item-sign:
+    default: true
+  flectonechat.sounds.extra.item-sign.unsign:
+    default: true
+  flectonechat.sounds.extra.knocking.door:
+    default: true
+  flectonechat.sounds.extra.knocking.glass:
+    default: true
+  flectonechat.sounds.extra.mark:
+    default: true
+  flectonechat.sounds.extra.spit:
+    default: true
+  flectonechat.sounds.server-message.advancement:
+    default: true
+  flectonechat.sounds.server-message.death:
+    default: true
+  flectonechat.sounds.server-message.join:
+    default: true
+  flectonechat.sounds.server-message.quit:
+    default: true
+  flectonechat.sounds.commands.spit:
+    default: true
+  flectonechat.sounds.commands.kick:
+    default: true
+  flectonechat.sounds.commands.warn:
+    default: true
+  flectonechat.sounds.commands.unwarn:
+    default: true
+  flectonechat.sounds.commands.warnlist:
+    default: true
+  flectonechat.sounds.commands.spy:
+    default: true
+  flectonechat.sounds.commands.poll:
+    default: true
+  flectonechat.sounds.commands.broadcast:
+    default: true
+  flectonechat.sounds.commands.unban:
+    default: true
+  flectonechat.sounds.commands.tempban:
+    default: true
+  flectonechat.sounds.commands.clearchat:
+    default: true
+  flectonechat.sounds.commands.chatsettings:
+    default: true
+  flectonechat.sounds.commands.chatcolor:
+    default: true
+  flectonechat.sounds.commands.flectonechat:
+    default: true
+  flectonechat.sounds.commands.geolocate:
+    default: true
+  flectonechat.sounds.commands.ignore:
+    default: true
+  flectonechat.sounds.commands.ignorelist:
+    default: true
+  flectonechat.sounds.commands.mail:
+    default: true
+  flectonechat.sounds.commands.helper:
+    default: true
+  flectonechat.sounds.commands.mark:
+    default: true
+  flectonechat.sounds.commands.me:
+    default: true
+  flectonechat.sounds.commands.tell:
+    default: true
+  flectonechat.sounds.commands.ping:
+    default: true
+  flectonechat.sounds.commands.reply:
+    default: true
+  flectonechat.sounds.commands.clearmail:
+    default: true
+  flectonechat.sounds.commands.stream:
+    default: true
+  flectonechat.sounds.commands.translateto:
+    default: true
+  flectonechat.sounds.commands.try:
+    default: true
+  flectonechat.sounds.commands.dice:
+    default: true
+  flectonechat.sounds.commands.afk:
+    default: true
+  flectonechat.sounds.commands.mute:
+    default: true
+  flectonechat.sounds.commands.unmute:
+    default: true
+  flectonechat.sounds.commands.maintenance:
+    default: true
+  flectonechat.sounds.commands.ball:
+    default: true
+  flectonechat.sounds.commands.tictactoe:
+    default: true
+  flectonechat.sounds.commands.banlist:
+    default: true
+  flectonechat.sounds.commands.mutelist:
+    default: true
   flectonechat.server.status.player-count.bypass:
     default: op
   flectonechat.commands.afk:

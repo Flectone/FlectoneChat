@@ -2,6 +2,7 @@ package net.flectone.chat.module.sounds;
 
 import net.flectone.chat.model.sound.FSound;
 import net.flectone.chat.module.FModule;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 public class SoundsModule extends FModule {
@@ -19,6 +20,7 @@ public class SoundsModule extends FModule {
     public void play(@NotNull FSound sound) {
         if (!isEnabledFor(sound.getSender())) return;
         if (hasNoPermission(sound.getSender())) return;
+        if (hasNoPermission(sound.getSender(), sound.getName())) return;
         sound.play();
     }
 }
