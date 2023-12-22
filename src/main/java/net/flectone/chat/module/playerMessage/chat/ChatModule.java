@@ -28,7 +28,7 @@ public class ChatModule extends FModule {
 
     public void send(@NotNull Player sender, @NotNull List<Player> recipientsList,
                      @NotNull String message, @NotNull String chatFormat,
-                     @NotNull List<String> featuresList) {
+                     @NotNull List<String> featuresList, @NotNull Runnable noRecipientRunnable) {
 
         message = IntegrationsModule.interactiveChatMark(message, sender.getUniqueId());
 
@@ -43,6 +43,8 @@ public class ChatModule extends FModule {
             if (fModule instanceof ChatBubbleModule chatBubbleModule) {
                 chatBubbleModule.add(sender, messageBuilder.getMessage(""));
             }
+
+            noRecipientRunnable.run();
         });
     }
 }

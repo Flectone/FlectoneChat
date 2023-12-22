@@ -130,19 +130,21 @@ public class ChatListener extends FListener {
         String chatFormat = config.getVaultString(sender, getModule() + ".list." + playerChat + ".format");
         chatFormat = MessageUtil.formatPlayerString(sender, chatFormat);
 
-        ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList);
+        List<Player> finalRecipientsList = recipientsList;
+        String finalPlayerChat1 = playerChat;
+        ((ChatModule) getModule()).send(sender, recipientsList, message, chatFormat, featuresList, () -> {
+            finalRecipientsList.removeIf(player -> player.getGameMode() == GameMode.SPECTATOR);
+
+            boolean noRecipientsMessageEnabled = config.getVaultBoolean(sender, getModule() + ".list." + finalPlayerChat1 + ".no-recipients.enable");
+            if ((finalRecipientsList.isEmpty() || finalRecipientsList.size() == 1) && noRecipientsMessageEnabled) {
+                String recipientsEmpty = locale.getVaultString(sender, getModule() + ".no-recipients");
+                sender.sendMessage(MessageUtil.formatAll(sender, recipientsEmpty));
+            }
+        });
 
         CommandSpy.send(sender, playerChat, recipientsList, CommandSpy.Type.DEFAULT, message);
 
         fPlayer.playSound(sender, recipientsList, getModule() + "." + playerChat);
-
-        recipientsList.removeIf(player -> player.getGameMode() == GameMode.SPECTATOR);
-
-        boolean noRecipientsMessageEnabled = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".no-recipients.enable");
-        if ((recipientsList.isEmpty() || recipientsList.size() == 1) && noRecipientsMessageEnabled) {
-            String recipientsEmpty = locale.getVaultString(sender, getModule() + ".no-recipients");
-            sender.sendMessage(MessageUtil.formatAll(sender, recipientsEmpty));
-        }
 
         boolean isCancelled = config.getVaultBoolean(sender, getModule() + ".list." + playerChat + ".set-cancelled");
         event.setCancelled(isCancelled);
