@@ -33,6 +33,9 @@ public class ChatListener extends FListener {
     @EventHandler
     public void playerChatEvent(@NotNull AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
+        if (event.getRecipients().isEmpty()) return;
+        // ULTRA MEGA SUPER 200 IQ MOVE FOR ULTRA MEGA SUPER 200 IQ CHAT-PLUGINS
+        if (!event.getFormat().equals("<%1$s> %2$s")) return;
 
         Player sender = event.getPlayer();
         FPlayer fPlayer = playerManager.get(sender);
