@@ -13,9 +13,11 @@ import net.flectone.chat.model.advancement.FAdvancement;
 import net.flectone.chat.model.damager.PlayerDamager;
 import net.flectone.chat.model.file.FConfiguration;
 import net.flectone.chat.model.player.Moderation;
+import net.flectone.chat.util.MessageUtil;
 import net.flectone.chat.util.TimeUtil;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -69,22 +71,31 @@ public class FDiscordSRV implements Listener, FIntegration {
 
     public void sendDeathMessage(@NotNull Player sender, @NotNull PlayerDamager playerDamager, @NotNull String typeDeath) {
         Entity finalEntity = playerDamager.getFinalEntity();
+
         Material finalBlock = playerDamager.getFinalBlockDamager();
         Entity killer = playerDamager.getKiller();
         ItemStack killerItem = playerDamager.getKillerItem();
 
         String message = integrations.getString("DiscordSRV.message.death.type" + typeDeath);
 
-        if (finalEntity != null) message = message
-                .replace("<killer>", finalEntity.getName())
-                .replace("<projectile>", finalEntity.getName());
+        if (finalEntity != null) {
+            String finalEntityName = finalEntity instanceof Player player
+                    ? MessageUtil.formatPlayerString(player, "<player>")
+                    : finalEntity.getName();
+            message = message
+                    .replace("<killer>", finalEntityName)
+                    .replace("<projectile>", finalEntityName);
+        }
 
         if (finalBlock != null) message = message
                 .replace("<block>", finalBlock.name());
 
         if (killer != null && finalEntity != null && !killer.getType().equals(finalEntity.getType())) {
+            String killerName = killer instanceof Player player
+                    ? MessageUtil.formatPlayerString(player, "<player>")
+                    : finalEntity.getName();
             String dueToMessage = integrations.getString("DiscordSRV.message.death.due-to");
-            message = message.replace("<due_to>", dueToMessage.replace("<killer>", killer.getName()));
+            message = message.replace("<due_to>", dueToMessage.replace("<killer>", killerName));
         }
 
         if (killerItem != null) {
@@ -106,45 +117,49 @@ public class FDiscordSRV implements Listener, FIntegration {
         Map<String, String> replacements = new HashMap<>();
 
         replacements.put("<type>", message);
-        replacements.put("<player>", sender.getName());
+        replacements.put("<player>", MessageUtil.formatPlayerString(sender, "<player>"));
 
         sendMessage(sender, "death", replacements);
     }
 
     public void sendJoinMessage(@NotNull Player sender, @NotNull String type) {
+        String senderName = MessageUtil.formatPlayerString(sender, "<player>");
+
         String message = integrations.getString("DiscordSRV.message.join.type." + type)
-                .replace("<player>", sender.getName());
+                .replace("<player>", senderName);
 
         Map<String, String> replacements = new HashMap<>();
 
         replacements.put("<type>", message);
-        replacements.put("<player>", sender.getName());
+        replacements.put("<player>", senderName);
 
         sendMessage(sender, "join", replacements);
     }
 
     public void sendQuitMessage(@NotNull Player sender, @NotNull String type) {
+        String senderName = MessageUtil.formatPlayerString(sender, "<player>");
+
         String message = integrations.getString("DiscordSRV.message.quit.type." + type)
-                .replace("<player>", sender.getName());
+                .replace("<player>", senderName);
 
         Map<String, String> replacements = new HashMap<>();
 
         replacements.put("<type>", message);
-        replacements.put("<player>", sender.getName());
+        replacements.put("<player>", senderName);
 
         sendMessage(sender, "quit", replacements);
     }
 
     public void sendAdvancementMessage(@NotNull Player sender, @NotNull FAdvancement advancement) {
         HashMap<String, String> replacements = new HashMap<>();
-        replacements.put("<player>", sender.getName());
+        replacements.put("<player>", MessageUtil.formatPlayerString(sender, "<player>"));
         replacements.put("<advancement>", advancement.getTitle());
 
         sendMessage(sender, "advancement-" + advancement.getType(), replacements);
     }
 
     public void sendStreamMessage(@Nullable Player sender, @NotNull String urls) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString(sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<player>", senderName);
@@ -170,7 +185,7 @@ public class FDiscordSRV implements Listener, FIntegration {
 
     public void sendMuteMessage(@Nullable OfflinePlayer sender, @NotNull Moderation moderation) {
         HashMap<String, String> replacements = new HashMap<>();
-        replacements.put("<player>", moderation.getModeratorName());
+        replacements.put("<player>", moderation.getPlayerName());
         replacements.put("<time>", TimeUtil.convertTime(null, moderation.getRemainingTime()));
         replacements.put("<reason>", moderation.getReason());
         replacements.put("<moderator>", moderation.getModeratorName());
@@ -179,7 +194,7 @@ public class FDiscordSRV implements Listener, FIntegration {
 
     public void sendWarnMessage(@Nullable OfflinePlayer sender, @NotNull Moderation moderation, int count) {
         HashMap<String, String> replacements = new HashMap<>();
-        replacements.put("<player>", moderation.getModeratorName());
+        replacements.put("<player>", moderation.getPlayerName());
         replacements.put("<count>", String.valueOf(count));
         replacements.put("<time>", TimeUtil.convertTime(null, moderation.getRemainingTime()));
         replacements.put("<reason>", moderation.getReason());
@@ -198,7 +213,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendBroadcastMessage(@Nullable OfflinePlayer sender, @NotNull String message) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<player>", senderName);
@@ -207,9 +222,8 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendMaintenanceMessage(@Nullable OfflinePlayer sender, @NotNull String type) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
-        assert senderName != null;
         String message = integrations.getString("DiscordSRV.message.maintenance.type." + type)
                 .replace("<player>", senderName);
 
@@ -220,7 +234,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendPollMessage(@Nullable OfflinePlayer sender, @NotNull String message, int id) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<player>", senderName);
@@ -230,7 +244,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendMeMessage(@Nullable OfflinePlayer sender, @NotNull String message) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<player>", senderName);
@@ -239,7 +253,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendTranslatetoMessage(@Nullable OfflinePlayer sender, @NotNull String targetLanguage, @NotNull String message) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<language>", targetLanguage);
@@ -249,9 +263,8 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendTryMessage(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String percent, @NotNull String type) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
-        assert senderName != null;
         String messageConfig = integrations.getString("DiscordSRV.message.try.type." + type)
                 .replace("<player>", senderName)
                 .replace("<message>", message)
@@ -264,9 +277,8 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendDiceMessage(@Nullable OfflinePlayer sender, @NotNull String cube, @NotNull String type) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
-        assert senderName != null;
         String messageConfig = integrations.getString("DiscordSRV.message.dice.type." + type)
                 .replace("<player>", senderName)
                 .replace("<cube>", cube);
@@ -278,7 +290,7 @@ public class FDiscordSRV implements Listener, FIntegration {
     }
 
     public void sendBallMessage(@Nullable OfflinePlayer sender, @NotNull String message, @NotNull String answer) {
-        String senderName = sender == null ? "CONSOLE" : sender.getName();
+        String senderName = sender == null ? "CONSOLE" : MessageUtil.formatPlayerString((CommandSender) sender, "<player>");
 
         HashMap<String, String> replacements = new HashMap<>();
         replacements.put("<player>", senderName);
