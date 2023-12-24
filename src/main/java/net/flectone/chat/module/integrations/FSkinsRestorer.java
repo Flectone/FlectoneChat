@@ -1,5 +1,6 @@
 package net.flectone.chat.module.integrations;
 
+import net.flectone.chat.FlectoneChat;
 import net.skinsrestorer.api.PropertyUtils;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
@@ -22,11 +23,17 @@ public class FSkinsRestorer implements FIntegration{
 
     @Override
     public void init() {
-        skinsRestorer = SkinsRestorerProvider.get();
+        try {
+            skinsRestorer = SkinsRestorerProvider.get();
+        } catch (IllegalStateException e) {
+            FlectoneChat.warning("SkinsRestorerAPI is not initialized yet. This is due to proxy");
+        }
     }
 
     @Nullable
     public String getTextureId(@NotNull Player player) {
+        if (skinsRestorer == null) return null;
+
         PlayerStorage storage = skinsRestorer.getPlayerStorage();
         try {
             Optional<SkinProperty> skin = storage.getSkinForPlayer(player.getUniqueId(), player.getName());
