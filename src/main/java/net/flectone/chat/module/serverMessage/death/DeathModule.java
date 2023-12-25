@@ -111,8 +111,8 @@ public class DeathModule extends FModule {
     public void createEntityComponent(@NotNull Player sender, @Nullable Player player, @Nullable Entity entity, @NotNull ComponentBuilder componentBuilder, String color) {
         if (entity == null) return;
 
-        if (entity instanceof Player) {
-            componentBuilder.append(new FPlayerComponent(player, entity, color + entity.getName()).get());
+        if (entity instanceof Player entityPlayer) {
+            componentBuilder.append(new FPlayerComponent(entityPlayer, player, color + entity.getName()).get());
             return;
         }
 
