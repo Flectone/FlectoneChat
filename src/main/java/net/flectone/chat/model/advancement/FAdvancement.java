@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 // Thanks, @CroaBeast, for these methods
-// Source https://github.com    /CroaBeast/AdvancementInfo
+// Source https://github.com/CroaBeast/AdvancementInfo
 
 public class FAdvancement {
     private static final String COMP_CLASS = "IChatBaseComponent";
