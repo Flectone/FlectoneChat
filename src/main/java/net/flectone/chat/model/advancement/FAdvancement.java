@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 // Thanks, @CroaBeast, for these methods
-// Source https://github.com/CroaBeast/AdvancementInfo
+// Source https://github.com    /CroaBeast/AdvancementInfo
 
 public class FAdvancement {
     private static final String COMP_CLASS = "IChatBaseComponent";
@@ -23,11 +23,13 @@ public class FAdvancement {
 
     private static final boolean IS_19_4;
     private static final boolean IS_20_2;
+    private static final boolean IS_20_3;
 
     static {
         double value = NMSUtil.getVersion();
         IS_19_4 = value >= 19.4;
         IS_20_2 = value >= 20.2;
+        IS_20_3 = value >= 20.3;
     }
 
     public FAdvancement(@NotNull Advancement adv) {
@@ -38,7 +40,7 @@ public class FAdvancement {
         Object nmsAdv = NMSUtil.getObject(craftClass, craftClass.cast(adv), "getHandle");
         if (IS_20_2) nmsAdv = NMSUtil.getObject(nmsAdv, "b");
 
-        Object display = NMSUtil.getObject(nmsAdv, IS_19_4 ? "d" : "c");
+        Object display = NMSUtil.getObject(nmsAdv, IS_19_4 && !IS_20_3 ? "d" : "c");
         if (display == null) return;
 
         if (IS_20_2) {
