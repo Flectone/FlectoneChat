@@ -7,13 +7,14 @@ import net.skinsrestorer.api.SkinsRestorerProvider;
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.property.SkinProperty;
 import net.skinsrestorer.api.storage.PlayerStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class FSkinsRestorer implements FIntegration{
+public class FSkinsRestorer implements FIntegration {
 
     private SkinsRestorer skinsRestorer;
 
@@ -23,11 +24,28 @@ public class FSkinsRestorer implements FIntegration{
 
     @Override
     public void init() {
+        firstHook();
+    }
+
+    private void firstHook() {
         try {
             skinsRestorer = SkinsRestorerProvider.get();
-        } catch (IllegalStateException e) {
-            FlectoneChat.warning("SkinsRestorerAPI is not initialized yet. This is due to proxy");
+            FlectoneChat.info("SkinsRestorer detected and hooked");
+        } catch (Exception e) {
+            FlectoneChat.warning("SkinsRestorer is not initialized yet. This is due to proxy. The second hook attempt will be in 10 seconds");
+            secondHook();
         }
+    }
+
+    private void secondHook() {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(FlectoneChat.getPlugin(), () -> {
+            try {
+                skinsRestorer = SkinsRestorerProvider.get();
+                FlectoneChat.info("SkinsRestorer detected and hooked");
+            } catch (Exception e) {
+                FlectoneChat.warning("SkinsRestorer is not initialized after all");
+            }
+        }, 200L);
     }
 
     @Nullable
