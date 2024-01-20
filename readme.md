@@ -4,7 +4,7 @@
 
 **[Documentation](https://chat.flectone.net/docs/)** | **[Spigotmc](https://www.spigotmc.org/resources/flectonechat.89411/)** | **[Modrinth](https://modrinth.com/plugin/flectonechat)** | **[Github](https://github.com/Flectone/FlectoneChat)**
 
-# FlectoneChat - personalize your minecraft server!
+# (NO MORE UPDATES) FlectoneChat - personalize your minecraft server!
 
 FlectoneChat is a modern plugin for Spigot servers that is designed to improve gameplay without interfering with it, and
 focuses on improving chat.\
